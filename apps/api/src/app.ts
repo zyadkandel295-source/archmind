@@ -19,9 +19,6 @@ import { analyticsRouter } from "./modules/analytics";
 import { billingRouter } from "./modules/billing";
 import { adminRouter } from "./modules/admin";
 import { profileRouter } from "./modules/profile";
-import { executionBridgeRouter } from "./modules/execution-bridge";
-import { notionAuthRouter } from "./modules/notion-auth";
-import { notionRouter } from "./modules/notion";
 import { platformRouter } from "./modules/platform";
 
 export interface AppOptions {
@@ -143,10 +140,7 @@ export function createApp(options: AppOptions = {}) {
   });
 
   app.use("/api/auth", authRouter(env, store));
-  app.use("/api/auth/notion", notionAuthRouter(env, store));
-  app.use("/api/notion", notionRouter(env, store));
   app.use("/api/assistants", assistantsRouter(env, store));
-  app.use("/api/assistants", executionBridgeRouter(env, store));
 
   app.use("/api", sourcesRouter(env, store));
   app.use("/api", chatRouter(env, store));

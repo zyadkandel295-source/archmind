@@ -47,11 +47,5 @@ export const API_ROUTES: RouteDefinition[] = [
   { method: "GET",    path: "/api/public/:slug",                                  description: "Get public assistant",            auth: true },
   { method: "GET",    path: "/api/analytics",                                     description: "Analytics overview",              auth: true },
   { method: "GET",    path: "/api/profile",                                       description: "Get profile",                     auth: true },
-  { method: "PUT",    path: "/api/profile",                                       description: "Update profile",                  auth: true },
-  { method: "GET",    path: "/api/assistants/:id/execution-bridge/status",        description: "Bridge connection status",        auth: true },
-  { method: "GET",    path: "/api/assistants/:id/execution-bridge/health",        description: "Bridge health check",             auth: true },
-  { method: "GET",    path: "/api/assistants/:id/execution-bridge/logs",          description: "Bridge audit logs",               auth: true },
-  { method: "POST",   path: "/api/assistants/:id/execution-bridge/run",           description: "Manual bridge run",               auth: true },
-  { method: "POST",   path: "/api/assistants/:id/execution-bridge/approvals/:approvalId/confirm", description: "Approve/reject action", auth: true },
-  { method: "POST",   path: "/api/assistants/:id/execution-bridge/webhooks/:service", description: "Webhook event",              auth: false },
+  { method: "PUT",    path: "/api/profile",                                       description: "Update profile",                  auth: true }
 ];
