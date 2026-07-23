@@ -1,12 +1,11 @@
 FROM node:22-alpine AS deps
-WORKDIR /app/apps/api
-COPY package.json ./
-COPY ../../packages/shared /app/packages/shared
-COPY ../../package.json ../../package-lock.json* /app/
-RUN cd /app && npm install
+WORKDIR /app
+COPY package.json package-lock.json* ./
+COPY apps/api/package.json apps/api/package.json
+COPY packages/shared/package.json packages/shared/package.json
+RUN npm install
 
 FROM deps AS build
-WORKDIR /app
 COPY . .
 RUN npm run build -w @archmind/shared && npm run build -w @archmind/api
 
