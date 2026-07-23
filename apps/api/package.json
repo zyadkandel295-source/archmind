@@ -27,7 +27,6 @@
     "firebase-admin": "^13.0.2",
     "helmet": "^8.0.0",
     "ioredis": "^5.4.2",
-    "isomorphic-dompurify": "^3.19.0",
     "jsonwebtoken": "^9.0.2",
     "mammoth": "^1.12.0",
     "morgan": "^1.10.0",
@@ -38,7 +37,6 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "electron": "33.2.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
