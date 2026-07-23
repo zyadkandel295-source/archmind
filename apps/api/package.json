@@ -4,6 +4,7 @@
   "private": true,
   "main": "dist/server.js",
   "scripts": {
+    "prebuild": "npm run build --prefix ../../packages/shared",
     "build": "tsc -p tsconfig.json",
     "dev": "cross-env NODE_OPTIONS=--use-system-ca tsx watch src/server.ts",
     "import:platform-json": "tsx src/tools/import-platform-json.ts",
