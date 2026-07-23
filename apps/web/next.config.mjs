@@ -1,13 +1,5 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { config as loadDotenv } from "dotenv";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-loadDotenv({ path: path.resolve(__dirname, "../../.env"), override: false });
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  distDir: ".next-app",
   transpilePackages: ["@archmind/shared"],
   experimental: {
     typedRoutes: false
