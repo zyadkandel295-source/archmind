@@ -93,7 +93,11 @@ function tokenResponse(env: Env, user: AuthUser) {
 }
 
 async function exchangeGoogleCode(env: Env, code: string) {
-  if (!env.googleClientId || !env.googleClientSecret) {
+  const clientId = env.googleClientId?.trim();
+  const clientSecret = env.googleClientSecret?.trim();
+  const redirectUri = (env.googleCallbackUrl || "https://archmind-api.vercel.app/api/auth/google/callback").trim();
+
+  if (!clientId || !clientSecret) {
     throw new HttpError(501, "Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to enable Google sign-in.", "GOOGLE_OAUTH_NOT_CONFIGURED");
   }
 
@@ -102,15 +106,17 @@ async function exchangeGoogleCode(env: Env, code: string) {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       code,
-      client_id: env.googleClientId,
-      client_secret: env.googleClientSecret,
-      redirect_uri: env.googleCallbackUrl,
+      client_id: clientId,
+      client_secret: clientSecret,
+      redirect_uri: redirectUri,
       grant_type: "authorization_code"
     })
   });
 
   if (!tokenResponse.ok) {
-    throw new HttpError(502, "Google sign-in could not be completed.", "GOOGLE_OAUTH_ERROR");
+    const errorBody = await tokenResponse.text().catch(() => "");
+    console.error("[Google Token Exchange Failed]", tokenResponse.status, errorBody, "Using redirect_uri:", redirectUri);
+    throw new HttpError(502, `Google sign-in could not be completed: ${errorBody}`, "GOOGLE_OAUTH_ERROR");
   }
 
   const tokens = (await tokenResponse.json()) as { 
@@ -228,9 +234,12 @@ export function authRouter(env: Env, store: MemoryStore) {
       "https://www.googleapis.com/auth/userinfo.profile"
     ];
     
+    const clientId = env.googleClientId.trim();
+    const redirectUri = (env.googleCallbackUrl || "https://archmind-api.vercel.app/api/auth/google/callback").trim();
+
     const params = new URLSearchParams({
-      client_id: env.googleClientId,
-      redirect_uri: env.googleCallbackUrl,
+      client_id: clientId,
+      redirect_uri: redirectUri,
       response_type: "code",
       scope: scopes.join(" "),
       access_type: "offline",
