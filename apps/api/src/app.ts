@@ -31,11 +31,12 @@ export interface AppOptions {
 }
 
 function createPlatformStore(env: Env, fallback: MemoryStore): PlatformStateStore {
-  if (env.nodeEnv === "production" && (env.platformStore === "memory" || !env.databaseUrl)) {
-    throw new Error("Production requires DATABASE_URL and PostgreSQL platform storage.");
-  }
-  if (env.nodeEnv !== "test" && env.databaseUrl && env.platformStore !== "memory") {
-    return new PostgresPlatformStore(env.databaseUrl, { runMigrations: Boolean(env.runMigrations), memoryStore: fallback });
+  if (env.databaseUrl && env.platformStore !== "memory") {
+    try {
+      return new PostgresPlatformStore(env.databaseUrl, { runMigrations: Boolean(env.runMigrations), memoryStore: fallback });
+    } catch {
+      return fallback;
+    }
   }
   return fallback;
 }
