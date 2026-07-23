@@ -11,6 +11,8 @@ out/
 .next-app/
 *.tsbuildinfo
 *.map
+api/*.js
+apps/api/api/*.js
 
 # Runtime Data, Scratch & Temporary Directories
 .archmind-data/
