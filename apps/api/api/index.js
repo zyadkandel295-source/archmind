@@ -35525,8 +35525,11 @@ var import_shared8 = __toESM(require_dist());
 // src/config/env.ts
 var import_dotenv = __toESM(require("dotenv"));
 var import_node_path = __toESM(require("node:path"));
-for (const envPath of [import_node_path.default.resolve(process.cwd(), "..", "..", ".env"), import_node_path.default.resolve(process.cwd(), ".env")]) {
-  import_dotenv.default.config({ path: envPath, override: false });
+try {
+  for (const envPath of [import_node_path.default.resolve(process.cwd(), "..", "..", ".env"), import_node_path.default.resolve(process.cwd(), ".env")]) {
+    import_dotenv.default.config({ path: envPath, override: false });
+  }
+} catch {
 }
 var getJwtSecret = (secretName, envVarName, _nodeEnv) => {
   const secret = process.env[envVarName];

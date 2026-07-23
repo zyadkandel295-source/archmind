@@ -1,8 +1,12 @@
 import dotenv from "dotenv";
 import path from "node:path";
 
-for (const envPath of [path.resolve(process.cwd(), "..", "..", ".env"), path.resolve(process.cwd(), ".env")]) {
-  dotenv.config({ path: envPath, override: false });
+try {
+  for (const envPath of [path.resolve(process.cwd(), "..", "..", ".env"), path.resolve(process.cwd(), ".env")]) {
+    dotenv.config({ path: envPath, override: false });
+  }
+} catch {
+  // Ignore filesystem env resolution errors on serverless
 }
 
 export interface Env {
