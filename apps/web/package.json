@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "npm run build --prefix ../../packages/shared",
     "build": "next build",
     "dev": "next dev -p 3000",
     "lint": "next lint",
