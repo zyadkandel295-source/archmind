@@ -253,8 +253,8 @@ export function authRouter(env: Env, store: MemoryStore) {
         const profile = await exchangeGoogleCode(env, code);
         const user = store.upsertGoogleUser(profile);
         const auth = tokenResponse(env, toAuthUser(user));
-        const handoff = store.createWebAuthHandoff(auth);
-        redirect.searchParams.set("handoff", handoff);
+        const handoffToken = jwt.sign({ session: auth }, env.jwtAccessSecret, { expiresIn: "5m" });
+        redirect.searchParams.set("handoff", handoffToken);
         redirect.searchParams.set("provider", "google");
 
         const isValidReturnPath = (pathStr: string): boolean => {
@@ -284,8 +284,15 @@ export function authRouter(env: Env, store: MemoryStore) {
     "/handoff/exchange",
     asyncHandler(async (req, res) => {
       const input = authHandoffExchangeSchema.parse(req.body);
-      const handoff = store.consumeWebAuthHandoff(input.code);
-      if (!handoff) {
+      let handoff: any = null;
+      try {
+        const decoded = jwt.verify(input.code, env.jwtAccessSecret) as { session: any };
+        handoff = decoded?.session ?? null;
+      } catch {
+        handoff = store.consumeWebAuthHandoff(input.code);
+      }
+
+      if (!handoff || !handoff.accessToken || !handoff.refreshToken) {
         throw new HttpError(400, "Sign-in handoff is invalid or expired.", "INVALID_AUTH_HANDOFF");
       }
       res.json(handoff);
