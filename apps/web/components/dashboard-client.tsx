@@ -16,8 +16,7 @@ import {
   ShieldCheck,
   Sparkles,
   Trash2,
-  UploadCloud,
-  Webhook
+  UploadCloud
 } from "lucide-react";
 import { requestData } from "@/lib/data-client";
 import { engineLabel } from "@/lib/engine-options";
@@ -399,12 +398,6 @@ function AssistantCard({
             <Button variant="ghost" size="sm">
               <Rocket className="h-4 w-4" />
               Deploy
-            </Button>
-          </Link>
-          <Link href={`/assistants/${assistant.id}/automation`}>
-            <Button variant="ghost" size="sm">
-              <Webhook className="h-4 w-4" />
-              Automation
             </Button>
           </Link>
           <Button variant="ghost" size="sm" disabled={busy} onClick={onDuplicate} aria-busy={workingAction === "duplicate"}>
