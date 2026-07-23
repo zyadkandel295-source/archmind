@@ -3,15 +3,15 @@ import { createApp } from "../src/app";
 const { app } = createApp();
 
 export default function handler(req: any, res: any) {
-  try {
-    return app(req, res);
-  } catch (err: any) {
-    console.error("Vercel Serverless Function Error:", err);
-    return res.status(500).json({
-      error: "Internal Server Error",
-      message: err?.message || "An unexpected error occurred."
-    });
-  }
+  return new Promise<void>((resolve, reject) => {
+    res.on("finish", resolve);
+    res.on("error", reject);
+    try {
+      app(req, res);
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
 
 module.exports = handler;
