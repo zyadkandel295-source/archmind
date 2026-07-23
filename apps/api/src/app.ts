@@ -157,3 +157,7 @@ export function createApp(options: AppOptions = {}) {
 
   return { app, env, store };
 }
+
+const defaultApp = createApp().app;
+export default defaultApp;
+
