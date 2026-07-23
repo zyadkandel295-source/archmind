@@ -22,3 +22,6 @@ export default function handler(req: any, res: any) {
     });
   }
 }
+
+module.exports = handler;
+module.exports.default = handler;

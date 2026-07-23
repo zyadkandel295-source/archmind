@@ -93,6 +93,9 @@ function chunkText(
 
 function resolvePersistPath() {
   if (process.env.ARCHMIND_DATA_PATH) return process.env.ARCHMIND_DATA_PATH;
+  if (process.env.VERCEL === "1") {
+    return path.join("/tmp", ".archmind-data", "memory.json");
+  }
   const workspaceRoot = fs.existsSync(path.resolve(process.cwd(), "..", "..", "package.json"))
     ? path.resolve(process.cwd(), "..", "..")
     : process.cwd();
@@ -167,23 +170,27 @@ export class MemoryStore implements PlatformStateStore {
 
   public persist() {
     if (!this.persistPath) return;
-    const data: PersistedMemoryStore = {
-      demoUserId: this.demoUserId,
-      users: [...this.users.values()],
-      assistants: [...this.assistants.values()],
-      actions: [...this.actions.values()],
-      sources: [...this.sources.values()],
-      conversations: [...this.conversations.values()],
-      messages: [...this.messages.values()],
-      events: [...this.events.values()],
-      bridgeLogs: [...this.bridgeLogs.values()],
-      bridgeApprovals: [...this.bridgeApprovals.values()],
-      notionOAuthStates: [...this.notionOAuthStates.values()],
-      notionActivityLogs: [...this.notionActivityLogs.values()],
-      platform: this.platform
-    };
-    fs.mkdirSync(path.dirname(this.persistPath), { recursive: true });
-    fs.writeFileSync(this.persistPath, JSON.stringify(data, null, 2));
+    try {
+      const data: PersistedMemoryStore = {
+        demoUserId: this.demoUserId,
+        users: [...this.users.values()],
+        assistants: [...this.assistants.values()],
+        actions: [...this.actions.values()],
+        sources: [...this.sources.values()],
+        conversations: [...this.conversations.values()],
+        messages: [...this.messages.values()],
+        events: [...this.events.values()],
+        bridgeLogs: [...this.bridgeLogs.values()],
+        bridgeApprovals: [...this.bridgeApprovals.values()],
+        notionOAuthStates: [...this.notionOAuthStates.values()],
+        notionActivityLogs: [...this.notionActivityLogs.values()],
+        platform: this.platform
+      };
+      fs.mkdirSync(path.dirname(this.persistPath), { recursive: true });
+      fs.writeFileSync(this.persistPath, JSON.stringify(data, null, 2));
+    } catch (error) {
+      console.warn("MemoryStore persist skipped on read-only filesystem:", error);
+    }
   }
 
   getDemoUser() {
