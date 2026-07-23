@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "prebuild": "npm run build --prefix ../../packages/shared",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && npx esbuild api/index.ts --bundle --platform=node --target=node18 --external:express --external:cors --external:helmet --external:bcryptjs --external:jsonwebtoken --external:pg --external:ioredis --external:pdf-parse --external:mammoth --external:multer --external:cookie-parser --external:morgan --external:dotenv --external:express-rate-limit --external:rate-limit-redis --external:firebase-admin --external:@notionhq/client --external:jsdom --outfile=api/index.js",
     "dev": "cross-env NODE_OPTIONS=--use-system-ca tsx watch src/server.ts",
     "import:platform-json": "tsx src/tools/import-platform-json.ts",
     "start": "cross-env NODE_OPTIONS=--use-system-ca node dist/server.js",
