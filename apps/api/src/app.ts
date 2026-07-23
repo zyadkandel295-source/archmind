@@ -88,7 +88,13 @@ export function createApp(options: AppOptions = {}) {
   );
   app.use(
     cors({
-      origin: env.corsOrigin,
+      origin: (origin, callback) => {
+        if (!origin || env.corsOrigin === "*" || origin === env.corsOrigin || origin.endsWith(".vercel.app") || origin.startsWith("http://localhost")) {
+          callback(null, true);
+        } else {
+          callback(null, true);
+        }
+      },
       credentials: true
     })
   );
