@@ -12,6 +12,9 @@ function getApp() {
 
 export default function handler(req: any, res: any) {
   try {
+    if (!req.url || req.url === "/" || req.url === "") {
+      req.url = "/api";
+    }
     const app = getApp();
     return app(req, res);
   } catch (err: any) {
