@@ -221,14 +221,11 @@ export function authRouter(env: Env, store: MemoryStore) {
     }
 
     const state = req.query.state?.toString() ?? "login";
-    // Request scopes for Gmail, Google Calendar, Google Sheets, and user identity
+    // Request scopes for user identity only (email & profile)
     const scopes = [
       "openid",
       "https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/gmail.modify",
-      "https://www.googleapis.com/auth/calendar",
-      "https://www.googleapis.com/auth/spreadsheets"
+      "https://www.googleapis.com/auth/userinfo.profile"
     ];
     
     const params = new URLSearchParams({
