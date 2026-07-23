@@ -101,6 +101,10 @@ export function createApp(options: AppOptions = {}) {
     app.use(morgan("tiny"));
   }
 
+  app.get(["/", "/api"], (_req, res) => {
+    res.json({ ok: true, service: "archmind-api", message: "ArchMind API Backend is live", uptime: Math.floor(process.uptime()) });
+  });
+
   app.get("/api/health", (_req, res) => {
     const base = { ok: true, service: "archmind-api", uptime: Math.floor(process.uptime()) };
 
