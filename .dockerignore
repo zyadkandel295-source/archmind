@@ -1,0 +1,67 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.venv/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# Version Control
+.git/
+.github/
+.gitignore
+
+# IDE & Tooling
+.cache/
+.vercel/
+.railway/
+.aider*
+.agents/
+.archmind-data/
+.DS_Store
+Thumbs.db
+
+# Build Artifacts
+dist/
+build/
+out/
+.next/
+.next-app/
+*.tsbuildinfo
+*.map
+
+# Desktop Binaries
+*.exe
+*.dll
+*.7z
+*.blockmap
+*.zip
+*.tar.gz
+*.iso
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+dev-server.log*
+
+# Testing
+coverage/
+*.test.ts
+*.spec.ts
+
+# Documentation (not needed in image)
+docs/
+*.md
+!README.md
+
+# Scripts (dev-only)
+scripts/
+
+# Scratch & Temp
+scratch/
+tmp/
+uploads/

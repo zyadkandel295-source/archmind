@@ -1,0 +1,56 @@
+{
+  "name": "@archmind/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ArchMind universal assistant bubble runtime.",
+  "author": "ArchMind",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "33.2.0",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.7.3"
+  },
+  "build": {
+    "appId": "com.archmind.desktop",
+    "productName": "ArchMind Assistant",
+    "electronVersion": "33.2.0",
+    "npmRebuild": false,
+    "compression": "store",
+    "directories": {
+      "output": "out"
+    },
+    "files": [
+      "dist/**/*",
+      "manifest.json",
+      "assets/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "assets/archmind-assistant.ico",
+        "to": "archmind-assistant.ico"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/archmind-assistant.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "installerIcon": "assets/archmind-assistant.ico",
+      "uninstallerIcon": "assets/archmind-assistant.ico",
+      "installerHeader": "assets/installer-header.bmp",
+      "installerSidebar": "assets/installer-sidebar.bmp",
+      "artifactName": "Install ${productName}.${ext}"
+    }
+  }
+}

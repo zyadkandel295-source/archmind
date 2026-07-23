@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 2,
+  "assistantId": "00000000-0000-0000-0000-000000000000",
+  "assistantName": "ArchMind Assistant",
+  "assistantColor": "#7C3AED",
+  "assistantIcon": "Bot",
+  "assistantInstructions": "Development manifest. Production installs receive a signed per-assistant snapshot after secure claim.",
+  "appId": "com.archmind.desktop",
+  "productName": "ArchMind Assistant",
+  "protocol": "archmind-desktop",
+  "apiUrl": "http://localhost:4000",
+  "bootstrapToken": "development-placeholder-not-for-release",
+  "bootstrapExpiresAt": "1970-01-01T00:00:00.000Z",
+  "userDataDirectoryName": "com.archmind.assistant"
+}

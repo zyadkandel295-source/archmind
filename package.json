@@ -1,0 +1,29 @@
+{
+  "name": "archmind",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ArchMind full-stack RAG assistant builder platform.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @archmind/shared && npm run build -w @archmind/api && npm run build -w @archmind/web && npm run build -w @archmind/desktop",
+    "dev": "cross-env npm_config_update_notifier=false NO_UPDATE_NOTIFIER=1 node scripts/dev-stack.cjs",
+    "lint": "npm run lint -w @archmind/web",
+    "test": "npm run test -w @archmind/api",
+    "typecheck": "npm run typecheck -w @archmind/shared && npm run typecheck -w @archmind/api && npm run typecheck -w @archmind/web && npm run typecheck -w @archmind/desktop"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "7zip-bin": "^5.2.0",
+    "concurrently": "^9.1.2",
+    "cross-env": "^10.1.0",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=20.11.0",
+    "npm": ">=10.0.0"
+  }
+}
