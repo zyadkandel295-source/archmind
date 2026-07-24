@@ -23,9 +23,18 @@ const CreateAssistantSchema = z.object({
   description: z.string().optional(),
   instructions: z.string().optional(),
   system_prompt: z.string().optional(),
-  icon: z.string().max(10).optional(),
-  color: z.string().max(50).optional(),
+  systemPrompt: z.string().optional(),
+  icon: z.string().optional(),
+  color: z.string().optional(),
   model_name: z.string().optional(),
+  model: z.string().optional(),
+  tone: z.string().optional(),
+  isPublic: z.boolean().optional(),
+  visibility: z.string().optional(),
+  temperature: z.number().optional(),
+  starterPrompts: z.array(z.string()).optional(),
+  enabledTools: z.array(z.string()).optional(),
+  slug: z.string().optional(),
 });
 
 const UpdateAssistantSchema = CreateAssistantSchema.partial();
@@ -73,6 +82,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
       return res.status(200).json({
         success: true,
         data: data || [],
+        assistants: data || [],
         count: data?.length || 0,
       });
     } catch (error: any) {
@@ -93,7 +103,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
       if (!isSupabaseConfigured()) {
         const memoryAssistant = store.getAssistantForUser(id, userId);
         if (memoryAssistant) {
-          return res.status(200).json({ success: true, data: memoryAssistant });
+          return res.status(200).json({ success: true, data: memoryAssistant, assistant: memoryAssistant });
         }
         return res.status(404).json({ error: 'Assistant not found' });
       }
@@ -110,12 +120,12 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
       if (error || !data) {
         const memoryAssistant = store.getAssistantForUser(id, userId);
         if (memoryAssistant) {
-          return res.status(200).json({ success: true, data: memoryAssistant });
+          return res.status(200).json({ success: true, data: memoryAssistant, assistant: memoryAssistant });
         }
         return res.status(404).json({ error: 'Assistant not found' });
       }
 
-      return res.status(200).json({ success: true, data });
+      return res.status(200).json({ success: true, data, assistant: data });
     } catch (error: any) {
       return res.status(500).json({ error: error.message || 'Internal Server Error' });
     }
@@ -137,17 +147,34 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         });
       }
 
+      const d = validation.data;
+      const resolvedInstructions = d.instructions || d.system_prompt || d.systemPrompt || 'Helpful AI Assistant';
+
       const assistantData = {
-        name: validation.data.name,
-        description: validation.data.description || '',
-        instructions: validation.data.instructions || validation.data.system_prompt || 'Helpful AI Assistant',
-        icon: validation.data.icon || '🤖',
-        color: validation.data.color || 'from-blue-500 to-cyan-500',
+        name: d.name,
+        description: d.description || '',
+        instructions: resolvedInstructions,
+        icon: d.icon || '🤖',
+        color: d.color || 'from-blue-500 to-cyan-500',
         user_id: userId,
         status: 'idle',
-        model_name: validation.data.model_name || 'Jellyfish',
+        model_name: d.model_name || d.model || 'Jellyfish',
         model_version: 'BIA 1',
         model_developer: 'Zyad Kandel',
+      };
+
+      const memoryInput = {
+        name: assistantData.name,
+        description: assistantData.description,
+        systemPrompt: resolvedInstructions,
+        tone: (d.tone || 'professional') as 'professional' | 'casual' | 'teacher' | 'custom',
+        isPublic: d.isPublic ?? false,
+        model: d.model || 'openrouter/auto',
+        temperature: d.temperature ?? 0.7,
+        starterPrompts: d.starterPrompts || [],
+        enabledTools: d.enabledTools || [],
+        icon: assistantData.icon,
+        color: assistantData.color,
       };
 
       const { data, error } = await supabase
@@ -157,22 +184,11 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         .single();
 
       if (error || !data) {
-        const created = store.createAssistant(userId, {
-          name: assistantData.name,
-          description: assistantData.description,
-          systemPrompt: assistantData.instructions,
-          tone: 'professional',
-          isPublic: false,
-          model: 'openrouter/auto',
-          temperature: 0.7,
-          starterPrompts: [],
-          enabledTools: [],
-          icon: assistantData.icon,
-          color: assistantData.color,
-        });
+        const created = store.createAssistant(userId, memoryInput);
         return res.status(201).json({
           success: true,
           data: created,
+          assistant: created,
           message: `Assistant "${created.name}" created successfully (Memory)`,
         });
       }
@@ -180,6 +196,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
       return res.status(201).json({
         success: true,
         data,
+        assistant: data,
         message: `Assistant "${data.name}" created successfully`,
       });
     } catch (error: any) {
@@ -291,6 +308,105 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
       return res.status(200).json({
         success: true,
         data,
+      });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message || 'Internal Server Error' });
+    }
+  });
+
+  // DUPLICATE ASSISTANT
+  router.post('/:id/duplicate', async (req: AuthedRequest, res: Response) => {
+    try {
+      const userId = req.user?.id;
+      const id = req.params.id;
+
+      if (!userId || !id) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      if (isSupabaseConfigured()) {
+        const { data: original, error: fetchErr } = await supabase
+          .from('assistants')
+          .select('*')
+          .eq('id', id)
+          .eq('user_id', userId)
+          .single();
+
+        if (original && !fetchErr) {
+          const duplicateData = {
+            name: `${original.name} (Copy)`,
+            description: original.description || '',
+            instructions: original.instructions || '',
+            icon: original.icon || '🤖',
+            color: original.color || 'from-blue-500 to-cyan-500',
+            user_id: userId,
+            status: 'idle',
+            model_name: original.model_name || 'Jellyfish',
+            model_version: original.model_version || 'BIA 1',
+            model_developer: original.model_developer || 'Zyad Kandel',
+          };
+
+          const { data: duplicated, error: dupErr } = await supabase
+            .from('assistants')
+            .insert([duplicateData])
+            .select()
+            .single();
+
+          if (duplicated && !dupErr) {
+            return res.status(201).json({
+              success: true,
+              data: duplicated,
+              assistant: duplicated,
+              message: 'Assistant duplicated successfully',
+            });
+          }
+        }
+      }
+
+      const duplicatedMemory = store.duplicateAssistant(id, userId);
+      if (duplicatedMemory) {
+        return res.status(201).json({
+          success: true,
+          data: duplicatedMemory,
+          assistant: duplicatedMemory,
+          message: 'Assistant duplicated successfully',
+        });
+      }
+
+      return res.status(404).json({ error: 'Assistant not found' });
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message || 'Internal Server Error' });
+    }
+  });
+
+  // CLEAR CONVERSATIONS FOR ASSISTANT
+  router.post('/:id/conversations/clear', async (req: AuthedRequest, res: Response) => {
+    try {
+      const userId = req.user?.id;
+      const id = req.params.id;
+
+      if (!userId || !id) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
+      if (isSupabaseConfigured()) {
+        await supabase
+          .from('messages')
+          .delete()
+          .eq('assistant_id', id);
+        await supabase
+          .from('chats')
+          .update({ deleted_at: new Date().toISOString() })
+          .eq('assistant_id', id)
+          .eq('user_id', userId);
+      }
+
+      store.clearConversationsForAssistant(id, userId);
+
+      return res.status(200).json({
+        success: true,
+        ok: true,
+        message: 'Conversations cleared successfully',
       });
     } catch (error: any) {
       return res.status(500).json({ error: error.message || 'Internal Server Error' });

@@ -31,11 +31,19 @@ export function authenticate(env: Env, store: MemoryStore) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
+      if (env.demoAuth) {
+        req.user = { id: "user-1", email: "demo@archmind.ai", plan: "pro" };
+        return next();
+      }
       return next(new HttpError(401, "Authorization header required", "UNAUTHORIZED"));
     }
 
     const matches = authHeader.match(/^Bearer\s+(.+)$/);
     if (!matches || !matches[1]) {
+      if (env.demoAuth) {
+        req.user = { id: "user-1", email: "demo@archmind.ai", plan: "pro" };
+        return next();
+      }
       return next(
         new HttpError(
           401,
