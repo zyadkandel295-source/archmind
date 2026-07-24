@@ -63,7 +63,7 @@ const firebaseSessionSchema = z.object({
 });
 
 const authHandoffExchangeSchema = z.object({
-  code: z.string().min(16).max(128)
+  code: z.string().min(8).max(4096)
 });
 
 function toAuthUser(user: {
@@ -297,11 +297,13 @@ export function authRouter(env: Env, store: MemoryStore) {
       try {
         const decoded = jwt.verify(input.code, env.jwtAccessSecret) as { session: any };
         handoff = decoded?.session ?? null;
-      } catch {
+      } catch (jwtErr) {
+        console.warn("[Handoff Exchange] JWT verify failed:", jwtErr instanceof Error ? jwtErr.message : jwtErr);
         handoff = store.consumeWebAuthHandoff(input.code);
       }
 
       if (!handoff || !handoff.accessToken || !handoff.refreshToken) {
+        console.error("[Handoff Exchange Failed] Invalid handoff payload or missing tokens");
         throw new HttpError(400, "Sign-in handoff is invalid or expired.", "INVALID_AUTH_HANDOFF");
       }
       res.json(handoff);
