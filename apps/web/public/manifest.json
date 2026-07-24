@@ -1,6 +1,6 @@
 {
-  "name": "ArchMind",
-  "short_name": "ArchMind",
+  "name": "Cyanea AI",
+  "short_name": "Cyanea AI",
   "description": "OpenRouter-powered assistant workspace.",
   "start_url": "/dashboard",
   "scope": "/",

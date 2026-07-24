@@ -6,8 +6,8 @@ import { ActivityTracker } from "@/components/activity-tracker";
 import { DataPersistenceProvider } from "@/lib/context/data-persistence-context";
 
 export const metadata: Metadata = {
-  title: "ArchMind",
-  description: "Build, deploy, and manage custom AI assistants with streaming chat and knowledge-backed answers.",
+  title: "Cyanea AI",
+  description: "Build, deploy, and manage custom AI assistants with bioluminescent streaming chat and knowledge-backed answers.",
   manifest: "/manifest.json",
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }, { url: "/archmind-icon.svg", type: "image/svg+xml" }],

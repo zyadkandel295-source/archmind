@@ -929,7 +929,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                     <JellyfishIcon className="h-full w-full drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
                   </span>
                   <div>
-                    <div className="text-[clamp(0.9rem,1.8vw,1rem)] font-black">ArchMind</div>
+                    <div className="text-[clamp(0.9rem,1.8vw,1rem)] font-black text-white">Cyanea <span className="text-sky-400">AI</span></div>
                     <div className="text-[clamp(0.72rem,1.5vw,0.78rem)] text-[#C4B5FD]">AI Workspace</div>
                   </div>
                 </div>

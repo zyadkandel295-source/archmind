@@ -71,7 +71,7 @@ export function Nav() {
             <JellyfishIcon className="h-full w-full drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
           </motion.span>
           <span>
-            Arch<span className="text-[#93C5FD]">Mind</span>
+            Cyanea<span className="text-sky-400"> AI</span>
           </span>
         </Link>
 
