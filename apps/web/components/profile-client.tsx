@@ -78,7 +78,7 @@ export function ProfileClient() {
         const fallback: Profile = {
           id: "user-1",
           email: stored.email || "zyadkandel295@gmail.com",
-          displayName: stored.displayName || (stored.email ? stored.email.split("@")[0] : "Zyad Kandel"),
+          displayName: stored.displayName || stored.email?.split("@")[0] || "Zyad Kandel",
           photoURL: stored.photoURL || "",
           provider: "google.com",
           plan: "pro",
