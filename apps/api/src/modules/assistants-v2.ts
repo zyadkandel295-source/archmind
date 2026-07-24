@@ -147,6 +147,32 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         });
       }
 
+      // Enforce limit: max 3 assistants per 25 days per user
+      const twentyFiveDaysAgo = new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString();
+      if (isSupabaseConfigured()) {
+        const { count } = await supabase
+          .from('assistants')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', userId)
+          .is('deleted_at', null)
+          .gte('created_at', twentyFiveDaysAgo);
+
+        if ((count ?? 0) >= 3) {
+          return res.status(403).json({
+            error: 'Assistant limit reached. You can create up to 3 assistants per 25 days.',
+            code: 'ASSISTANT_LIMIT_EXCEEDED'
+          });
+        }
+      } else {
+        const userAssistants = store.listAssistants(userId);
+        if (userAssistants.length >= 3) {
+          return res.status(403).json({
+            error: 'Assistant limit reached. You can create up to 3 assistants per 25 days.',
+            code: 'ASSISTANT_LIMIT_EXCEEDED'
+          });
+        }
+      }
+
       const d = validation.data;
       const resolvedInstructions = d.instructions || d.system_prompt || d.systemPrompt || 'Helpful AI Assistant';
 

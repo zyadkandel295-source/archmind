@@ -215,6 +215,24 @@ export function chatsV2Router(env: Env, store: MemoryStore) {
 
       const { chat_id, assistant_id, content, role } = validation.data;
 
+      // Enforce limit: max 100 messages per day per user
+      const startOfDay = new Date();
+      startOfDay.setUTCHours(0, 0, 0, 0);
+      if (isSupabaseConfigured()) {
+        const { count } = await supabase
+          .from('messages')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', userId)
+          .gte('created_at', startOfDay.toISOString());
+
+        if ((count ?? 0) >= 100) {
+          return res.status(429).json({
+            error: 'Daily message limit reached (100 messages/day across your assistants).',
+            code: 'DAILY_MESSAGE_LIMIT_EXCEEDED'
+          });
+        }
+      }
+
       const { data: message, error: messageError } = await supabase
         .from('messages')
         .insert([

@@ -33,6 +33,7 @@ import {
   Search,
   Send,
   SlidersHorizontal,
+  Sparkles,
   Square,
   Sun,
   Trash2,
@@ -279,6 +280,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [sidebarOpen, setSidebarOpen] = useState(!embedded);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [downloadOpen, setDownloadOpen] = useState(false);
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [desktopConnected, setDesktopConnected] = useState(false);
   const [pinnedIds, setPinnedIds] = useState<Set<string>>(() => readPinnedSessionIds(assistantId));
@@ -1099,7 +1101,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
               {!desktopConnected ? (
                 <button
                   type="button"
-                  onClick={() => setDownloadOpen(true)}
+                  onClick={() => setComingSoonOpen(true)}
                   className="flex items-center gap-2 rounded-xl border border-violet-500/40 bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-xs font-black text-white shadow-md shadow-violet-600/25 transition hover:from-violet-500 hover:to-indigo-500 active:scale-95"
                   title="Download Windows App & Floating Bubble"
                 >
@@ -1347,6 +1349,42 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
           onClose={() => setDownloadOpen(false)}
         />
       ) : null}
+
+      <AnimatePresence>
+        {comingSoonOpen ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
+            onClick={() => setComingSoonOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 16 }}
+              transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              className="w-full max-w-md overflow-hidden rounded-2xl border border-violet-500/40 bg-[#12102A] p-6 text-center shadow-2xl shadow-violet-950/50"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl border border-violet-500/50 bg-gradient-to-br from-violet-600/30 to-indigo-600/30 text-violet-300 shadow-inner">
+                <Sparkles className="h-8 w-8 animate-pulse text-amber-300" />
+              </div>
+              <h2 className="mt-5 text-2xl font-black tracking-tight text-white">Coming Soon</h2>
+              <p className="mt-3 text-sm font-semibold leading-6 text-violet-200">
+                Control your computer and files through a bubble.
+              </p>
+              <button
+                type="button"
+                onClick={() => setComingSoonOpen(false)}
+                className="mt-6 w-full rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 py-3 text-sm font-bold text-white shadow-lg shadow-violet-600/30 transition hover:from-violet-500 hover:to-indigo-500 active:scale-[0.98]"
+              >
+                Got it
+              </button>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </main>
   );
 }
