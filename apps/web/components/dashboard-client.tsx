@@ -27,6 +27,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/toast";
 import { getAssistantIcon } from "@/lib/assistant-icons";
+import { AIBrainVisualization } from "./dashboard/ai-brain-viz";
 
 interface Assistant {
   id: string;
@@ -226,6 +227,11 @@ export function DashboardClient() {
                 </Card>
               </motion.div>
             ))}
+      </section>
+
+      {/* AI Brain Visualization Canvas */}
+      <section className="mt-8 h-80 w-full overflow-hidden rounded-xl border border-slate-700/50 shadow-lg">
+        <AIBrainVisualization />
       </section>
 
       <section className="mt-8 grid gap-5 lg:grid-cols-[1fr_320px]">
