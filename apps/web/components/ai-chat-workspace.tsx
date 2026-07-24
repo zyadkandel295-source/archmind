@@ -43,6 +43,7 @@ import { getPlatformBaseUrl } from "@/lib/platform";
 import { readSessionCredential } from "@/lib/session-keys";
 import { DEFAULT_ENGINE_VALUE } from "@/lib/engine-options";
 import { cn } from "@/lib/utils";
+import { JellyfishIcon } from "@/components/jellyfish-logo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/toast";
 import { AssistantAvatar } from "@/components/ui/assistant-avatar";
@@ -924,9 +925,8 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
             >
               <div className="flex items-center justify-between px-2 py-2">
                 <div className="flex min-w-0 items-center gap-2">
-                  <span className="grid size-10 shrink-0 place-items-center overflow-hidden rounded-lg border border-[#3D3578] bg-[#F0EAFF]" aria-hidden="true">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/archmind-logo.png" alt="" className="h-full w-full object-cover" />
+                  <span className="grid size-10 shrink-0 place-items-center overflow-hidden rounded-xl border border-sky-400/40 bg-slate-950 p-1 shadow-md shadow-sky-500/20" aria-hidden="true">
+                    <JellyfishIcon className="h-full w-full drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
                   </span>
                   <div>
                     <div className="text-[clamp(0.9rem,1.8vw,1rem)] font-black">ArchMind</div>
@@ -1258,7 +1258,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                   onKeyDown={handleKeyDown}
                   rows={1}
                   placeholder={`Message ${assistantName}...`}
-                  className="dark-scrollbar max-h-[32dvh] min-h-[clamp(3rem,8vw,4rem)] w-full resize-none bg-transparent px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.7rem,2vw,0.9rem)] text-[clamp(0.9rem,2vw,1rem)] leading-6 text-[#F0EAFF] outline-none placeholder:text-[#8B7EC8]"
+                  className="dark-scrollbar max-h-[32dvh] min-h-[clamp(3rem,8vw,4rem)] w-full resize-none bg-transparent px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.7rem,2vw,0.9rem)] text-[clamp(0.9rem,2vw,1rem)] font-medium leading-6 text-white outline-none placeholder:text-slate-400"
                 />
                 <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#2A2555] px-1 pt-2">
                   <div className="flex flex-wrap items-center gap-1">
@@ -1431,9 +1431,8 @@ function WelcomeScreen({
           transition={{ duration: 0.45 }}
           className="mx-auto max-w-[min(100%,48rem)] text-center"
         >
-          <span className="mx-auto grid size-[clamp(3.5rem,9vw,4.75rem)] place-items-center overflow-hidden rounded-[clamp(0.85rem,2vw,1.1rem)] border border-[#3D3578] bg-[#F0EAFF] shadow-lg shadow-black/25" aria-hidden="true">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/archmind-logo.png" alt="" className="h-full w-full object-cover" />
+          <span className="mx-auto grid size-[clamp(3.5rem,9vw,4.75rem)] place-items-center overflow-hidden rounded-2xl border border-sky-400/50 bg-slate-950 p-2 shadow-xl shadow-sky-500/25" aria-hidden="true">
+            <JellyfishIcon className="h-full w-full drop-shadow-[0_0_12px_rgba(56,189,248,0.8)]" />
           </span>
           <h1 className="mt-6 text-[clamp(2rem,6vw,3.25rem)] font-black leading-tight tracking-normal text-white">How can I help today?</h1>
           <p className="mx-auto mt-4 max-w-[min(100%,42rem)] text-[clamp(0.95rem,2vw,1rem)] leading-7 text-[#C4B5FD]">
@@ -1498,8 +1497,8 @@ function ChatBubble({
           className={cn(
             "rounded-[clamp(0.85rem,2vw,1.1rem)] px-[clamp(1rem,2.5vw,1.25rem)] py-[clamp(0.9rem,2.2vw,1rem)] text-[clamp(0.88rem,1.8vw,0.95rem)] leading-7 shadow-sm transition",
             isAssistant
-              ? "border border-[#2A2555] bg-[#1A1640] text-[#F0EAFF] shadow-black/20"
-              : "border border-violet-400/70 bg-violet-600 text-white"
+              ? "border border-[#3D3578] bg-[#16142E] text-[#F8FAFC] font-normal shadow-black/20"
+              : "border border-violet-400/70 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium"
           )}
         >
           {isAssistant ? (

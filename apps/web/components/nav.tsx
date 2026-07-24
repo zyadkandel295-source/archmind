@@ -12,6 +12,8 @@ import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 import { toast } from "@/components/ui/toast";
 import { fadeDown } from "@/lib/motion";
 
+import { JellyfishIcon } from "@/components/jellyfish-logo";
+
 const links = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/assistants/new", label: "Builder" },
@@ -64,10 +66,9 @@ export function Nav() {
           <motion.span
             whileHover={{ rotate: 8, scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 16 }}
-            className="grid size-[clamp(2.25rem,4vw,2.75rem)] shrink-0 place-items-center overflow-hidden rounded-lg border border-[#3A4658] bg-[#F4F7FB]"
+            className="grid size-[clamp(2.25rem,4vw,2.75rem)] shrink-0 place-items-center overflow-hidden rounded-xl border border-sky-400/40 bg-slate-950 p-1 shadow-md shadow-sky-500/20"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/archmind-logo.png" alt="" className="h-full w-full object-cover" />
+            <JellyfishIcon className="h-full w-full drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
           </motion.span>
           <span>
             Arch<span className="text-[#93C5FD]">Mind</span>

@@ -9,6 +9,7 @@ import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 import { establishWorkspaceSession } from "@/lib/session-bridge";
 import { readSessionCredential } from "@/lib/session-keys";
 import { useSessionStore } from "@/lib/session-store";
+import { FloatingJellyfishBackground } from "@/components/floating-jellyfish-bg";
 
 const PUBLIC_PATHS = ["/", "/auth/login"];
 
@@ -65,11 +66,12 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <FloatingJellyfishBackground />
       {immersive ? null : <Nav />}
       {immersive ? (
-        <div className="w-full">{children}</div>
+        <div className="relative z-10 w-full">{children}</div>
       ) : (
-        <div className="arch-shell neural-grid min-h-screen text-[#F0EAFF]">
+        <div className="relative z-10 arch-shell neural-grid min-h-screen text-[#F0EAFF]">
           <div className="flex min-h-screen w-full min-w-0 flex-col">{children}</div>
         </div>
       )}

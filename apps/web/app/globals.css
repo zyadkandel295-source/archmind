@@ -112,11 +112,8 @@ select {
 }
 
 .neural-grid {
-  background-image:
-    linear-gradient(rgba(58, 70, 88, 0.2) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(58, 70, 88, 0.2) 1px, transparent 1px);
-  background-size: clamp(1.5rem, 3vw, 2.35rem) clamp(1.5rem, 3vw, 2.35rem);
-  background-color: var(--bg-main);
+  background-image: none !important;
+  background-color: #06050F !important;
 }
 
 .ink-panel {
