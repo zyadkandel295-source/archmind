@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { createHash, randomUUID } from "crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { Pool } from "pg";
 import type {
   AnalyticsEventRecord,
   AssistantActionRecord,
@@ -118,9 +119,21 @@ export class MemoryStore implements PlatformStateStore {
   private webAuthHandoffs = new Map<string, { accessToken: string; refreshToken: string; user: AuthUser; expiresAt: number }>();
   private platform: PlatformState = emptyPlatformState();
   private persistPath?: string;
+  private dbPool?: Pool;
   readonly demoUserId: string;
 
   constructor() {
+    if (process.env.DATABASE_URL) {
+      try {
+        this.dbPool = new Pool({ connectionString: process.env.DATABASE_URL });
+        this.loadFromPg().catch((err) => {
+          console.warn("[MemoryStore] loadFromPg initial sync warning:", err instanceof Error ? err.message : err);
+        });
+      } catch (err) {
+        console.warn("[MemoryStore] Could not connect DB Pool:", err);
+      }
+    }
+
     if (process.env.NODE_ENV !== "test") {
       this.persistPath = resolvePersistPath();
       const restored = this.restore();
@@ -146,6 +159,172 @@ export class MemoryStore implements PlatformStateStore {
     this.persist();
   }
 
+  public async loadFromPg() {
+    if (!this.dbPool) return;
+    try {
+      const client = await this.dbPool.connect();
+      try {
+        const [usersRes, assistantsRes, sourcesRes] = await Promise.all([
+          client.query("select * from users"),
+          client.query("select * from assistants"),
+          client.query("select * from data_sources")
+        ]);
+
+        for (const row of (usersRes.rows as any[])) {
+          const u: UserRecord = {
+            id: String(row.id),
+            email: String(row.email),
+            passwordHash: row.password_hash ? String(row.password_hash) : undefined,
+            googleId: row.google_id ? String(row.google_id) : undefined,
+            firebaseUid: row.firebase_uid ? String(row.firebase_uid) : undefined,
+            displayName: row.display_name ? String(row.display_name) : undefined,
+            photoUrl: row.photo_url ? String(row.photo_url) : undefined,
+            provider: row.provider ? String(row.provider) : undefined,
+            plan: (row.plan ?? "free") as UserRecord["plan"],
+            tokenUsage: Number(row.token_usage ?? 0),
+            lastLoginAt: row.last_login_at ? new Date(row.last_login_at).toISOString() : undefined,
+            createdAt: new Date(row.created_at ?? Date.now()).toISOString(),
+            updatedAt: new Date(row.updated_at ?? Date.now()).toISOString()
+          };
+          this.users.set(u.id, u);
+        }
+
+        for (const row of (assistantsRes.rows as any[])) {
+          const a: AssistantRecord = {
+            id: String(row.id),
+            userId: String(row.user_id),
+            createdByUserId: String(row.user_id),
+            name: String(row.name),
+            description: String(row.description ?? ""),
+            systemPrompt: String(row.system_prompt ?? ""),
+            tone: (row.tone ?? "professional") as AssistantRecord["tone"],
+            isPublic: Boolean(row.is_public),
+            publicSlug: row.public_slug ? String(row.public_slug) : undefined,
+            slug: String(row.slug ?? row.public_slug ?? `assistant-${String(row.id).slice(0, 8)}`),
+            visibility: (row.visibility ?? (row.is_public ? "public" : "private")) as AssistantRecord["visibility"],
+            icon: String(row.icon ?? "bot"),
+            color: String(row.color ?? "indigo"),
+            model: String(row.model ?? "openrouter/auto"),
+            temperature: Number(row.temperature ?? 0.7),
+            version: Number(row.version ?? 1),
+            starterPrompts: typeof row.starter_prompts === "string" ? JSON.parse(row.starter_prompts) : (Array.isArray(row.starter_prompts) ? row.starter_prompts : []),
+            enabledTools: typeof row.enabled_tools === "string" ? JSON.parse(row.enabled_tools) : (Array.isArray(row.enabled_tools) ? row.enabled_tools : []),
+            createdAt: new Date(row.created_at ?? Date.now()).toISOString(),
+            updatedAt: row.updated_at ? new Date(row.updated_at).toISOString() : new Date(row.created_at ?? Date.now()).toISOString()
+          };
+          this.assistants.set(a.id, a);
+        }
+
+        for (const row of (sourcesRes.rows as any[])) {
+          const s: DataSourceRecord = {
+            id: String(row.id),
+            assistantId: String(row.assistant_id),
+            type: row.type as DataSourceRecord["type"],
+            name: String(row.name),
+            s3Key: row.s3_key ? String(row.s3_key) : undefined,
+            url: row.url ? String(row.url) : undefined,
+            status: row.status as DataSourceRecord["status"],
+            chunkCount: Number(row.chunk_count ?? 0),
+            tokenCount: Number(row.token_count ?? 0),
+            chunks: [],
+            createdAt: new Date(row.created_at ?? Date.now()).toISOString(),
+            updatedAt: new Date(row.updated_at ?? Date.now()).toISOString()
+          };
+          this.sources.set(s.id, s);
+        }
+      } finally {
+        client.release();
+      }
+    } catch (err) {
+      console.warn("[MemoryStore] loadFromPg warning:", err instanceof Error ? err.message : err);
+    }
+  }
+
+  private async syncToPg() {
+    if (!this.dbPool) return;
+    try {
+      const client = await this.dbPool.connect();
+      try {
+        await client.query("begin");
+
+        for (const u of this.users.values()) {
+          await client.query(
+            `insert into users(id, email, password_hash, google_id, firebase_uid, display_name, photo_url, provider, plan, token_usage, last_login_at, created_at, updated_at)
+             values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+             on conflict (id) do update set
+               email = excluded.email,
+               password_hash = excluded.password_hash,
+               google_id = excluded.google_id,
+               firebase_uid = excluded.firebase_uid,
+               display_name = excluded.display_name,
+               photo_url = excluded.photo_url,
+               provider = excluded.provider,
+               plan = excluded.plan,
+               token_usage = excluded.token_usage,
+               last_login_at = excluded.last_login_at,
+               updated_at = excluded.updated_at`,
+            [u.id, u.email, u.passwordHash ?? null, u.googleId ?? null, u.firebaseUid ?? null, u.displayName ?? null, u.photoUrl ?? null, u.provider ?? null, u.plan, u.tokenUsage ?? 0, u.lastLoginAt ?? null, u.createdAt, u.updatedAt]
+          );
+        }
+
+        for (const a of this.assistants.values()) {
+          const mirroredSlug = a.slug || `assistant-${a.id.slice(0, 8)}`;
+          const mirroredPublicSlug = a.isPublic && a.publicSlug ? a.publicSlug : null;
+          await client.query(
+            `insert into assistants(id, user_id, name, description, system_prompt, tone, is_public, public_slug, model, temperature, version, created_at, slug, visibility, icon, color, starter_prompts, enabled_tools, updated_at)
+             values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+             on conflict (id) do update set
+               name = excluded.name,
+               description = excluded.description,
+               system_prompt = excluded.system_prompt,
+               tone = excluded.tone,
+               is_public = excluded.is_public,
+               public_slug = excluded.public_slug,
+               model = excluded.model,
+               temperature = excluded.temperature,
+               version = excluded.version,
+               slug = excluded.slug,
+               visibility = excluded.visibility,
+               icon = excluded.icon,
+               color = excluded.color,
+               starter_prompts = excluded.starter_prompts,
+               enabled_tools = excluded.enabled_tools,
+               updated_at = excluded.updated_at`,
+            [
+              a.id, a.userId, a.name, a.description ?? "", a.systemPrompt ?? "", a.tone ?? "professional",
+              a.isPublic ?? false, mirroredPublicSlug, a.model ?? "openrouter/auto", a.temperature ?? 0.7, a.version ?? 1,
+              a.createdAt, mirroredSlug, a.visibility ?? "private", a.icon ?? "bot", a.color ?? "indigo",
+              JSON.stringify(a.starterPrompts ?? []), JSON.stringify(a.enabledTools ?? []), a.updatedAt ?? a.createdAt
+            ]
+          );
+        }
+
+        for (const s of this.sources.values()) {
+          await client.query(
+            `insert into data_sources(id, assistant_id, type, name, s3_key, url, status, chunk_count, token_count, created_at, updated_at)
+             values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+             on conflict (id) do update set
+               name = excluded.name,
+               status = excluded.status,
+               chunk_count = excluded.chunk_count,
+               token_count = excluded.token_count,
+               updated_at = excluded.updated_at`,
+            [s.id, s.assistantId, s.type, s.name, s.s3Key ?? null, s.url ?? null, s.status, s.chunkCount ?? 0, s.tokenCount ?? 0, s.createdAt, s.updatedAt]
+          );
+        }
+
+        await client.query("commit");
+      } catch (err) {
+        await client.query("rollback").catch(() => undefined);
+        throw err;
+      } finally {
+        client.release();
+      }
+    } catch (err) {
+      console.warn("[MemoryStore] syncToPg background warning:", err instanceof Error ? err.message : err);
+    }
+  }
+
   private restore() {
     if (!this.persistPath || !fs.existsSync(this.persistPath)) return undefined;
     try {
@@ -169,27 +348,34 @@ export class MemoryStore implements PlatformStateStore {
   }
 
   public persist() {
-    if (!this.persistPath) return;
-    try {
-      const data: PersistedMemoryStore = {
-        demoUserId: this.demoUserId,
-        users: [...this.users.values()],
-        assistants: [...this.assistants.values()],
-        actions: [...this.actions.values()],
-        sources: [...this.sources.values()],
-        conversations: [...this.conversations.values()],
-        messages: [...this.messages.values()],
-        events: [...this.events.values()],
-        bridgeLogs: [...this.bridgeLogs.values()],
-        bridgeApprovals: [...this.bridgeApprovals.values()],
-        notionOAuthStates: [...this.notionOAuthStates.values()],
-        notionActivityLogs: [...this.notionActivityLogs.values()],
-        platform: this.platform
-      };
-      fs.mkdirSync(path.dirname(this.persistPath), { recursive: true });
-      fs.writeFileSync(this.persistPath, JSON.stringify(data, null, 2));
-    } catch (error) {
-      console.warn("MemoryStore persist skipped on read-only filesystem:", error);
+    if (this.persistPath) {
+      try {
+        const data: PersistedMemoryStore = {
+          demoUserId: this.demoUserId,
+          users: [...this.users.values()],
+          assistants: [...this.assistants.values()],
+          actions: [...this.actions.values()],
+          sources: [...this.sources.values()],
+          conversations: [...this.conversations.values()],
+          messages: [...this.messages.values()],
+          events: [...this.events.values()],
+          bridgeLogs: [...this.bridgeLogs.values()],
+          bridgeApprovals: [...this.bridgeApprovals.values()],
+          notionOAuthStates: [...this.notionOAuthStates.values()],
+          notionActivityLogs: [...this.notionActivityLogs.values()],
+          platform: this.platform
+        };
+        fs.mkdirSync(path.dirname(this.persistPath), { recursive: true });
+        fs.writeFileSync(this.persistPath, JSON.stringify(data, null, 2));
+      } catch (error) {
+        console.warn("MemoryStore persist skipped on read-only filesystem:", error);
+      }
+    }
+
+    if (this.dbPool) {
+      this.syncToPg().catch((err) => {
+        console.warn("[MemoryStore] syncToPg background warning:", err instanceof Error ? err.message : err);
+      });
     }
   }
 
