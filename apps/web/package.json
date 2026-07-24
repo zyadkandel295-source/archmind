@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@archmind/shared": "file:../../packages/shared",
+    "@supabase/supabase-js": "^2.110.8",
     "@types/dompurify": "^3.0.5",
+    "axios": "^1.18.1",
     "clsx": "^2.1.1",
     "dompurify": "^3.4.12",
     "firebase": "^11.2.0",

@@ -16,6 +16,8 @@
   "dependencies": {
     "@archmind/shared": "file:../../packages/shared",
     "@notionhq/client": "^5.22.0",
+    "@supabase/supabase-js": "^2.110.8",
+    "axios": "^1.18.1",
     "bcryptjs": "^2.4.3",
     "bullmq": "^5.34.0",
     "cookie-parser": "^1.4.7",
@@ -37,7 +39,6 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "electron": "^33.2.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
@@ -46,6 +47,7 @@
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.12",
     "@types/supertest": "^6.0.2",
+    "electron": "^33.2.0",
     "supertest": "^7.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",

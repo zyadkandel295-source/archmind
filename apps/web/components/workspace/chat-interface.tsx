@@ -1,48 +1,85 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Paperclip, Zap } from 'lucide-react';
-import type { Assistant } from './assistant-world';
+import { Send, Paperclip, Zap, WifiOff } from 'lucide-react';
+import { useDataPersistence, type Assistant, type Message } from '@/lib/context/data-persistence-context';
 
 interface ChatInterfaceProps {
   assistant: Assistant;
-  messages: Array<{ role: string; content: string }>;
-  onMessageSend: (message: { role: string; content: string }) => void;
+  chatId?: string;
+  messages?: Message[];
+  onMessageSend?: (message: { role: string; content: string }) => void;
 }
 
 export function ChatInterface({
   assistant,
-  messages,
+  chatId,
+  messages: propMessages,
   onMessageSend,
 }: ChatInterfaceProps) {
+  const { messages: contextMessages, addMessage, isOnline, createChat, selectedChat } = useDataPersistence();
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Messages display source (prop vs context)
+  const displayMessages = propMessages || contextMessages;
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [displayMessages, isLoading]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
     const userText = input.trim();
-    // Add user message
-    onMessageSend({ role: 'user', content: userText });
     setInput('');
 
-    // Simulate loading & response
+    // Ensure chat session exists
+    let activeChatId = chatId || selectedChat?.id;
+    if (!activeChatId) {
+      const newChat = await createChat(assistant.id, `Chat with ${assistant.name}`);
+      activeChatId = newChat.id;
+    }
+
+    if (onMessageSend) {
+      onMessageSend({ role: 'user', content: userText });
+    } else if (activeChatId) {
+      await addMessage(activeChatId, assistant.id, userText, 'user');
+    }
+
     setIsLoading(true);
-    setTimeout(() => {
-      onMessageSend({
-        role: 'assistant',
-        content: `I am ${assistant.name}, powered by Jellyfish LLM (BIA 1 Model) developed by Zyad Kandel. I have received your query: "${userText}". How else may I assist you today?`,
-      });
+
+    // Generate assistant response
+    setTimeout(async () => {
+      const assistantReply = `I am ${assistant.name}, powered by Jellyfish LLM (BIA 1 Model) developed by Zyad Kandel. I have received your query: "${userText}". How else may I assist you today?`;
+      if (onMessageSend) {
+        onMessageSend({ role: 'assistant', content: assistantReply });
+      } else if (activeChatId) {
+        await addMessage(activeChatId, assistant.id, assistantReply, 'assistant');
+      }
       setIsLoading(false);
     }, 800);
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-950/40">
+    <div className="flex flex-col h-full bg-slate-950/40 relative">
+      {/* Offline Banner */}
+      {!isOnline && (
+        <div className="bg-amber-500/20 border-b border-amber-500/30 px-4 py-1.5 flex items-center justify-center gap-2 text-xs text-amber-200">
+          <WifiOff className="w-3.5 h-3.5" />
+          <span>Offline Mode — Changes will sync automatically when online</span>
+        </div>
+      )}
+
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
-        {messages.length === 0 ? (
+        {displayMessages.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -54,7 +91,7 @@ export function ChatInterface({
                 transition={{ duration: 2, repeat: Infinity }}
                 className="text-5xl mb-4"
               >
-                {assistant.icon}
+                {assistant.icon || '🤖'}
               </motion.div>
               <h3 className="text-lg font-semibold text-white mb-2">
                 Start a conversation with {assistant.name}
@@ -65,9 +102,9 @@ export function ChatInterface({
             </div>
           </motion.div>
         ) : (
-          messages.map((message, index) => (
+          displayMessages.map((message, index) => (
             <motion.div
-              key={index}
+              key={message.id || index}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -76,7 +113,7 @@ export function ChatInterface({
                 className={`max-w-xs lg:max-w-md px-4 py-3 rounded-xl text-sm leading-relaxed ${
                   message.role === 'user'
                     ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium shadow-md'
-                    : `bg-slate-800/80 border border-slate-700/60 text-slate-100 shadow-md`
+                    : 'bg-slate-800/80 border border-slate-700/60 text-slate-100 shadow-md'
                 }`}
               >
                 {message.content}
@@ -108,6 +145,7 @@ export function ChatInterface({
             />
           </motion.div>
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Area */}

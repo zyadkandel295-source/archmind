@@ -2,57 +2,45 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, Share2, MoreVertical, Zap } from 'lucide-react';
+import { Settings, Share2, MoreVertical, Zap, RefreshCw } from 'lucide-react';
 import { UserProfile } from './user-profile';
-import { AssistantWorld, type Assistant } from './assistant-world';
+import { AssistantWorld } from './assistant-world';
 import { ChatInterface } from './chat-interface';
 import { InstructionsPanel } from './instructions-panel';
+import { useDataPersistence } from '@/lib/context/data-persistence-context';
 
 export function ImmersiveWorkspace() {
   const [showAssistantBrowser, setShowAssistantBrowser] = useState(true);
-  const [messages, setMessages] = useState<Array<{ role: string; content: string }>>([]);
+  const [isCreating, setIsCreating] = useState(false);
+  const [newAssistantName, setNewAssistantName] = useState('');
+  const [newAssistantDesc, setNewAssistantDesc] = useState('');
 
-  // Default assistants list
-  const assistants: Assistant[] = [
-    {
-      id: '1',
-      name: 'Customer Support Assistant',
-      icon: '🤖',
-      description: 'Ready to assist with questions',
-      instructions: 'You are Customer Support Assistant powered by Jellyfish LLM (BIA 1 Model) developed by Zyad Kandel. Help users with clear, precise steps.',
-      color: 'from-blue-500 to-cyan-500',
-      status: 'idle',
-    },
-    {
-      id: '2',
-      name: 'Research Specialist',
-      icon: '🔍',
-      description: 'Deep research and analysis',
-      instructions: 'You are a research specialist focused on gathering and analyzing complex information.',
-      color: 'from-purple-500 to-pink-500',
-      status: 'idle',
-    },
-    {
-      id: '3',
-      name: 'Creative Writer',
-      icon: '✍️',
-      description: 'Engaging content creation',
-      instructions: 'You are a creative writer specializing in engaging stories and marketing content.',
-      color: 'from-yellow-500 to-orange-500',
-      status: 'idle',
-    },
-    {
-      id: '4',
-      name: 'Code Engineer',
-      icon: '💻',
-      description: 'Code generation and debugging',
-      instructions: 'You are an expert software engineer capable of writing, auditing, and debugging code.',
-      color: 'from-green-500 to-emerald-500',
-      status: 'idle',
-    },
-  ];
+  const {
+    assistants,
+    selectedAssistant,
+    setSelectedAssistant,
+    createAssistant,
+    isLoadingAssistants,
+    syncAllData,
+    isOnline,
+  } = useDataPersistence();
 
-  const [selectedAssistant, setSelectedAssistant] = useState<Assistant | null>(assistants[0] || null);
+  const handleCreateAssistant = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newAssistantName.trim()) return;
+
+    await createAssistant({
+      name: newAssistantName.trim(),
+      description: newAssistantDesc.trim() || 'Custom AI Assistant',
+      instructions: `You are ${newAssistantName.trim()} powered by Jellyfish LLM (BIA 1 Model) developed by Zyad Kandel. Help users with precision.`,
+      icon: '✨',
+      color: 'from-cyan-500 to-indigo-500',
+    });
+
+    setNewAssistantName('');
+    setNewAssistantDesc('');
+    setIsCreating(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 overflow-hidden">
@@ -64,7 +52,7 @@ export function ImmersiveWorkspace() {
         {/* Left Sidebar - User Profile + Assistant Browser */}
         <motion.div
           animate={{ width: showAssistantBrowser ? 320 : 80 }}
-          className="bg-slate-900/50 backdrop-blur border-r border-slate-700/50 flex flex-col overflow-hidden transition-all duration-300"
+          className="bg-slate-900/50 backdrop-blur border-r border-slate-700/50 flex flex-col overflow-hidden transition-all duration-300 relative"
         >
           {/* User Profile Section */}
           {showAssistantBrowser && <UserProfile />}
@@ -80,22 +68,33 @@ export function ImmersiveWorkspace() {
               <AssistantWorld
                 assistants={assistants}
                 selectedAssistant={selectedAssistant}
-                onSelectAssistant={(ast) => {
-                  setSelectedAssistant(ast);
-                  setMessages([]);
-                }}
+                onSelectAssistant={(ast) => setSelectedAssistant(ast)}
+                onCreateAssistant={() => setIsCreating(true)}
               />
             )}
           </AnimatePresence>
 
-          {/* Collapse Button */}
-          <motion.button
-            onClick={() => setShowAssistantBrowser(!showAssistantBrowser)}
-            className="p-4 text-slate-400 hover:text-slate-200 transition-colors border-t border-slate-700/30 flex items-center justify-center gap-2"
-          >
-            <Zap className="w-5 h-5 text-cyan-400" />
-            {showAssistantBrowser && <span className="text-xs font-medium">Collapse Sidebar</span>}
-          </motion.button>
+          {/* Sync Button & Collapse */}
+          <div className="p-2 border-t border-slate-700/30 flex items-center justify-between gap-1">
+            {showAssistantBrowser && (
+              <button
+                onClick={syncAllData}
+                className="p-2 text-xs text-slate-400 hover:text-cyan-400 flex items-center gap-1.5 transition-colors"
+                title="Sync with cloud"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isLoadingAssistants ? 'animate-spin' : ''}`} />
+                <span>{isOnline ? 'Synced' : 'Local Mode'}</span>
+              </button>
+            )}
+
+            <motion.button
+              onClick={() => setShowAssistantBrowser(!showAssistantBrowser)}
+              className="p-2 text-slate-400 hover:text-slate-200 transition-colors flex items-center justify-center gap-2 ml-auto"
+            >
+              <Zap className="w-5 h-5 text-cyan-400" />
+              {showAssistantBrowser && <span className="text-xs font-medium">Collapse</span>}
+            </motion.button>
+          </div>
         </motion.div>
 
         {/* Main Chat Area */}
@@ -112,9 +111,9 @@ export function ImmersiveWorkspace() {
                   <motion.div
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className={`w-11 h-11 rounded-xl bg-gradient-to-br ${selectedAssistant.color} flex items-center justify-center text-2xl shadow-lg border border-white/10`}
+                    className={`w-11 h-11 rounded-xl bg-gradient-to-br ${selectedAssistant.color || 'from-blue-500 to-cyan-500'} flex items-center justify-center text-2xl shadow-lg border border-white/10`}
                   >
-                    {selectedAssistant.icon}
+                    {selectedAssistant.icon || '🤖'}
                   </motion.div>
 
                   <div>
@@ -150,11 +149,7 @@ export function ImmersiveWorkspace() {
               <div className="flex-1 flex overflow-hidden gap-4 p-4">
                 {/* Chat Interface */}
                 <div className="flex-1 flex flex-col rounded-xl overflow-hidden bg-slate-800/20 border border-slate-700/30">
-                  <ChatInterface
-                    assistant={selectedAssistant}
-                    messages={messages}
-                    onMessageSend={(msg) => setMessages((prev) => [...prev, msg])}
-                  />
+                  <ChatInterface assistant={selectedAssistant} />
                 </div>
 
                 {/* Instructions Panel */}
@@ -163,7 +158,7 @@ export function ImmersiveWorkspace() {
                   animate={{ opacity: 1, x: 0 }}
                   className="w-80 hidden xl:flex flex-col rounded-xl overflow-hidden bg-slate-800/20 border border-slate-700/30"
                 >
-                  <InstructionsPanel assistant={selectedAssistant} />
+                  <InstructionsPanel assistant={selectedAssistant as any} />
                 </motion.div>
               </div>
             </>
@@ -191,6 +186,57 @@ export function ImmersiveWorkspace() {
           )}
         </div>
       </motion.div>
+
+      {/* New Assistant Modal */}
+      {isCreating && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl"
+          >
+            <h3 className="text-lg font-bold text-white mb-4">Create New AI Assistant</h3>
+            <form onSubmit={handleCreateAssistant} className="space-y-4">
+              <div>
+                <label className="block text-xs text-slate-300 mb-1 font-medium">Assistant Name</label>
+                <input
+                  type="text"
+                  required
+                  value={newAssistantName}
+                  onChange={(e) => setNewAssistantName(e.target.value)}
+                  placeholder="e.g. Data Analyst"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-slate-300 mb-1 font-medium">Description</label>
+                <input
+                  type="text"
+                  value={newAssistantDesc}
+                  onChange={(e) => setNewAssistantDesc(e.target.value)}
+                  placeholder="e.g. Specializes in dataset insights"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsCreating(false)}
+                  className="px-4 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl text-sm font-medium bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:shadow-lg transition-all"
+                >
+                  Create Assistant
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

@@ -22,6 +22,8 @@ import { billingRouter } from "./modules/billing";
 import { adminRouter } from "./modules/admin";
 import { profileRouter } from "./modules/profile";
 import { platformRouter } from "./modules/platform";
+import { assistantsV2Router } from "./modules/assistants-v2";
+import { chatsV2Router } from "./modules/chats-v2";
 
 export interface AppOptions {
   env?: Env;
@@ -142,15 +144,18 @@ export function createApp(options: AppOptions = {}) {
   });
 
   app.use("/api/auth", authRouter(env, store));
-  app.use("/api/assistants", assistantsRouter(env, store));
+  app.use("/api/assistants", assistantsV2Router(env, store));
+  app.use("/api/v1/assistants", assistantsRouter(env, store));
 
   app.use("/api", sourcesRouter(env, store));
+  app.use("/api", chatsV2Router(env, store));
   app.use("/api", chatRouter(env, store));
   app.use("/api/analytics", analyticsRouter(env, store));
   app.use("/api", profileRouter(env, store));
   app.use("/api", billingRouter(env, store));
   app.use("/api/admin", adminRouter(env, store));
   app.use("/api/platform", platformRouter(env, store, platformStore));
+
   app.get("*", (_req, res) => {
     res.json({ ok: true, service: "archmind-api", message: "ArchMind API Backend is live", uptime: Math.floor(process.uptime()) });
   });

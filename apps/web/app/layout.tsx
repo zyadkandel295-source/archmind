@@ -3,6 +3,7 @@ import "highlight.js/styles/github-dark.css";
 import "./globals.css";
 import { AppChrome } from "@/components/app-chrome";
 import { ActivityTracker } from "@/components/activity-tracker";
+import { DataPersistenceProvider } from "@/lib/context/data-persistence-context";
 
 export const metadata: Metadata = {
   title: "ArchMind",
@@ -18,8 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <ActivityTracker />
-        <AppChrome>{children}</AppChrome>
+        <DataPersistenceProvider>
+          <ActivityTracker />
+          <AppChrome>{children}</AppChrome>
+        </DataPersistenceProvider>
       </body>
     </html>
   );
