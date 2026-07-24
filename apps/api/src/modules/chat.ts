@@ -124,7 +124,7 @@ ${originalSystemPrompt}
     const assistantId = req.params.assistantId!;
     const ownedAssistant = store.getAssistantForUser(assistantId, req.user!.id);
     const publicAssistant = store.getPublicAssistantBySlug(assistantId);
-    const assistant = ownedAssistant ?? publicAssistant;
+    const assistant = ownedAssistant ?? publicAssistant ?? store.getDefaultAssistantForUser(req.user!.id);
 
     if (!assistant) {
       throw new HttpError(404, "Assistant not found. Create or select an assistant from your dashboard.", "ASSISTANT_NOT_FOUND");

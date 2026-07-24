@@ -16,7 +16,12 @@ export function assistantsRouter(env: Env, store: MemoryStore) {
   router.get(
     "/",
     asyncHandler(async (req: AuthedRequest, res) => {
-      const assistants = store.listAssistants(req.user!.id).map((assistant) => {
+      let existing = store.listAssistants(req.user!.id);
+      if (existing.length === 0) {
+        store.getDefaultAssistantForUser(req.user!.id);
+        existing = store.listAssistants(req.user!.id);
+      }
+      const assistants = existing.map((assistant) => {
         const analytics = store.assistantAnalytics(assistant.id);
         return {
           ...assistant,

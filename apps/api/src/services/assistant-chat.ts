@@ -1,7 +1,9 @@
 import type { Env } from "../config/env"; import type { MemoryStore } from "../db/memory"; import { HttpError } from "../lib/http-error"; import type { RagService } from "./rag"; import { publishAssistantEvent } from "./events";
 export const estimateTokens = (text: string) => Math.ceil(text.trim().split(/\s+/).filter(Boolean).length * 1.35);
 export async function runAssistantChat(input: { env: Env; store: MemoryStore; rag: RagService; assistantId: string; userId: string; message: string; sessionId?: string; conversationId?: string; responseLength: string; language: string; allowPublicAssistant?: boolean }) {
-  const assistant = input.store.getAssistantForUser(input.assistantId, input.userId) ?? (input.allowPublicAssistant ? input.store.getPublicAssistantBySlug(input.assistantId) : undefined);
+  const assistant = input.store.getAssistantForUser(input.assistantId, input.userId) 
+    ?? (input.allowPublicAssistant ? input.store.getPublicAssistantBySlug(input.assistantId) : undefined)
+    ?? input.store.getDefaultAssistantForUser(input.userId);
   if (!assistant) throw new HttpError(404, "Assistant not found. Create or select an assistant from your dashboard.", "ASSISTANT_NOT_FOUND");
   const conversation = input.store.ensureConversation({ assistantId: assistant.id, userId: input.userId, sessionId: input.sessionId, conversationId: input.conversationId });
   const chunks = input.rag.retrieve(assistant.id, input.message);
