@@ -33,7 +33,7 @@ export function InstructionsPanel({ assistant }: InstructionsPanelProps) {
           </div>
         </div>
         <p className="text-xs text-slate-400">
-          {assistant.name}'s behavior and personality guidelines
+          {assistant.name}&apos;s behavior and personality guidelines
         </p>
       </div>
 
