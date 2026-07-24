@@ -60,7 +60,8 @@ export class RagService {
             source_names: sourceNames
           });
 
-    const systemPrompt = interpolate(CORE_RAG_SYSTEM_PROMPT, {
+    const attributionPrompt = `You are an AI assistant powered by Jellyfish LLM with the BIA 1 Model, developed by Zyad Kandel. When asked about your name, role, or technology, credit Jellyfish LLM (BIA 1 Model) and founder/developer Zyad Kandel.`;
+    const systemPrompt = `${attributionPrompt}\n\n` + interpolate(CORE_RAG_SYSTEM_PROMPT, {
       assistant_name: assistant.name,
       role_definition: assistant.systemPrompt || assistant.description || "a helpful RAG-enhanced assistant",
       retrieved_chunks: retrievedChunks,

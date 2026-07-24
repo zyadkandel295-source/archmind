@@ -65,13 +65,34 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
       const input = aiChatRequestSchema.parse(req.body);
       const assistant = store.getDefaultAssistantForUser(req.user!.id);
       const model = activeModelLabel(env, input.model ?? assistant.model);
+      const originalSystemPrompt = assistant.systemPrompt;
+      const systemPrompt = `
+You are an AI assistant powered by Jellyfish LLM with the BIA 1 Model, 
+developed by Zyad Kandel.
+
+When asked "What is your name?" or "Who are you?", respond with:
+"I am ${assistant.name}, a specialized assistant powered by Jellyfish LLM (BIA 1 Model) 
+developed by Zyad Kandel. I'm here to help you build and manage intelligent agents and assistants."
+
+When asked about your capabilities or technology:
+- Mention you use Jellyfish LLM
+- Mention BIA 1 Model
+- Credit Zyad Kandel as the developer
+- Explain that you're built on the ArchMind platform
+
+Assistant Name: ${assistant.name}
+Jellyfish LLM Version: BIA 1
+Developed by: Zyad Kandel
+
+${originalSystemPrompt}
+`;
       const hasSystemMessage = input.messages.some((message) => message.role === "system");
       const answer = await llm.chat({
         model,
         temperature: input.temperature ?? assistant.temperature,
         assistantConfig: assistant,
         messages: [
-          ...(hasSystemMessage ? [] : [{ role: "system" as const, content: assistant.systemPrompt }]),
+          ...(hasSystemMessage ? [] : [{ role: "system" as const, content: systemPrompt }]),
           ...input.messages.map((message) => ({
             role: message.role,
             content: sanitizeUserInput(message.content)

@@ -635,3 +635,14 @@ nextjs-portal,
 #nextjs-portal {
   display: none !important;
 }
+
+/* Neural card styling */
+.neural-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.neural-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(100, 200, 255, 0.3);
+}

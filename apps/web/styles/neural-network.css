@@ -1,0 +1,143 @@
+/* Neural Network Brain Flow Animation */
+
+.neural-network-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+  overflow: hidden;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neural-network-canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* Neural node styling */
+.neural-node {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(100, 200, 255, 0.8), rgba(50, 100, 200, 0.4));
+  box-shadow: 0 0 20px rgba(100, 200, 255, 0.6), inset 0 0 10px rgba(150, 220, 255, 0.3);
+  animation: pulse-node 3s ease-in-out infinite;
+}
+
+.neural-node.active {
+  animation: pulse-node-active 2s ease-in-out infinite;
+  box-shadow: 0 0 40px rgba(100, 200, 255, 1), inset 0 0 15px rgba(150, 220, 255, 0.5);
+}
+
+/* Connection lines */
+.neural-connection {
+  position: absolute;
+  stroke: url(#gradient-stroke);
+  stroke-linecap: round;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 3px rgba(100, 200, 255, 0.5));
+}
+
+.neural-connection.active {
+  animation: pulse-connection 2s ease-in-out infinite;
+  opacity: 0.9;
+}
+
+/* Pulse animations */
+@keyframes pulse-node {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(100, 200, 255, 0.6), inset 0 0 10px rgba(150, 220, 255, 0.3);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(100, 200, 255, 0.8), inset 0 0 15px rgba(150, 220, 255, 0.5);
+  }
+}
+
+@keyframes pulse-node-active {
+  0%, 100% {
+    transform: scale(1.2);
+    box-shadow: 0 0 40px rgba(100, 200, 255, 1), inset 0 0 15px rgba(150, 220, 255, 0.5);
+  }
+  50% {
+    transform: scale(1.4);
+    box-shadow: 0 0 60px rgba(100, 200, 255, 1.2), inset 0 0 20px rgba(150, 220, 255, 0.7);
+  }
+}
+
+@keyframes pulse-connection {
+  0%, 100% {
+    opacity: 0.6;
+    stroke-width: 2px;
+  }
+  50% {
+    opacity: 0.9;
+    stroke-width: 3px;
+  }
+}
+
+/* Data flow animation */
+@keyframes data-flow {
+  0% {
+    offset-distance: 0%;
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+.neural-data-particle {
+  animation: data-flow 3s linear infinite;
+  fill: rgba(100, 200, 255, 0.8);
+  r: 3px;
+}
+
+/* Gradient for connections */
+.neural-gradient-def {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Content overlay */
+.neural-content-overlay {
+  position: relative;
+  z-index: 10;
+  background: rgba(15, 15, 30, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(100, 200, 255, 0.2);
+  padding: 60px 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Glow effect on hover */
+.neural-card:hover {
+  box-shadow: 0 0 40px rgba(100, 200, 255, 0.5), inset 0 0 20px rgba(100, 200, 255, 0.1);
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .neural-content-overlay {
+    padding: 40px 20px;
+  }
+  
+  .neural-node {
+    width: 8px !important;
+    height: 8px !important;
+  }
+}

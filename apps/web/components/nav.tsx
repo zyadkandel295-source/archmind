@@ -16,7 +16,8 @@ const links = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/assistants/new", label: "Builder" },
   { href: "/analytics", label: "Activity" },
-  { href: "/profile", label: "Profile" }
+  { href: "/profile", label: "Profile" },
+  { href: "/credits", label: "Credits" }
 ];
 
 export function Nav() {
