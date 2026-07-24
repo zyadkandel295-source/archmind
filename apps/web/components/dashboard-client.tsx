@@ -75,13 +75,15 @@ export function DashboardClient() {
     ])
       .then(([assistantResponse, analyticsResponse]) => {
         if (!mounted) return;
-        setAssistants(assistantResponse.assistants);
-        setOverview(analyticsResponse.overview);
+        setAssistants(Array.isArray(assistantResponse?.assistants) ? assistantResponse.assistants : []);
+        setOverview(analyticsResponse?.overview || { assistants: 0, messages: 0, sources: 0, tokens: 0 });
         setNotice(undefined);
       })
       .catch((error) => {
         const message = error instanceof Error ? error.message : "Could not load dashboard data.";
         if (mounted) {
+          setAssistants([]);
+          setOverview({ assistants: 0, messages: 0, sources: 0, tokens: 0 });
           const isAuthError =
             message === "UNAUTHENTICATED" ||
             message.includes("Missing bearer token") ||
@@ -245,7 +247,7 @@ export function DashboardClient() {
           <CardContent className="space-y-4">
             {loading ? <AssistantListSkeleton /> : null}
 
-            {!loading && assistants.length === 0 ? (
+            {!loading && (assistants || []).length === 0 ? (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -269,7 +271,7 @@ export function DashboardClient() {
 
             <AnimatePresence initial={false}>
               {!loading &&
-                assistants.map((assistant, index) => (
+                (assistants || []).map((assistant, index) => (
                   <AssistantCard
                     key={assistant.id}
                     assistant={assistant}

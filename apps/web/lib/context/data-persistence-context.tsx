@@ -3,6 +3,13 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { readSessionCredential } from '@/lib/session-keys';
+import { getPlatformBaseUrl } from '@/lib/platform';
+
+const getApiUrl = (path: string) => {
+  const baseUrl = getPlatformBaseUrl();
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return baseUrl ? `${baseUrl}${cleanPath}` : cleanPath;
+};
 
 // ============================================================================
 // TYPES
@@ -210,7 +217,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     setIsLoadingAssistants(true);
     setAssistantError(null);
     try {
-      const response = await axios.get('/api/assistants', { headers: getAuthHeaders() });
+      const response = await axios.get(getApiUrl('/api/assistants'), { headers: getAuthHeaders() });
       if (response.data?.success && Array.isArray(response.data.data)) {
         const fetched: Assistant[] = response.data.data;
         const combined = fetched.length > 0 ? fetched : DEFAULT_ASSISTANTS;
@@ -251,7 +258,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     setSelectedAssistant(newAssistant);
 
     try {
-      const res = await axios.post('/api/assistants', newAssistant, { headers: getAuthHeaders() });
+      const res = await axios.post(getApiUrl('/api/assistants'), newAssistant, { headers: getAuthHeaders() });
       if (res.data?.success && res.data.data) {
         const saved: Assistant = res.data.data;
         setAssistants((prev) => prev.map((a) => (a.id === newAssistant.id ? saved : a)));
@@ -277,7 +284,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     }
 
     try {
-      const res = await axios.put(`/api/assistants/${id}`, data, { headers: getAuthHeaders() });
+      const res = await axios.put(getApiUrl(`/api/assistants/${id}`), data, { headers: getAuthHeaders() });
       if (res.data?.success && res.data.data) {
         return res.data.data;
       }
@@ -294,7 +301,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     }
 
     try {
-      await axios.delete(`/api/assistants/${id}`, { headers: getAuthHeaders() });
+      await axios.delete(getApiUrl(`/api/assistants/${id}`), { headers: getAuthHeaders() });
     } catch (err) {
       console.warn('[DataPersistence] API delete failed, updated locally', err);
     }
@@ -306,7 +313,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
       prev.map((a) => (a.id === id ? { ...a, is_favorite: isFavorite } : a))
     );
     try {
-      await axios.patch(`/api/assistants/${id}/favorite`, { is_favorite: isFavorite }, { headers: getAuthHeaders() });
+      await axios.patch(getApiUrl(`/api/assistants/${id}/favorite`), { is_favorite: isFavorite }, { headers: getAuthHeaders() });
     } catch (err) {
       console.warn('[DataPersistence] Favorite update failed API call', err);
     }
@@ -317,7 +324,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     setIsLoadingChats(true);
     setChatError(null);
     try {
-      const response = await axios.get('/api/chats', { headers: getAuthHeaders() });
+      const response = await axios.get(getApiUrl('/api/chats'), { headers: getAuthHeaders() });
       if (response.data?.success && Array.isArray(response.data.data)) {
         setChats(response.data.data);
         saveToStorage(STORAGE_KEYS.CHATS, response.data.data);
@@ -335,7 +342,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
   // Fetch Chat Messages
   const fetchChatMessages = useCallback(async (chatId: string) => {
     try {
-      const response = await axios.get(`/api/chats/${chatId}/messages`, { headers: getAuthHeaders() });
+      const response = await axios.get(getApiUrl(`/api/chats/${chatId}/messages`), { headers: getAuthHeaders() });
       if (response.data?.success && Array.isArray(response.data.data)) {
         setMessages(response.data.data);
         saveToStorage(`${STORAGE_KEYS.MESSAGES}_${chatId}`, response.data.data);
@@ -362,7 +369,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     setSelectedChat(newChat);
 
     try {
-      const res = await axios.post('/api/chats', { assistant_id: assistantId, title }, { headers: getAuthHeaders() });
+      const res = await axios.post(getApiUrl('/api/chats'), { assistant_id: assistantId, title }, { headers: getAuthHeaders() });
       if (res.data?.success && res.data.data) {
         const saved: Chat = res.data.data;
         setChats((prev) => prev.map((c) => (c.id === newChat.id ? saved : c)));
@@ -397,7 +404,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
 
     try {
       const res = await axios.post(
-        '/api/messages',
+        getApiUrl('/api/messages'),
         { chat_id: chatId, assistant_id: assistantId, content, role },
         { headers: getAuthHeaders() }
       );
@@ -420,7 +427,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
       setSelectedChat(null);
     }
     try {
-      await axios.delete(`/api/chats/${id}`, { headers: getAuthHeaders() });
+      await axios.delete(getApiUrl(`/api/chats/${id}`), { headers: getAuthHeaders() });
     } catch (err) {
       console.warn('[DataPersistence] API chat delete failed', err);
     }

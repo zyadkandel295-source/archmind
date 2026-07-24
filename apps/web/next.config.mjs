@@ -8,6 +8,15 @@ const nextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_PLATFORM_URL: process.env.NEXT_PUBLIC_PLATFORM_URL
   },
+  async rewrites() {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://archmind-api.vercel.app";
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${apiUrl}/api/:path*`
+      }
+    ];
+  },
   async headers() {
     return [
       {
