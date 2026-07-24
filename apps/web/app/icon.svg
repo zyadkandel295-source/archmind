@@ -1,10 +1,38 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M12 52V25.5C12 13.6 21.6 4 33.5 4C45.4 4 55 13.6 55 25.5V28C55 32.2 58.5 35.3 60.5 38.5C62.2 41.3 60.1 45 56.8 45H52V52H43L39 42H27L23 52H12Z" fill="#1237B8"/>
-  <path d="M22 52L33 18L44 52" stroke="#F8FAFC" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M28 38H39" stroke="#F8FAFC" stroke-width="6" stroke-linecap="round"/>
-  <circle cx="33" cy="18" r="4" fill="#06B6D4"/>
-  <circle cx="49" cy="20" r="4" fill="#06B6D4"/>
-  <circle cx="51" cy="35" r="4" fill="#06B6D4"/>
-  <path d="M37 18H45" stroke="#06B6D4" stroke-width="3" stroke-linecap="round"/>
-  <path d="M49 24L51 31" stroke="#06B6D4" stroke-width="3" stroke-linecap="round"/>
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="jellyBellTab" x1="20" y1="20" x2="108" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#C084FC"/>
+    </linearGradient>
+    <linearGradient id="jellyGlowTab" x1="64" y1="10" x2="64" y2="118" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#A855F7" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dark Background Badge -->
+  <rect width="128" height="128" rx="32" fill="#06050F"/>
+
+  <!-- Outer Glow -->
+  <circle cx="64" cy="50" r="42" fill="url(#jellyGlowTab)" opacity="0.4"/>
+
+  <!-- Dome -->
+  <path d="M 28 58 C 28 28, 100 28, 100 58 C 100 66, 88 68, 80 64 C 72 60, 68 66, 64 64 C 60 62, 56 60, 48 64 C 40 68, 28 66, 28 58 Z" 
+        fill="url(#jellyBellTab)" 
+        stroke="#E0F2FE" 
+        stroke-width="2.5"/>
+
+  <!-- Inner Bioluminescent Core -->
+  <ellipse cx="64" cy="46" rx="22" ry="12" fill="#E0F2FE" opacity="0.6"/>
+  <circle cx="52" cy="44" r="3" fill="#FFFFFF"/>
+  <circle cx="64" cy="42" r="4" fill="#FFFFFF"/>
+  <circle cx="76" cy="44" r="3" fill="#FFFFFF"/>
+
+  <!-- Tentacles -->
+  <path d="M 36 65 Q 32 82 38 102 T 34 118" stroke="#38BDF8" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <path d="M 48 66 Q 54 85 46 104 T 52 120" stroke="#818CF8" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M 64 65 Q 60 88 68 106 T 64 122" stroke="#C084FC" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <path d="M 80 66 Q 74 85 82 104 T 76 120" stroke="#818CF8" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M 92 65 Q 96 82 90 102 T 94 118" stroke="#38BDF8" stroke-width="3.5" stroke-linecap="round" fill="none"/>
 </svg>
