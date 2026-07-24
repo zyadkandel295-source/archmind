@@ -74,9 +74,13 @@ export function DashboardClient() {
       requestData<{ overview: Overview }>("/api/analytics/overview")
     ])
       .then(([assistantResponse, analyticsResponse]) => {
-        if (!mounted) return;
-        setAssistants(Array.isArray(assistantResponse?.assistants) ? assistantResponse.assistants : []);
-        setOverview(analyticsResponse?.overview || { assistants: 0, messages: 0, sources: 0, tokens: 0 });
+        const list = Array.isArray(assistantResponse?.assistants)
+          ? assistantResponse.assistants
+          : Array.isArray((assistantResponse as any)?.data)
+          ? (assistantResponse as any).data
+          : [];
+        setAssistants(list);
+        setOverview(analyticsResponse?.overview || { assistants: list.length, messages: 0, sources: 0, tokens: 0 });
         setNotice(undefined);
       })
       .catch((error) => {
@@ -371,8 +375,8 @@ function AssistantCard({
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="text-lg font-black text-white">{assistant.name}</h3>
-              <Badge tone="blue">{engineLabel(assistant.model)}</Badge>
-              <Badge tone="slate">{assistant.tone}</Badge>
+              <Badge tone="blue">{engineLabel(assistant.model || (assistant as any).model_name || "jellyfish-bia-1")}</Badge>
+              {assistant.tone ? <Badge tone="slate">{assistant.tone}</Badge> : null}
               {assistant.isPublic ? <Badge tone="green">Shared</Badge> : <Badge tone="amber">Restricted</Badge>}
             </div>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">{assistant.description || "No description yet."}</p>
