@@ -150,6 +150,7 @@ export function createApp(options: AppOptions = {}) {
   app.use("/api", profileRouter(env, store));
   app.use("/api", billingRouter(env, store));
   app.use("/api/admin", adminRouter(env, store));
+  app.use("/api/platform", platformRouter(env, store, platformStore));
   app.get("*", (_req, res) => {
     res.json({ ok: true, service: "archmind-api", message: "ArchMind API Backend is live", uptime: Math.floor(process.uptime()) });
   });
