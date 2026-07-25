@@ -9,7 +9,7 @@ const nextConfig = {
     NEXT_PUBLIC_PLATFORM_URL: process.env.NEXT_PUBLIC_PLATFORM_URL
   },
   async rewrites() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://archmind-api.vercel.app";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://agentia-api.vercel.app";
     return [
       {
         source: "/api/:path*",
