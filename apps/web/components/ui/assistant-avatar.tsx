@@ -17,7 +17,7 @@ const sizes = {
   lg: "size-[3.25rem] text-lg"
 };
 
-export function AssistantAvatar({ name = "ArchMind", icon, className, size = "md" }: AssistantAvatarProps) {
+export function AssistantAvatar({ name = "Agent", icon, className, size = "md" }: AssistantAvatarProps) {
   const Icon = getAssistantIcon(icon).Icon;
   const initials = name
     .split(/\s+/)

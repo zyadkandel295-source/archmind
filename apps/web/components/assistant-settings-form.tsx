@@ -33,7 +33,7 @@ const fallbackAssistant: Assistant = {
   id: "",
   name: "Assistant",
   description: "",
-  systemPrompt: "You are ArchMind, a professional AI assistant. Follow the user's instructions strictly and answer clearly.",
+  systemPrompt: "You are an intelligent agent powered by PHOENIX 1.0, developed by Zyad Kandel, deployed on AGENTIA. Follow instructions strictly and answer clearly.",
   tone: "professional",
   isPublic: false,
   model: DEFAULT_ENGINE_VALUE,

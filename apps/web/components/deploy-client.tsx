@@ -170,7 +170,7 @@ export function DeployClient({ assistantId }: { assistantId: string }) {
       const url = URL.createObjectURL(file.blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = file.filename ?? `${build.productName.replace(/[^a-z0-9 -]+/gi, "").trim() || "ArchMind Assistant"} Setup.exe`;
+      link.download = file.filename ?? `${build.productName.replace(/[^a-z0-9 -]+/gi, "").trim() || "AGENTIA Agent"} Setup.exe`;
       document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
       toast({ type: "success", title: "Installer downloaded", message: "Open the Windows installer, then keep Launch enabled after setup.", dedupeKey: `installer-download-${build.id}` });
     } catch (error) {

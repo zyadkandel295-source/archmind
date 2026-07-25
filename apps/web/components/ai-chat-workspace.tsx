@@ -896,7 +896,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   }
 
   const hasMessages = activeSession.messages.length > 0;
-  const assistantName = assistantMeta?.name ?? "ArchMind Assistant";
+  const assistantName = assistantMeta?.name ?? "AGENTIA Agent";
   const openingExperience =
     assistantMeta?.openingExperience ??
     generateAssistantOpeningExperience({

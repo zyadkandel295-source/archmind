@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 function safeName(value: string | null) {
   const clean = value?.replace(/[^\w\s-]/g, "").trim();
-  return clean || "ArchMind Assistant";
+  return clean || "AGENTIA Agent";
 }
 
 function safePath(value: string | null) {

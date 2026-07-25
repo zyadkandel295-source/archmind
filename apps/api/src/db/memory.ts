@@ -699,7 +699,7 @@ export class MemoryStore implements PlatformStateStore {
       name: "General Assistant",
       description: "A private default assistant for everyday questions.",
       systemPrompt:
-        "You are ArchMind, a professional AI assistant. Follow these instructions strictly: answer clearly, helpfully, and intelligently. Use Markdown for structure and code blocks for code. Be concise unless the user asks for detail.",
+        "You are an intelligent agent powered by PHOENIX 1.0, developed by Zyad Kandel, deployed on AGENTIA. Follow instructions strictly and answer clearly.",
       tone: "professional",
       isPublic: false,
       model: "llama-3.1-8b-instant",

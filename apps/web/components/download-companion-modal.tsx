@@ -204,7 +204,7 @@ export function DownloadCompanionModal({
       const url = URL.createObjectURL(file.blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = file.filename ?? `Install ${assistantName.replace(/[^a-z0-9 -]+/gi, "").trim() || "ArchMind Assistant"}.exe`;
+      link.download = file.filename ?? `Install ${assistantName.replace(/[^a-z0-9 -]+/gi, "").trim() || "AGENTIA Agent"}.exe`;
       document.body.appendChild(link);
       link.click();
       link.remove();
