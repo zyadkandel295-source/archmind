@@ -19,7 +19,7 @@ export function InstructionsPanel({ assistant }: InstructionsPanelProps) {
       {/* Header */}
       <div className="border-b border-slate-700/30 p-4">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="font-semibold text-white text-sm">System Instructions</h3>
+          <h3 className="font-semibold text-white text-sm">Agent Instructions</h3>
           <div className="flex gap-1">
             <button 
               className="p-1.5 hover:bg-slate-700/50 rounded-lg transition-colors text-slate-400 hover:text-slate-200"
@@ -33,7 +33,7 @@ export function InstructionsPanel({ assistant }: InstructionsPanelProps) {
           </div>
         </div>
         <p className="text-xs text-slate-400">
-          {assistant.name}&apos;s behavior and personality guidelines
+          {assistant.name}&apos;s operational guidelines
         </p>
       </div>
 
@@ -47,7 +47,7 @@ export function InstructionsPanel({ assistant }: InstructionsPanelProps) {
           className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4"
         >
           <h4 className="text-[10px] font-semibold text-blue-300 mb-2 uppercase tracking-wider">
-            Primary Instruction
+            Primary Operation
           </h4>
           <p className="text-xs text-blue-100/90 leading-relaxed">
             {assistant.instructions}
@@ -67,11 +67,7 @@ export function InstructionsPanel({ assistant }: InstructionsPanelProps) {
           <div className="space-y-2 text-xs">
             <div className="flex justify-between">
               <span className="text-slate-400">Model:</span>
-              <span className="text-cyan-300 font-semibold">Jellyfish LLM</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-400">Version:</span>
-              <span className="text-cyan-300 font-semibold">BIA 1</span>
+              <span className="text-cyan-300 font-semibold">PHOENIX 1.0</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400">Developer:</span>
@@ -93,19 +89,19 @@ export function InstructionsPanel({ assistant }: InstructionsPanelProps) {
           <ul className="space-y-2 text-xs text-purple-100/90">
             <li className="flex items-start gap-2">
               <span className="text-purple-400 mt-0.5">✓</span>
-              <span>Advanced reasoning & analysis</span>
+              <span>Advanced system reasoning and automation</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-purple-400 mt-0.5">✓</span>
-              <span>Context awareness across sessions</span>
+              <span>Context awareness across operations</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-purple-400 mt-0.5">✓</span>
-              <span>Knowledge base integration (RAG)</span>
+              <span>System integration and RAG capabilities</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-purple-400 mt-0.5">✓</span>
-              <span>Real-time processing</span>
+              <span>Real-time system operation processing</span>
             </li>
           </ul>
         </motion.div>

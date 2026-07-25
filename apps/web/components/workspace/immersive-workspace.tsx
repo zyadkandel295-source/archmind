@@ -31,8 +31,8 @@ export function ImmersiveWorkspace() {
 
     await createAssistant({
       name: newAssistantName.trim(),
-      description: newAssistantDesc.trim() || 'Custom AI Assistant',
-      instructions: `You are ${newAssistantName.trim()} powered by Jellyfish LLM (BIA 1 Model) developed by Zyad Kandel. Help users with precision.`,
+      description: newAssistantDesc.trim() || 'Custom AI Agent',
+      instructions: `You are ${newAssistantName.trim()}, an intelligent agent deployed on AGENTIA, powered by PHOENIX 1.0, developed by Zyad Kandel. Help users with precision.`,
       icon: '✨',
       color: 'from-cyan-500 to-indigo-500',
     });
@@ -177,9 +177,9 @@ export function ImmersiveWorkspace() {
                 >
                   🤖
                 </motion.div>
-                <h3 className="text-2xl font-bold text-white mb-2">Welcome to Your AI World</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">Welcome to AGENTIA Agent Control</h3>
                 <p className="text-slate-400 text-sm">
-                  Select an assistant from the left panel to get started
+                  Select an agent from the left panel to command
                 </p>
               </div>
             </motion.div>
@@ -195,10 +195,10 @@ export function ImmersiveWorkspace() {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl"
           >
-            <h3 className="text-lg font-bold text-white mb-4">Create New AI Assistant</h3>
+            <h3 className="text-lg font-bold text-white mb-4">Deploy New Agent</h3>
             <form onSubmit={handleCreateAssistant} className="space-y-4">
               <div>
-                <label className="block text-xs text-slate-300 mb-1 font-medium">Assistant Name</label>
+                <label className="block text-xs text-slate-300 mb-1 font-medium">Agent Name</label>
                 <input
                   type="text"
                   required
@@ -209,7 +209,7 @@ export function ImmersiveWorkspace() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-300 mb-1 font-medium">Description</label>
+                <label className="block text-xs text-slate-300 mb-1 font-medium">Description / Agent Purpose</label>
                 <input
                   type="text"
                   value={newAssistantDesc}
@@ -230,7 +230,7 @@ export function ImmersiveWorkspace() {
                   type="submit"
                   className="px-4 py-2 rounded-xl text-sm font-medium bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:shadow-lg transition-all"
                 >
-                  Create Assistant
+                  Deploy Agent
                 </button>
               </div>
             </form>

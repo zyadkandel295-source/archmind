@@ -109,7 +109,7 @@ const DEFAULT_ASSISTANTS: Assistant[] = [
     name: 'Customer Support Assistant',
     icon: '🤖',
     description: 'Ready to assist with questions',
-    instructions: 'You are Customer Support Assistant powered by Jellyfish LLM (BIA 1 Model) developed by Zyad Kandel. Help users with clear, precise steps.',
+    instructions: 'You are Customer Support Agent powered by PHOENIX 1.0, developed by Zyad Kandel, deployed on AGENTIA. Help users with clear, precise steps.',
     color: 'from-blue-500 to-cyan-500',
     status: 'idle',
   },

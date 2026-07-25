@@ -14,18 +14,17 @@ export function HeroSection() {
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 hover:border-blue-500/50 transition-colors">
             <Brain className="w-4 h-4 text-blue-400" />
-            <span className="text-sm text-blue-300">Powered by Jellyfish LLM (BIA 1 Model)</span>
+            <span className="text-sm text-blue-300">Powered by PHOENIX 1.0</span>
           </div>
         </div>
 
         {/* Main Heading */}
         <div className="text-center mb-8">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-300 via-blue-200 to-cyan-300 bg-clip-text text-transparent">
-            Create Intelligent Agents & Assistants
+            Deploy Intelligent Agents That Control Your Computer
           </h1>
           <p className="text-lg md:text-xl text-blue-200/80 max-w-2xl mx-auto leading-relaxed">
-            Build powerful AI-driven agents and assistants without coding. 
-            Leverage the cutting-edge Jellyfish LLM with BIA 1 model.
+            Deploy powerful AI agents to automate and control your computer systems without coding.
           </p>
         </div>
 
@@ -34,15 +33,15 @@ export function HeroSection() {
           <div className="text-center neural-card p-6 rounded-lg">
             <Users className="w-8 h-8 text-blue-400 mx-auto mb-3" />
             <div className="text-3xl font-bold text-white mb-2">2000+</div>
-            <div className="text-blue-300">Users Worldwide</div>
+            <div className="text-blue-300">Agents Deployed Worldwide</div>
             <div className="text-sm text-blue-400 mt-2">Building agents every day</div>
           </div>
 
           <div className="text-center neural-card p-6 rounded-lg">
             <Sparkles className="w-8 h-8 text-blue-400 mx-auto mb-3" />
             <div className="text-3xl font-bold text-white mb-2">AI-Powered</div>
-            <div className="text-blue-300">Jellyfish LLM</div>
-            <div className="text-sm text-blue-400 mt-2">BIA 1 Advanced Model</div>
+            <div className="text-blue-300">PHOENIX 1.0</div>
+            <div className="text-sm text-blue-400 mt-2">Advanced Reasoning Engine</div>
           </div>
 
           <div className="text-center neural-card p-6 rounded-lg">
@@ -57,7 +56,7 @@ export function HeroSection() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
           <Link href="/auth/login">
             <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-8">
-              Join 2000+ Users
+              Join 2000+ Users Building with AGENTIA
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
@@ -77,44 +76,40 @@ export function HeroSection() {
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-white flex items-center gap-3">
               <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-              Create Agents
+              Deploy Agents
             </h3>
             <p className="text-blue-200/70">
-              Build intelligent agents that understand context, learn from interactions, 
-              and adapt to user needs.
+              Deploy intelligent agents that automatically control and command your computer systems.
             </p>
           </div>
 
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-white flex items-center gap-3">
               <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-              Deploy Assistants
+              Command Operations
             </h3>
             <p className="text-blue-200/70">
-              Deploy your creations instantly. No infrastructure, no complexity. 
-              Just pure AI power.
+              Deploy your agents instantly. No setup, no complexity. Just pure automation power.
             </p>
           </div>
 
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-white flex items-center gap-3">
               <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-              Powered by Jellyfish
+              Powered by PHOENIX 1.0
             </h3>
             <p className="text-blue-200/70">
-              Using Jellyfish LLM with BIA 1 Model - developed by Zyad Kandel.
-              State-of-the-art AI capabilities.
+              Leveraging PHOENIX 1.0 for state-of-the-art AI reasoning and system operation.
             </p>
           </div>
 
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-white flex items-center gap-3">
               <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-              Full RAG Support
+              Full System Integration
             </h3>
             <p className="text-blue-200/70">
-              Integrate knowledge sources, documents, and real-time data into your agents
-              with advanced RAG capabilities.
+              Integrate your systems, documents, and data sources into agents with advanced capabilities.
             </p>
           </div>
         </div>
@@ -141,21 +136,21 @@ function CreditsFooter() {
           {/* LLM Credit */}
           <div className="border-t md:border-t-0 md:border-l border-blue-500/20 md:pl-8 pt-6 md:pt-0">
             <p className="text-xs text-blue-400/60 uppercase tracking-widest mb-2">AI Engine</p>
-            <p className="text-white font-semibold">Jellyfish LLM</p>
-            <p className="text-sm text-blue-300/60">Model: BIA 1</p>
+            <p className="text-white font-semibold">PHOENIX 1.0</p>
+            <p className="text-sm text-blue-300/60">Model Developer: Zyad Kandel</p>
           </div>
 
           {/* Model Credit */}
           <div className="border-t md:border-t-0 md:border-l border-blue-500/20 md:pl-8 pt-6 md:pt-0">
             <p className="text-xs text-blue-400/60 uppercase tracking-widest mb-2">Model Developer</p>
             <p className="text-white font-semibold">Zyad Kandel</p>
-            <p className="text-sm text-blue-300/60">BIA 1 Advanced Model</p>
+            <p className="text-sm text-blue-300/60">PHOENIX 1.0 Advanced Model</p>
           </div>
         </div>
 
         <div className="mt-8 pt-6 border-t border-blue-500/20 text-center text-xs text-blue-400/40">
-          <p>© 2024 ArchMind. Built with Jellyfish LLM (BIA 1 Model) by Zyad Kandel.</p>
-          <p className="mt-2">Empowering 2000+ users to create intelligent agents worldwide.</p>
+          <p>© 2024 AGENTIA. Built with PHOENIX 1.0 by Zyad Kandel.</p>
+          <p className="mt-2">Empowering 2000+ users to deploy intelligent agents that control their systems worldwide.</p>
         </div>
       </div>
     </div>

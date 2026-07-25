@@ -6,8 +6,8 @@ import { ActivityTracker } from "@/components/activity-tracker";
 import { DataPersistenceProvider } from "@/lib/context/data-persistence-context";
 
 export const metadata: Metadata = {
-  title: "Cyanea AI",
-  description: "Build, deploy, and manage custom AI assistants with bioluminescent streaming chat and knowledge-backed answers.",
+  title: "AGENTIA - Deploy AI Agents",
+  description: "Deploy intelligent agents powered by PHOENIX 1.0",
   manifest: "/manifest.json",
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }, { url: "/archmind-icon.svg", type: "image/svg+xml" }],

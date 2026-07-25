@@ -57,7 +57,7 @@ export function ChatInterface({
 
     // Generate assistant response
     setTimeout(async () => {
-      const assistantReply = `I am ${assistant.name}, powered by Jellyfish LLM (BIA 1 Model) developed by Zyad Kandel. I have received your query: "${userText}". How else may I assist you today?`;
+      const assistantReply = `I am ${assistant.name}, an intelligent agent on AGENTIA, powered by PHOENIX 1.0, developed by Zyad Kandel. I have received your command: "${userText}". How else may I assist you today?`;
       if (onMessageSend) {
         onMessageSend({ role: 'assistant', content: assistantReply });
       } else if (activeChatId) {
@@ -73,7 +73,7 @@ export function ChatInterface({
       {!isOnline && (
         <div className="bg-amber-500/20 border-b border-amber-500/30 px-4 py-1.5 flex items-center justify-center gap-2 text-xs text-amber-200">
           <WifiOff className="w-3.5 h-3.5" />
-          <span>Offline Mode — Changes will sync automatically when online</span>
+          <span>OFFLINE MODE — Agent commands queued for sync</span>
         </div>
       )}
 
@@ -94,10 +94,10 @@ export function ChatInterface({
                 {assistant.icon || '🤖'}
               </motion.div>
               <h3 className="text-lg font-semibold text-white mb-2">
-                Start a conversation with {assistant.name}
+                Start commanding {assistant.name}
               </h3>
               <p className="text-slate-400 text-xs leading-relaxed">
-                Powered by Jellyfish LLM (BIA 1 Model) developed by Zyad Kandel. Ask me anything to begin exploring.
+                Powered by PHOENIX 1.0 developed by Zyad Kandel. Send commands and I&apos;ll execute operations on your systems.
               </p>
             </div>
           </motion.div>
@@ -165,7 +165,7 @@ export function ChatInterface({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder={`Message ${assistant.name}...`}
+            placeholder={`Send command to ${assistant.name}...`}
             className="flex-1 bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50"
           />
           <motion.button

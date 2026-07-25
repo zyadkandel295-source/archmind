@@ -110,10 +110,10 @@ export function DashboardClient() {
 
   const metrics = useMemo(
     () => [
-      { label: "Assistants", value: overview.assistants, icon: Bot },
-      { label: "Messages", value: overview.messages, icon: MessageSquare },
+      { label: "Agents", value: overview.assistants, icon: Bot },
+      { label: "Commands", value: overview.messages, icon: MessageSquare },
       { label: "Sources", value: overview.sources, icon: Database },
-      { label: "Usage units", value: overview.tokens, icon: Activity }
+      { label: "System Operations", value: overview.tokens, icon: Activity }
     ],
     [overview]
   );
@@ -124,11 +124,11 @@ export function DashboardClient() {
       const response = await requestData<{ assistant: Assistant }>(`/api/assistants/${id}/duplicate`, { method: "POST" });
       setAssistants((current) => [response.assistant, ...current]);
       setOverview((current) => ({ ...current, assistants: current.assistants + 1 }));
-      toast({ type: "success", title: "Assistant duplicated", message: `${response.assistant.name} is ready to edit.` });
+      toast({ type: "success", title: "Agent duplicated", message: `${response.assistant.name} is ready to edit.` });
     } catch (error) {
       toast({
         type: "error",
-        title: "Could not duplicate assistant",
+        title: "Could not duplicate agent",
         message: error instanceof Error ? error.message : "Try again in a moment."
       });
     } finally {
@@ -143,11 +143,11 @@ export function DashboardClient() {
       setAssistants((current) =>
         current.map((assistant) => (assistant.id === id ? { ...assistant, messageCount: 0 } : assistant))
       );
-      toast({ type: "success", title: "Conversations cleared", message: "Only this assistant's chat history was cleared." });
+      toast({ type: "success", title: "Operation history cleared", message: "Only this agent's operation history was cleared." });
     } catch (error) {
       toast({
         type: "error",
-        title: "Could not clear conversations",
+        title: "Could not clear operations",
         message: error instanceof Error ? error.message : "Try again in a moment."
       });
     } finally {
@@ -156,17 +156,17 @@ export function DashboardClient() {
   }
 
   async function deleteAssistant(id: string) {
-    if (!window.confirm("Are you sure you want to delete this assistant?")) return;
+    if (!window.confirm("Are you sure you want to deactivate this agent?")) return;
     setWorking({ id, action: "delete" });
     try {
       await requestData(`/api/assistants/${id}`, { method: "DELETE" });
       setAssistants((current) => current.filter((assistant) => assistant.id !== id));
       setOverview((current) => ({ ...current, assistants: Math.max(0, current.assistants - 1) }));
-      toast({ type: "success", title: "Assistant deleted", message: "The assistant was removed from your workspace." });
+      toast({ type: "success", title: "Agent deactivated", message: "The agent was deactivated from your fleet." });
     } catch (error) {
       toast({
         type: "error",
-        title: "Could not delete assistant",
+        title: "Could not deactivate agent",
         message: error instanceof Error ? error.message : "Try again in a moment."
       });
     } finally {
@@ -187,16 +187,16 @@ export function DashboardClient() {
             <Badge tone="blue">Secured environment</Badge>
             {notice ? <Badge tone="amber">Notice</Badge> : null}
           </div>
-          <h1 className="mt-4 text-3xl font-black md:text-5xl">Dashboard</h1>
+          <h1 className="mt-4 text-3xl font-black md:text-5xl">AGENTIA Command Center</h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-            Manage assistants, launch chats, review usage, and deploy shareable AI experiences from one secure control room.
+            Manage your AI agents, command operations, review system activity, and deploy automation from one central control room.
           </p>
           {notice ? <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-amber-200">{notice}</p> : null}
         </div>
         <Link href="/assistants/new">
           <Button size="lg">
             <Plus className="h-4 w-4" />
-            New assistant
+            Deploy Agent
           </Button>
         </Link>
       </motion.div>
@@ -244,8 +244,8 @@ export function DashboardClient() {
         <Card className="overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between gap-3">
             <div>
-              <h2 className="text-xl font-bold">Assistants</h2>
-              <p className="mt-1 text-sm text-slate-300">Create, tune, deploy, and test each assistant independently.</p>
+              <h2 className="text-xl font-bold">Agent Fleet Overview</h2>
+              <p className="mt-1 text-sm text-slate-300">Deploy, configure, and command each agent independently.</p>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -260,14 +260,14 @@ export function DashboardClient() {
                 <div className="mx-auto grid h-14 w-14 place-items-center rounded-xl border border-[#3A4658] bg-[#1B2330] text-[#F4F7FB]">
                   <Bot className="h-7 w-7" />
                 </div>
-                <h3 className="mt-4 text-lg font-black text-white">No assistants yet</h3>
+                <h3 className="mt-4 text-lg font-black text-white">No agents deployed yet</h3>
                 <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-300">
-                  Build your first assistant with custom instructions, response engines, sources, and share settings.
+                  Deploy your first agent with operational guidelines, automation rules, and system integration.
                 </p>
                 <Link href="/assistants/new" className="mt-5 inline-flex">
                   <Button>
                     <Plus className="h-4 w-4" />
-                    Create assistant
+                    Deploy agent
                   </Button>
                 </Link>
               </motion.div>

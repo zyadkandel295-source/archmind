@@ -40,7 +40,7 @@ export function UserProfile() {
           className="bg-slate-800/50 rounded-lg p-2 cursor-pointer hover:bg-slate-800 border border-slate-700/30"
         >
           <p className="text-lg font-bold text-cyan-400">1</p>
-          <p className="text-[10px] text-slate-400">Assistants</p>
+          <p className="text-[10px] text-slate-400">Agents</p>
         </motion.div>
 
         <motion.div
@@ -48,7 +48,7 @@ export function UserProfile() {
           className="bg-slate-800/50 rounded-lg p-2 cursor-pointer hover:bg-slate-800 border border-slate-700/30"
         >
           <p className="text-lg font-bold text-blue-400">12</p>
-          <p className="text-[10px] text-slate-400">Chats</p>
+          <p className="text-[10px] text-slate-400">Commands</p>
         </motion.div>
 
         <motion.div
@@ -56,7 +56,7 @@ export function UserProfile() {
           className="bg-slate-800/50 rounded-lg p-2 cursor-pointer hover:bg-slate-800 border border-slate-700/30"
         >
           <p className="text-lg font-bold text-purple-400">1.2k</p>
-          <p className="text-[10px] text-slate-400">Tokens</p>
+          <p className="text-[10px] text-slate-400">Operations</p>
         </motion.div>
       </div>
 
@@ -73,7 +73,7 @@ export function UserProfile() {
           className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800/50 hover:text-red-400 transition-colors text-xs font-medium text-left"
         >
           <LogOut className="w-4 h-4 text-slate-400" />
-          Logout
+          Exit AGENTIA
         </button>
       </div>
     </motion.div>

@@ -1,7 +1,7 @@
 {
-  "name": "Cyanea AI",
-  "short_name": "Cyanea AI",
-  "description": "OpenRouter-powered assistant workspace.",
+  "name": "AGENTIA",
+  "short_name": "AGENTIA",
+  "description": "Deploy intelligent agents powered by PHOENIX 1.0.",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",

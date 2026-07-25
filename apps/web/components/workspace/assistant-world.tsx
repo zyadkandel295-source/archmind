@@ -26,7 +26,7 @@ export function AssistantWorld({
     >
       <div className="flex items-center justify-between px-2 mb-3">
         <h3 className="text-[10px] uppercase tracking-widest font-semibold text-slate-400">
-          Your AI World Assistants
+          Your Agents
         </h3>
         {onCreateAssistant && (
           <button

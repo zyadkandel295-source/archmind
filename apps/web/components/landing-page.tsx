@@ -91,10 +91,10 @@ export function LandingPage() {
               <Badge tone="new">Production assistant platform</Badge>
             </motion.div>
             <motion.h1 variants={staggerItem} className="mt-6 text-[clamp(3rem,9vw,4.5rem)] font-black leading-[1.02] tracking-normal text-white">
-              ArchMind
+              AGENTIA
             </motion.h1>
             <motion.p variants={staggerItem} className="mt-5 max-w-xl text-[clamp(1rem,2.2vw,1.25rem)] leading-8 text-slate-300">
-              Build, tune, secure, and deploy custom assistants with streaming chat, secure knowledge bases, analytics, and embeddable experiences.
+              Build, tune, secure, and deploy custom agents with streaming chat, secure knowledge bases, analytics, and embeddable experiences.
             </motion.p>
             <motion.div variants={staggerItem} className="mt-8 flex flex-wrap gap-3">
               <Link href="/dashboard">
@@ -133,12 +133,7 @@ export function LandingPage() {
               <div className="flex items-center justify-between border-b border-[#2A3545] px-5 py-4">
                 <div className="flex items-center gap-2 text-white">
                   <Bot className="h-5 w-5 text-[#93C5FD]" />
-                  <span className="font-black">ArchMind Console</span>
-                </div>
-                <div className="flex gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                  <span className="font-black">AGENTIA Console</span>
                 </div>
               </div>
               <div className="grid min-h-[clamp(24rem,52vw,32.5rem)] grid-cols-1 sm:grid-cols-[minmax(10rem,13rem)_minmax(0,1fr)]">
@@ -224,7 +219,7 @@ export function LandingPage() {
             <Badge tone="new">Knowledge flow</Badge>
             <h2 className="mt-4 text-3xl font-black md:text-5xl">Your knowledge flows into cited answers.</h2>
             <p className="mt-5 text-lg leading-8 text-slate-300">
-              ArchMind prepares secure storage, document processing, integrated intelligence, custom namespaces, and retrieval-backed replies with source metadata.
+              AGENTIA prepares secure storage, document processing, integrated intelligence, custom namespaces, and retrieval-backed replies with source metadata.
             </p>
           </Reveal>
           <Stagger className="grid gap-3 sm:grid-cols-3" stagger={0.05}>
