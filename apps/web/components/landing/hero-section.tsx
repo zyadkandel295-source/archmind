@@ -4,12 +4,20 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Brain, Sparkles, Users } from 'lucide-react';
+import { AgentiaLogo } from '@/components/jellyfish-logo';
 
 export function HeroSection() {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
       {/* Main Content */}
       <div className="neural-content-overlay">
+        {/* Large Brand Logo */}
+        <div className="flex justify-center mb-6">
+          <div className="p-3.5 rounded-2xl bg-slate-950/90 border border-sky-400/60 shadow-2xl shadow-sky-500/40">
+            <AgentiaLogo className="w-20 h-20 drop-shadow-[0_0_18px_rgba(56,189,248,0.9)]" />
+          </div>
+        </div>
+
         {/* Badge */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 hover:border-blue-500/50 transition-colors">

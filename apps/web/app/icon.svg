@@ -1,43 +1,64 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <linearGradient id="agentiaCoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#A855F7" />
+    </linearGradient>
+
+    <linearGradient id="agentiaNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22D3EE" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+
+    <linearGradient id="agentiaLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#818CF8" stop-opacity="0.5" />
+    </linearGradient>
+
+    <linearGradient id="agentiaRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#A855F7" stop-opacity="0.3" />
+    </linearGradient>
+
     <style>
       .agentia-node { animation: pulse 2s ease-in-out infinite; }
       @keyframes pulse {
         0%, 100% { r: 8; opacity: 1; }
-        50% { r: 10; opacity: 0.7; }
+        50% { r: 11; opacity: 0.75; }
       }
     </style>
   </defs>
-  
-  <!-- Central Control Node -->
-  <circle cx="256" cy="256" r="60" fill="white" opacity="1"/>
-  
-  <!-- Inner Circle (Command Center) -->
-  <circle cx="256" cy="256" r="45" fill="none" stroke="white" stroke-width="3"/>
-  
-  <!-- Command Symbol (Arrow/Direction) -->
-  <path d="M 256 220 L 275 245 L 256 265 L 237 245 Z" fill="white" opacity="0.9"/>
-  
+
   <!-- Orbital Ring -->
-  <circle cx="256" cy="256" r="115" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"/>
-  
+  <circle cx="256" cy="256" r="115" fill="none" stroke="url(#agentiaRingGrad)" stroke-width="2.5" opacity="0.7" />
+
+  <!-- Connecting Lines -->
+  <line x1="256" y1="256" x2="256" y2="160" stroke="url(#agentiaLineGrad)" stroke-width="2.5" />
+  <line x1="256" y1="256" x2="320" y2="192" stroke="url(#agentiaLineGrad)" stroke-width="2.5" />
+  <line x1="256" y1="256" x2="340" y2="256" stroke="url(#agentiaLineGrad)" stroke-width="2.5" />
+  <line x1="256" y1="256" x2="320" y2="320" stroke="url(#agentiaLineGrad)" stroke-width="2.5" />
+  <line x1="256" y1="256" x2="256" y2="352" stroke="url(#agentiaLineGrad)" stroke-width="2.5" />
+  <line x1="256" y1="256" x2="192" y2="320" stroke="url(#agentiaLineGrad)" stroke-width="2.5" />
+  <line x1="256" y1="256" x2="172" y2="256" stroke="url(#agentiaLineGrad)" stroke-width="2.5" />
+  <line x1="256" y1="256" x2="192" y2="192" stroke="url(#agentiaLineGrad)" stroke-width="2.5" />
+
+  <!-- Central Control Node -->
+  <circle cx="256" cy="256" r="60" fill="url(#agentiaCoreGrad)" />
+
+  <!-- Inner Ring (Command Center) -->
+  <circle cx="256" cy="256" r="45" fill="none" stroke="#FFFFFF" stroke-width="3" opacity="0.9" />
+
+  <!-- Command Symbol (Arrow) -->
+  <path d="M 256 218 L 277 245 L 256 267 L 235 245 Z" fill="#030712" opacity="0.95" />
+
   <!-- Agent Nodes (8-point configuration) -->
-  <circle class="agentia-node" cx="256" cy="160" r="8" fill="white"/>
-  <circle class="agentia-node" cx="320" cy="192" r="8" fill="white" style="animation-delay: 0.1s"/>
-  <circle class="agentia-node" cx="340" cy="256" r="8" fill="white" style="animation-delay: 0.2s"/>
-  <circle class="agentia-node" cx="320" cy="320" r="8" fill="white" style="animation-delay: 0.3s"/>
-  <circle class="agentia-node" cx="256" cy="352" r="8" fill="white" style="animation-delay: 0.4s"/>
-  <circle class="agentia-node" cx="192" cy="320" r="8" fill="white" style="animation-delay: 0.5s"/>
-  <circle class="agentia-node" cx="172" cy="256" r="8" fill="white" style="animation-delay: 0.6s"/>
-  <circle class="agentia-node" cx="192" cy="192" r="8" fill="white" style="animation-delay: 0.7s"/>
-  
-  <!-- Connecting Lines (System Control) -->
-  <line x1="256" y1="256" x2="256" y2="160" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="256" y1="256" x2="320" y2="192" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="256" y1="256" x2="340" y2="256" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="256" y1="256" x2="320" y2="320" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="256" y1="256" x2="256" y2="352" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="256" y1="256" x2="192" y2="320" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="256" y1="256" x2="172" y2="256" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="256" y1="256" x2="192" y2="192" stroke="white" stroke-width="2" opacity="0.6"/>
+  <circle class="agentia-node" cx="256" cy="160" r="8" fill="url(#agentiaNodeGrad)" />
+  <circle class="agentia-node" cx="320" cy="192" r="8" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.1s" />
+  <circle class="agentia-node" cx="340" cy="256" r="8" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.2s" />
+  <circle class="agentia-node" cx="320" cy="320" r="8" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.3s" />
+  <circle class="agentia-node" cx="256" cy="352" r="8" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.4s" />
+  <circle class="agentia-node" cx="192" cy="320" r="8" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.5s" />
+  <circle class="agentia-node" cx="172" cy="256" r="8" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.6s" />
+  <circle class="agentia-node" cx="192" cy="192" r="8" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.7s" />
 </svg>

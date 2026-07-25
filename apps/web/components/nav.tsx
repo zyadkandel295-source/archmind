@@ -66,7 +66,7 @@ export function Nav() {
           <motion.span
             whileHover={{ rotate: 8, scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 16 }}
-            className="grid size-[clamp(2.25rem,4vw,2.75rem)] shrink-0 place-items-center overflow-hidden rounded-xl border border-sky-400/40 bg-slate-950 p-1 shadow-md shadow-sky-500/20"
+            className="grid size-[clamp(2.75rem,5vw,3.25rem)] shrink-0 place-items-center overflow-hidden rounded-xl border border-sky-400/50 bg-slate-950 p-1 shadow-lg shadow-sky-500/30"
           >
             <JellyfishIcon className="h-full w-full drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
           </motion.span>

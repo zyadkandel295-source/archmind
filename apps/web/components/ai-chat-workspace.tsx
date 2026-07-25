@@ -925,7 +925,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
             >
               <div className="flex items-center justify-between px-2 py-2">
                 <div className="flex min-w-0 items-center gap-2">
-                  <span className="grid size-10 shrink-0 place-items-center overflow-hidden rounded-xl border border-sky-400/40 bg-slate-950 p-1 shadow-md shadow-sky-500/20" aria-hidden="true">
+                  <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-xl border border-sky-400/50 bg-slate-950 p-1 shadow-lg shadow-sky-500/30" aria-hidden="true">
                     <JellyfishIcon className="h-full w-full drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
                   </span>
                   <div>
@@ -1431,7 +1431,7 @@ function WelcomeScreen({
           transition={{ duration: 0.45 }}
           className="mx-auto max-w-[min(100%,48rem)] text-center"
         >
-          <span className="mx-auto grid size-[clamp(3.5rem,9vw,4.75rem)] place-items-center overflow-hidden rounded-2xl border border-sky-400/50 bg-slate-950 p-2 shadow-xl shadow-sky-500/25" aria-hidden="true">
+          <span className="mx-auto grid size-[clamp(4.5rem,11vw,6rem)] place-items-center overflow-hidden rounded-2xl border border-sky-400/50 bg-slate-950 p-2 shadow-2xl shadow-sky-500/35" aria-hidden="true">
             <JellyfishIcon className="h-full w-full drop-shadow-[0_0_12px_rgba(56,189,248,0.8)]" />
           </span>
           <h1 className="mt-6 text-[clamp(2rem,6vw,3.25rem)] font-black leading-tight tracking-normal text-white">How can I help today?</h1>
