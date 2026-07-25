@@ -13,8 +13,8 @@ export function HeroSection() {
       <div className="neural-content-overlay">
         {/* Large Brand Logo */}
         <div className="flex justify-center mb-6">
-          <div className="p-3.5 rounded-2xl bg-slate-950/90 border border-sky-400/60 shadow-2xl shadow-sky-500/40">
-            <AgentiaLogo className="w-20 h-20 drop-shadow-[0_0_18px_rgba(56,189,248,0.9)]" />
+          <div className="p-1.5 rounded-2xl bg-slate-950/90 border border-sky-400/60 shadow-2xl shadow-sky-500/40">
+            <AgentiaLogo className="w-24 h-24 drop-shadow-[0_0_18px_rgba(56,189,248,0.9)]" />
           </div>
         </div>
 

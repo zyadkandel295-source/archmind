@@ -925,7 +925,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
             >
               <div className="flex items-center justify-between px-2 py-2">
                 <div className="flex min-w-0 items-center gap-2">
-                  <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-xl border border-sky-400/50 bg-slate-950 p-1 shadow-lg shadow-sky-500/30" aria-hidden="true">
+                  <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-xl border border-sky-400/50 bg-slate-950 p-0.5 shadow-lg shadow-sky-500/30" aria-hidden="true">
                     <JellyfishIcon className="h-full w-full drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
                   </span>
                   <div>
