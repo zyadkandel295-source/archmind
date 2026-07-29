@@ -62,12 +62,20 @@ export function InstructionsPanel({ assistant }: InstructionsPanelProps) {
           className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-4"
         >
           <h4 className="text-[10px] font-semibold text-cyan-300 mb-3 uppercase tracking-wider">
-            AI Engine
+            AI Engine & Architecture
           </h4>
           <div className="space-y-2 text-xs">
             <div className="flex justify-between">
               <span className="text-slate-400">Model:</span>
               <span className="text-cyan-300 font-semibold">PHOENIX 1.0</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400">Foundation:</span>
+              <span className="text-cyan-300 font-semibold">Qwen Coder (Open Source)</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400">Training:</span>
+              <span className="text-cyan-300 font-semibold">Domain Data & Function Algorithms</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400">Developer:</span>

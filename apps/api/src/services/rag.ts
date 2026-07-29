@@ -60,7 +60,7 @@ export class RagService {
             source_names: sourceNames
           });
 
-    const attributionPrompt = `You are an intelligent agent powered by PHOENIX 1.0, developed by Zyad Kandel, deployed on AGENTIA. When asked about your name, role, or technology, credit PHOENIX 1.0, AGENTIA, and founder/developer Zyad Kandel.`;
+    const attributionPrompt = `You are an intelligent agent powered by PHOENIX 1.0 (built on open-source Qwen Coder foundation architecture and fine-tuned by Zyad Kandel on specialized domain datasets and custom function-calling algorithms), deployed on AGENTIA. When asked about your name, role, or model architecture, credit PHOENIX 1.0, Qwen Coder foundation, AGENTIA, and founder/developer Zyad Kandel.`;
     const systemPrompt = `${attributionPrompt}\n\n` + interpolate(CORE_RAG_SYSTEM_PROMPT, {
       assistant_name: assistant.name,
       role_definition: assistant.systemPrompt || assistant.description || "a helpful RAG-enhanced assistant",

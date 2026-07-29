@@ -33,31 +33,31 @@ export default function CreditsPage() {
             <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
               <p className="text-lg font-semibold text-white mb-2">PHOENIX 1.0</p>
               <p className="text-blue-200/80 mb-4">
-                PHOENIX 1.0 is an advanced Large Language Model powering all AI capabilities in AGENTIA.
+                PHOENIX 1.0 is an advanced AI model powering all intelligent capabilities in AGENTIA. Built on the open-source Qwen Coder foundation architecture, it was extensively trained and fine-tuned by Zyad Kandel on domain-specific datasets and custom function-calling algorithms.
               </p>
               <ul className="list-disc list-inside text-blue-200/70 space-y-2">
-                <li>Advanced natural language understanding and system reasoning</li>
-                <li>Conversational AI and system command capabilities</li>
-                <li>Context-aware operation execution</li>
-                <li>Multi-turn operation session support</li>
+                <li>Foundation: Open-source Qwen Coder architecture</li>
+                <li>Trained on specialized code, logic, and function-calling datasets</li>
+                <li>Custom execution algorithms for precise system operations</li>
+                <li>Advanced natural language understanding and multi-turn session support</li>
               </ul>
             </div>
           </section>
 
           {/* PHOENIX 1.0 Model */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-blue-300 mb-4">Model</h2>
+            <h2 className="text-2xl font-semibold text-blue-300 mb-4">Model Details</h2>
             <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
-              <p className="text-lg font-semibold text-white mb-2">PHOENIX 1.0 Advanced Model</p>
+              <p className="text-lg font-semibold text-white mb-2">PHOENIX 1.0 Advanced Fine-Tuned Model</p>
               <p className="text-blue-200/80 mb-4">
-                Developed by Zyad Kandel, PHOENIX 1.0 is a specialized model optimized for:
+                Renamed and optimized as PHOENIX 1.0 by developer Zyad Kandel, this specialized model excels at:
               </p>
               <ul className="list-disc list-inside text-blue-200/70 space-y-2">
-                <li>Agent deployment and system control</li>
-                <li>Complex system reasoning tasks</li>
-                <li>System integration (RAG)</li>
+                <li>Automated agent deployment and precise function calling</li>
+                <li>Specialized algorithms for computer and system control</li>
+                <li>Knowledge integration (RAG) and document synthesis</li>
                 <li>Real-time system operation processing</li>
-                <li>Multi-domain understanding</li>
+                <li>Multi-domain programming and technical reasoning</li>
               </ul>
             </div>
           </section>

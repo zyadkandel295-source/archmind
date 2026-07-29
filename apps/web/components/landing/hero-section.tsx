@@ -107,7 +107,7 @@ export function HeroSection() {
               Powered by PHOENIX 1.0
             </h3>
             <p className="text-blue-200/70">
-              Leveraging PHOENIX 1.0 for state-of-the-art AI reasoning and system operation.
+              Built on open-source Qwen Coder architecture, fine-tuned by Zyad Kandel on specialized data & function-calling algorithms for state-of-the-art AI reasoning.
             </p>
           </div>
 
