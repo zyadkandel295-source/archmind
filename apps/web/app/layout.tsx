@@ -6,8 +6,8 @@ import { ActivityTracker } from "@/components/activity-tracker";
 import { DataPersistenceProvider } from "@/lib/context/data-persistence-context";
 
 export const metadata: Metadata = {
-  title: "AGENTIA | AI Agent Workspace & Automation Platform",
-  description: "AGENTIA is an artificial intelligence agent workspace platform for deploying custom AI assistants and automating system operations.",
+  title: "AGENTIA - AI Agent Workspace & System Automation Platform",
+  description: "AGENTIA is an AI agent workspace platform where users sign in with Google to create, customize, and deploy AI assistants that execute automated workflows securely.",
   manifest: "/manifest.json",
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }, { url: "/archmind-icon.svg", type: "image/svg+xml" }],
