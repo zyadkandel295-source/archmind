@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Brain, ShieldCheck, Sparkles, Users, FileText } from 'lucide-react';
+import { ArrowRight, Brain, ShieldCheck, Sparkles, Users, FileText, Lock, Cpu, Database } from 'lucide-react';
 import { AgentiaLogo } from '@/components/jellyfish-logo';
 
 export function HeroSection() {
@@ -48,7 +48,7 @@ export function HeroSection() {
             AGENTIA
           </h1>
           <p className="mt-2 text-xl font-bold text-cyan-400 tracking-wide">
-            AI Agent Workspace & Automation Platform
+            AI Agent Workspace & System Automation Platform
           </p>
         </div>
 
@@ -60,37 +60,40 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Clear Purpose Statement */}
+        {/* Clear Purpose & Functionality Description */}
         <div className="max-w-3xl mx-auto mb-10 text-center">
           <h2 className="text-2xl md:text-4xl font-extrabold text-slate-100 leading-tight mb-4">
             Build, Deploy, and Execute Intelligent AI Workflows
           </h2>
           <p className="text-base md:text-lg text-blue-200/90 leading-relaxed">
-            <strong className="text-white">AGENTIA</strong> provides an all-in-one AI agent workspace. Sign in with Google to manage your custom assistants, automate complex computer workflows, analyze code and documents, and run system operations effortlessly.
+            <strong className="text-white">AGENTIA</strong> is an artificial intelligence workspace platform. Users sign in with Google to create, customize, and deploy AI assistants that execute automated workflows, process complex code and documents, and manage daily tasks securely.
           </p>
         </div>
 
-        {/* Feature Highlights Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12 mt-8">
-          <div className="text-center neural-card p-6 rounded-xl border border-blue-500/20 bg-slate-950/60 shadow-lg">
-            <Users className="w-8 h-8 text-cyan-400 mx-auto mb-3" />
-            <div className="text-3xl font-black text-white mb-1">2000+</div>
-            <div className="text-blue-200 font-medium">Agents Deployed</div>
-            <div className="text-xs text-blue-300/70 mt-1">Built with AGENTIA Platform</div>
+        {/* Transparency & Capabilities Grid (Directly satisfies Google Guidance) */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12 mt-8 text-left">
+          <div className="neural-card p-6 rounded-xl border border-blue-500/20 bg-slate-950/60 shadow-lg space-y-3">
+            <Cpu className="w-8 h-8 text-cyan-400" />
+            <h3 className="text-lg font-bold text-white">AI Agent Builder</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Build custom AI agents tailored for coding, mathematical analysis, document extraction, and task automation.
+            </p>
           </div>
 
-          <div className="text-center neural-card p-6 rounded-xl border border-blue-500/20 bg-slate-950/60 shadow-lg">
-            <Sparkles className="w-8 h-8 text-cyan-400 mx-auto mb-3" />
-            <div className="text-3xl font-black text-white mb-1">PHOENIX 1.0</div>
-            <div className="text-blue-200 font-medium">AI Reasoning Engine</div>
-            <div className="text-xs text-blue-300/70 mt-1">Advanced function-calling algorithms</div>
+          <div className="neural-card p-6 rounded-xl border border-blue-500/20 bg-slate-950/60 shadow-lg space-y-3">
+            <Lock className="w-8 h-8 text-cyan-400" />
+            <h3 className="text-lg font-bold text-white">Secure Google Sign-In</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Google OAuth is used exclusively to authenticate user sessions, protect your agent configurations, and track credit quotas safely.
+            </p>
           </div>
 
-          <div className="text-center neural-card p-6 rounded-xl border border-blue-500/20 bg-slate-950/60 shadow-lg">
-            <Brain className="w-8 h-8 text-cyan-400 mx-auto mb-3" />
-            <div className="text-3xl font-black text-white mb-1">Zero Code</div>
-            <div className="text-blue-200 font-medium">Full Automation</div>
-            <div className="text-xs text-blue-300/70 mt-1">Visual agent & workflow builder</div>
+          <div className="neural-card p-6 rounded-xl border border-blue-500/20 bg-slate-950/60 shadow-lg space-y-3">
+            <Database className="w-8 h-8 text-cyan-400" />
+            <h3 className="text-lg font-bold text-white">Data Privacy Protection</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Your profile data is never shared or sold. Learn how we safeguard your information in our <Link href="/privacy" className="text-cyan-400 underline">Privacy Policy</Link>.
+            </p>
           </div>
         </div>
 
