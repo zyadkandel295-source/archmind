@@ -113,7 +113,7 @@ export function createApp(options: AppOptions = {}) {
   });
 
   app.get("/api/health", (_req, res) => {
-    const base = { ok: true, service: "archmind-api", uptime: Math.floor(process.uptime()) };
+    const base = { ok: true, service: "agentia-api", uptime: Math.floor(process.uptime()) };
 
     // Only expose dependency status in non-production environments
     if (env.nodeEnv !== "production") {

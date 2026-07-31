@@ -7,7 +7,7 @@ import { useSessionStore } from '@/lib/session-store';
 import Link from 'next/link';
 
 export function UserProfile() {
-  const email = useSessionStore((state) => state.email) || 'user@archmind.dev';
+  const email = useSessionStore((state) => state.email) || 'user@agentia.dev';
   const displayName = useSessionStore((state) => state.displayName) || 'Architect';
   const clearSession = useSessionStore((state) => state.clearSession);
 

@@ -96,11 +96,11 @@ interface DataPersistenceContextType {
 const DataPersistenceContext = createContext<DataPersistenceContextType | undefined>(undefined);
 
 const STORAGE_KEYS = {
-  ASSISTANTS: 'archmind_assistants',
-  CHATS: 'archmind_chats',
-  MESSAGES: 'archmind_messages',
-  SELECTED_ASSISTANT: 'archmind_selected_assistant',
-  SELECTED_CHAT: 'archmind_selected_chat',
+  ASSISTANTS: 'agentia_assistants',
+  CHATS: 'agentia_chats',
+  MESSAGES: 'agentia_messages',
+  SELECTED_ASSISTANT: 'agentia_selected_assistant',
+  SELECTED_CHAT: 'agentia_selected_chat',
 };
 
 const DEFAULT_ASSISTANTS: Assistant[] = [
