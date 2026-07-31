@@ -95,7 +95,7 @@ function tokenResponse(env: Env, user: AuthUser) {
 async function exchangeGoogleCode(env: Env, code: string) {
   const clientId = env.googleClientId?.trim();
   const clientSecret = env.googleClientSecret?.trim();
-  const redirectUri = (env.googleCallbackUrl || "https://agentia-z.vercel.app/api/auth/google/callback").trim();
+  const redirectUri = (env.googleCallbackUrl || `${env.appUrl}/api/auth/google/callback`).trim();
 
   if (!clientId || !clientSecret) {
     throw new HttpError(501, "Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to enable Google sign-in.", "GOOGLE_OAUTH_NOT_CONFIGURED");
@@ -235,7 +235,7 @@ export function authRouter(env: Env, store: MemoryStore) {
     ];
     
     const clientId = env.googleClientId.trim();
-    const redirectUri = (env.googleCallbackUrl || "https://agentia-z.vercel.app/api/auth/google/callback").trim();
+    const redirectUri = (env.googleCallbackUrl || `${env.appUrl}/api/auth/google/callback`).trim();
 
     const params = new URLSearchParams({
       client_id: clientId,
