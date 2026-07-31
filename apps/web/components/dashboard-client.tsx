@@ -79,15 +79,58 @@ export function DashboardClient() {
           : Array.isArray((assistantResponse as any)?.data)
           ? (assistantResponse as any).data
           : [];
-        setAssistants(list);
-        setOverview(analyticsResponse?.overview || { assistants: list.length, messages: 0, sources: 0, tokens: 0 });
+
+        let localFallback: Assistant[] = [];
+        try {
+          const raw = window.localStorage.getItem("agentia_assistants") || window.localStorage.getItem("archmind_assistants");
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+              localFallback = parsed.map((a: any) => ({
+                id: a.id,
+                name: a.name || "Assistant",
+                description: a.description || "",
+                model: a.model_name || a.model || "llama-3.1-8b-instant",
+                tone: a.tone || "professional",
+                isPublic: Boolean(a.is_public || a.isPublic),
+                color: a.color || "indigo",
+                icon: a.icon || "bot"
+              }));
+            }
+          }
+        } catch {
+          // ignore
+        }
+
+        const finalAssistants = list.length > 0 ? list : localFallback;
+        setAssistants(finalAssistants);
+        setOverview(analyticsResponse?.overview || { assistants: finalAssistants.length, messages: 0, sources: 0, tokens: 0 });
         setNotice(undefined);
       })
       .catch((error) => {
         const message = error instanceof Error ? error.message : "Could not load dashboard data.";
         if (mounted) {
-          setAssistants([]);
-          setOverview({ assistants: 0, messages: 0, sources: 0, tokens: 0 });
+          let localFallback: Assistant[] = [];
+          try {
+            const raw = window.localStorage.getItem("agentia_assistants") || window.localStorage.getItem("archmind_assistants");
+            if (raw) {
+              const parsed = JSON.parse(raw);
+              if (Array.isArray(parsed)) {
+                localFallback = parsed.map((a: any) => ({
+                  id: a.id,
+                  name: a.name || "Assistant",
+                  description: a.description || "",
+                  model: a.model_name || a.model || "llama-3.1-8b-instant",
+                  tone: a.tone || "professional",
+                  isPublic: Boolean(a.is_public || a.isPublic),
+                  color: a.color || "indigo",
+                  icon: a.icon || "bot"
+                }));
+              }
+            }
+          } catch {}
+          setAssistants(localFallback);
+          setOverview({ assistants: localFallback.length, messages: 0, sources: 0, tokens: 0 });
           const isAuthError =
             message === "UNAUTHENTICATED" ||
             message.includes("Missing bearer token") ||
