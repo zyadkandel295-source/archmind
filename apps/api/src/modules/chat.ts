@@ -16,7 +16,7 @@ function estimateTokens(text: string) {
 }
 
 function activeModelLabel(env: Env, requestedModel?: string) {
-  return requestedModel ?? env.openRouterDefaultModel;
+  return requestedModel ?? env.groqDefaultModel;
 }
 
 function writeSseResponse(
