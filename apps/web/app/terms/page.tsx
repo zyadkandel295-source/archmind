@@ -90,7 +90,7 @@ export default function TermsOfServicePage() {
             </p>
             <div className="rounded-xl border border-[#3A4658]/50 bg-[#0F141C] p-4 text-sm text-slate-300">
               <p><strong className="text-white">AGENTIA Legal & Operations</strong></p>
-              <p>Email: zyadkandel295@gmail.com</p>
+              <p>Email: Zyad.2524033@stemelsadat.moe.edu.eg</p>
               <p>Website: https://www.agentia-ai.cloud</p>
             </div>
           </section>

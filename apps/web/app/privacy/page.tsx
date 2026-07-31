@@ -80,7 +80,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-white">5. Your Rights & Data Deletion</h2>
             <p className="text-slate-300 text-sm leading-relaxed">
-              You have the right to access, update, or request the deletion of your account data and chat history at any time. To request account deletion or data removal, please contact our support team at <span className="text-cyan-400">zyadkandel295@gmail.com</span>.
+              You have the right to access, update, or request the deletion of your account data and chat history at any time. To request account deletion or data removal, please contact our support team at <span className="text-cyan-400">Zyad.2524033@stemelsadat.moe.edu.eg</span>.
             </p>
           </section>
 
@@ -91,7 +91,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="rounded-xl border border-[#3A4658]/50 bg-[#0F141C] p-4 text-sm text-slate-300">
               <p><strong className="text-white">AGENTIA AI Support</strong></p>
-              <p>Email: zyadkandel295@gmail.com</p>
+              <p>Email: Zyad.2524033@stemelsadat.moe.edu.eg</p>
               <p>Website: https://www.agentia-ai.cloud</p>
             </div>
           </section>
