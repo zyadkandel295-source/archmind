@@ -14,9 +14,7 @@ import { proposeWorkflow, validateWorkflow } from "../src/services/workflow-prop
 const env: Env = {
   nodeEnv: "test", appUrl: "http://localhost:3000", port: 4000, corsOrigin: "http://localhost:3000",
   jwtAccessSecret: "test-access", jwtRefreshSecret: "test-refresh", jwtAccessTtl: "15m", jwtRefreshTtl: "7d",
-  demoAuth: false, googleCallbackUrl: "http://localhost:4000/api/auth/google/callback", llmProvider: "openrouter",
-  openRouterDefaultModel: "openrouter/auto", openRouterReasoningModel: "reasoning", openRouterCodingModel: "coding",
-  openRouterVerifierModel: "verify", enableAnswerVerification: false, verifyMath: false, verifyCode: false, verifyResearch: false,
+  demoAuth: false, googleCallbackUrl: "http://localhost:4000/api/auth/google/callback",  llmProvider: "groq", groqApiKey: "gsk_test123", groqApiKeys: ["gsk_test123"], groqDefaultModel: "llama-3.1-8b-instant", groqCodingModel: "qwen/qwen3-32b", groqMathModel: "openai/gpt-oss-120b", groqVisionModel: "meta-llama/llama-4-scout-17b-16e-instruct", groqFallbackModel: "llama-3.3-70b-versatile", enableAnswerVerification: false, verifyMath: false, verifyCode: false, verifyResearch: false,
   notionRedirectUri: "http://localhost:4000/api/auth/notion/callback"
 };
 
@@ -26,7 +24,7 @@ afterEach(async () => { await Promise.all(temporary.splice(0).map((item) => fs.r
 async function account(app: ReturnType<typeof createApp>["app"], suffix: string) {
   const auth = await request(app).post("/api/auth/register").send({ email: `${suffix}@example.com`, password: "password123", confirmPassword: "password123" }).expect(201);
   const token = auth.body.accessToken as string;
-  const response = await request(app).post("/api/assistants").set("Authorization", `Bearer ${token}`).send({ name: `${suffix} helper`, systemPrompt: "Help safely.", tone: "professional", isPublic: false, model: "openrouter/auto", temperature: 0.2 }).expect(201);
+  const response = await request(app).post("/api/assistants").set("Authorization", `Bearer ${token}`).send({ name: `${suffix} helper`, systemPrompt: "Help safely.", tone: "professional", isPublic: false, model: "llama-3.1-8b-instant", temperature: 0.2 }).expect(201);
   return { token, assistantId: response.body.assistant.id as string };
 }
 
@@ -253,7 +251,7 @@ describe("six-feature platform foundation", () => {
     const secondAssistant = await request(app)
       .post("/api/assistants")
       .set("Authorization", `Bearer ${user.token}`)
-      .send({ name: "Study Coach Test", systemPrompt: "Coach study habits.", tone: "professional", isPublic: false, model: "openrouter/auto", temperature: 0.2, icon: "BookOpen", color: "#16A34A" })
+      .send({ name: "Study Coach Test", systemPrompt: "Coach study habits.", tone: "professional", isPublic: false, model: "llama-3.1-8b-instant", temperature: 0.2, icon: "BookOpen", color: "#16A34A" })
       .expect(201);
     const secondBuild = await request(app)
       .post("/api/platform/desktop/builds")

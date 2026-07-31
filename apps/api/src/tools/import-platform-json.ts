@@ -32,7 +32,7 @@ async function upsertCoreRows(databaseUrl: string, data: PersistedMemory) {
         `insert into assistants(id, user_id, name, description, system_prompt, tone, is_public, public_slug, model, temperature, version, created_at)
          values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
          on conflict(id) do update set name=excluded.name, description=excluded.description, system_prompt=excluded.system_prompt, tone=excluded.tone, is_public=excluded.is_public, public_slug=excluded.public_slug, model=excluded.model, temperature=excluded.temperature, version=excluded.version`,
-        [assistant.id, assistant.userId, assistant.name, assistant.description, assistant.systemPrompt, assistant.tone ?? "professional", assistant.isPublic ?? false, assistant.publicSlug, assistant.model ?? "openrouter/auto", assistant.temperature ?? 0.7, assistant.version ?? 1, assistant.createdAt]
+        [assistant.id, assistant.userId, assistant.name, assistant.description, assistant.systemPrompt, assistant.tone ?? "professional", assistant.isPublic ?? false, assistant.publicSlug, assistant.model ?? "llama-3.1-8b-instant", assistant.temperature ?? 0.7, assistant.version ?? 1, assistant.createdAt]
       );
     }
     await client.query("commit");

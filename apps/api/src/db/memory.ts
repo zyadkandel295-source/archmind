@@ -204,7 +204,7 @@ export class MemoryStore implements PlatformStateStore {
             visibility: (row.visibility ?? (row.is_public ? "public" : "private")) as AssistantRecord["visibility"],
             icon: String(row.icon ?? "bot"),
             color: String(row.color ?? "indigo"),
-            model: String(row.model ?? "openrouter/auto"),
+            model: String(row.model ?? "llama-3.1-8b-instant"),
             temperature: Number(row.temperature ?? 0.7),
             version: Number(row.version ?? 1),
             starterPrompts: typeof row.starter_prompts === "string" ? JSON.parse(row.starter_prompts) : (Array.isArray(row.starter_prompts) ? row.starter_prompts : []),
@@ -292,7 +292,7 @@ export class MemoryStore implements PlatformStateStore {
                updated_at = excluded.updated_at`,
             [
               a.id, a.userId, a.name, a.description ?? "", a.systemPrompt ?? "", a.tone ?? "professional",
-              a.isPublic ?? false, mirroredPublicSlug, a.model ?? "openrouter/auto", a.temperature ?? 0.7, a.version ?? 1,
+              a.isPublic ?? false, mirroredPublicSlug, a.model ?? "llama-3.1-8b-instant", a.temperature ?? 0.7, a.version ?? 1,
               a.createdAt, mirroredSlug, a.visibility ?? "private", a.icon ?? "bot", a.color ?? "indigo",
               JSON.stringify(a.starterPrompts ?? []), JSON.stringify(a.enabledTools ?? []), a.updatedAt ?? a.createdAt
             ]

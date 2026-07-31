@@ -659,6 +659,17 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         let friendlyMessage = rawMessage;
         const lower = rawMessage.toLowerCase();
         if (
+          lower.includes("rate_limited") ||
+          lower.includes("rate limit") ||
+          lower.includes("429")
+        ) {
+          friendlyMessage = "Groq AI service is currently rate limited. Please wait a moment and try again.";
+        } else if (
+          lower.includes("no_credits") ||
+          lower.includes("insufficient credits")
+        ) {
+          friendlyMessage = "You have used up your daily credits for this request type. Please try again tomorrow.";
+        } else if (
           lower.includes("token") ||
           lower.includes("auth") ||
           lower.includes("unauthenticated")

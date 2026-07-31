@@ -28,7 +28,7 @@ async function seedCoreRows(ownerId: string, assistantId: string) {
     );
     await pool.query(
       `insert into assistants(id, user_id, name, system_prompt, tone, is_public, model, temperature, version, created_at)
-       values($1,$2,$3,'Help safely.','professional',false,'openrouter/auto',0.2,1,now()) on conflict(id) do nothing`,
+       values($1,$2,$3,'Help safely.','professional',false,'llama-3.1-8b-instant',0.2,1,now()) on conflict(id) do nothing`,
       [assistantId, ownerId, `Assistant ${assistantId.slice(0, 8)}`]
     );
   } finally {
@@ -55,7 +55,7 @@ function assistant(ownerId: string, overrides: Partial<AssistantRecord> = {}): A
     isPublic: true,
     visibility: "public",
     publicSlug: "customer-support-assistant-3",
-    model: "openrouter/auto",
+    model: "llama-3.1-8b-instant",
     temperature: 0.2,
     starterPrompts: [],
     enabledTools: [],

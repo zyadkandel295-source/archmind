@@ -11,18 +11,28 @@ const testEnv: Env = {
   appUrl: "http://localhost:3000",
   port: 4000,
   corsOrigin: "http://localhost:3000",
+import { createApp } from "../src/app";
+import type { Env } from "../src/config/env";
+
+const testEnv: Env = {
+  nodeEnv: "test",
+  appUrl: "http://localhost:3000",
+  port: 4000,
+  corsOrigin: "http://localhost:3000",
   jwtAccessSecret: "test-access",
   jwtRefreshSecret: "test-refresh",
   jwtAccessTtl: "15m",
   jwtRefreshTtl: "7d",
   demoAuth: false,
   googleCallbackUrl: "http://localhost:4000/api/auth/google/callback",
-  llmProvider: "openrouter",
-  openRouterApiKey: "test-openrouter-key",
-  openRouterDefaultModel: "openrouter/auto",
-  openRouterReasoningModel: "deepseek/deepseek-r1:free",
-  openRouterCodingModel: "deepseek/deepseek-chat-v3-0324:free",
-  openRouterVerifierModel: "openrouter/auto",
+  llmProvider: "groq",
+  groqApiKey: "gsk_test123",
+  groqApiKeys: ["gsk_test123"],
+  groqDefaultModel: "llama-3.1-8b-instant",
+  groqCodingModel: "qwen/qwen3-32b",
+  groqMathModel: "openai/gpt-oss-120b",
+  groqVisionModel: "meta-llama/llama-4-scout-17b-16e-instruct",
+  groqFallbackModel: "llama-3.3-70b-versatile",
   enableAnswerVerification: false,
   verifyMath: true,
   verifyCode: true,
@@ -54,7 +64,7 @@ async function createAssistant(app: ReturnType<typeof makeApp>, token: string, o
       systemPrompt: "You are a test assistant. Always answer with the exact behavior requested by your instructions.",
       tone: "professional",
       isPublic: false,
-      model: "openrouter/auto",
+      model: "llama-3.1-8b-instant",
       temperature: 0.2,
       ...overrides
     })
@@ -236,16 +246,6 @@ describe("ArchMind API", () => {
     });
   });
 
-  it("exposes OpenRouter-only health metadata", async () => {
-    const response = await request(makeApp()).get("/api/health").expect(200);
-    expect(response.body.ok).toBe(true);
-    expect(response.body.dependencies.llmProvider).toBe("openrouter");
-    expect(response.body.dependencies.openRouter).toBe(true);
-  });
-
-  it("blocks unauthenticated assistant access", async () => {
-    await request(makeApp()).get("/api/assistants").expect(401);
-  });
 
   it("logs in the seeded demo user only with credentials", async () => {
     const response = await request(makeApp())

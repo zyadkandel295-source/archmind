@@ -2,9 +2,9 @@
 export type EngineTier = "standard" | "reasoning" | "specialist";
 
 const ENGINE_MAP: Record<EngineTier, { label: string; value: string }> = {
-  standard: { label: "Standard Engine", value: "openrouter/auto" },
-  reasoning: { label: "Advanced Reasoning Engine", value: "deepseek/deepseek-r1:free" },
-  specialist: { label: "Creative Specialist Engine", value: "deepseek/deepseek-chat-v3-0324:free" }
+  standard: { label: "Standard Groq Engine", value: "llama-3.1-8b-instant" },
+  reasoning: { label: "Advanced Reasoning Engine", value: "openai/gpt-oss-120b" },
+  specialist: { label: "Qwen Coding Specialist Engine", value: "qwen/qwen3-32b" }
 };
 
 export const ENGINE_OPTIONS = (Object.keys(ENGINE_MAP) as EngineTier[]).map((tier) => ({
@@ -16,8 +16,8 @@ export const ENGINE_OPTIONS = (Object.keys(ENGINE_MAP) as EngineTier[]).map((tie
 export const DEFAULT_ENGINE_VALUE = ENGINE_MAP.standard.value;
 
 export function engineTierFromValue(value: string): EngineTier {
-  if (value.includes("r1")) return "reasoning";
-  if (value.includes("chat") || value.includes("v3")) return "specialist";
+  if (value.includes("oss") || value.includes("gpt")) return "reasoning";
+  if (value.includes("qwen") || value.includes("code")) return "specialist";
   return "standard";
 }
 
