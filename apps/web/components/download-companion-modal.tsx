@@ -171,7 +171,7 @@ export function DownloadCompanionModal({
       toast({
         type: "info",
         title: response.reused ? "Installer Ready" : "Packaging Started",
-        message: response.reused ? "Reused verified assistant installer build." : "ArchMind is packaging your 30-second Windows installer.",
+        message: response.reused ? "Reused verified assistant installer build." : "AGENTIA is packaging your 30-second Windows installer.",
         dedupeKey: `build-toast-${response.build.id}`
       });
 

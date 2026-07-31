@@ -697,7 +697,7 @@ function renderChat() {
       const dot = document.querySelector('.status-dot');
       function describe(state){
         if(state.revoked) { dot.style.background='#ef4444'; return { session: 'Session revoked — re-authorize from website', folder: '' }; }
-        if(state.offline) { dot.style.background='#f59e0b'; return { session: 'Offline — waiting for ArchMind service', folder: '' }; }
+        if(state.offline) { dot.style.background='#f59e0b'; return { session: 'Offline — waiting for AGENTIA service', folder: '' }; }
         if(!state.connected) { dot.style.background='#f59e0b'; return { session: 'Waiting for web connection', folder: 'Open from the Install Assistant page' }; }
         dot.style.background='#22c55e';
         const folders = state.folders || [];
@@ -734,7 +734,7 @@ function renderChat() {
           const msg = error && error.message ? error.message : '';
           if (msg.includes('Offline') || msg.includes('could not reach')) {
             if (!offlineBannerShown) {
-              pending.textContent = 'Offline — waiting for ArchMind service.';
+              pending.textContent = 'Offline — waiting for AGENTIA service.';
               offlineBannerShown = true;
             } else {
               pending.remove();
@@ -926,7 +926,7 @@ function configureIdentity() {
   pendingInstallIntent = extractInstallIntent(process.argv);
   app.setName(manifest.productName);
   app.setAppUserModelId(manifest.appId);
-  app.setPath("userData", path.join(app.getPath("appData"), "ArchMind", manifest.userDataDirectoryName));
+  app.setPath("userData", path.join(app.getPath("appData"), "AGENTIA", manifest.userDataDirectoryName));
   currentMode = "bubble";
 }
 

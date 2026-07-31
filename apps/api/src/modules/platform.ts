@@ -25,7 +25,7 @@ const idempotency = (req: AuthedRequest) => {
   return key;
 };
 const workspaceRoot = path.resolve(__dirname, "..", "..", "..", "..");
-const localRuntimeArtifact = path.join(workspaceRoot, "apps", "desktop", "out", "Install ArchMind Assistant.exe");
+const localRuntimeArtifact = path.join(workspaceRoot, "apps", "desktop", "out", "Install AGENTIA Agent.exe");
 const localRuntimeManifest = path.join(workspaceRoot, ".archmind-data", "desktop-runtime", "current.json");
 
 /** Ensure the resolved file path is within an allowed base directory to prevent path traversal. */
@@ -123,14 +123,14 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
     const artifact = current?.artifact ?? await validateLocalRuntimeArtifact(localRuntimeArtifact);
     if (!artifact) return;
     const runtimeVersion = current?.manifest.version ?? "33.2.0-archmind-universal-dev.1";
-    const filename = current?.manifest.installerName ?? "Install ArchMind Assistant.exe";
+    const filename = current?.manifest.installerName ?? "Install AGENTIA Agent.exe";
     await service.registerDesktopRuntimeRelease({
       version: runtimeVersion,
       platform: "windows",
       architecture: "x64",
       channel: "development",
       status: "ready",
-      artifactKey: current ? `local-dev/desktop-runtime/${runtimeVersion}/${filename}` : "local-dev/apps/desktop/out/Install ArchMind Assistant.exe",
+      artifactKey: current ? `local-dev/desktop-runtime/${runtimeVersion}/${filename}` : "local-dev/apps/desktop/out/Install AGENTIA Agent.exe",
       artifactPath,
       filename,
       mimeType: "application/vnd.microsoft.portable-executable",
@@ -238,14 +238,14 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
     const { intent, runtime } = await service.verifyRuntimeDownload(req.user!.id, req.params.intentId!, token);
     const snapshot = (await platformStore.getPlatformState()).assistantSnapshots.find((item) => item.id === intent.snapshotId && item.ownerId === req.user!.id);
     const assistantName = snapshot?.displayName ?? "Assistant";
-    const safeName = `Install ${assistantName.replace(/[^a-z0-9 ._-]+/gi, "").trim().slice(0, 80) || "ArchMind Assistant"}.exe`;
+    const safeName = `Install ${assistantName.replace(/[^a-z0-9 ._-]+/gi, "").trim().slice(0, 80) || "AGENTIA Agent"}.exe`;
     res.setHeader("Content-Type", runtime.mimeType);
     res.setHeader("Content-Length", String(runtime.byteSize));
     res.setHeader("Content-Disposition", `attachment; filename="${safeName.replace(/"/g, "")}"`);
     res.setHeader("ETag", `"sha256-${runtime.sha256}"`);
-    res.setHeader("X-ArchMind-Runtime-Version", runtime.version);
-    res.setHeader("X-ArchMind-Runtime-Sha256", runtime.sha256);
-    res.setHeader("X-ArchMind-Install-Intent-Id", intent.id);
+    res.setHeader("X-Agentia-Runtime-Version", runtime.version);
+    res.setHeader("X-Agentia-Runtime-Sha256", runtime.sha256);
+    res.setHeader("X-Agentia-Install-Intent-Id", intent.id);
     res.sendFile(assertSafeArtifactPath(runtime.artifactPath!));
   }));
   router.post("/desktop/install-intents/claim", asyncHandler(async (req, res) => {
@@ -376,11 +376,11 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
     const token = z.string().min(32).parse(req.query.token);
     const build = await service.verifyDesktopDownload(req.user!.id, req.params.buildId!, token);
     if (!["ready", "downloading"].includes(build.status) || !build.artifactPath || !build.artifactSize || !build.artifactSha256) throw new HttpError(409, "Installer is not ready.", "INSTALLER_NOT_READY");
-    res.setHeader("X-ArchMind-Installer-Size", String(build.artifactSize));
-    res.setHeader("X-ArchMind-Installer-Sha256", build.artifactSha256);
-    res.setHeader("X-ArchMind-Assistant-Id", build.assistantId);
-    res.setHeader("X-ArchMind-Build-Id", build.id);
-    res.download(assertSafeArtifactPath(build.artifactPath), `${build.productName.replace(/[^a-z0-9 -]+/gi, "").trim() || "ArchMind Assistant"} Setup.exe`);
+    res.setHeader("X-Agentia-Installer-Size", String(build.artifactSize));
+    res.setHeader("X-Agentia-Installer-Sha256", build.artifactSha256);
+    res.setHeader("X-Agentia-Assistant-Id", build.assistantId);
+    res.setHeader("X-Agentia-Build-Id", build.id);
+    res.download(assertSafeArtifactPath(build.artifactPath), `${build.productName.replace(/[^a-z0-9 -]+/gi, "").trim() || "AGENTIA Agent"} Setup.exe`);
   }));
   return router;
 }

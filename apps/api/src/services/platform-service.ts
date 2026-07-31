@@ -77,7 +77,7 @@ function rotateInstallDownloadToken(intent: AssistantInstallIntentRecord, downlo
 }
 
 function runtimeArtifactKey(version: string, platform: string, architecture: string) {
-  return `desktop-runtime/${version}/${platform}/${architecture}/ArchMind-Desktop-${version}-${architecture}.exe`;
+  return `desktop-runtime/${version}/${platform}/${architecture}/AGENTIA-Desktop-${version}-${architecture}.exe`;
 }
 
 export class PlatformService {
@@ -583,7 +583,7 @@ export class PlatformService {
         Boolean(item.artifactPath || item.artifactKey)
       )
       .sort((a, b) => (b.publishedAt ?? b.createdAt).localeCompare(a.publishedAt ?? a.createdAt))[0];
-    if (!release) throw new HttpError(503, "No compatible ArchMind Desktop runtime release is available yet.", "RUNTIME_RELEASE_UNAVAILABLE");
+    if (!release) throw new HttpError(503, "No compatible AGENTIA Desktop runtime release is available yet.", "RUNTIME_RELEASE_UNAVAILABLE");
     return release;
   }
 
@@ -655,7 +655,7 @@ export class PlatformService {
     const runtime = state.desktopRuntimeReleases
       .filter((item) => item.platform === input.platform && item.architecture === input.architecture && item.status === "ready" && (!input.runtimeChannel || item.channel === input.runtimeChannel))
       .sort((a, b) => (b.publishedAt ?? b.createdAt).localeCompare(a.publishedAt ?? a.createdAt))[0];
-    if (!runtime) throw new HttpError(503, "No compatible ArchMind Desktop runtime release is available yet.", "RUNTIME_RELEASE_UNAVAILABLE");
+    if (!runtime) throw new HttpError(503, "No compatible AGENTIA Desktop runtime release is available yet.", "RUNTIME_RELEASE_UNAVAILABLE");
 
     const active = state.assistantInstallIntents.find((item) =>
       item.ownerId === ownerId &&

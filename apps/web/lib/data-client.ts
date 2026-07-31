@@ -51,7 +51,7 @@ async function renewSessionOnce() {
       const data = (await response.json()) as { accessToken?: string; refreshToken?: string; user?: { email?: string } };
       if (!data.accessToken) return undefined;
       writeSessionCredentials(data.accessToken, data.refreshToken);
-      if (data.user?.email) window.localStorage.setItem("archmind.email", data.user.email);
+      if (data.user?.email) window.localStorage.setItem("agentia.email", data.user.email);
       return data.accessToken;
     } catch {
       return undefined;

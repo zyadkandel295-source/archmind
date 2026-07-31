@@ -131,7 +131,7 @@ export function DeployClient({ assistantId }: { assistantId: string }) {
       toast({
         type: "info",
         title: response.reused ? "Assistant installer reused" : "Assistant installer started",
-        message: "ArchMind is preparing a Windows app branded and isolated for this assistant.",
+        message: "AGENTIA is preparing a Windows app branded and isolated for this assistant.",
         dedupeKey: `install-start-${response.build.id}`
       });
       if (response.build.status === "ready") await downloadInstaller(response.build);
@@ -226,7 +226,7 @@ export function DeployClient({ assistantId }: { assistantId: string }) {
               </div>
               <div className="rounded-xl border border-[#2A2555] bg-[#05070B] p-4">
                 <div className="flex items-start justify-between gap-3"><div><p className="font-bold text-[#F0EAFF]">Install status</p><p className="mt-1 text-sm text-[#C4B5FD]">{installStatus}</p></div><MonitorDown className="h-5 w-5 shrink-0 text-blue-300" /></div>
-                <p className="mt-4 rounded-lg border border-emerald-300/25 bg-emerald-400/[0.08] p-3 text-sm text-emerald-50">ArchMind prepares a Windows installer branded and isolated for this selected assistant, then downloads it through a protected authorization link.</p>
+                <p className="mt-4 rounded-lg border border-emerald-300/25 bg-emerald-400/[0.08] p-3 text-sm text-emerald-50">AGENTIA prepares a Windows installer branded and isolated for this selected assistant, then downloads it through a protected authorization link.</p>
                 {latestBuild ? <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2"><div><dt className="text-[#8B7EC8]">Windows platform</dt><dd className="font-semibold text-[#F0EAFF]">Windows {latestBuild.architecture.toUpperCase()}</dd></div><div><dt className="text-[#8B7EC8]">Version</dt><dd className="font-semibold text-[#F0EAFF]">Assistant v{latestBuild.assistantVersion}</dd></div><div><dt className="text-[#8B7EC8]">Installer size</dt><dd className="font-semibold text-[#F0EAFF]">{formatSize(latestBuild.artifactSize)}</dd></div><div className="min-w-0"><dt className="text-[#8B7EC8]">SHA-256</dt><dd className="break-all font-mono text-xs text-[#F0EAFF]">{latestBuild.artifactSha256 ?? "Available after verification"}</dd></div></dl> : null}
                 {latestBuild?.error ? <p className="mt-4 rounded-lg border border-rose-300/30 bg-rose-500/[0.1] p-3 text-sm text-rose-100">The installer could not be created yet. Use Rebuild Installer to try again. {latestBuild.error}</p> : null}
                 <div className="mt-5 flex flex-wrap gap-2">

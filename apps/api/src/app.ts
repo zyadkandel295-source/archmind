@@ -109,7 +109,7 @@ export function createApp(options: AppOptions = {}) {
   }
 
   app.get(["/", "/api"], (_req, res) => {
-    res.json({ ok: true, service: "archmind-api", message: "ArchMind API Backend is live", uptime: Math.floor(process.uptime()) });
+    res.json({ ok: true, service: "agentia-api", message: "AGENTIA API Backend is live", uptime: Math.floor(process.uptime()) });
   });
 
   app.get("/api/health", (_req, res) => {
@@ -157,7 +157,7 @@ export function createApp(options: AppOptions = {}) {
   app.use("/api/platform", platformRouter(env, store, platformStore));
 
   app.get("*", (_req, res) => {
-    res.json({ ok: true, service: "archmind-api", message: "ArchMind API Backend is live", uptime: Math.floor(process.uptime()) });
+    res.json({ ok: true, service: "agentia-api", message: "AGENTIA API Backend is live", uptime: Math.floor(process.uptime()) });
   });
 
   app.use(notFoundHandler);

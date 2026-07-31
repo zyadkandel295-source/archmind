@@ -46,7 +46,7 @@ export function actionPreview(action: WorkflowAction) {
       .map(([key, value]) => ({ key, value })),
     expectedResult: previewResult(action.type),
     reversible: policy.reversible,
-    undoExplanation: policy.reversible ? "ArchMind will capture the prior state and check for conflicts before undoing." : "Automatic undo is unavailable for this action.",
+    undoExplanation: policy.reversible ? "AGENTIA will capture the prior state and check for conflicts before undoing." : "Automatic undo is unavailable for this action.",
     dataLeavesDevice: policy.dataLeavesDevice,
     provider: policy.provider ?? null,
     riskLevel: policy.riskLevel,

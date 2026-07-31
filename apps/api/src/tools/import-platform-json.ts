@@ -56,7 +56,7 @@ async function main() {
   const store = new PostgresPlatformStore(databaseUrl, { runMigrations: process.env.ARCHMIND_RUN_MIGRATIONS === "true" });
   await store.savePlatformState({ ...emptyPlatformState(), ...(data.platform ?? {}) });
   await store.close();
-  console.log(`Imported ArchMind platform JSON data from ${inputPath}`);
+  console.log(`Imported AGENTIA platform JSON data from ${inputPath}`);
 }
 
 main().catch((error) => {

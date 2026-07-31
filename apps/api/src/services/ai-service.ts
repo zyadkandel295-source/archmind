@@ -160,7 +160,7 @@ function safeOpenRouterHeaders(env: Env): Record<string, string> | undefined {
     Authorization: `Bearer ${env.openRouterApiKey}`,
     "Content-Type": "application/json",
     "HTTP-Referer": env.appUrl,
-    "X-Title": "ArchMind"
+    "X-Title": "AGENTIA"
   };
 }
 

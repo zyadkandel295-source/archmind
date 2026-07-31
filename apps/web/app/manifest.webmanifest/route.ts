@@ -24,7 +24,7 @@ export function GET(request: NextRequest) {
   return NextResponse.json({
     name,
     short_name: name.slice(0, 12),
-    description: `${name} on ArchMind`,
+    description: `${name} on AGENTIA`,
     start_url: startUrl,
     scope: "/",
     display: "standalone",

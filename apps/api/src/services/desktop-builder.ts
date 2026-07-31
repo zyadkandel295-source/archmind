@@ -221,7 +221,7 @@ export async function buildDesktopInstaller(
     await fs.writeFile(path.join(packageDir, "manifest.json"), JSON.stringify(manifest, null, 2));
     await fs.writeFile(path.join(prepackagedDir, "resources", "manifest.json"), JSON.stringify(manifest, null, 2));
     await fs.copyFile(path.join(assetsDir, "archmind-assistant.ico"), path.join(prepackagedDir, "resources", "archmind-assistant.ico"));
-    const genericExe = path.join(prepackagedDir, "ArchMind Assistant.exe");
+    const genericExe = path.join(prepackagedDir, "AGENTIA Agent.exe");
     const brandedExe = path.join(prepackagedDir, `${build.productName}.exe`);
     if (await pathExists(genericExe)) await fs.rename(genericExe, brandedExe).catch(async () => {
       await fs.copyFile(genericExe, brandedExe);

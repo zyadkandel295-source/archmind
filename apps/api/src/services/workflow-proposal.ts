@@ -34,7 +34,7 @@ export function proposeWorkflow(description: string) {
   if (actions.length === 0) actions.push(action("notification.send", "Show the requested result", { message: text }));
 
   if ((trigger.type === "file_created" || trigger.type === "file_modified") && !trigger.config.folder) questions.push("Which folder may this automation watch?");
-  if (actions.some((item) => ["csv.append", "file.create"].includes(item.type) && !item.input.path)) questions.push("Which file should ArchMind use for the output?");
+  if (actions.some((item) => ["csv.append", "file.create"].includes(item.type) && !item.input.path)) questions.push("Which file should AGENTIA use for the output?");
   if (actions.some((item) => item.type === "file.move" && !item.input.destinationFolder)) questions.push("Which folder should processed files move into?");
   if (actions.some((item) => item.type === "webhook.call" && !item.input.url)) questions.push("What is the approved webhook address?");
   if (trigger.type === "schedule" && !trigger.config.expression) questions.push("What days and times should this run?");

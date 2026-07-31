@@ -174,7 +174,7 @@ export function ProfileClient() {
           </div>
           <h1 className="mt-4 text-3xl font-black md:text-5xl">My Profile</h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-            Your identity is securely verified before ArchMind creates or updates your account profile.
+            Your identity is securely verified before AGENTIA creates or updates your account profile.
           </p>
         </div>
         <div className="flex items-center gap-3 rounded-xl border border-[#2A3545] bg-[#151B24] p-3 text-slate-100 shadow-sm">
