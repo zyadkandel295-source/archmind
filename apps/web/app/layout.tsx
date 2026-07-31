@@ -6,8 +6,8 @@ import { ActivityTracker } from "@/components/activity-tracker";
 import { DataPersistenceProvider } from "@/lib/context/data-persistence-context";
 
 export const metadata: Metadata = {
-  title: "AGENTIA - Deploy AI Agents",
-  description: "Deploy intelligent agents powered by PHOENIX 1.0",
+  title: "AGENTIA | AI Agent Workspace & Automation Platform",
+  description: "AGENTIA is an artificial intelligence agent workspace platform for deploying custom AI assistants and automating system operations.",
   manifest: "/manifest.json",
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }, { url: "/archmind-icon.svg", type: "image/svg+xml" }],
