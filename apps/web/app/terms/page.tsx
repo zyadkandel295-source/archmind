@@ -100,7 +100,7 @@ export default function TermsOfServicePage() {
               &larr; Read Privacy Policy
             </Link>
             <Link href="/dashboard">
-              <Button variant="outline" size="sm">Go to Dashboard</Button>
+              <Button variant="secondary" size="sm">Go to Dashboard</Button>
             </Link>
           </div>
         </div>
