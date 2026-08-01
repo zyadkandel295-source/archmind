@@ -1030,27 +1030,6 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                     ))}
                 </AnimatePresence>
               </div>
-
-              <div className="mt-4 rounded-[clamp(0.75rem,1.8vw,0.95rem)] border border-[#2A2555] bg-[#12102A] p-[clamp(0.75rem,2vw,0.9rem)] text-[#F0EAFF]">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-[clamp(0.82rem,1.7vw,0.9rem)] font-bold">AI connection</div>
-                    <div className="text-[clamp(0.72rem,1.5vw,0.78rem)] text-[#C4B5FD]">
-                      {apiReady === null ? "Checking connection" : apiReady ? "Connected" : "Unavailable"}
-                    </div>
-                  </div>
-                  <span
-                    className={cn(
-                      "h-2.5 w-2.5 rounded-full shadow-lg",
-                      apiReady === null
-                        ? "bg-amber-400 shadow-amber-400/50"
-                        : apiReady
-                          ? "bg-emerald-400 shadow-emerald-400/50"
-                          : "bg-red-400 shadow-red-400/50"
-                    )}
-                  />
-                </div>
-              </div>
             </motion.aside>
           ) : null}
         </AnimatePresence>
