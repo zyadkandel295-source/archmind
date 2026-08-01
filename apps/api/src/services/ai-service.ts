@@ -17,7 +17,7 @@ export interface GroqChoice {
 }
 
 export const AI_PROVIDERS_UNAVAILABLE_MESSAGE =
-  "Groq AI service is temporarily unavailable. Check the backend GROQ_API_KEY, rate limits, model access, and server logs, then try again.";
+  "AI service is temporarily unavailable. Check the backend API keys, rate limits, model access, and server logs, then try again.";
 
 function extractUserMessage(messages: AiMessage[]): string {
   return [...messages].reverse().find((message) => message.role === "user")?.content ?? "";

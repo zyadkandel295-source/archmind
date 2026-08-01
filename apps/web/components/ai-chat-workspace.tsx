@@ -663,7 +663,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
           lower.includes("rate limit") ||
           lower.includes("429")
         ) {
-          friendlyMessage = "Groq AI service is currently rate limited. Please wait a moment and try again.";
+          friendlyMessage = "AI service is currently experiencing high demand. Please wait a moment and try again.";
         } else if (
           lower.includes("no_credits") ||
           lower.includes("insufficient credits")

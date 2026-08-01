@@ -307,14 +307,14 @@ export class GroqService {
       return {
         success: false,
         errorCode: "RATE_LIMITED",
-        message: "Groq AI service is currently rate limited. Please try again in a few moments."
+        message: "AI service is currently rate limited. Please try again in a few moments."
       };
     }
 
     return {
       success: false,
       errorCode: lastErrorStatus >= 500 || lastErrorStatus === 0 ? "MODEL_UNAVAILABLE" : "SERVER_ERROR",
-      message: lastErrorMessage || "Unable to complete Groq request."
+      message: lastErrorMessage || "Unable to complete AI request."
     };
   }
 }

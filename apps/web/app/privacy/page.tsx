@@ -57,7 +57,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-2 text-sm text-slate-300">
               <li>Authenticating user sessions and safeguarding account security.</li>
-              <li>Routing AI requests through our secure Groq backend infrastructure.</li>
+              <li>Routing AI requests through our secure AI engine infrastructure.</li>
               <li>Enforcing per-user daily token usage limits and quota credits.</li>
               <li>Improving model response accuracy, latency, and platform uptime.</li>
             </ul>
@@ -73,7 +73,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-white">4. Third-Party Integration</h2>
             <p className="text-slate-300 text-sm leading-relaxed">
-              AGENTIA integrates with trusted third-party providers including Google OAuth for user authentication and Groq API for high-speed LLM inference. We do not sell, rent, or trade user data to any advertising or data brokers.
+              AGENTIA integrates with trusted third-party providers including Google OAuth for user authentication and high-performance AI inference infrastructure. We do not sell, rent, or trade user data to any advertising or data brokers.
             </p>
           </section>
 
