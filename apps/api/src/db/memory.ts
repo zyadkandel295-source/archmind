@@ -685,11 +685,64 @@ export class MemoryStore implements PlatformStateStore {
       [...this.assistants.values()].find(
         (candidate) => candidate.slug === idOrSlug || candidate.publicSlug === idOrSlug
       );
-    return assistant?.userId === userId ? assistant : undefined;
+    if (assistant && (assistant.userId === userId || assistant.isPublic)) return assistant;
+    if (idOrSlug.startsWith("default-")) {
+      const fallback: AssistantRecord = {
+        id: idOrSlug,
+        userId,
+        createdByUserId: userId,
+        name: "AGENTIA Assistant",
+        description: "Standard AGENTIA AI Assistant",
+        systemPrompt: "You are an intelligent assistant powered by PHOENIX 1.0, developed by Zyad Kandel.",
+        tone: "professional",
+        visibility: "public",
+        version: 1,
+        isPublic: true,
+        publicSlug: idOrSlug,
+        slug: idOrSlug,
+        model: "llama-3.3-70b-versatile",
+        temperature: 0.7,
+        icon: "Bot",
+        color: "#06b6d4",
+        starterPrompts: ["Help me automate a task", "Explain a concept"],
+        enabledTools: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      this.assistants.set(idOrSlug, fallback);
+      return fallback;
+    }
+    return undefined;
   }
 
-  getPublicAssistantBySlug(slug: string) {
-    return [...this.assistants.values()].find((assistant) => assistant.isPublic && assistant.publicSlug === slug);
+  getPublicAssistantBySlug(slug: string): AssistantRecord | undefined {
+    const found = [...this.assistants.values()].find((assistant) => (assistant.publicSlug === slug || assistant.id === slug || assistant.slug === slug));
+    if (found) return found;
+    if (slug.startsWith("default-")) {
+      return {
+        id: slug,
+        userId: "system",
+        createdByUserId: "system",
+        name: "AGENTIA Public Assistant",
+        description: "Public AI Assistant",
+        systemPrompt: "You are an intelligent assistant powered by PHOENIX 1.0.",
+        tone: "professional",
+        visibility: "public",
+        version: 1,
+        isPublic: true,
+        publicSlug: slug,
+        slug,
+        model: "llama-3.3-70b-versatile",
+        temperature: 0.7,
+        icon: "Bot",
+        color: "#06b6d4",
+        starterPrompts: ["Ask a question"],
+        enabledTools: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+    }
+    return undefined;
   }
 
   getDefaultAssistantForUser(userId: string) {
