@@ -140,11 +140,11 @@ export class GroqService {
 
   /** Select primary model and ordered fallback models for a given request type */
   getModelChain(type: GroqRequestType, hasExtractedText = false): string[] {
-    const defaultModel = this.env.groqDefaultModel || "llama-3.1-8b-instant";
-    const codingModel = this.env.groqCodingModel || "qwen/qwen3-32b";
-    const mathModel = this.env.groqMathModel || "openai/gpt-oss-120b";
-    const visionModel = this.env.groqVisionModel || "meta-llama/llama-4-scout-17b-16e-instruct";
-    const fallbackModel = this.env.groqFallbackModel || "llama-3.3-70b-versatile";
+    const defaultModel = this.env.groqDefaultModel || "llama-3.3-70b-versatile";
+    const codingModel = this.env.groqCodingModel || "llama-3.3-70b-versatile";
+    const mathModel = this.env.groqMathModel || "llama-3.3-70b-versatile";
+    const visionModel = this.env.groqVisionModel || "llama-3.2-11b-vision-preview";
+    const fallbackModel = this.env.groqFallbackModel || "llama-3.1-8b-instant";
 
     switch (type) {
       case "normal_chat":

@@ -99,11 +99,11 @@ export function loadEnv(): Env {
       .split(",")
       .map((key) => key.trim())
       .filter(Boolean),
-    groqDefaultModel: process.env.GROQ_DEFAULT_MODEL ?? "llama-3.1-8b-instant",
-    groqCodingModel: process.env.GROQ_CODING_MODEL ?? "qwen/qwen3-32b",
-    groqMathModel: process.env.GROQ_MATH_MODEL ?? "openai/gpt-oss-120b",
-    groqVisionModel: process.env.GROQ_VISION_MODEL ?? "meta-llama/llama-4-scout-17b-16e-instruct",
-    groqFallbackModel: process.env.GROQ_FALLBACK_MODEL ?? "llama-3.3-70b-versatile",
+    groqDefaultModel: process.env.GROQ_DEFAULT_MODEL ?? "llama-3.3-70b-versatile",
+    groqCodingModel: process.env.GROQ_CODING_MODEL ?? "llama-3.3-70b-versatile",
+    groqMathModel: process.env.GROQ_MATH_MODEL ?? "llama-3.3-70b-versatile",
+    groqVisionModel: process.env.GROQ_VISION_MODEL ?? "llama-3.2-11b-vision-preview",
+    groqFallbackModel: process.env.GROQ_FALLBACK_MODEL ?? "llama-3.1-8b-instant",
     enableAnswerVerification: process.env.ENABLE_ANSWER_VERIFICATION !== "false",
     verifyMath: process.env.VERIFY_MATH !== "false",
     verifyCode: process.env.VERIFY_CODE !== "false",
