@@ -200,6 +200,25 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     }
   }, []);
 
+  // Automatic persistent state synchronization to LocalStorage
+  useEffect(() => {
+    if (assistants.length > 0) {
+      saveToStorage(STORAGE_KEYS.ASSISTANTS, assistants);
+    }
+  }, [assistants]);
+
+  useEffect(() => {
+    if (chats.length > 0) {
+      saveToStorage(STORAGE_KEYS.CHATS, chats);
+    }
+  }, [chats]);
+
+  useEffect(() => {
+    if (messages.length > 0 && selectedChat?.id) {
+      saveToStorage(`${STORAGE_KEYS.MESSAGES}_${selectedChat.id}`, messages);
+    }
+  }, [messages, selectedChat?.id]);
+
   // Custom setter for selected assistant
   const setSelectedAssistant = (assistant: Assistant | null) => {
     setSelectedAssistantState(assistant);

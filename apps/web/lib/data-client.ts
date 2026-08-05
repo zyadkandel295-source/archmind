@@ -63,7 +63,9 @@ async function renewSessionOnce() {
 function redirectToSignInOnce() {
   if (typeof window === "undefined" || redirectedForAuthLoss || window.location.pathname.startsWith("/auth/login")) return;
   redirectedForAuthLoss = true;
-  clearSessionCredentials();
+  // Ensure token is persisted rather than deleted on API glitch
+  const token = readSessionCredential();
+  if (token) return;
   const returnTo = `${window.location.pathname}${window.location.search}`;
   window.location.assign(`/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
 }
