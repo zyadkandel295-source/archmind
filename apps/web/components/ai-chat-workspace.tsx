@@ -1270,7 +1270,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                       onClick={async () => {
                         try {
                           if (!navigator.mediaDevices?.getDisplayMedia) {
-                            toast({ type: "warning", title: "Screen capture unsupported", message: "Attach an image file to share a screenshot." });
+                            toast({ type: "info", title: "Screen capture unsupported", message: "Attach an image file to share a screenshot." });
                             return;
                           }
                           const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
