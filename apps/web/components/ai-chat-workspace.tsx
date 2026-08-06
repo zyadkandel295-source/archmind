@@ -620,7 +620,8 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
           conversationId: activeSession.conversationId,
           sessionId: activeSession.id,
           responseLength: "balanced",
-          language: "English"
+          language: "English",
+          webSearch: webSearchActive
         }
         : {
           model: activeSession.model,

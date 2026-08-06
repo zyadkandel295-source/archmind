@@ -8,6 +8,7 @@ import type { Env } from "../config/env";
 import type { MemoryStore } from "../db/memory";
 import type { AssistantRecord, RetrievedChunk } from "../types";
 import { LlmService } from "./llm";
+import { performWebSearch, formatWebSearchPrompt } from "./web-search";
 
 function interpolate(template: string, values: Record<string, string | number>) {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => String(values[key] ?? ""));
@@ -95,6 +96,7 @@ export class RagService {
     chunks: RetrievedChunk[];
     responseLength: string;
     language: string;
+    webSearch?: boolean;
     chatHistory?: Array<{ role: "user" | "assistant"; content: string }>;
   }) {
     const prompts = this.buildPrompt(input.assistant, input.question, input.chunks, {
@@ -102,12 +104,20 @@ export class RagService {
       language: input.language
     });
 
+    let searchPromptContext = "";
+    if (input.webSearch || /\b(search|news|weather|latest|today|current|who is|what is|2026|price|events)\b/i.test(input.question)) {
+      const searchResults = await performWebSearch(input.question, 4);
+      if (searchResults.length > 0) {
+        searchPromptContext = "\n\n" + formatWebSearchPrompt(searchResults, input.question);
+      }
+    }
+
     return this.llm.chat({
       model: input.assistant.model,
       temperature: input.assistant.temperature,
       assistantConfig: input.assistant,
       messages: [
-        { role: "system", content: prompts.systemPrompt },
+        { role: "system", content: prompts.systemPrompt + searchPromptContext },
         ...(input.chatHistory ?? []),
         { role: "user", content: prompts.contextPrompt }
       ]

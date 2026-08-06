@@ -290,6 +290,27 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
+      // Check 25-day deletion lock
+      const { data: existing } = await supabase
+        .from('assistants')
+        .select('created_at')
+        .eq('id', id)
+        .eq('user_id', userId)
+        .single();
+
+      if (existing?.created_at) {
+        const createdAtMs = new Date(existing.created_at).getTime();
+        const elapsedMs = Date.now() - createdAtMs;
+        const LOCK_PERIOD_MS = 25 * 24 * 60 * 60 * 1000; // 25 days
+        if (elapsedMs < LOCK_PERIOD_MS) {
+          const remainingDays = Math.ceil((LOCK_PERIOD_MS - elapsedMs) / (24 * 60 * 60 * 1000));
+          return res.status(403).json({
+            error: `Agent deletion is locked for 25 days after creation. You can delete this agent in ${remainingDays} days.`,
+            remainingDays
+          });
+        }
+      }
+
       const { error } = await supabase
         .from('assistants')
         .update({ deleted_at: new Date().toISOString() })

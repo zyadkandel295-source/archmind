@@ -198,7 +198,21 @@ export function DashboardClient() {
     }
   }
 
-  async function deleteAssistant(id: string) {
+  async function deleteAssistant(id: string, createdAt?: string) {
+    if (createdAt) {
+      const createdAtMs = new Date(createdAt).getTime();
+      const elapsedMs = Date.now() - createdAtMs;
+      const LOCK_PERIOD_MS = 25 * 24 * 60 * 60 * 1000;
+      if (elapsedMs < LOCK_PERIOD_MS) {
+        const remainingDays = Math.ceil((LOCK_PERIOD_MS - elapsedMs) / (24 * 60 * 60 * 1000));
+        toast({
+          type: "error",
+          title: "Agent Deletion Locked 🔒",
+          message: `Agents cannot be deleted for 25 days after creation. (${remainingDays} days remaining)`
+        });
+        return;
+      }
+    }
     if (!window.confirm("Are you sure you want to deactivate this agent?")) return;
     setWorking({ id, action: "delete" });
     try {

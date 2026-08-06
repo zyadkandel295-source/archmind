@@ -177,6 +177,23 @@ export function assistantsRouter(env: Env, store: MemoryStore) {
   router.delete(
     "/:id",
     asyncHandler(async (req: AuthedRequest, res) => {
+      const assistant = assertFound(
+        store.getAssistantForUser(req.params.id!, req.user!.id),
+        "Assistant not found"
+      );
+
+      const createdAtMs = assistant.createdAt ? new Date(assistant.createdAt).getTime() : Date.now();
+      const elapsedMs = Date.now() - createdAtMs;
+      const LOCK_PERIOD_MS = 25 * 24 * 60 * 60 * 1000;
+      if (elapsedMs < LOCK_PERIOD_MS) {
+        const remainingDays = Math.ceil((LOCK_PERIOD_MS - elapsedMs) / (24 * 60 * 60 * 1000));
+        throw new HttpError(
+          403,
+          `Agent deletion is locked for 25 days after creation. You can delete this agent in ${remainingDays} days.`,
+          "AGENT_DELETION_LOCKED"
+        );
+      }
+
       const deleted = store.deleteAssistant(req.params.id!, req.user!.id);
       if (!deleted) {
         assertFound(undefined, "Assistant not found");

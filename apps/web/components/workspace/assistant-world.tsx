@@ -39,7 +39,7 @@ export function AssistantWorld({
                 ? "text-slate-500 cursor-not-allowed bg-slate-800/40"
                 : "text-cyan-400 hover:bg-slate-700/50"
             }`}
-            title={isMaxQuotaReached ? "Maximum limit reached. Delete an existing agent to build a new one." : "Create Agent"}
+            title={isMaxQuotaReached ? "Maximum limit of 3 agents reached." : "Create Agent"}
           >
             <Plus className="w-3.5 h-3.5" />
             <span>New</span>
