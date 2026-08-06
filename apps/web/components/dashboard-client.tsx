@@ -244,39 +244,7 @@ export function DashboardClient() {
         </Link>
       </motion.div>
 
-      <section className="mt-8 grid gap-4 md:grid-cols-4">
-        {loading
-          ? Array.from({ length: 4 }).map((_, index) => (
-              <Card key={index} className="overflow-hidden">
-                <CardContent>
-                  <Skeleton className="h-9 w-9 rounded-xl" />
-                  <Skeleton className="mt-5 h-9 w-24" />
-                  <Skeleton className="mt-3 h-4 w-28" />
-                </CardContent>
-              </Card>
-            ))
-          : metrics.map((metric, index) => (
-              <motion.div
-                key={metric.label}
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <Card className={cn("overflow-hidden", metricPanels[index])}>
-                  <CardContent>
-                    <div className="flex items-start justify-between">
-                      <div className="grid h-11 w-11 place-items-center rounded-lg border border-[#3A4658] bg-[#1B2330] text-[#93C5FD]">
-                        <metric.icon className="h-5 w-5" />
-                      </div>
-                      <Sparkles className="h-4 w-4 text-[#7D899A]" />
-                    </div>
-                    <div className="mt-5 text-3xl font-black">{formatNumber(metric.value)}</div>
-                    <p className="mt-1 text-sm font-semibold text-slate-300">{metric.label}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-      </section>
+
 
       {/* AI Brain Visualization Canvas */}
       <section className="mt-8 h-80 w-full overflow-hidden rounded-xl border border-slate-700/50 shadow-lg">
