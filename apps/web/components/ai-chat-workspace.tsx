@@ -18,6 +18,7 @@ import {
   Download,
   FileDown,
   FileUp,
+  Globe,
   Menu,
   Mic,
   Moon,
@@ -281,6 +282,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [sidebarOpen, setSidebarOpen] = useState(!embedded);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [downloadOpen, setDownloadOpen] = useState(false);
+  const [webSearchActive, setWebSearchActive] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [desktopConnected, setDesktopConnected] = useState(false);
   const [pinnedIds, setPinnedIds] = useState<Set<string>>(() => readPinnedSessionIds(assistantId));
@@ -1265,11 +1267,62 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                     </button>
                     <button
                       type="button"
-                      onClick={() => toast({ type: "info", title: "Screenshot capture", message: "Attach an image file to share a screenshot with the assistant." })}
+                      onClick={async () => {
+                        try {
+                          if (!navigator.mediaDevices?.getDisplayMedia) {
+                            toast({ type: "warning", title: "Screen capture unsupported", message: "Attach an image file to share a screenshot." });
+                            return;
+                          }
+                          const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                          const track = stream.getVideoTracks()[0];
+                          const imageCapture = new (window as any).ImageCapture(track);
+                          const bitmap = await imageCapture.grabFrame();
+                          track.stop();
+
+                          const canvas = document.createElement("canvas");
+                          canvas.width = bitmap.width;
+                          canvas.height = bitmap.height;
+                          const ctx = canvas.getContext("2d");
+                          ctx?.drawImage(bitmap, 0, 0);
+
+                          canvas.toBlob((blob) => {
+                            if (!blob) return;
+                            const file = new File([blob], `screen-capture-${Date.now()}.png`, { type: "image/png" });
+                            handleFiles([file]);
+                            toast({ type: "success", title: "Screen Captured!", message: "Current screen attached. Send message to analyze with AI." });
+                          }, "image/png");
+                        } catch {
+                          toast({ type: "info", title: "Screen capture", message: "Attach an image file to analyze screenshots." });
+                        }
+                      }}
                       className="inline-grid size-10 shrink-0 place-items-center rounded-xl text-[#C4B5FD] transition hover:bg-white/10 hover:text-white"
-                      aria-label="Attach screenshot"
+                      aria-label="Capture screen for AI analysis"
+                      title="Capture screen & analyze with AI"
                     >
                       <Camera className="h-5 w-5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setWebSearchActive((prev) => !prev);
+                        toast({
+                          type: "info",
+                          title: !webSearchActive ? "Web Search ON" : "Web Search OFF",
+                          message: !webSearchActive ? "AI will search the web for real-time answers." : "Web search disabled.",
+                          duration: 1800
+                        });
+                      }}
+                      className={cn(
+                        "inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold transition",
+                        webSearchActive
+                          ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
+                          : "text-[#C4B5FD] hover:bg-white/10 hover:text-white"
+                      )}
+                      aria-label="Toggle Real-Time Web Search"
+                      title="Toggle Real-Time Web Search"
+                    >
+                      <Globe className="h-4 w-4" />
+                      <span>{webSearchActive ? "Web Search ON" : "Search"}</span>
                     </button>
                     <button
                       type="button"

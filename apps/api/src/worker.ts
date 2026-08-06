@@ -81,24 +81,6 @@ async function main() {
   ingestionWorker.on("completed", (job) => console.log(`Completed ingestion job ${job.id}`));
   ingestionWorker.on("failed", (job, error) => console.error(`Failed ingestion job ${job?.id}`, error));
   ingestionWorker.on("error", (error) => console.error("Ingestion worker Redis error", error));
-
-  const desktopBuildWorker = new Worker(
-    DESKTOP_BUILD_QUEUE,
-    async (job) => {
-      console.log(`Processing desktop build job ${job.id}`);
-      return processDesktopBuildJob(platformStore, job.data);
-    },
-    {
-      connection: {
-        url: env.redisUrl
-      },
-      concurrency: 1
-    }
-  );
-
-  desktopBuildWorker.on("completed", (job) => console.log(`Completed desktop build job ${job.id}`));
-  desktopBuildWorker.on("failed", (job, error) => console.error(`Failed desktop build job ${job?.id}`, error));
-  desktopBuildWorker.on("error", (error) => console.error("Desktop build worker Redis error", error));
 }
 
 main().catch((error) => {

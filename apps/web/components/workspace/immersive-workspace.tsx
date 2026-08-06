@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, Share2, MoreVertical, Zap, RefreshCw } from 'lucide-react';
+import { Settings, Share2, MoreVertical, Zap, RefreshCw, Bot, Sparkles, X } from 'lucide-react';
 import { UserProfile } from './user-profile';
 import { AssistantWorld } from './assistant-world';
 import { ChatInterface } from './chat-interface';
@@ -11,6 +11,7 @@ import { useDataPersistence } from '@/lib/context/data-persistence-context';
 
 export function ImmersiveWorkspace() {
   const [showAssistantBrowser, setShowAssistantBrowser] = useState(true);
+  const [showBubbleCard, setShowBubbleCard] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [newAssistantName, setNewAssistantName] = useState('');
   const [newAssistantDesc, setNewAssistantDesc] = useState('');
@@ -249,6 +250,59 @@ export function ImmersiveWorkspace() {
           </motion.div>
         </div>
       )}
+
+      {/* FLOATING CONTROL BUBBLE */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <AnimatePresence>
+          {showBubbleCard ? (
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.92 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.92 }}
+              className="mb-3 w-80 rounded-2xl border border-cyan-500/40 bg-slate-950/90 p-4 text-slate-100 shadow-2xl shadow-cyan-950/60 backdrop-blur-md"
+            >
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                <div className="flex items-center gap-2 font-bold text-cyan-400 text-sm">
+                  <Sparkles className="h-4 w-4 text-amber-400" />
+                  <span>Agentia Control Bubble</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowBubbleCard(false)}
+                  className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="mt-3 space-y-2">
+                <p className="text-xs font-black text-white">
+                  ✨ Coming Soon: You Will Control Your Computer!
+                </p>
+                <p className="text-xs leading-relaxed text-slate-300">
+                  Coming soon you will control desktop applications, system operations, browser automation, and computer tasks directly through AGENTIA AI App & Floating Bubble.
+                </p>
+                <div className="pt-1 flex items-center justify-between text-[11px] text-cyan-300 font-semibold">
+                  <span>Status: System Control Engine</span>
+                  <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] text-amber-300">Coming Soon</span>
+                </div>
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+
+        <button
+          type="button"
+          onClick={() => setShowBubbleCard((prev) => !prev)}
+          className="group relative flex h-13 w-13 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 p-3 text-white shadow-xl shadow-cyan-500/30 transition-all hover:scale-110 active:scale-95"
+          title="App & Control Bubble (Coming Soon)"
+        >
+          <Bot className="h-6 w-6 transition-transform group-hover:rotate-12" />
+          <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-amber-400 text-[9px] font-black text-slate-950 shadow">
+            ✨
+          </span>
+        </button>
+      </div>
     </div>
   );
 }

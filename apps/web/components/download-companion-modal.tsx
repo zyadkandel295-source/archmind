@@ -281,13 +281,24 @@ export function DownloadCompanionModal({
                 <Bot className="h-6 w-6" />
               </div>
               <div>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-400/30 bg-violet-500/10 px-2.5 py-0.5 text-xs font-bold text-violet-300">
-                  <Sparkles className="h-3 w-3 text-amber-400" /> ~30s Desktop Builder
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-2.5 py-0.5 text-xs font-bold text-cyan-300">
+                  <Sparkles className="h-3 w-3 text-amber-400" /> Coming Soon: System Control
                 </span>
                 <h2 id="download-companion-title" className="mt-1 text-2xl font-black text-white sm:text-3xl">
                   {assistantName} App & Bubble
                 </h2>
               </div>
+            </div>
+
+            {/* Coming Soon System Control Banner */}
+            <div className="mt-4 rounded-xl border border-cyan-500/30 bg-gradient-to-r from-cyan-500/15 via-blue-500/10 to-indigo-500/15 p-4 text-slate-100 shadow-inner">
+              <div className="flex items-center gap-2 text-sm font-black text-cyan-300">
+                <Sparkles className="h-4 w-4 text-amber-400" />
+                <span>Coming Soon: You Will Control Your Computer!</span>
+              </div>
+              <p className="mt-1 text-xs text-slate-300 leading-relaxed">
+                Coming soon you will control your desktop applications, system automation workflows, browser actions, and computer operations directly through AGENTIA App & Floating Bubble.
+              </p>
             </div>
 
             {/* Tabs Navigation */}
