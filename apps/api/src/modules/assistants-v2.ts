@@ -7,13 +7,13 @@ import { authenticate } from '../middleware/auth';
 import type { AuthedRequest } from '../types';
 
 const isSupabaseConfigured = () => {
-  const url = process.env.SUPABASE_URL;
+  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
   return Boolean(url && !url.includes('placeholder'));
 };
 
 const getSupabaseClient = () => {
-  const url = process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
-  const key = process.env.SUPABASE_ADMIN_KEY || process.env.SUPABASE_ANON_KEY || 'placeholder';
+  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
+  const key = process.env.SUPABASE_ADMIN_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_SA9Fx4epoTqtNdt0YCuN7g_gov6kD8M';
   return createClient(url, key);
 };
 
