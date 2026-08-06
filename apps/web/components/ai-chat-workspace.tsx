@@ -50,7 +50,6 @@ import { toast } from "@/components/ui/toast";
 import { AssistantAvatar } from "@/components/ui/assistant-avatar";
 import { IconButton } from "@/components/ui/icon-button";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { DownloadCompanionModal } from "@/components/download-companion-modal";
 
 
 type Role = "user" | "assistant";
@@ -860,7 +859,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     }
   }
 
-  function handleFiles(files: FileList | null) {
+  function handleFiles(files: FileList | File[] | null) {
     if (!files?.length) return;
     if (assistantId) {
       router.push(`/assistants/${assistantId}/sources`);
@@ -1275,9 +1274,10 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                           }
                           const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
                           const track = stream.getVideoTracks()[0];
+                          if (!track) return;
                           const imageCapture = new (window as any).ImageCapture(track);
                           const bitmap = await imageCapture.grabFrame();
-                          track.stop();
+                          track?.stop();
 
                           const canvas = document.createElement("canvas");
                           canvas.width = bitmap.width;
@@ -1381,16 +1381,6 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         onThemeChange={setTheme}
         onTemperatureChange={setTemperature}
       />
-      {!desktopConnected ? (
-        <DownloadCompanionModal
-          assistantId={assistantId}
-          assistantName={assistantName}
-          assistantColor={assistantMeta?.color}
-          assistantIcon={assistantMeta?.icon}
-          open={downloadOpen}
-          onClose={() => setDownloadOpen(false)}
-        />
-      ) : null}
     </main>
   );
 }

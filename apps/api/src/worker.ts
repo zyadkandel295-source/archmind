@@ -3,7 +3,6 @@ import net from "node:net";
 import { MemoryStore } from "./db/memory";
 import { PostgresPlatformStore } from "./db/postgres-platform";
 import type { PlatformStateStore } from "./db/platform-store";
-import { DESKTOP_BUILD_QUEUE, processDesktopBuildJob } from "./services/desktop-build-queue";
 
 function createPlatformStore(env: ReturnType<typeof loadEnv>, memory: MemoryStore): PlatformStateStore {
   if (env.nodeEnv !== "test" && env.databaseUrl && env.platformStore !== "memory") {
