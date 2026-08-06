@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import axios from 'axios';
 import { readSessionCredential } from '@/lib/session-keys';
 import { getPlatformBaseUrl } from '@/lib/platform';
+import { useRealtimeSubscription } from '@/lib/hooks/use-realtime-subscription';
 
 const getApiUrl = (path: string) => {
   const baseUrl = getPlatformBaseUrl();
@@ -440,6 +441,74 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     fetchAssistants();
     fetchChats();
   }, []);
+
+  // ============================================================================
+  // SUPABASE REAL-TIME SYNCHRONIZATION LISTENERS
+  // ============================================================================
+
+  // Real-time synchronization for Assistants table
+  useRealtimeSubscription<Assistant>({
+    table: 'assistants',
+    onInsert: (newAssistant) => {
+      setAssistants((prev) => {
+        if (prev.some((a) => a.id === newAssistant.id)) return prev;
+        return [newAssistant, ...prev];
+      });
+    },
+    onUpdate: (updatedAssistant) => {
+      setAssistants((prev) =>
+        prev.map((a) => (a.id === updatedAssistant.id ? { ...a, ...updatedAssistant } : a))
+      );
+      if (selectedAssistant?.id === updatedAssistant.id) {
+        setSelectedAssistantState((prev) => (prev ? { ...prev, ...updatedAssistant } : null));
+      }
+    },
+    onDelete: (deletedRecord) => {
+      if (deletedRecord.id) {
+        setAssistants((prev) => prev.filter((a) => a.id !== deletedRecord.id));
+        if (selectedAssistant?.id === deletedRecord.id) {
+          setSelectedAssistantState(null);
+        }
+      }
+    }
+  });
+
+  // Real-time synchronization for Chats table
+  useRealtimeSubscription<Chat>({
+    table: 'chats',
+    onInsert: (newChat) => {
+      setChats((prev) => {
+        if (prev.some((c) => c.id === newChat.id)) return prev;
+        return [newChat, ...prev];
+      });
+    },
+    onUpdate: (updatedChat) => {
+      setChats((prev) =>
+        prev.map((c) => (c.id === updatedChat.id ? { ...c, ...updatedChat } : c))
+      );
+    },
+    onDelete: (deletedRecord) => {
+      if (deletedRecord.id) {
+        setChats((prev) => prev.filter((c) => c.id !== deletedRecord.id));
+        if (selectedChat?.id === deletedRecord.id) {
+          setSelectedChatState(null);
+        }
+      }
+    }
+  });
+
+  // Real-time synchronization for Messages table
+  useRealtimeSubscription<Message>({
+    table: 'messages',
+    onInsert: (newMessage) => {
+      if (selectedChat?.id === newMessage.chat_id) {
+        setMessages((prev) => {
+          if (prev.some((m) => m.id === newMessage.id)) return prev;
+          return [...prev, newMessage];
+        });
+      }
+    }
+  });
 
   return (
     <DataPersistenceContext.Provider
