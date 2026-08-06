@@ -747,25 +747,7 @@ export class MemoryStore implements PlatformStateStore {
 
   getDefaultAssistantForUser(userId: string) {
     const existing = this.listAssistants(userId)[0];
-    if (existing) return existing;
-    return this.createAssistant(userId, {
-      name: "General Assistant",
-      description: "A private default assistant for everyday questions.",
-      systemPrompt:
-        "You are an intelligent agent powered by PHOENIX 1.0, developed by Zyad Kandel, deployed on AGENTIA. Follow instructions strictly and answer clearly.",
-      tone: "professional",
-      isPublic: false,
-      model: "llama-3.1-8b-instant",
-      temperature: 0.7,
-      icon: "Bot",
-      color: "#06b6d4",
-      starterPrompts: [
-        "Explain a difficult topic clearly.",
-        "Help me debug this code.",
-        "Summarize this into action steps."
-      ],
-      enabledTools: []
-    });
+    return existing ?? undefined;
   }
 
   private uniqueAssistantSlug(name: string, requested?: string, ignoreId?: string) {

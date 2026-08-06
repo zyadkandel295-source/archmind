@@ -63,7 +63,26 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
     authenticate(env, store),
     asyncHandler(async (req: AuthedRequest, res) => {
       const input = aiChatRequestSchema.parse(req.body);
-      const assistant = store.getDefaultAssistantForUser(req.user!.id);
+      const assistant = store.getDefaultAssistantForUser(req.user!.id) ?? {
+        id: "default-agent",
+        userId: req.user!.id,
+        name: "AGENTIA Agent",
+        description: "AI Agent",
+        systemPrompt: "You are an intelligent agent powered by PHOENIX 1.0, developed by Zyad Kandel.",
+        model: "llama-3.3-70b-versatile",
+        temperature: 0.7,
+        tone: "professional" as const,
+        isPublic: true,
+        publicSlug: "default-agent",
+        slug: "default-agent",
+        createdByUserId: req.user!.id,
+        visibility: "public" as const,
+        version: 1,
+        starterPrompts: [],
+        enabledTools: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
       const model = activeModelLabel(env, input.model ?? assistant.model);
       const originalSystemPrompt = assistant.systemPrompt;
       const systemPrompt = `

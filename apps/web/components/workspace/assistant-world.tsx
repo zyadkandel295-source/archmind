@@ -18,6 +18,8 @@ export function AssistantWorld({
   onSelectAssistant,
   onCreateAssistant,
 }: AssistantWorldProps) {
+  const isMaxQuotaReached = assistants.length >= 3;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -26,19 +28,45 @@ export function AssistantWorld({
     >
       <div className="flex items-center justify-between px-2 mb-3">
         <h3 className="text-[10px] uppercase tracking-widest font-semibold text-slate-400">
-          Your Agents
+          Your Agents ({assistants.length}/3)
         </h3>
         {onCreateAssistant && (
           <button
-            onClick={onCreateAssistant}
-            className="p-1 hover:bg-slate-700/50 text-cyan-400 rounded-md transition-colors flex items-center gap-1 text-xs"
-            title="Create Assistant"
+            onClick={isMaxQuotaReached ? undefined : onCreateAssistant}
+            disabled={isMaxQuotaReached}
+            className={`p-1 rounded-md transition-colors flex items-center gap-1 text-xs ${
+              isMaxQuotaReached
+                ? "text-slate-500 cursor-not-allowed bg-slate-800/40"
+                : "text-cyan-400 hover:bg-slate-700/50"
+            }`}
+            title={isMaxQuotaReached ? "Agent quota limit reached (3/3)" : "Create Agent"}
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>New</span>
+            <span>{isMaxQuotaReached ? "Max 3/3" : "New"}</span>
           </button>
         )}
       </div>
+
+      {assistants.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-cyan-500/30 bg-slate-900/40 p-5 text-center text-slate-300">
+          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-500/10 text-cyan-400">
+            <Sparkles className="h-5 w-5" />
+          </div>
+          <p className="text-sm font-semibold text-white">Command Center Empty</p>
+          <p className="mt-1 text-xs leading-relaxed text-slate-400">
+            You currently have no active agents. You are allowed to build up to 3 custom agents using your prompts.
+          </p>
+          {onCreateAssistant ? (
+            <button
+              onClick={onCreateAssistant}
+              className="mt-3.5 inline-flex items-center gap-1.5 rounded-lg bg-cyan-500 px-3 py-1.5 text-xs font-bold text-slate-950 shadow-md transition hover:bg-cyan-400 active:scale-95"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              Build Agent (0/3)
+            </button>
+          ) : null}
+        </div>
+      ) : null}
 
       {assistants.map((assistant, index) => {
         const icon = assistant.icon || '🤖';

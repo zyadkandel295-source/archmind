@@ -25,21 +25,33 @@ export function ImmersiveWorkspace() {
     isOnline,
   } = useDataPersistence();
 
+  const [createError, setCreateError] = useState<string | null>(null);
+
   const handleCreateAssistant = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newAssistantName.trim()) return;
+    setCreateError(null);
 
-    await createAssistant({
-      name: newAssistantName.trim(),
-      description: newAssistantDesc.trim() || 'Custom AI Agent',
-      instructions: `You are ${newAssistantName.trim()}, an intelligent agent deployed on AGENTIA, powered by PHOENIX 1.0, developed by Zyad Kandel. Help users with precision.`,
-      icon: '✨',
-      color: 'from-cyan-500 to-indigo-500',
-    });
+    if (assistants.length >= 3) {
+      setCreateError("Agent quota limit reached (3/3). Delete an existing agent to build a new one.");
+      return;
+    }
 
-    setNewAssistantName('');
-    setNewAssistantDesc('');
-    setIsCreating(false);
+    try {
+      await createAssistant({
+        name: newAssistantName.trim(),
+        description: newAssistantDesc.trim() || 'Custom AI Agent',
+        instructions: `You are ${newAssistantName.trim()}, an intelligent agent deployed on AGENTIA, powered by PHOENIX 1.0, developed by Zyad Kandel. Help users with precision.`,
+        icon: '✨',
+        color: 'from-cyan-500 to-indigo-500',
+      });
+
+      setNewAssistantName('');
+      setNewAssistantDesc('');
+      setIsCreating(false);
+    } catch (err: any) {
+      setCreateError(err.message || "Failed to create agent");
+    }
   };
 
   return (

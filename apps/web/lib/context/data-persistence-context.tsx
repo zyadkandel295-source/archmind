@@ -103,44 +103,7 @@ const STORAGE_KEYS = {
   SELECTED_CHAT: 'agentia_selected_chat',
 };
 
-const DEFAULT_ASSISTANTS: Assistant[] = [
-  {
-    id: 'default-1',
-    name: 'Customer Support Assistant',
-    icon: '🤖',
-    description: 'Ready to assist with questions',
-    instructions: 'You are Customer Support Agent powered by PHOENIX 1.0, developed by Zyad Kandel, deployed on AGENTIA. Help users with clear, precise steps.',
-    color: 'from-blue-500 to-cyan-500',
-    status: 'idle',
-  },
-  {
-    id: 'default-2',
-    name: 'Research Specialist',
-    icon: '🔍',
-    description: 'Deep research and analysis',
-    instructions: 'You are a research specialist focused on gathering and analyzing complex information.',
-    color: 'from-purple-500 to-pink-500',
-    status: 'idle',
-  },
-  {
-    id: 'default-3',
-    name: 'Creative Writer',
-    icon: '✍️',
-    description: 'Engaging content creation',
-    instructions: 'You are a creative writer specializing in engaging stories and marketing content.',
-    color: 'from-yellow-500 to-orange-500',
-    status: 'idle',
-  },
-  {
-    id: 'default-4',
-    name: 'Code Engineer',
-    icon: '💻',
-    description: 'Code generation and debugging',
-    instructions: 'You are an expert software engineer capable of writing, auditing, and debugging code.',
-    color: 'from-green-500 to-emerald-500',
-    status: 'idle',
-  },
-];
+const DEFAULT_ASSISTANTS: Assistant[] = [];
 
 const getAuthHeaders = () => {
   const token = readSessionCredential();
@@ -202,9 +165,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
 
   // Automatic persistent state synchronization to LocalStorage
   useEffect(() => {
-    if (assistants.length > 0) {
-      saveToStorage(STORAGE_KEYS.ASSISTANTS, assistants);
-    }
+    saveToStorage(STORAGE_KEYS.ASSISTANTS, assistants);
   }, [assistants]);
 
   useEffect(() => {
@@ -239,19 +200,22 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
       const response = await axios.get(getApiUrl('/api/assistants'), { headers: getAuthHeaders() });
       if (response.data?.success && Array.isArray(response.data.data)) {
         const fetched: Assistant[] = response.data.data;
-        const combined = fetched.length > 0 ? fetched : DEFAULT_ASSISTANTS;
-        setAssistants(combined);
-        saveToStorage(STORAGE_KEYS.ASSISTANTS, combined);
-        if (!selectedAssistant && combined.length > 0) {
-          setSelectedAssistant(combined[0] || null);
+        setAssistants(fetched);
+        saveToStorage(STORAGE_KEYS.ASSISTANTS, fetched);
+        if (!selectedAssistant && fetched.length > 0) {
+          setSelectedAssistant(fetched[0] || null);
+        } else if (fetched.length === 0) {
+          setSelectedAssistant(null);
         }
       }
     } catch (err: any) {
       console.warn('[DataPersistence] Fetch assistants failed, falling back to local storage cache', err);
-      const cached = readFromStorage(STORAGE_KEYS.ASSISTANTS, DEFAULT_ASSISTANTS);
+      const cached = readFromStorage(STORAGE_KEYS.ASSISTANTS, []);
       setAssistants(cached);
       if (!selectedAssistant && cached.length > 0) {
         setSelectedAssistant(cached[0] || null);
+      } else if (cached.length === 0) {
+        setSelectedAssistant(null);
       }
 
       setAssistantError(err.message || 'Failed to load assistants from server');
@@ -262,6 +226,9 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
 
   // Create Assistant
   const createAssistant = async (data: Partial<Assistant>): Promise<Assistant> => {
+    if (assistants.length >= 3) {
+      throw new Error("Agent quota limit reached (maximum 3 agents allowed per user). Please delete an existing agent to build a new one.");
+    }
     const newAssistant: Assistant = {
       id: `ast-${Date.now()}`,
       name: data.name || 'New Assistant',
