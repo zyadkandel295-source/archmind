@@ -53,10 +53,11 @@ export function chatsV2Router(env: Env, store: MemoryStore) {
 
       const { data, error } = await supabase
         .from('chats')
-        .select('*')
+        .select('id, user_id, assistant_id, title, message_count, is_archived, is_favorite, created_at, updated_at, last_message_at')
         .eq('user_id', userId)
         .is('deleted_at', null)
-        .order('updated_at', { ascending: false });
+        .order('updated_at', { ascending: false })
+        .limit(50);
 
 
       if (error || !data) {
@@ -128,10 +129,11 @@ export function chatsV2Router(env: Env, store: MemoryStore) {
 
       const { data: messages } = await supabase
         .from('messages')
-        .select('*')
+        .select('id, chat_id, user_id, assistant_id, role, content, created_at')
         .eq('chat_id', id)
         .is('deleted_at', null)
-        .order('created_at', { ascending: true });
+        .order('created_at', { ascending: true })
+        .limit(100);
 
       return res.status(200).json({
         success: true,

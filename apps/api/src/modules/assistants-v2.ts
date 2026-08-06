@@ -64,10 +64,11 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
 
       const { data, error } = await supabase
         .from('assistants')
-        .select('*')
+        .select('id, user_id, name, description, instructions, icon, color, status, system_prompt, is_public, is_favorite, created_at, updated_at')
         .eq('user_id', userId)
         .is('deleted_at', null)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(50);
 
 
       if (error || !data) {
