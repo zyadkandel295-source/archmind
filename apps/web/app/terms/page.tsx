@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-static";
+
 export const metadata = {
   title: "Terms of Service | AGENTIA",
   description: "Terms of Service governing your use of AGENTIA AI platform and services."

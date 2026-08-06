@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Activity,
@@ -51,8 +52,7 @@ export function LandingPage() {
       >
         <div className="mx-auto flex min-h-16 max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
           <Link href="/" className="interactive-lift flex min-w-0 items-center gap-3 text-[clamp(1.05rem,2.4vw,1.25rem)] font-black text-white">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/archmind-logo.png" alt="" className="size-[clamp(2.25rem,5vw,2.5rem)] shrink-0 rounded-lg border border-[#3A4658] bg-white object-cover" />
+            <Image src="/archmind-logo.webp" alt="AGENTIA Logo" width={40} height={40} priority className="size-[clamp(2.25rem,5vw,2.5rem)] shrink-0 rounded-lg border border-[#3A4658] bg-white object-cover" />
             <span>
               Arch<span className="text-[#93C5FD]">Mind</span>
             </span>

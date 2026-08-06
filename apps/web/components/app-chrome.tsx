@@ -8,8 +8,13 @@ import { ToastViewport } from "@/components/ui/toast";
 import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 import { establishWorkspaceSession } from "@/lib/session-bridge";
 import { readSessionCredential } from "@/lib/session-keys";
+import dynamic from "next/dynamic";
 import { useSessionStore } from "@/lib/session-store";
-import { FloatingJellyfishBackground } from "@/components/floating-jellyfish-bg";
+
+const FloatingJellyfishBackground = dynamic(
+  () => import("@/components/floating-jellyfish-bg").then((mod) => mod.FloatingJellyfishBackground),
+  { ssr: false }
+);
 
 const PUBLIC_PATHS = ["/", "/auth/login"];
 

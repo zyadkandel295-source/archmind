@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-static";
+
 export const metadata = {
   title: "Privacy Policy | AGENTIA",
   description: "Learn how AGENTIA protects your data, privacy, and account security."
