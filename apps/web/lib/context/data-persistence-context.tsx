@@ -228,7 +228,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
   // Create Assistant
   const createAssistant = async (data: Partial<Assistant>): Promise<Assistant> => {
     if (assistants.length >= 3) {
-      throw new Error("Agent quota limit reached (maximum 3 agents allowed per user). Please delete an existing agent to build a new one.");
+      throw new Error("Maximum agents limit reached. Please delete an existing agent to build a new one.");
     }
     const newAssistant: Assistant = {
       id: `ast-${Date.now()}`,

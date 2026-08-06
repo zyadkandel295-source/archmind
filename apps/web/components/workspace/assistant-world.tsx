@@ -28,7 +28,7 @@ export function AssistantWorld({
     >
       <div className="flex items-center justify-between px-2 mb-3">
         <h3 className="text-[10px] uppercase tracking-widest font-semibold text-slate-400">
-          Your Agents ({assistants.length}/3)
+          Your Agents
         </h3>
         {onCreateAssistant && (
           <button
@@ -39,10 +39,10 @@ export function AssistantWorld({
                 ? "text-slate-500 cursor-not-allowed bg-slate-800/40"
                 : "text-cyan-400 hover:bg-slate-700/50"
             }`}
-            title={isMaxQuotaReached ? "Agent quota limit reached (3/3)" : "Create Agent"}
+            title={isMaxQuotaReached ? "Maximum limit reached. Delete an existing agent to build a new one." : "Create Agent"}
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>{isMaxQuotaReached ? "Max 3/3" : "New"}</span>
+            <span>New</span>
           </button>
         )}
       </div>
@@ -54,7 +54,7 @@ export function AssistantWorld({
           </div>
           <p className="text-sm font-semibold text-white">Command Center Empty</p>
           <p className="mt-1 text-xs leading-relaxed text-slate-400">
-            You currently have no active agents. You are allowed to build up to 3 custom agents using your prompts.
+            You currently have no active agents. Build a custom agent using your prompts.
           </p>
           {onCreateAssistant ? (
             <button
@@ -62,7 +62,7 @@ export function AssistantWorld({
               className="mt-3.5 inline-flex items-center gap-1.5 rounded-lg bg-cyan-500 px-3 py-1.5 text-xs font-bold text-slate-950 shadow-md transition hover:bg-cyan-400 active:scale-95"
             >
               <Plus className="h-3.5 w-3.5" />
-              Build Agent (0/3)
+              Build Agent
             </button>
           ) : null}
         </div>

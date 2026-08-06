@@ -33,7 +33,7 @@ export function ImmersiveWorkspace() {
     setCreateError(null);
 
     if (assistants.length >= 3) {
-      setCreateError("Agent quota limit reached (3/3). Delete an existing agent to build a new one.");
+      setCreateError("Maximum agents limit reached. Please delete an existing agent to build a new one.");
       return;
     }
 
