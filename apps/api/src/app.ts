@@ -24,6 +24,7 @@ import { profileRouter } from "./modules/profile";
 import { platformRouter } from "./modules/platform";
 import { assistantsV2Router } from "./modules/assistants-v2";
 import { chatsV2Router } from "./modules/chats-v2";
+import { aiBaseRouter } from "./modules/ai-base";
 import { GroqService } from "./services/groq-service";
 
 export interface AppOptions {
@@ -188,9 +189,10 @@ export function createApp(options: AppOptions = {}) {
   app.use("/api", chatsV2Router(env, store));
   app.use("/api", chatRouter(env, store));
   app.use("/api/analytics", analyticsRouter(env, store));
-  app.use("/api", profileRouter(env, store));
-  app.use("/api", billingRouter(env, store));
+  app.use("/api/billing", billingRouter(env, store));
   app.use("/api/admin", adminRouter(env, store));
+  app.use("/api/profile", profileRouter(env, store));
+  app.use("/api/ai-base", aiBaseRouter());
   app.use("/api/platform", platformRouter(env, store, platformStore));
 
   app.get("*", (_req, res) => {

@@ -115,7 +115,7 @@ export function resetCreditStore(): void {
 let keyRotationIndex = 0;
 
 export class GroqService {
-  constructor(private readonly env: Env) {}
+  constructor(private readonly env?: Env) {}
 
   /** Classify request into task types: normal_chat, coding, math, vision, file_text_analysis */
   classifyRequest(params: GroqChatParams): GroqRequestType {
@@ -140,11 +140,11 @@ export class GroqService {
 
   /** Select primary model and ordered fallback models for a given request type */
   getModelChain(type: GroqRequestType, hasExtractedText = false): string[] {
-    const defaultModel = this.env.groqDefaultModel || "llama-3.3-70b-versatile";
-    const codingModel = this.env.groqCodingModel || "llama-3.3-70b-versatile";
-    const mathModel = this.env.groqMathModel || "llama-3.3-70b-versatile";
-    const visionModel = this.env.groqVisionModel || "llama-3.2-11b-vision-preview";
-    const fallbackModel = this.env.groqFallbackModel || "llama-3.1-8b-instant";
+    const defaultModel = this.env?.groqDefaultModel || "llama-3.3-70b-versatile";
+    const codingModel = this.env?.groqCodingModel || "llama-3.3-70b-versatile";
+    const mathModel = this.env?.groqMathModel || "llama-3.3-70b-versatile";
+    const visionModel = this.env?.groqVisionModel || "llama-3.2-11b-vision-preview";
+    const fallbackModel = this.env?.groqFallbackModel || "llama-3.1-8b-instant";
 
     switch (type) {
       case "normal_chat":
@@ -164,12 +164,14 @@ export class GroqService {
 
   /** Retrieve available Groq API keys */
   getApiKeys(): string[] {
-    if (this.env.groqApiKeys && this.env.groqApiKeys.length > 0) {
+    if (this.env?.groqApiKeys && this.env.groqApiKeys.length > 0) {
       return this.env.groqApiKeys;
     }
-    if (this.env.groqApiKey) {
+    if (this.env?.groqApiKey) {
       return [this.env.groqApiKey];
     }
+    const envKey = process.env.GROQ_API_KEY;
+    if (envKey) return [envKey];
     return [];
   }
 

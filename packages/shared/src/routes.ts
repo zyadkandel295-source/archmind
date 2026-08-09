@@ -47,5 +47,15 @@ export const API_ROUTES: RouteDefinition[] = [
   { method: "GET",    path: "/api/public/:slug",                                  description: "Get public assistant",            auth: true },
   { method: "GET",    path: "/api/analytics",                                     description: "Analytics overview",              auth: true },
   { method: "GET",    path: "/api/profile",                                       description: "Get profile",                     auth: true },
-  { method: "PUT",    path: "/api/profile",                                       description: "Update profile",                  auth: true }
+  { method: "PUT",    path: "/api/profile",                                       description: "Update profile",                  auth: true },
+
+  // AI BASE routes
+  { method: "GET",    path: "/api/ai-base/articles",                              description: "List AI Base articles",           auth: false },
+  { method: "GET",    path: "/api/ai-base/articles/:slug",                        description: "Get AI Base article by slug",     auth: false },
+  { method: "GET",    path: "/api/ai-base/science",                               description: "List AI in Science topics",       auth: false },
+  { method: "GET",    path: "/api/ai-base/papers",                                description: "Search Research Papers",          auth: false },
+  { method: "GET",    path: "/api/ai-base/timeline",                              description: "Get AI Research Timeline",        auth: false },
+  { method: "GET",    path: "/api/ai-base/build-guides",                          description: "List How To Build AI guides",      auth: false },
+  { method: "POST",   path: "/api/ai-base/search",                                description: "Global AI Base Knowledge Search",  auth: false },
+  { method: "POST",   path: "/api/ai-base/research-agent",                        description: "AI Research Agent synthesis",     auth: false }
 ];

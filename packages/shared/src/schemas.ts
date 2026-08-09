@@ -97,3 +97,20 @@ export const approvalDecisionSchema = z.object({
   decision: z.enum(["approved", "rejected"]),
 });
 
+// ─── AI Base Schemas ───────────────────────
+export const aiBaseSearchSchema = z.object({
+  query: z.string().min(1),
+  category: z.string().optional(),
+  domain: z.string().optional(),
+});
+
+export const aiBaseResearchAgentSchema = z.object({
+  topic: z.string().min(1),
+  includePapers: z.boolean().default(true),
+  includeCode: z.boolean().default(true),
+  includeMath: z.boolean().default(true),
+});
+
+export type AIBaseSearchInput = z.infer<typeof aiBaseSearchSchema>;
+export type AIBaseResearchAgentInput = z.infer<typeof aiBaseResearchAgentSchema>;
+
