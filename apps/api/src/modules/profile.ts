@@ -76,7 +76,7 @@ export function profileRouter(env: Env, store: MemoryStore) {
     authenticate(env, store),
     asyncHandler(async (req: AuthedRequest, res) => {
       const userId = req.user?.id || "user-1";
-      const email = req.user?.email || "zyadkandel295@gmail.com";
+      const email = req.user?.email || undefined;
       const user = getOrCreateUser(store, userId, email);
 
       let stats = store.userProfileStats(user.id);
@@ -123,7 +123,7 @@ export function profileRouter(env: Env, store: MemoryStore) {
     asyncHandler(async (req: AuthedRequest, res) => {
       const input = profileUpdateSchema.parse(req.body);
       const userId = req.user?.id || "user-1";
-      const email = req.user?.email || "zyadkandel295@gmail.com";
+      const email = req.user?.email || undefined;
       const user = getOrCreateUser(store, userId, email);
 
       const updatedName = input.displayName ?? user.displayName;

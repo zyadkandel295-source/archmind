@@ -17,6 +17,13 @@ function migrateLegacyKeys() {
     window.localStorage.setItem(RENEWAL_KEY, legacyRenewal);
     window.localStorage.removeItem("archmind.refreshToken");
   }
+
+  // Purge legacy hardcoded developer email defaults from existing browsers
+  const email = window.localStorage.getItem(EMAIL_KEY);
+  if (email === "zyadkandel295@gmail.com" || email === "Zyad.2524033@stemelsadat.moe.edu.eg") {
+    window.localStorage.removeItem(EMAIL_KEY);
+    window.localStorage.removeItem(DISPLAY_NAME_KEY);
+  }
 }
 
 export function readSessionCredential() {
