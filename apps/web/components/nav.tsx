@@ -16,6 +16,7 @@ import { JellyfishIcon } from "@/components/jellyfish-logo";
 
 const links = [
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/ai-base", label: "AI Base ✨" },
   { href: "/assistants/new", label: "Builder" },
   { href: "/analytics", label: "Activity" },
   { href: "/profile", label: "Profile" },
