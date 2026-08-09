@@ -30,14 +30,9 @@ export interface Env {
   googleClientSecret?: string;
   googleCallbackUrl: string;
   googleRefreshToken?: string;
-  llmProvider: "groq";
-  groqApiKey?: string;
-  groqApiKeys: string[];
-  groqDefaultModel: string;
-  groqCodingModel: string;
-  groqMathModel: string;
-  groqVisionModel: string;
-  groqFallbackModel: string;
+  llmProvider: "openrouter";
+  openrouterApiKey: string;
+  openrouterDefaultModel: string;
   enableAnswerVerification: boolean;
   verifyMath: boolean;
   verifyCode: boolean;
@@ -93,17 +88,9 @@ export function loadEnv(): Env {
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL ?? "http://localhost:4000/api/auth/google/callback",
     googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-    llmProvider: "groq",
-    groqApiKey: process.env.GROQ_API_KEY,
-    groqApiKeys: (process.env.GROQ_API_KEYS ?? process.env.GROQ_API_KEY ?? "")
-      .split(",")
-      .map((key) => key.trim())
-      .filter(Boolean),
-    groqDefaultModel: process.env.GROQ_DEFAULT_MODEL ?? "llama-3.3-70b-versatile",
-    groqCodingModel: process.env.GROQ_CODING_MODEL ?? "llama-3.3-70b-versatile",
-    groqMathModel: process.env.GROQ_MATH_MODEL ?? "llama-3.3-70b-versatile",
-    groqVisionModel: process.env.GROQ_VISION_MODEL ?? "llama-3.2-11b-vision-preview",
-    groqFallbackModel: process.env.GROQ_FALLBACK_MODEL ?? "llama-3.1-8b-instant",
+    llmProvider: "openrouter",
+    openrouterApiKey: process.env.OPENROUTER_API_KEY ?? "",
+    openrouterDefaultModel: process.env.OPENROUTER_DEFAULT_MODEL ?? "nvidia/nemotron-3-ultra:free",
     enableAnswerVerification: process.env.ENABLE_ANSWER_VERIFICATION !== "false",
     verifyMath: process.env.VERIFY_MATH !== "false",
     verifyCode: process.env.VERIFY_CODE !== "false",

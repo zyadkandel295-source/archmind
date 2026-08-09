@@ -30,8 +30,8 @@ export function adminRouter(env: Env, store: MemoryStore) {
           postgres: Boolean(env.databaseUrl),
           redis: Boolean(env.redisUrl),
           llmProvider: env.llmProvider,
-          llm: env.groqApiKeys.length > 0,
-          groq: env.groqApiKeys.length > 0,
+          llm: Boolean(env.openrouterApiKey),
+          openrouter: Boolean(env.openrouterApiKey),
           stripe: Boolean(env.stripeSecretKey),
           s3: Boolean(env.s3Bucket)
         }

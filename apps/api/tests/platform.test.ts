@@ -14,7 +14,7 @@ import { proposeWorkflow, validateWorkflow } from "../src/services/workflow-prop
 const env: Env = {
   nodeEnv: "test", appUrl: "http://localhost:3000", port: 4000, corsOrigin: "http://localhost:3000",
   jwtAccessSecret: "test-access", jwtRefreshSecret: "test-refresh", jwtAccessTtl: "15m", jwtRefreshTtl: "7d",
-  demoAuth: false, googleCallbackUrl: "http://localhost:4000/api/auth/google/callback",  llmProvider: "groq", groqApiKey: "gsk_test123", groqApiKeys: ["gsk_test123"], groqDefaultModel: "llama-3.1-8b-instant", groqCodingModel: "qwen/qwen3-32b", groqMathModel: "openai/gpt-oss-120b", groqVisionModel: "meta-llama/llama-4-scout-17b-16e-instruct", groqFallbackModel: "llama-3.3-70b-versatile", enableAnswerVerification: false, verifyMath: false, verifyCode: false, verifyResearch: false,
+  demoAuth: false, googleCallbackUrl: "http://localhost:4000/api/auth/google/callback", llmProvider: "openrouter", openrouterApiKey: "sk-or-v1-mock-test-key-1234567890", openrouterDefaultModel: "nvidia/nemotron-3-ultra:free", enableAnswerVerification: false, verifyMath: false, verifyCode: false, verifyResearch: false,
   notionRedirectUri: "http://localhost:4000/api/auth/notion/callback"
 };
 

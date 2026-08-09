@@ -25,7 +25,7 @@ import { platformRouter } from "./modules/platform";
 import { assistantsV2Router } from "./modules/assistants-v2";
 import { chatsV2Router } from "./modules/chats-v2";
 import { aiBaseRouter } from "./modules/ai-base";
-import { GroqService } from "./services/groq-service";
+import { OpenRouterService } from "./services/openrouter-service";
 
 export interface AppOptions {
   env?: Env;
@@ -128,7 +128,8 @@ export function createApp(options: AppOptions = {}) {
           postgres: Boolean(env.databaseUrl),
           redis: Boolean(env.redisUrl),
           llmProvider: env.llmProvider,
-          llm: env.groqApiKeys.length > 0,
+          llm: Boolean(env.openrouterApiKey),
+          openrouter: Boolean(env.openrouterApiKey),
           firebaseAdmin: Boolean(env.firebaseProjectId && env.firebaseClientEmail && env.firebasePrivateKey),
           stripe: Boolean(env.stripeSecretKey),
           s3: Boolean(env.s3Bucket && env.s3Region)
@@ -145,12 +146,12 @@ export function createApp(options: AppOptions = {}) {
     res.status(201).json({ recorded: true });
   });
 
-  // Groq AI Chat API Endpoint
+  // OpenRouter AI Chat API Endpoint
   app.post("/api/ai/chat", async (req, res) => {
     try {
       const { userId, message, type, imageUrl, fileText, history, temperature, systemPrompt } = req.body || {};
-      const groq = new GroqService(env);
-      const result = await groq.chat({
+      const openrouter = new OpenRouterService(env);
+      const result = await openrouter.chat({
         userId,
         message: message ?? "",
         type,

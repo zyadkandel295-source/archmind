@@ -1,6 +1,6 @@
 import type { Env } from "../config/env";
 import type { AssistantRecord } from "../types";
-import { GroqService, type GroqChatParams, type GroqRequestType } from "./groq-service";
+import { OpenRouterService, type OpenRouterChatParams } from "./openrouter-service";
 
 export interface AiMessage {
   role: "system" | "user" | "assistant";
@@ -10,14 +10,14 @@ export interface AiMessage {
 export type TaskType = "normal" | "math" | "coding" | "research";
 
 export interface GroqChoice {
-  provider: "groq";
+  provider: "openrouter";
   model: string;
   taskType: TaskType;
   reason: string;
 }
 
 export const AI_PROVIDERS_UNAVAILABLE_MESSAGE =
-  "AI service is temporarily unavailable. Check the backend API keys, rate limits, model access, and server logs, then try again.";
+  "This LLM model is currently under development. We will be in touch soon!";
 
 function extractUserMessage(messages: AiMessage[]): string {
   return [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
@@ -38,36 +38,9 @@ export function chooseGroqModel(
 ): GroqChoice {
   const taskType = detectTaskType(userMessage);
 
-  if (taskType === "math") {
-    return {
-      provider: "groq",
-      model: env.groqMathModel,
-      taskType,
-      reason: "math_reasoning"
-    };
-  }
-
-  if (taskType === "coding") {
-    return {
-      provider: "groq",
-      model: env.groqCodingModel,
-      taskType,
-      reason: "coding_or_debugging"
-    };
-  }
-
-  if (taskType === "research") {
-    return {
-      provider: "groq",
-      model: env.groqFallbackModel,
-      taskType,
-      reason: "research_or_complex_prompt"
-    };
-  }
-
   return {
-    provider: "groq",
-    model: assistantConfig?.model || env.groqDefaultModel,
+    provider: "openrouter",
+    model: assistantConfig?.model || env.openrouterDefaultModel,
     taskType,
     reason: assistantConfig?.model ? "assistant_model" : "default_model"
   };
@@ -85,7 +58,7 @@ export async function generateAiResponse(input: {
   userId?: string;
 }) {
   const userMessage = input.userMessage ?? (input.messages ? extractUserMessage(input.messages) : "");
-  const groq = new GroqService(input.env);
+  const openrouter = new OpenRouterService(input.env);
 
   let systemPrompt: string | undefined;
   const history: Array<{ role: "system" | "user" | "assistant"; content: string }> = [];
@@ -108,7 +81,7 @@ export async function generateAiResponse(input: {
     }
   }
 
-  const params: GroqChatParams = {
+  const params: OpenRouterChatParams = {
     userId: input.userId || "anonymous_user",
     message: userMessage,
     type: "auto",
@@ -117,12 +90,12 @@ export async function generateAiResponse(input: {
     temperature: input.temperature
   };
 
-  const result = await groq.chat(params);
+  const result = await openrouter.chat(params);
   if (result.success) {
     return result.answer;
   }
 
-  console.error(`[Groq AI Response Error] ${result.errorCode}: ${result.message}`);
+  console.error(`[OpenRouter AI Response Error] ${result.errorCode}: ${result.message}`);
   return AI_PROVIDERS_UNAVAILABLE_MESSAGE;
 }
 

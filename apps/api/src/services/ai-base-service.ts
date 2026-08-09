@@ -1,4 +1,4 @@
-import { GroqService } from "./groq-service";
+import { OpenRouterService } from "./openrouter-service";
 
 export interface EquationDetail {
   equation: string;
@@ -72,10 +72,10 @@ export interface TimelineEvent {
 }
 
 export class AIBaseService {
-  private groq: GroqService;
+  private openrouter: OpenRouterService;
 
   constructor() {
-    this.groq = new GroqService();
+    this.openrouter = new OpenRouterService();
   }
 
   // ─── ARTICLES DATABASE ──────────────────────
@@ -629,7 +629,7 @@ Produce a structured, rigorous Technical Research Report containing:
 Maintain extreme technical depth, mathematical accuracy, and clarity.`;
 
     try {
-      const response = await this.groq.chat({
+      const response = await this.openrouter.chat({
         message: contextPrompt,
         systemPrompt: "You are AGENTIA's AI Research Agent delivering graduate-level AI research reports.",
         type: "coding"
