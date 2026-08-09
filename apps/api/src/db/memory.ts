@@ -683,36 +683,34 @@ export class MemoryStore implements PlatformStateStore {
     const assistant =
       this.assistants.get(idOrSlug) ??
       [...this.assistants.values()].find(
-        (candidate) => candidate.slug === idOrSlug || candidate.publicSlug === idOrSlug
+        (candidate) => candidate.id === idOrSlug || candidate.slug === idOrSlug || candidate.publicSlug === idOrSlug
       );
-    if (assistant && (assistant.userId === userId || assistant.isPublic)) return assistant;
-    if (idOrSlug.startsWith("default-")) {
-      const fallback: AssistantRecord = {
-        id: idOrSlug,
-        userId,
-        createdByUserId: userId,
-        name: "AGENTIA Assistant",
-        description: "Standard AGENTIA AI Assistant",
-        systemPrompt: "You are an intelligent assistant powered by PHOENIX 1.0, developed by Zyad Kandel.",
-        tone: "professional",
-        visibility: "public",
-        version: 1,
-        isPublic: true,
-        publicSlug: idOrSlug,
-        slug: idOrSlug,
-        model: "llama-3.3-70b-versatile",
-        temperature: 0.7,
-        icon: "Bot",
-        color: "#06b6d4",
-        starterPrompts: ["Help me automate a task", "Explain a concept"],
-        enabledTools: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-      this.assistants.set(idOrSlug, fallback);
-      return fallback;
-    }
-    return undefined;
+    if (assistant) return assistant;
+
+    const fallback: AssistantRecord = {
+      id: idOrSlug,
+      userId,
+      createdByUserId: userId,
+      name: "AGENTIA Assistant",
+      description: "Standard AGENTIA AI Assistant",
+      systemPrompt: "You are an intelligent assistant powered by PHOENIX 1.0, developed by Zyad Kandel.",
+      tone: "professional",
+      visibility: "public",
+      version: 1,
+      isPublic: true,
+      publicSlug: idOrSlug,
+      slug: idOrSlug,
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.7,
+      icon: "Bot",
+      color: "#06b6d4",
+      starterPrompts: ["Help me automate a task", "Explain a concept"],
+      enabledTools: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    this.assistants.set(idOrSlug, fallback);
+    return fallback;
   }
 
   getPublicAssistantBySlug(slug: string): AssistantRecord | undefined {
