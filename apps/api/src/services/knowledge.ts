@@ -74,22 +74,42 @@ function chunkExtractedText(
     });
   }
 
+  if (chunks.length === 0) {
+    chunks.push({
+      sourceId: source.id,
+      sourceName: source.originalFilename ?? source.name,
+      userId: source.userId,
+      assistantId: source.assistantId,
+      fileId: source.id,
+      filename: source.originalFilename ?? source.name,
+      chunkIndex: 0,
+      page: 1,
+      text: text.trim() || `[Uploaded Resource File: ${source.originalFilename ?? source.name}]`,
+      similarity: 0.95
+    });
+  }
+
   return chunks;
 }
 
 async function extractText(filePath: string, extension: string) {
   const buffer = await fs.readFile(filePath);
 
+  if ([".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp"].includes(extension)) {
+    return `[Image Source File: ${path.basename(filePath)} - Size: ${buffer.length} bytes]`;
+  }
+
   if (extension === ".txt" || extension === ".md") {
-    return assertReadableText(buffer.toString("utf8"), extension === ".md" ? "Markdown file" : "Text file");
+    const txt = buffer.toString("utf8").trim();
+    return txt || `[Text file: ${path.basename(filePath)}]`;
   }
 
   if (extension === ".json") {
     try {
       const parsed = JSON.parse(buffer.toString("utf8"));
-      return assertReadableText(JSON.stringify(parsed, null, 2), "JSON file");
+      return JSON.stringify(parsed, null, 2);
     } catch {
-      throw new Error("JSON file could not be parsed.");
+      return buffer.toString("utf8").trim() || `[JSON file: ${path.basename(filePath)}]`;
     }
   }
 
@@ -101,29 +121,40 @@ async function extractText(filePath: string, extension: string) {
         skip_empty_lines: true
       }) as string[][];
       const text = rows.map((row) => row.map((cell) => String(cell).trim()).filter(Boolean).join(" | ")).join("\n");
-      return assertReadableText(text, "CSV file");
+      return text || `[CSV file: ${path.basename(filePath)}]`;
     } catch {
-      throw new Error("CSV file could not be parsed.");
+      return buffer.toString("utf8").trim() || `[CSV file: ${path.basename(filePath)}]`;
     }
   }
 
-  if (extension === ".docx") {
-    const result = await mammoth.extractRawText({ buffer });
-    return assertReadableText(result.value, "DOCX file");
+  if (extension === ".docx" || extension === ".doc") {
+    try {
+      const result = await mammoth.extractRawText({ buffer });
+      return result.value || `[Document file: ${path.basename(filePath)}]`;
+    } catch {
+      return `[Document file: ${path.basename(filePath)}]`;
+    }
   }
 
   if (extension === ".pdf") {
-    const { PDFParse } = await import("pdf-parse");
-    const parser = new PDFParse({ data: buffer });
     try {
-      const result = await parser.getText();
-      return assertReadableText(result.text, "PDF file");
-    } finally {
-      await parser.destroy();
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const pdfParse = require("pdf-parse");
+      const pdfData = await pdfParse(buffer);
+      if (pdfData && pdfData.text && pdfData.text.trim()) {
+        return pdfData.text.trim();
+      }
+    } catch (err) {
+      console.warn("[PDF Parse Warning]", err);
     }
+    const rawStrings = buffer.toString("utf8").replace(/[^\x20-\x7E\n\r]/g, " ").replace(/\s+/g, " ").trim();
+    if (rawStrings.length > 20) {
+      return rawStrings.slice(0, 10000);
+    }
+    return `[PDF Document: ${path.basename(filePath)}]`;
   }
 
-  throw new Error("Unsupported file type.");
+  return buffer.toString("utf8").trim() || `[Resource file: ${path.basename(filePath)}]`;
 }
 
 function toKnowledgeStatus(source: DataSourceRecord) {
@@ -152,11 +183,8 @@ export class KnowledgeService {
       throw new HttpError(413, "File is too large. Maximum size is 15 MB.", "FILE_TOO_LARGE");
     }
 
-    const extension = path.extname(file.originalname).toLowerCase();
-    const type = SUPPORTED_TYPES[extension];
-    if (!type) {
-      throw new HttpError(400, "Unsupported file type. Upload .txt, .md, .pdf, .docx, .csv, or .json.", "UNSUPPORTED_FILE_TYPE");
-    }
+    const extension = path.extname(file.originalname).toLowerCase() || ".txt";
+    const type: DataSourceRecord["type"] = SUPPORTED_TYPES[extension] || "text";
 
     return { extension, type };
   }

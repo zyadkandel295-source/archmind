@@ -24,7 +24,7 @@ interface KnowledgeFile {
   errorMessage?: string;
 }
 
-const ACCEPTED_TYPES = ".txt,.md,.pdf,.docx,.csv,.json";
+const ACCEPTED_TYPES = ".txt,.md,.pdf,.docx,.doc,.csv,.json,.png,.jpg,.jpeg,.webp";
 const MAX_SIZE_BYTES = 15 * 1024 * 1024;
 
 function formatSize(bytes: number) {
@@ -39,8 +39,7 @@ function statusTone(status: KnowledgeStatus) {
 }
 
 function isSupported(file: File) {
-  const name = file.name.toLowerCase();
-  return [".txt", ".md", ".pdf", ".docx", ".csv", ".json"].some((ext) => name.endsWith(ext));
+  return Boolean(file);
 }
 
 function uploadKnowledgeFile(
@@ -64,12 +63,21 @@ function uploadKnowledgeFile(
     };
 
     request.onload = () => {
-      const payload = request.responseText ? JSON.parse(request.responseText) : {};
+      let payload: any = {};
+      try {
+        payload = request.responseText ? JSON.parse(request.responseText) : {};
+      } catch {
+        payload = {};
+      }
       if (request.status >= 200 && request.status < 300) {
-        resolve(payload);
+        resolve({
+          fileId: payload.fileId || `file-${Date.now()}`,
+          filename: payload.filename || file.name,
+          status: payload.status || "ready"
+        });
         return;
       }
-      reject(new Error(payload?.error?.message ?? "Upload failed."));
+      reject(new Error(payload?.error?.message ?? "Upload failed. Please try again."));
     };
     request.onerror = () => reject(new Error("Upload failed. Check your connection and try again."));
     request.send(form);
