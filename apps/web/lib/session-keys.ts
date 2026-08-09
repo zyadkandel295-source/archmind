@@ -22,12 +22,8 @@ function migrateLegacyKeys() {
 export function readSessionCredential() {
   if (typeof window === "undefined") return undefined;
   migrateLegacyKeys();
-  let token = window.localStorage.getItem(SESSION_KEY);
-  if (!token) {
-    token = `session_persisted_${Date.now()}`;
-    window.localStorage.setItem(SESSION_KEY, token);
-  }
-  return token;
+  const token = window.localStorage.getItem(SESSION_KEY);
+  return token || undefined;
 }
 
 export function readRenewalCredential() {
