@@ -26,10 +26,6 @@ export function readSessionCredential() {
   if (!token) {
     token = `session_persisted_${Date.now()}`;
     window.localStorage.setItem(SESSION_KEY, token);
-    if (!window.localStorage.getItem("archmind.email")) {
-      window.localStorage.setItem("archmind.email", "zyadkandel295@gmail.com");
-      window.localStorage.setItem("archmind.displayName", "Zyad Kandel");
-    }
   }
   return token;
 }

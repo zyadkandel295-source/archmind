@@ -75,13 +75,15 @@ export function ProfileClient() {
       .catch(() => {
         if (!mounted) return;
         const stored = readProfileFromStorage();
+        const userEmail = stored.email || "user@agentia-ai.cloud";
+        const fallbackName = stored.displayName || userEmail.split("@")[0] || "User";
         const fallback: Profile = {
           id: "user-1",
-          email: stored.email || "zyadkandel295@gmail.com",
-          displayName: stored.displayName || stored.email?.split("@")[0] || "Zyad Kandel",
+          email: userEmail,
+          displayName: fallbackName,
           photoURL: stored.photoURL || "",
-          provider: "google.com",
-          plan: "pro",
+          provider: stored.email ? "password" : "email",
+          plan: "free",
           tokenUsage: 0,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()

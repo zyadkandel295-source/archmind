@@ -27,34 +27,39 @@ const profileUpdateSchema = z.object({
 function getOrCreateUser(store: MemoryStore, userId: string, email?: string): UserRecord {
   let user = store.findUserById(userId);
   if (!user) {
-    const resolvedEmail = email || "zyadkandel295@gmail.com";
-    const nameFromEmail = resolvedEmail.split("@")[0] || "Zyad Kandel";
+    const resolvedEmail = email || "user@agentia-ai.cloud";
+    const nameFromEmail = resolvedEmail.split("@")[0] || "User";
     user = {
       id: userId,
       email: resolvedEmail,
       displayName: nameFromEmail,
       photoUrl: "",
-      provider: "google.com",
-      plan: "pro",
+      provider: "password",
+      plan: "free",
       tokenUsage: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       lastLoginAt: new Date().toISOString()
     };
     (store as any).users.set(userId, user);
+  } else if (email && user.email !== email) {
+    user.email = email;
+    if (!user.displayName) user.displayName = email.split("@")[0] || "User";
   }
   return user;
 }
 
 function profileResponse(user: UserRecord) {
+  const displayEmail = user.email || "user@agentia-ai.cloud";
+  const displayName = user.displayName || displayEmail.split("@")[0] || "User";
   return {
     id: user.id,
     firebaseUid: user.firebaseUid,
-    email: user.email || "zyadkandel295@gmail.com",
-    displayName: user.displayName || user.email?.split("@")[0] || "Zyad Kandel",
+    email: displayEmail,
+    displayName: displayName,
     photoURL: user.photoUrl || "",
-    provider: user.provider ?? (user.googleId ? "google.com" : user.passwordHash ? "password" : "google.com"),
-    plan: user.plan || "pro",
+    provider: user.provider ?? (user.googleId ? "google.com" : "password"),
+    plan: user.plan || "free",
     tokenUsage: user.tokenUsage || 0,
     createdAt: user.createdAt || new Date().toISOString(),
     updatedAt: user.updatedAt || new Date().toISOString(),

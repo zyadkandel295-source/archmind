@@ -62,10 +62,12 @@ export function authenticate(env: Env, store: MemoryStore) {
       token.startsWith("local_") ||
       token.startsWith("usr_")
     ) {
+      const existingUser = store.findUserById(token);
+      const requestEmail = (req.headers["x-user-email"] as string) || existingUser?.email;
       req.user = {
         id: token,
-        email: "Zyad.2524033@stemelsadat.moe.edu.eg",
-        plan: "pro"
+        email: requestEmail || "",
+        plan: existingUser?.plan || "free"
       };
       return next();
     }
@@ -113,10 +115,11 @@ export function authenticate(env: Env, store: MemoryStore) {
       return next();
     } catch {
       // Fall back to persistent session user rather than forcing 401 logout
+      const existingUser = store.findUserById(token);
       req.user = {
         id: token,
-        email: "Zyad.2524033@stemelsadat.moe.edu.eg",
-        plan: "pro"
+        email: existingUser?.email || "",
+        plan: existingUser?.plan || "free"
       };
       return next();
     }
