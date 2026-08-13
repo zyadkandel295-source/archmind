@@ -196,7 +196,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         systemPrompt: resolvedInstructions,
         tone: (d.tone || 'professional') as 'professional' | 'casual' | 'teacher' | 'custom',
         isPublic: d.isPublic ?? false,
-        model: d.model || 'openrouter/auto',
+        model: d.model || 'auto',
         temperature: d.temperature ?? 0.7,
         starterPrompts: d.starterPrompts || [],
         enabledTools: d.enabledTools || [],

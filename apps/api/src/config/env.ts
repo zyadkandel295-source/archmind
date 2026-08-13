@@ -30,7 +30,7 @@ export interface Env {
   googleClientSecret?: string;
   googleCallbackUrl: string;
   googleRefreshToken?: string;
-  llmProvider: "openrouter";
+  llmProvider: "under_development";
   openrouterApiKey: string;
   openrouterDefaultModel: string;
   enableAnswerVerification: boolean;
@@ -88,7 +88,7 @@ export function loadEnv(): Env {
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL ?? "http://localhost:4000/api/auth/google/callback",
     googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-    llmProvider: "openrouter",
+    llmProvider: "under_development",
     openrouterApiKey: process.env.OPENROUTER_API_KEY ?? "",
     openrouterDefaultModel: process.env.OPENROUTER_DEFAULT_MODEL ?? "nvidia/nemotron-3-ultra:free",
     enableAnswerVerification: process.env.ENABLE_ANSWER_VERIFICATION !== "false",

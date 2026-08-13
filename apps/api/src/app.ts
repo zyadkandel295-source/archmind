@@ -25,7 +25,7 @@ import { platformRouter } from "./modules/platform";
 import { assistantsV2Router } from "./modules/assistants-v2";
 import { chatsV2Router } from "./modules/chats-v2";
 import { aiBaseRouter } from "./modules/ai-base";
-import { OpenRouterService } from "./services/openrouter-service";
+import { AI_PROVIDERS_UNAVAILABLE_MESSAGE } from "./services/ai-service";
 
 export interface AppOptions {
   env?: Env;
@@ -73,7 +73,6 @@ export function createApp(options: AppOptions = {}) {
           connectSrc: [
             "'self'",
             env.corsOrigin,
-            "https://api.groq.com",
             "https://www.googleapis.com",
             "https://notion.com",
             "https://api.stripe.com"
@@ -128,8 +127,8 @@ export function createApp(options: AppOptions = {}) {
           postgres: Boolean(env.databaseUrl),
           redis: Boolean(env.redisUrl),
           llmProvider: env.llmProvider,
-          llm: Boolean(env.openrouterApiKey),
-          openrouter: Boolean(env.openrouterApiKey),
+          llm: false,
+          openrouter: false,
           firebaseAdmin: Boolean(env.firebaseProjectId && env.firebaseClientEmail && env.firebasePrivateKey),
           stripe: Boolean(env.stripeSecretKey),
           s3: Boolean(env.s3Bucket && env.s3Region)
@@ -146,40 +145,13 @@ export function createApp(options: AppOptions = {}) {
     res.status(201).json({ recorded: true });
   });
 
-  // OpenRouter AI Chat API Endpoint
-  app.post("/api/ai/chat", async (req, res) => {
-    try {
-      const { userId, message, type, imageUrl, fileText, history, temperature, systemPrompt } = req.body || {};
-      const openrouter = new OpenRouterService(env);
-      const result = await openrouter.chat({
-        userId,
-        message: message ?? "",
-        type,
-        imageUrl,
-        fileText,
-        history,
-        temperature,
-        systemPrompt
-      });
-
-      if (result.success) {
-        return res.json(result);
-      }
-
-      const statusCode = result.errorCode === "RATE_LIMITED" ? 429
-        : result.errorCode === "NO_CREDITS" ? 402
-        : result.errorCode === "INVALID_REQUEST" ? 400
-        : result.errorCode === "MODEL_UNAVAILABLE" ? 503
-        : 500;
-
-      return res.status(statusCode).json(result);
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        errorCode: "SERVER_ERROR",
-        message: error instanceof Error ? error.message : "Internal server error."
-      });
-    }
+  // AI Chat API Endpoint (Under Development)
+  app.post("/api/ai/chat", async (_req, res) => {
+    return res.status(503).json({
+      success: false,
+      errorCode: "MODEL_UNAVAILABLE",
+      message: AI_PROVIDERS_UNAVAILABLE_MESSAGE
+    });
   });
 
   app.use("/api/auth", authRouter(env, store));

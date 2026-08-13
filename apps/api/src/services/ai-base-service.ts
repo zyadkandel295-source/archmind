@@ -1,5 +1,3 @@
-import { OpenRouterService } from "./openrouter-service";
-
 export interface EquationDetail {
   equation: string;
   latexName: string;
@@ -72,11 +70,6 @@ export interface TimelineEvent {
 }
 
 export class AIBaseService {
-  private openrouter: OpenRouterService;
-
-  constructor() {
-    this.openrouter = new OpenRouterService();
-  }
 
   // ─── ARTICLES DATABASE ──────────────────────
   getArticles(category?: string): AIBaseArticle[] {
@@ -628,29 +621,9 @@ Produce a structured, rigorous Technical Research Report containing:
 
 Maintain extreme technical depth, mathematical accuracy, and clarity.`;
 
-    try {
-      const response = await this.openrouter.chat({
-        message: contextPrompt,
-        systemPrompt: "You are AGENTIA's AI Research Agent delivering graduate-level AI research reports.",
-        type: "coding"
-      });
-
-      const reportMarkdown = response.success ? response.answer : `# Research Report: ${topic}
-
-## 1. Executive Summary
-Synthesis of state-of-the-art methodology, mathematical formulations, and empirical findings regarding **${topic}**.`;
-
-      return {
-        topic,
-        reportMarkdown,
-        retrievedArticles: matchedArticles.map((a) => ({ title: a.title, slug: a.slug })),
-        retrievedPapers: matchedPapers.map((p) => ({ title: p.title, year: p.year, arxivId: p.arxivId, doi: p.doi }))
-      };
-    } catch {
-      // Deterministic technical report fallback if LLM offline
-      return {
-        topic,
-        reportMarkdown: `# Research Report: ${topic}
+    return {
+      topic,
+      reportMarkdown: `# Research Report: ${topic}
 
 ## 1. Executive Summary
 This technical report synthesizes state-of-the-art methodology, mathematical formulations, and empirical findings regarding **${topic}**.
@@ -672,9 +645,8 @@ Where $\\mathcal{L}$ represents the empirical task loss function and $f_{\\theta
 ## 5. Citations & References
 - Vaswani et al. (2017). *Attention Is All You Need*. NeurIPS.
 - Hu et al. (2021). *LoRA: Low-Rank Adaptation of Large Language Models*. ICLR.`,
-        retrievedArticles: matchedArticles.map((a) => ({ title: a.title, slug: a.slug })),
-        retrievedPapers: matchedPapers.map((p) => ({ title: p.title, year: p.year, arxivId: p.arxivId, doi: p.doi }))
-      };
-    }
+      retrievedArticles: matchedArticles.map((a) => ({ title: a.title, slug: a.slug })),
+      retrievedPapers: matchedPapers.map((p) => ({ title: p.title, year: p.year, arxivId: p.arxivId, doi: p.doi }))
+    };
   }
 }
