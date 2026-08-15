@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import axios from 'axios';
 import { readSessionCredential } from '@/lib/session-keys';
 import { getPlatformBaseUrl } from '@/lib/platform';
@@ -134,6 +135,8 @@ function readFromStorage<T>(key: string, fallback: T): T {
 }
 
 export function DataPersistenceProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isPublicRoute = pathname === '/' || pathname.startsWith('/auth/');
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [selectedAssistant, setSelectedAssistantState] = useState<Assistant | null>(null);
   const [isLoadingAssistants, setIsLoadingAssistants] = useState(false);
@@ -202,27 +205,41 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
         const fetched: Assistant[] = response.data.data;
         setAssistants(fetched);
         saveToStorage(STORAGE_KEYS.ASSISTANTS, fetched);
-        if (!selectedAssistant && fetched.length > 0) {
-          setSelectedAssistant(fetched[0] || null);
-        } else if (fetched.length === 0) {
-          setSelectedAssistant(null);
-        }
+        setSelectedAssistantState((current) => {
+          if (fetched.length === 0) {
+            saveToStorage(STORAGE_KEYS.SELECTED_ASSISTANT, null);
+            return null;
+          }
+          if (!current) {
+            const next = fetched[0] || null;
+            saveToStorage(STORAGE_KEYS.SELECTED_ASSISTANT, next);
+            return next;
+          }
+          return current;
+        });
       }
     } catch (err: any) {
       console.warn('[DataPersistence] Fetch assistants failed, falling back to local storage cache', err);
       const cached = readFromStorage(STORAGE_KEYS.ASSISTANTS, []);
       setAssistants(cached);
-      if (!selectedAssistant && cached.length > 0) {
-        setSelectedAssistant(cached[0] || null);
-      } else if (cached.length === 0) {
-        setSelectedAssistant(null);
-      }
+      setSelectedAssistantState((current) => {
+        if (cached.length === 0) {
+          saveToStorage(STORAGE_KEYS.SELECTED_ASSISTANT, null);
+          return null;
+        }
+        if (!current) {
+          const next = cached[0] || null;
+          saveToStorage(STORAGE_KEYS.SELECTED_ASSISTANT, next);
+          return next;
+        }
+        return current;
+      });
 
       setAssistantError(err.message || 'Failed to load assistants from server');
     } finally {
       setIsLoadingAssistants(false);
     }
-  }, [selectedAssistant, setSelectedAssistant]);
+  }, []);
 
   // Create Assistant
   const createAssistant = async (data: Partial<Assistant>): Promise<Assistant> => {
@@ -451,6 +468,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
   // Real-time synchronization for Assistants table
   useRealtimeSubscription<Assistant>({
     table: 'assistants',
+    enabled: !isPublicRoute && Boolean(readSessionCredential()),
     onInsert: (newAssistant) => {
       setAssistants((prev) => {
         if (prev.some((a) => a.id === newAssistant.id)) return prev;
@@ -478,6 +496,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
   // Real-time synchronization for Chats table
   useRealtimeSubscription<Chat>({
     table: 'chats',
+    enabled: !isPublicRoute && Boolean(readSessionCredential()),
     onInsert: (newChat) => {
       setChats((prev) => {
         if (prev.some((c) => c.id === newChat.id)) return prev;
@@ -502,6 +521,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
   // Real-time synchronization for Messages table
   useRealtimeSubscription<Message>({
     table: 'messages',
+    enabled: !isPublicRoute && Boolean(readSessionCredential()),
     onInsert: (newMessage) => {
       if (selectedChat?.id === newMessage.chat_id) {
         setMessages((prev) => {

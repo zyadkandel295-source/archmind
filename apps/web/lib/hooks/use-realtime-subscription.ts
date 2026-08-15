@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { supabase, isSupabaseConnected } from "@/lib/supabase";
 
@@ -25,6 +25,9 @@ export function useRealtimeSubscription<T extends Record<string, any>>({
   onChange,
   enabled = true
 }: UseRealtimeSubscriptionProps<T>) {
+  const handlers = useRef({ onInsert, onUpdate, onDelete, onChange });
+  handlers.current = { onInsert, onUpdate, onDelete, onChange };
+
   useEffect(() => {
     if (!enabled || !isSupabaseConnected()) return;
 
@@ -41,16 +44,16 @@ export function useRealtimeSubscription<T extends Record<string, any>>({
           ...(filter ? { filter } : {})
         },
         (payload: RealtimePostgresChangesPayload<T>) => {
-          if (onChange) {
-            onChange(payload);
+          if (handlers.current.onChange) {
+            handlers.current.onChange(payload);
           }
 
-          if (payload.eventType === "INSERT" && onInsert && payload.new) {
-            onInsert(payload.new as T);
-          } else if (payload.eventType === "UPDATE" && onUpdate && payload.new) {
-            onUpdate(payload.new as T);
-          } else if (payload.eventType === "DELETE" && onDelete && payload.old) {
-            onDelete(payload.old as Partial<T>);
+          if (payload.eventType === "INSERT" && handlers.current.onInsert && payload.new) {
+            handlers.current.onInsert(payload.new as T);
+          } else if (payload.eventType === "UPDATE" && handlers.current.onUpdate && payload.new) {
+            handlers.current.onUpdate(payload.new as T);
+          } else if (payload.eventType === "DELETE" && handlers.current.onDelete && payload.old) {
+            handlers.current.onDelete(payload.old as Partial<T>);
           }
         }
       )
@@ -63,5 +66,5 @@ export function useRealtimeSubscription<T extends Record<string, any>>({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [table, schema, filter, enabled, onInsert, onUpdate, onDelete, onChange]);
+  }, [table, schema, filter, enabled]);
 }

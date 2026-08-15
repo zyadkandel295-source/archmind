@@ -62,7 +62,10 @@ export function createRateLimiter(env: Env) {
     legacyHeaders: false,
     store: store ?? undefined,
     passOnStoreError: true,
-    keyGenerator: (req) => req.ip ?? "unknown",
+    keyGenerator: (req) => {
+      const auth = req.header("authorization");
+      return auth ? `auth:${auth.slice(-48)}` : `ip:${req.ip ?? "unknown"}`;
+    },
     message: {
       error: {
         code: "RATE_LIMITED",
