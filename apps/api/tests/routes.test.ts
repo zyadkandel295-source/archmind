@@ -121,6 +121,54 @@ beforeEach(() => {
 });
 
 describe("ArchMind API", () => {
+  describe("HTTP boundary", () => {
+    it("rejects unapproved browser origins and returns JSON for missing routes", async () => {
+      const app = createApp({ env: { ...testEnv, corsOrigin: "https://app.example.com" } }).app;
+
+      const allowed = await request(app)
+        .get("/api/health")
+        .set("Origin", "https://app.example.com")
+        .expect(200);
+      expect(allowed.headers["access-control-allow-origin"]).toBe("https://app.example.com");
+
+      const denied = await request(app)
+        .get("/api/health")
+        .set("Origin", "https://untrusted.example.com")
+        .expect(403);
+      expect(denied.body.error.code).toBe("CORS_ORIGIN_DENIED");
+
+      const missing = await request(app).get("/does-not-exist").expect(404);
+      expect(missing.body.error.code).toBe("ROUTE_NOT_FOUND");
+    });
+
+    it("does not let chat authentication intercept unrelated API routes", async () => {
+      const app = makeApp();
+
+      const articles = await request(app).get("/api/ai-base/articles").expect(200);
+      expect(articles.body.success).toBe(true);
+
+      const missing = await request(app).get("/api/not-a-real-route").expect(404);
+      expect(missing.body.error.code).toBe("ROUTE_NOT_FOUND");
+    });
+
+    it("serves the mounted profile and analytics routes", async () => {
+      const app = makeApp();
+      const token = await register(app, "mounted-routes@archmind.dev");
+
+      const profile = await request(app)
+        .get("/api/profile")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200);
+      expect(profile.body.profile.email).toBe("mounted-routes@archmind.dev");
+
+      const analytics = await request(app)
+        .get("/api/analytics/overview")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200);
+      expect(analytics.body.overview).toBeDefined();
+    });
+  });
+
   describe("Google OAuth handoff", () => {
     it("redirects with a single-use handoff code instead of tokens", async () => {
       const app = createApp({

@@ -1,21 +1,13 @@
 import { Router, Response } from 'express';
-import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import type { Env } from '../config/env';
 import type { MemoryStore } from '../db/memory';
 import { authenticate } from '../middleware/auth';
 import type { AuthedRequest } from '../types';
+import { createSupabaseServerClient, isSupabaseServerConfigured } from '../services/supabase-server';
+import { generateAssistantOpeningExperience } from '@archmind/shared';
 
-const isSupabaseConfigured = () => {
-  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
-  return Boolean(url && !url.includes('placeholder'));
-};
-
-const getSupabaseClient = () => {
-  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
-  const key = process.env.SUPABASE_ADMIN_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_SA9Fx4epoTqtNdt0YCuN7g_gov6kD8M';
-  return createClient(url, key);
-};
+const isSupabaseConfigured = isSupabaseServerConfigured;
 
 
 const CreateAssistantSchema = z.object({
@@ -41,7 +33,8 @@ const UpdateAssistantSchema = CreateAssistantSchema.partial();
 
 export function assistantsV2Router(env: Env, store: MemoryStore) {
   const router = Router();
-  const supabase = getSupabaseClient();
+  const supabase = createSupabaseServerClient();
+  const useSupabase = env.nodeEnv !== "test" && isSupabaseConfigured();
 
   router.use(authenticate(env, store));
 
@@ -53,7 +46,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      if (!isSupabaseConfigured()) {
+      if (!useSupabase) {
         const memoryAssistants = store.listAssistants(userId);
         return res.status(200).json({
           success: true,
@@ -101,10 +94,19 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      if (!isSupabaseConfigured()) {
+      if (!useSupabase) {
         const memoryAssistant = store.getAssistantForUser(id, userId);
         if (memoryAssistant) {
-          return res.status(200).json({ success: true, data: memoryAssistant, assistant: memoryAssistant });
+          return res.status(200).json({
+            success: true,
+            data: memoryAssistant,
+            assistant: memoryAssistant,
+            openingExperience: generateAssistantOpeningExperience({
+              name: memoryAssistant.name,
+              instructions: memoryAssistant.systemPrompt,
+              starterPrompts: memoryAssistant.starterPrompts
+            })
+          });
         }
         return res.status(404).json({ error: 'Assistant not found' });
       }
@@ -126,7 +128,16 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         return res.status(404).json({ error: 'Assistant not found' });
       }
 
-      return res.status(200).json({ success: true, data, assistant: data });
+      return res.status(200).json({
+        success: true,
+        data,
+        assistant: data,
+        openingExperience: generateAssistantOpeningExperience({
+          name: data.name,
+          instructions: data.instructions || data.system_prompt,
+          starterPrompts: data.starter_prompts
+        })
+      });
     } catch (error: any) {
       return res.status(500).json({ error: error.message || 'Internal Server Error' });
     }
@@ -150,7 +161,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
 
       // Enforce limit: max 3 assistants per 25 days per user
       const twentyFiveDaysAgo = new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString();
-      if (isSupabaseConfigured()) {
+      if (useSupabase) {
         const { count } = await supabase
           .from('assistants')
           .select('id', { count: 'exact', head: true })
@@ -204,13 +215,12 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         color: assistantData.color,
       };
 
-      const { data, error } = await supabase
-        .from('assistants')
-        .insert([assistantData])
-        .select()
-        .single();
+      const { data, error } = useSupabase
+        ? await supabase.from('assistants').insert([assistantData]).select().single()
+        : { data: null, error: null };
 
       if (error || !data) {
+        if (error) console.warn('[Supabase] Assistant insert failed:', error.message);
         const created = store.createAssistant(userId, memoryInput);
         return res.status(201).json({
           success: true,
@@ -249,13 +259,9 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         });
       }
 
-      const { data, error } = await supabase
-        .from('assistants')
-        .update(validation.data)
-        .eq('id', id)
-        .eq('user_id', userId)
-        .select()
-        .single();
+      const { data, error } = useSupabase
+        ? await supabase.from('assistants').update(validation.data).eq('id', id).eq('user_id', userId).select().single()
+        : { data: null, error: null };
 
       if (error || !data) {
         const updated = store.updateAssistant(id, userId, {
@@ -266,6 +272,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         return res.status(200).json({
           success: true,
           data: updated || { id, ...validation.data },
+          assistant: updated || { id, ...validation.data },
           message: 'Assistant updated successfully',
         });
       }
@@ -273,6 +280,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
       return res.status(200).json({
         success: true,
         data,
+        assistant: data,
         message: 'Assistant updated successfully',
       });
     } catch (error: any) {
@@ -291,12 +299,9 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
       }
 
       // Check 25-day deletion lock
-      const { data: existing } = await supabase
-        .from('assistants')
-        .select('created_at')
-        .eq('id', id)
-        .eq('user_id', userId)
-        .single();
+      const { data: existing } = useSupabase
+        ? await supabase.from('assistants').select('created_at').eq('id', id).eq('user_id', userId).single()
+        : { data: null };
 
       if (existing?.created_at) {
         const createdAtMs = new Date(existing.created_at).getTime();
@@ -311,11 +316,9 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         }
       }
 
-      const { error } = await supabase
-        .from('assistants')
-        .update({ deleted_at: new Date().toISOString() })
-        .eq('id', id)
-        .eq('user_id', userId);
+      const { error } = useSupabase
+        ? await supabase.from('assistants').update({ deleted_at: new Date().toISOString() }).eq('id', id).eq('user_id', userId)
+        : { error: new Error('Memory store active') };
 
       if (error) {
         store.deleteAssistant(id, userId);
@@ -341,13 +344,9 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      const { data, error } = await supabase
-        .from('assistants')
-        .update({ is_favorite })
-        .eq('id', id)
-        .eq('user_id', userId)
-        .select()
-        .single();
+      const { data, error } = useSupabase
+        ? await supabase.from('assistants').update({ is_favorite }).eq('id', id).eq('user_id', userId).select().single()
+        : { data: null, error: null };
 
       if (error || !data) {
         return res.status(200).json({ success: true, data: { id, is_favorite } });
@@ -372,7 +371,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      if (isSupabaseConfigured()) {
+      if (useSupabase) {
         const { data: original, error: fetchErr } = await supabase
           .from('assistants')
           .select('*')
@@ -437,7 +436,7 @@ export function assistantsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      if (isSupabaseConfigured()) {
+      if (useSupabase) {
         await supabase
           .from('messages')
           .delete()

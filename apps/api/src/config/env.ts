@@ -56,9 +56,12 @@ export interface Env {
   webhookSigningSecret?: string;
 }
 
-const getJwtSecret = (secretName: string, envVarName: string, _nodeEnv: string): string => {
+const getJwtSecret = (secretName: string, envVarName: string, nodeEnv: string): string => {
   const secret = process.env[envVarName];
   if (!secret || secret.length < 32) {
+    if (nodeEnv === "production") {
+      throw new Error(`${envVarName} must be set to a value of at least 32 characters in production.`);
+    }
     return `fallback-${secretName}-41ebb6deb48bee5467925c0ee53cbd20deb4294d10d89c490fa6956b64e820264867a1d8d01458eefd8f5a297a86514e2de35db6f630c95e2fd8f602f29d6301`;
   }
   return secret;
@@ -66,20 +69,23 @@ const getJwtSecret = (secretName: string, envVarName: string, _nodeEnv: string):
 
 export function loadEnv(): Env {
   const nodeEnv = process.env.NODE_ENV ?? "development";
+  const appUrl = process.env.APP_URL ?? "http://localhost:3000";
 
   return {
     nodeEnv,
-    appUrl: process.env.APP_URL ?? "http://localhost:3000",
+    appUrl,
     port: Number(process.env.API_PORT ?? 4000),
-    corsOrigin: process.env.API_CORS_ORIGIN ?? "*",
+    // Wildcard origins cannot be used safely with credentialed browser requests.
+    // Development remains frictionless, while production defaults to the configured app URL.
+    corsOrigin: process.env.API_CORS_ORIGIN ?? (nodeEnv === "production" ? appUrl : "*"),
     databaseUrl: process.env.DATABASE_URL,
     platformStore: (process.env.ARCHMIND_PLATFORM_STORE === "memory" ? "memory" : "postgres"),
     runMigrations: process.env.ARCHMIND_RUN_MIGRATIONS === "true",
     redisUrl: process.env.REDIS_URL,
     jwtAccessSecret: getJwtSecret("access-secret", "JWT_ACCESS_SECRET", nodeEnv),
     jwtRefreshSecret: getJwtSecret("refresh-secret", "JWT_REFRESH_SECRET", nodeEnv),
-    jwtAccessTtl: process.env.JWT_ACCESS_TTL ?? "365d",
-    jwtRefreshTtl: process.env.JWT_REFRESH_TTL ?? "365d",
+    jwtAccessTtl: process.env.JWT_ACCESS_TTL ?? "15m",
+    jwtRefreshTtl: process.env.JWT_REFRESH_TTL ?? "30d",
     demoAuth: process.env.ALLOW_DEMO_AUTH === "true",
     firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
     firebaseClientEmail: process.env.FIREBASE_CLIENT_EMAIL,

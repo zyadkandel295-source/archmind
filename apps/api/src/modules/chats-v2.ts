@@ -1,21 +1,12 @@
 import { Router, Response } from 'express';
-import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import type { Env } from '../config/env';
 import type { MemoryStore } from '../db/memory';
 import { authenticate } from '../middleware/auth';
 import type { AuthedRequest } from '../types';
+import { createSupabaseServerClient, isSupabaseServerConfigured } from '../services/supabase-server';
 
-const isSupabaseConfigured = () => {
-  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
-  return Boolean(url && !url.includes('placeholder'));
-};
-
-const getSupabaseClient = () => {
-  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
-  const key = process.env.SUPABASE_ADMIN_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_SA9Fx4epoTqtNdt0YCuN7g_gov6kD8M';
-  return createClient(url, key);
-};
+const isSupabaseConfigured = isSupabaseServerConfigured;
 
 const CreateChatSchema = z.object({
   assistant_id: z.string(),
@@ -31,9 +22,13 @@ const CreateMessageSchema = z.object({
 
 export function chatsV2Router(env: Env, store: MemoryStore) {
   const router = Router();
-  const supabase = getSupabaseClient();
+  const supabase = createSupabaseServerClient();
+  const useSupabase = env.nodeEnv !== "test" && isSupabaseConfigured();
 
-  router.use(authenticate(env, store));
+  // This router is mounted at /api. Scope authentication to the resources
+  // owned by this router so unrelated public routes (for example /ai-base)
+  // can continue to the next router.
+  router.use(['/chats', '/messages'], authenticate(env, store));
 
   // GET ALL CHATS FOR CURRENT USER
   router.get('/chats', async (req: AuthedRequest, res: Response) => {
@@ -43,7 +38,7 @@ export function chatsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      if (!isSupabaseConfigured()) {
+      if (!useSupabase) {
         return res.status(200).json({
           success: true,
           data: [],
@@ -88,7 +83,7 @@ export function chatsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      if (!isSupabaseConfigured()) {
+      if (!useSupabase) {
         const conv = store.getConversation(id);
         if (conv) {
           const msgs = store.listMessages(id);
@@ -220,7 +215,7 @@ export function chatsV2Router(env: Env, store: MemoryStore) {
       // Enforce limit: max 100 messages per day per user
       const startOfDay = new Date();
       startOfDay.setUTCHours(0, 0, 0, 0);
-      if (isSupabaseConfigured()) {
+      if (useSupabase) {
         const { count } = await supabase
           .from('messages')
           .select('id', { count: 'exact', head: true })
@@ -294,7 +289,7 @@ export function chatsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      if (!isSupabaseConfigured()) {
+      if (!useSupabase) {
         const msgs = store.listMessages(id);
         return res.status(200).json({
           success: true,

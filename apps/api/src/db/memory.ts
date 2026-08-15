@@ -43,6 +43,12 @@ interface PersistedMemoryStore {
   platform?: PlatformState;
 }
 
+export interface MemoryStoreOptions {
+  /** Disable external persistence for isolated tests and ephemeral processes. */
+  databaseSync?: boolean;
+  diskPersistence?: boolean;
+}
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -122,8 +128,12 @@ export class MemoryStore implements PlatformStateStore {
   private dbPool?: Pool;
   readonly demoUserId: string;
 
-  constructor() {
-    if (process.env.DATABASE_URL) {
+  constructor(options: MemoryStoreOptions = {}) {
+    const isTestEnvironment = process.env.NODE_ENV === "test" || Boolean(process.env.VITEST);
+    const databaseSync = options.databaseSync ?? !isTestEnvironment;
+    const diskPersistence = options.diskPersistence ?? !isTestEnvironment;
+
+    if (databaseSync && process.env.DATABASE_URL) {
       try {
         this.dbPool = new Pool({ connectionString: process.env.DATABASE_URL });
         this.loadFromPg().catch((err) => {
@@ -134,7 +144,7 @@ export class MemoryStore implements PlatformStateStore {
       }
     }
 
-    if (process.env.NODE_ENV !== "test") {
+    if (diskPersistence) {
       this.persistPath = resolvePersistPath();
       const restored = this.restore();
       if (restored) {
@@ -685,36 +695,14 @@ export class MemoryStore implements PlatformStateStore {
       [...this.assistants.values()].find(
         (candidate) => candidate.id === idOrSlug || candidate.slug === idOrSlug || candidate.publicSlug === idOrSlug
       );
-    if (assistant) return assistant;
-
-    const fallback: AssistantRecord = {
-      id: idOrSlug,
-      userId,
-      createdByUserId: userId,
-      name: "AGENTIA Assistant",
-      description: "Standard AGENTIA AI Assistant",
-      systemPrompt: "You are an intelligent assistant powered by PHOENIX 1.0, developed by Zyad Kandel.",
-      tone: "professional",
-      visibility: "public",
-      version: 1,
-      isPublic: true,
-      publicSlug: idOrSlug,
-      slug: idOrSlug,
-      model: "llama-3.3-70b-versatile",
-      temperature: 0.7,
-      icon: "Bot",
-      color: "#06b6d4",
-      starterPrompts: ["Help me automate a task", "Explain a concept"],
-      enabledTools: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    this.assistants.set(idOrSlug, fallback);
-    return fallback;
+    if (!assistant) return undefined;
+    return assistant.userId === userId || assistant.createdByUserId === userId ? assistant : undefined;
   }
 
   getPublicAssistantBySlug(slug: string): AssistantRecord | undefined {
-    const found = [...this.assistants.values()].find((assistant) => (assistant.publicSlug === slug || assistant.id === slug || assistant.slug === slug));
+    const found = [...this.assistants.values()].find(
+      (assistant) => assistant.isPublic && (assistant.publicSlug === slug || assistant.id === slug || assistant.slug === slug)
+    );
     if (found) return found;
     if (slug.startsWith("default-")) {
       return {

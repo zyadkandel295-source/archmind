@@ -13,6 +13,7 @@ import type { PlatformStateStore } from "./db/platform-store";
 import { PostgresPlatformStore } from "./db/postgres-platform";
 import { createRateLimiter } from "./middleware/rate-limit";
 import { errorHandler, notFoundHandler } from "./middleware/errors";
+import { HttpError } from "./lib/http-error";
 import { authRouter } from "./modules/auth";
 import { assistantsRouter } from "./modules/assistants";
 import { sourcesRouter } from "./modules/sources";
@@ -33,7 +34,23 @@ export interface AppOptions {
   platformStore?: PlatformStateStore;
 }
 
+function corsOrigins(env: Env): string[] {
+  const configured = env.corsOrigin
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  // Never permit a credentialed wildcard CORS policy in production. If a
+  // wildcard was configured accidentally, fall back to the known web origin.
+  if (configured.includes("*") && env.nodeEnv === "production") return [env.appUrl];
+  return configured.length > 0 ? configured : [env.appUrl];
+}
+
 function createPlatformStore(env: Env, fallback: MemoryStore): PlatformStateStore {
+  if (env.nodeEnv === "test") return fallback;
+  if (env.nodeEnv === "production" && (!env.databaseUrl || env.platformStore === "memory")) {
+    throw new Error("Production requires DATABASE_URL with the PostgreSQL platform store enabled.");
+  }
   if (env.databaseUrl && env.platformStore !== "memory") {
     try {
       return new PostgresPlatformStore(env.databaseUrl, { runMigrations: Boolean(env.runMigrations), memoryStore: fallback });
@@ -46,8 +63,12 @@ function createPlatformStore(env: Env, fallback: MemoryStore): PlatformStateStor
 
 export function createApp(options: AppOptions = {}) {
   const env = options.env ?? loadEnv();
-  const store = options.store ?? new MemoryStore();
+  const store = options.store ?? new MemoryStore({
+    databaseSync: env.nodeEnv !== "test",
+    diskPersistence: env.nodeEnv !== "test"
+  });
   const platformStore = options.platformStore ?? createPlatformStore(env, store);
+  const allowedCorsOrigins = corsOrigins(env);
   const app = express();
 
   app.disable("x-powered-by");
@@ -91,10 +112,10 @@ export function createApp(options: AppOptions = {}) {
   app.use(
     cors({
       origin: (origin, callback) => {
-        if (!origin || env.corsOrigin === "*" || origin === env.corsOrigin || origin.endsWith(".vercel.app") || origin.startsWith("http://localhost")) {
+        if (!origin || allowedCorsOrigins.includes("*") || allowedCorsOrigins.includes(origin)) {
           callback(null, true);
         } else {
-          callback(null, true);
+          callback(new HttpError(403, "This origin is not allowed to access the API.", "CORS_ORIGIN_DENIED"));
         }
       },
       credentials: true
@@ -168,16 +189,8 @@ export function createApp(options: AppOptions = {}) {
   app.use("/api/ai-base", aiBaseRouter());
   app.use("/api/platform", platformRouter(env, store, platformStore));
 
-  app.get("*", (_req, res) => {
-    res.json({ ok: true, service: "agentia-api", message: "AGENTIA API Backend is live", uptime: Math.floor(process.uptime()) });
-  });
-
   app.use(notFoundHandler);
   app.use(errorHandler);
 
   return { app, env, store };
 }
-
-const defaultApp = createApp().app;
-export default defaultApp;
-

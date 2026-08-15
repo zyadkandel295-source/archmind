@@ -1,10 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://irjvqukildhucqbfotux.supabase.co";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_SA9Fx4epoTqtNdt0YCuN7g_gov6kD8M";
+const configuredSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const configuredSupabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const supabaseUrl = configuredSupabaseUrl || "http://127.0.0.1:54321";
+const supabaseAnonKey = configuredSupabaseAnonKey || "not-configured";
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export function isSupabaseConnected(): boolean {
-  return Boolean(supabaseUrl && supabaseAnonKey && !supabaseUrl.includes("placeholder"));
+  return Boolean(configuredSupabaseUrl && configuredSupabaseAnonKey && !configuredSupabaseUrl.includes("placeholder"));
 }

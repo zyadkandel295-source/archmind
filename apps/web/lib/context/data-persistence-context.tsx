@@ -111,6 +111,28 @@ const getAuthHeaders = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
+function saveToStorage(key: string, data: unknown) {
+  try {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(key, JSON.stringify(data));
+    }
+  } catch (error) {
+    console.warn(`[DataPersistence] Failed to save ${key} to localStorage`, error);
+  }
+}
+
+function readFromStorage<T>(key: string, fallback: T): T {
+  try {
+    if (typeof window !== 'undefined') {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) as T : fallback;
+    }
+  } catch (error) {
+    console.warn(`[DataPersistence] Failed to read ${key} from localStorage`, error);
+  }
+  return fallback;
+}
+
 export function DataPersistenceProvider({ children }: { children: React.ReactNode }) {
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [selectedAssistant, setSelectedAssistantState] = useState<Assistant | null>(null);
@@ -125,29 +147,6 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
 
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [syncPending, setSyncPending] = useState<boolean>(false);
-
-  // Sync state to localStorage
-  const saveToStorage = (key: string, data: any) => {
-    try {
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem(key, JSON.stringify(data));
-      }
-    } catch (e) {
-      console.warn(`[DataPersistence] Failed to save ${key} to localStorage`, e);
-    }
-  };
-
-  const readFromStorage = (key: string, fallback: any) => {
-    try {
-      if (typeof window !== 'undefined') {
-        const item = window.localStorage.getItem(key);
-        return item ? JSON.parse(item) : fallback;
-      }
-    } catch (e) {
-      console.warn(`[DataPersistence] Failed to read ${key} from localStorage`, e);
-    }
-    return fallback;
-  };
 
   // Connectivity Listener
   useEffect(() => {
@@ -182,16 +181,16 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
   }, [messages, selectedChat?.id]);
 
   // Custom setter for selected assistant
-  const setSelectedAssistant = (assistant: Assistant | null) => {
+  const setSelectedAssistant = useCallback((assistant: Assistant | null) => {
     setSelectedAssistantState(assistant);
     saveToStorage(STORAGE_KEYS.SELECTED_ASSISTANT, assistant);
-  };
+  }, []);
 
   // Custom setter for selected chat
-  const setSelectedChat = (chat: Chat | null) => {
+  const setSelectedChat = useCallback((chat: Chat | null) => {
     setSelectedChatState(chat);
     saveToStorage(STORAGE_KEYS.SELECTED_CHAT, chat);
-  };
+  }, []);
 
   // Fetch Assistants
   const fetchAssistants = useCallback(async () => {
@@ -223,7 +222,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     } finally {
       setIsLoadingAssistants(false);
     }
-  }, [selectedAssistant]);
+  }, [selectedAssistant, setSelectedAssistant]);
 
   // Create Assistant
   const createAssistant = async (data: Partial<Assistant>): Promise<Assistant> => {
@@ -437,10 +436,13 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     const cachedChats = readFromStorage(STORAGE_KEYS.CHATS, []);
     setChats(cachedChats);
 
-    // Initial server fetch
-    fetchAssistants();
-    fetchChats();
-  }, []);
+    // Public pages share this provider, but protected API calls should only
+    // start after an authenticated workspace session exists.
+    if (readSessionCredential()) {
+      void fetchAssistants();
+      void fetchChats();
+    }
+  }, [fetchAssistants, fetchChats]);
 
   // ============================================================================
   // SUPABASE REAL-TIME SYNCHRONIZATION LISTENERS

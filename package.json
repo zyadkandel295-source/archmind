@@ -8,11 +8,11 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build -w @archmind/shared && npm run build -w @archmind/api && npm run build -w @archmind/web",
+    "build": "npm run build -w @archmind/shared && npm run build -w @archmind/api && npm run build -w @archmind/web && npm run build -w @archmind/desktop",
     "dev": "cross-env npm_config_update_notifier=false NO_UPDATE_NOTIFIER=1 node scripts/dev-stack.cjs",
     "lint": "npm run lint -w @archmind/web",
     "test": "npm run test -w @archmind/api",
-    "typecheck": "npm run typecheck -w @archmind/shared && npm run typecheck -w @archmind/api && npm run typecheck -w @archmind/web"
+    "typecheck": "npm run typecheck -w @archmind/shared && npm run typecheck -w @archmind/api && npm run typecheck -w @archmind/web && npm run typecheck -w @archmind/desktop"
   },
   "devDependencies": {
     "@types/node": "^22.10.5",

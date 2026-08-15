@@ -24,6 +24,7 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
   const setSession = useSessionStore((state) => state.setSession);
   const immersive =
     pathname === "/" ||
+    pathname.startsWith("/auth/") ||
     (pathname.startsWith("/assistants/") && pathname.endsWith("/chat")) ||
     pathname.startsWith("/p/") ||
     pathname.startsWith("/a/");

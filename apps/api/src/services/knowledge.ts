@@ -139,19 +139,18 @@ async function extractText(filePath: string, extension: string) {
   if (extension === ".pdf") {
     try {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const pdfParse = require("pdf-parse");
-      const pdfData = await pdfParse(buffer);
-      if (pdfData && pdfData.text && pdfData.text.trim()) {
+      const { PDFParse } = require("pdf-parse") as typeof import("pdf-parse");
+      const parser = new PDFParse({ data: buffer });
+      const pdfData = await parser.getText();
+      await parser.destroy();
+      if (pdfData.text?.trim()) {
         return pdfData.text.trim();
       }
     } catch (err) {
       console.warn("[PDF Parse Warning]", err);
+      throw new Error("The PDF is invalid or could not be parsed.");
     }
-    const rawStrings = buffer.toString("utf8").replace(/[^\x20-\x7E\n\r]/g, " ").replace(/\s+/g, " ").trim();
-    if (rawStrings.length > 20) {
-      return rawStrings.slice(0, 10000);
-    }
-    return `[PDF Document: ${path.basename(filePath)}]`;
+    throw new Error("The PDF did not contain readable text.");
   }
 
   return buffer.toString("utf8").trim() || `[Resource file: ${path.basename(filePath)}]`;
@@ -184,7 +183,10 @@ export class KnowledgeService {
     }
 
     const extension = path.extname(file.originalname).toLowerCase() || ".txt";
-    const type: DataSourceRecord["type"] = SUPPORTED_TYPES[extension] || "text";
+    const type = SUPPORTED_TYPES[extension];
+    if (!type) {
+      throw new HttpError(400, "Unsupported file type. Use TXT, MD, PDF, DOCX, DOC, CSV, JSON, or source-code files.", "UNSUPPORTED_FILE_TYPE");
+    }
 
     return { extension, type };
   }

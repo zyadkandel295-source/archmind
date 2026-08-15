@@ -44,13 +44,13 @@ create policy assistant_actions_owner_access on assistant_actions
     exists (
       select 1 from assistants a
       where a.id = assistant_actions.assistant_id
-        and a.user_id = nullif(current_setting('app.current_user_id', true), '')::uuid
+        and a.user_id::text = nullif(current_setting('app.current_user_id', true), '')
     )
   )
   with check (
     exists (
       select 1 from assistants a
       where a.id = assistant_actions.assistant_id
-        and a.user_id = nullif(current_setting('app.current_user_id', true), '')::uuid
+        and a.user_id::text = nullif(current_setting('app.current_user_id', true), '')
     )
   );

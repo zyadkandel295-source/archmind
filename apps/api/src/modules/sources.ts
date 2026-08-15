@@ -1,8 +1,5 @@
 import { Router } from "express";
 import multer from "multer";
-import path from "node:path";
-import os from "node:os";
-import { createClient } from "@supabase/supabase-js";
 import { urlSourceSchema } from "@archmind/shared";
 import type { Env } from "../config/env";
 import type { MemoryStore } from "../db/memory";
@@ -13,28 +10,14 @@ import { enqueueIngestion } from "../services/queue";
 import { KnowledgeService } from "../services/knowledge";
 import type { AuthedRequest } from "../types";
 import { notifyAssistantUpdate } from "../services/events";
+import { createSupabaseServerClient, isSupabaseServerConfigured } from "../services/supabase-server";
 
-const isSupabaseConfigured = () => {
-  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
-  return Boolean(url && !url.includes('placeholder'));
-};
-
-const getSupabaseClient = () => {
-  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
-  const key = process.env.SUPABASE_ADMIN_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_SA9Fx4epoTqtNdt0YCuN7g_gov6kD8M';
-  return createClient(url, key);
-};
-
-const uploadDir = path.join(os.tmpdir(), "archmind-uploads");
+const isSupabaseConfigured = isSupabaseServerConfigured;
 
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: uploadDir,
-    filename: (_req, file, cb) => {
-      const unique = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-      cb(null, `${unique}-${file.originalname.replace(/[^a-z0-9._-]/gi, "_")}`);
-    }
-  }),
+  // KnowledgeService owns the durable temporary file lifecycle and requires
+  // the uploaded bytes. Memory storage keeps file.buffer available.
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 15 * 1024 * 1024
   }
@@ -43,7 +26,8 @@ const upload = multer({
 export function sourcesRouter(env: Env, store: MemoryStore) {
   const router = Router();
   const knowledge = new KnowledgeService(store);
-  const supabase = getSupabaseClient();
+  const supabase = createSupabaseServerClient();
+  const useSupabase = env.nodeEnv !== "test" && isSupabaseConfigured();
 
   router.post(
     "/assistants/:id/sources/upload",
@@ -89,14 +73,15 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
     asyncHandler(async (req: AuthedRequest, res) => {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
-      let assistant = store.getAssistant(assistantId) || store.getAssistantForUser(assistantId, userId);
+      let assistant = store.getAssistantForUser(assistantId, userId);
 
-      if (!assistant && isSupabaseConfigured()) {
+      if (!assistant && useSupabase) {
         try {
           const { data: dbAssistant } = await supabase
             .from("assistants")
             .select("*")
             .eq("id", assistantId)
+            .eq("user_id", userId)
             .single();
           if (dbAssistant) {
             assistant = {
@@ -128,9 +113,7 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
         }
       }
 
-      if (!assistant) {
-        assistant = store.getAssistantForUser(assistantId, userId);
-      }
+      assistant = assertFound(assistant, "Assistant not found");
 
       if (!req.file) {
         throw new HttpError(400, "Choose a file to upload.", "VALIDATION_ERROR");
@@ -157,7 +140,7 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
     asyncHandler(async (req: AuthedRequest, res) => {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
-      const assistant = store.getAssistantForUser(assistantId, userId);
+      const assistant = assertFound(store.getAssistantForUser(assistantId, userId), "Assistant not found");
       res.json({ files: knowledge.list(assistant.id, userId) });
     })
   );
@@ -168,14 +151,8 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
     asyncHandler(async (req: AuthedRequest, res) => {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
-      const assistant = store.getAssistantForUser(assistantId, userId);
-      const file = knowledge.getStatus(assistant.id, userId, req.params.fileId!) || {
-        id: req.params.fileId!,
-        status: "ready",
-        chunks: 1,
-        textLength: 100,
-        errorMessage: undefined
-      };
+      const assistant = assertFound(store.getAssistantForUser(assistantId, userId), "Assistant not found");
+      const file = assertFound(knowledge.getStatus(assistant.id, userId, req.params.fileId!), "Knowledge file not found");
       res.json({
         fileId: file.id,
         status: file.status,
@@ -192,8 +169,8 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
     asyncHandler(async (req: AuthedRequest, res) => {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
-      const assistant = store.getAssistantForUser(assistantId, userId);
-      await knowledge.delete(assistant.id, userId, req.params.fileId!);
+      const assistant = assertFound(store.getAssistantForUser(assistantId, userId), "Assistant not found");
+      assertFound(await knowledge.delete(assistant.id, userId, req.params.fileId!), "Knowledge file not found");
       notifyAssistantUpdate(assistant.id);
       res.status(204).send();
     })

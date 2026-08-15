@@ -14,6 +14,7 @@ import type { AuthedRequest } from "../types";
 import { PlatformService } from "../services/platform-service";
 import { listActionPolicies } from "../services/risk-policy";
 import { proposeWorkflow, validateWorkflow } from "../services/workflow-proposal";
+import { enqueueDesktopBuild } from "../services/desktop-build-queue";
 import { RagService } from "../services/rag";
 import { runAssistantChat } from "../services/assistant-chat";
 
@@ -319,13 +320,39 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
       : undefined;
     const assistantId = resolvedAssistant?.id ?? rawAssistantId;
     await syncPrincipal(req, assistantId);
-    res.json({ builds: [] });
+    res.json({ builds: await service.listDesktopBuilds(req.user!.id, assistantId) });
   }));
-  router.get("/desktop/builds/:buildId", auth, asyncHandler(async (_req: AuthedRequest, res) => {
-    res.json({ build: { status: "coming_soon", message: "Coming soon: You will control your computer" } });
+  router.get("/desktop/builds/:buildId", auth, asyncHandler(async (req: AuthedRequest, res) => {
+    res.json({ build: await service.getDesktopBuildForOwner(req.user!.id, req.params.buildId!) });
   }));
-  router.post("/desktop/builds", auth, asyncHandler(async (_req: AuthedRequest, res) => {
-    res.json({ status: "coming_soon", message: "Coming soon: You will control your computer" });
+  router.post("/desktop/builds", auth, asyncHandler(async (req: AuthedRequest, res) => {
+    const parsed = z.object({ assistantId: z.string().min(1), platform: z.enum(["win32", "darwin", "linux"]).default("win32"), architecture: z.enum(["x64", "arm64"]).default("x64"), packageId: z.string().optional(), force: z.boolean().optional() }).parse(req.body);
+    await syncPrincipal(req);
+    const assistant = parsed.packageId
+      ? assertFound(store.getAssistant(parsed.assistantId), "Assistant not found")
+      : assertFound(store.getAssistantForUser(parsed.assistantId, req.user!.id) ?? store.getPublicAssistantBySlug(parsed.assistantId), "Assistant not found");
+    if (assistant.userId === req.user!.id) await platformStore.ensurePlatformPrincipal?.(req.user!, assistant);
+    if (env.nodeEnv === "production" && !env.redisUrl) throw new HttpError(503, "Redis is required for production desktop builds.", "REDIS_REQUIRED");
+    const buildIdempotencyKey = req.header("Idempotency-Key")?.trim();
+    if (!buildIdempotencyKey || buildIdempotencyKey.length > 200) throw new HttpError(400, "A valid Idempotency-Key header is required.", "IDEMPOTENCY_KEY_REQUIRED");
+    const created = await service.createDesktopBuild(req.user!.id, { assistantId: assistant.id, packageId: parsed.packageId, platform: parsed.platform, architecture: parsed.architecture, productName: assistant.name, color: assistant.color, appIcon: assistant.icon, assistantVersion: assistant.version, idempotencyKey: buildIdempotencyKey, force: Boolean(parsed.force) });
+    let queue: Awaited<ReturnType<typeof enqueueDesktopBuild>> | undefined;
+    if (!created.reused) {
+      try {
+        queue = await enqueueDesktopBuild(env, platformStore, {
+          build: created.build,
+          apiUrl: env.appUrl.replace(/:\d+$/, `:${env.port}`),
+          assistant: { id: assistant.id, name: assistant.name, color: assistant.color, icon: assistant.icon, instructions: assistant.systemPrompt, webUrl: `${env.appUrl.replace(/\/$/, "")}/a/${encodeURIComponent(assistant.publicSlug ?? assistant.slug ?? assistant.id)}?desktop=1` }
+        });
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message.slice(0, 1000) : "Desktop build could not be queued.";
+        const failedBuild = await service.updateDesktopBuild(created.build.id, { status: "failed", error: errorMsg });
+        return res.status(200).json({ build: failedBuild, downloadToken: created.downloadToken, reused: false, error: errorMsg });
+      }
+    }
+    const build = await service.getDesktopBuildForOwner(req.user!.id, created.build.id);
+    await service.recordDesktopAudit(req.user!.id, { assistantId: assistant.id, actionType: created.reused ? "desktop.build.reused" : "desktop.build.queued", status: build.status, details: { buildId: build.id, platform: build.platform, architecture: build.architecture, queue } });
+    res.status(created.reused ? 200 : 202).json({ build, downloadToken: created.downloadToken, reused: created.reused, queue });
   }));
   router.post("/desktop/builds/:buildId/download-authorization", auth, asyncHandler(async (req: AuthedRequest, res) => {
     res.json(await service.issueDesktopDownload(req.user!.id, req.params.buildId!));

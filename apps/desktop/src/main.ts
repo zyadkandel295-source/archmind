@@ -676,7 +676,6 @@ function renderChat() {
           <button type="button" onclick="quitApp()" style="color:#f87171">Quit</button>
         </div>
       </div>
-    </form>p()" style="color:#ef4444">Quit App</button></div></div>
     </form>
     <script>
       let conversationId;

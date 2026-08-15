@@ -8,8 +8,9 @@ import { asyncHandler } from "../lib/async-handler";
 import { HttpError } from "../lib/http-error";
 import { signAccessToken, signRefreshToken, authenticate } from "../middleware/auth";
 import { verifyFirebaseIdToken } from "../services/firebase-admin";
-import type { AuthUser } from "../types";
+import type { AuthUser, AuthedRequest } from "../types";
 import { z } from "zod";
+import { encryptToken, generateOAuthState } from "../lib/notion-crypto";
 
 /* ---------- Login attempt tracking for account lockout ---------- */
 const MAX_LOGIN_ATTEMPTS = 5;
@@ -262,8 +263,9 @@ export function authRouter(env: Env, store: MemoryStore) {
         const profile = await exchangeGoogleCode(env, code);
         const user = store.upsertGoogleUser(profile);
         const auth = tokenResponse(env, toAuthUser(user));
-        const handoffToken = jwt.sign({ session: auth }, env.jwtAccessSecret, { expiresIn: "5m" });
-        redirect.searchParams.set("handoff", handoffToken);
+        // The callback must not put reusable credentials in the redirect. The
+        // opaque handoff code is consumed exactly once by the web client.
+        redirect.searchParams.set("handoff", store.createWebAuthHandoff(auth));
         redirect.searchParams.set("provider", "google");
 
         const isValidReturnPath = (pathStr: string): boolean => {
@@ -293,14 +295,7 @@ export function authRouter(env: Env, store: MemoryStore) {
     "/handoff/exchange",
     asyncHandler(async (req, res) => {
       const input = authHandoffExchangeSchema.parse(req.body);
-      let handoff: any = null;
-      try {
-        const decoded = jwt.verify(input.code, env.jwtAccessSecret) as { session: any };
-        handoff = decoded?.session ?? null;
-      } catch (jwtErr) {
-        console.warn("[Handoff Exchange] JWT verify failed:", jwtErr instanceof Error ? jwtErr.message : jwtErr);
-        handoff = store.consumeWebAuthHandoff(input.code);
-      }
+      const handoff = store.consumeWebAuthHandoff(input.code);
 
       if (!handoff || !handoff.accessToken || !handoff.refreshToken) {
         console.error("[Handoff Exchange Failed] Invalid handoff payload or missing tokens");
@@ -378,6 +373,89 @@ export function authRouter(env: Env, store: MemoryStore) {
       // In a Redis-backed deployment, add the access token to a blocklist here:
       // await redis.setex(`blocklist:${token}`, env.jwtAccessTtl, '1');
       res.json({ ok: true, message: "Session invalidated. Clear tokens on the client." });
+    })
+  );
+
+  router.get(
+    "/notion/status",
+    authenticate(env, store),
+    asyncHandler(async (req: AuthedRequest, res) => {
+      const user = store.findUserById(req.user!.id);
+      res.json({
+        connected: Boolean(user?.notionAccessToken),
+        workspaceId: user?.notionWorkspaceId,
+        workspaceName: user?.notionWorkspaceName,
+        workspaceIcon: user?.notionWorkspaceIcon,
+        connectedAt: user?.notionConnectedAt
+      });
+    })
+  );
+
+  router.get(
+    "/notion",
+    (req, _res, next) => {
+      const token = typeof req.query.token === "string" ? req.query.token : undefined;
+      if (token && !req.header("Authorization")) req.headers.authorization = `Bearer ${token}`;
+      next();
+    },
+    authenticate(env, store),
+    asyncHandler(async (req: AuthedRequest, res) => {
+      if (!env.notionClientId) throw new HttpError(503, "Notion integration is not configured.", "NOTION_NOT_CONFIGURED");
+      const state = generateOAuthState();
+      store.createNotionOAuthState(state, req.user!.id);
+      const authorize = new URL("https://api.notion.com/v1/oauth/authorize");
+      authorize.searchParams.set("client_id", env.notionClientId);
+      authorize.searchParams.set("response_type", "code");
+      authorize.searchParams.set("owner", "user");
+      authorize.searchParams.set("redirect_uri", env.notionRedirectUri);
+      authorize.searchParams.set("state", state);
+      res.redirect(authorize.toString());
+    })
+  );
+
+  router.get(
+    "/notion/callback",
+    asyncHandler(async (req, res) => {
+      const state = typeof req.query.state === "string" ? req.query.state : "";
+      const code = typeof req.query.code === "string" ? req.query.code : "";
+      const oauthState = store.consumeNotionOAuthState(state);
+      const callback = new URL("/auth/notion/callback", env.appUrl);
+      if (!oauthState || !code) {
+        callback.searchParams.set("error", "invalid_state");
+        return res.redirect(callback.toString());
+      }
+      if (!env.notionClientId || !env.notionClientSecret) {
+        callback.searchParams.set("error", "not_configured");
+        return res.redirect(callback.toString());
+      }
+
+      const basic = Buffer.from(`${env.notionClientId}:${env.notionClientSecret}`).toString("base64");
+      const tokenResponse = await fetch("https://api.notion.com/v1/oauth/token", {
+        method: "POST",
+        headers: { Authorization: `Basic ${basic}`, "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ grant_type: "authorization_code", code, redirect_uri: env.notionRedirectUri })
+      });
+      if (!tokenResponse.ok) {
+        callback.searchParams.set("error", "token_exchange_failed");
+        return res.redirect(callback.toString());
+      }
+      const token = await tokenResponse.json() as {
+        access_token: string;
+        workspace_id?: string;
+        workspace_name?: string;
+        workspace_icon?: string;
+        bot_id?: string;
+      };
+      store.updateUserNotionTokens(oauthState.userId, {
+        accessToken: encryptToken(token.access_token, env.jwtAccessSecret),
+        workspaceId: token.workspace_id,
+        workspaceName: token.workspace_name,
+        workspaceIcon: token.workspace_icon,
+        botId: token.bot_id
+      });
+      callback.searchParams.set("success", "true");
+      if (token.workspace_name) callback.searchParams.set("workspace", token.workspace_name);
+      return res.redirect(callback.toString());
     })
   );
 

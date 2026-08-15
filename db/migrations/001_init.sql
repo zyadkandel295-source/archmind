@@ -98,12 +98,81 @@ create table if not exists analytics_events (
   created_at timestamptz not null default now()
 );
 
+-- Compatibility layer for databases created by the early Supabase-backed UI.
+-- These statements are additive so an existing assistants/chats/messages schema
+-- can be upgraded without dropping rows, while fresh databases get the complete
+-- API schema from the declarations above.
+alter table assistants
+  add column if not exists instructions text,
+  add column if not exists system_prompt text,
+  add column if not exists tone tone_type not null default 'professional',
+  add column if not exists is_public boolean not null default false,
+  add column if not exists public_slug text,
+  add column if not exists model text not null default 'openrouter/auto',
+  add column if not exists temperature double precision not null default 0.7,
+  add column if not exists version int not null default 1,
+  add column if not exists model_name text,
+  add column if not exists model_version text,
+  add column if not exists model_developer text,
+  add column if not exists is_favorite boolean not null default false,
+  add column if not exists updated_at timestamptz not null default now(),
+  add column if not exists deleted_at timestamptz;
+
+update assistants
+set
+  instructions = coalesce(instructions, system_prompt, 'Helpful AI Assistant'),
+  system_prompt = coalesce(system_prompt, instructions, 'Helpful AI Assistant');
+
+alter table assistants
+  alter column instructions set default 'Helpful AI Assistant',
+  alter column system_prompt set default 'Helpful AI Assistant';
+
+create table if not exists chats (
+  id uuid primary key default gen_random_uuid(),
+  user_id text not null,
+  assistant_id uuid references assistants(id) on delete cascade,
+  title text,
+  model_name text,
+  model_version text,
+  message_count int not null default 0,
+  is_archived boolean not null default false,
+  is_favorite boolean not null default false,
+  last_message_at timestamptz,
+  deleted_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table chats
+  add column if not exists model_name text,
+  add column if not exists model_version text,
+  add column if not exists message_count int not null default 0,
+  add column if not exists is_archived boolean not null default false,
+  add column if not exists is_favorite boolean not null default false,
+  add column if not exists last_message_at timestamptz,
+  add column if not exists deleted_at timestamptz,
+  add column if not exists updated_at timestamptz not null default now();
+
+alter table messages
+  add column if not exists chat_id uuid,
+  add column if not exists user_id text,
+  add column if not exists assistant_id uuid,
+  add column if not exists conversation_id uuid,
+  add column if not exists tokens_used int not null default 0,
+  add column if not exists sources jsonb not null default '[]'::jsonb,
+  add column if not exists deleted_at timestamptz;
+
+alter table messages alter column user_id drop not null;
+
 create index if not exists idx_assistants_user_id on assistants(user_id);
 create index if not exists idx_assistants_public_slug on assistants(public_slug) where public_slug is not null;
 create index if not exists idx_data_sources_assistant_id on data_sources(assistant_id);
 create index if not exists idx_conversations_assistant_id on conversations(assistant_id);
 create index if not exists idx_conversations_user_id on conversations(user_id);
 create index if not exists idx_messages_conversation_id on messages(conversation_id);
+create index if not exists idx_messages_chat_id on messages(chat_id);
+create index if not exists idx_chats_user_id on chats(user_id);
+create index if not exists idx_chats_assistant_id on chats(assistant_id);
 create index if not exists idx_messages_sources on messages using gin(sources);
 create index if not exists idx_analytics_assistant_id_created_at on analytics_events(assistant_id, created_at desc);
 create index if not exists idx_analytics_event_type on analytics_events(event_type);
@@ -122,6 +191,7 @@ alter table data_sources enable row level security;
 alter table conversations enable row level security;
 alter table messages enable row level security;
 alter table analytics_events enable row level security;
+alter table chats enable row level security;
 
 create or replace function current_app_user_id()
 returns uuid as $$
@@ -130,13 +200,13 @@ $$ language sql stable;
 
 drop policy if exists users_own_row on users;
 create policy users_own_row on users
-  using (id = current_app_user_id())
-  with check (id = current_app_user_id());
+  using (id::text = current_app_user_id()::text)
+  with check (id::text = current_app_user_id()::text);
 
 drop policy if exists assistants_owner_access on assistants;
 create policy assistants_owner_access on assistants
-  using (user_id = current_app_user_id())
-  with check (user_id = current_app_user_id());
+  using (user_id::text = current_app_user_id()::text)
+  with check (user_id::text = current_app_user_id()::text);
 
 drop policy if exists assistants_public_read on assistants;
 create policy assistants_public_read on assistants
@@ -148,33 +218,33 @@ create policy sources_owner_access on data_sources
     exists (
       select 1 from assistants a
       where a.id = data_sources.assistant_id
-        and a.user_id = current_app_user_id()
+        and a.user_id::text = current_app_user_id()::text
     )
   )
   with check (
     exists (
       select 1 from assistants a
       where a.id = data_sources.assistant_id
-        and a.user_id = current_app_user_id()
+        and a.user_id::text = current_app_user_id()::text
     )
   );
 
 drop policy if exists conversations_owner_or_public on conversations;
 create policy conversations_owner_or_public on conversations
   using (
-    user_id = current_app_user_id()
+    user_id::text = current_app_user_id()::text
     or exists (
       select 1 from assistants a
       where a.id = conversations.assistant_id
-        and (a.user_id = current_app_user_id() or a.is_public = true)
+        and (a.user_id::text = current_app_user_id()::text or a.is_public = true)
     )
   )
   with check (
-    user_id = current_app_user_id()
+    user_id::text = current_app_user_id()::text
     or exists (
       select 1 from assistants a
       where a.id = conversations.assistant_id
-        and (a.user_id = current_app_user_id() or a.is_public = true)
+        and (a.user_id::text = current_app_user_id()::text or a.is_public = true)
     )
   );
 
@@ -185,7 +255,7 @@ create policy messages_conversation_access on messages
       select 1 from conversations c
       join assistants a on a.id = c.assistant_id
       where c.id = messages.conversation_id
-        and (c.user_id = current_app_user_id() or a.user_id = current_app_user_id() or a.is_public = true)
+        and (c.user_id::text = current_app_user_id()::text or a.user_id::text = current_app_user_id()::text or a.is_public = true)
     )
   )
   with check (
@@ -193,7 +263,7 @@ create policy messages_conversation_access on messages
       select 1 from conversations c
       join assistants a on a.id = c.assistant_id
       where c.id = messages.conversation_id
-        and (c.user_id = current_app_user_id() or a.user_id = current_app_user_id() or a.is_public = true)
+        and (c.user_id::text = current_app_user_id()::text or a.user_id::text = current_app_user_id()::text or a.is_public = true)
     )
   );
 
@@ -203,13 +273,13 @@ create policy analytics_owner_access on analytics_events
     exists (
       select 1 from assistants a
       where a.id = analytics_events.assistant_id
-        and a.user_id = current_app_user_id()
+        and a.user_id::text = current_app_user_id()::text
     )
   )
   with check (
     exists (
       select 1 from assistants a
       where a.id = analytics_events.assistant_id
-        and a.user_id = current_app_user_id()
+        and a.user_id::text = current_app_user_id()::text
     )
   );

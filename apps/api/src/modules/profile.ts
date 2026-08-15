@@ -1,22 +1,13 @@
 import { Router } from "express";
 import { z } from "zod";
-import { createClient } from "@supabase/supabase-js";
 import type { Env } from "../config/env";
 import type { MemoryStore } from "../db/memory";
 import { authenticate } from "../middleware/auth";
 import { asyncHandler } from "../lib/async-handler";
 import type { AuthedRequest, UserRecord } from "../types";
+import { createSupabaseServerClient, isSupabaseServerConfigured } from "../services/supabase-server";
 
-const isSupabaseConfigured = () => {
-  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
-  return Boolean(url && !url.includes('placeholder'));
-};
-
-const getSupabaseClient = () => {
-  const url = process.env.SUPABASE_URL || 'https://irjvqukildhucqbfotux.supabase.co';
-  const key = process.env.SUPABASE_ADMIN_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_SA9Fx4epoTqtNdt0YCuN7g_gov6kD8M';
-  return createClient(url, key);
-};
+const isSupabaseConfigured = isSupabaseServerConfigured;
 
 const profileUpdateSchema = z.object({
   displayName: z.string().trim().max(120).optional(),
@@ -69,10 +60,11 @@ function profileResponse(user: UserRecord) {
 
 export function profileRouter(env: Env, store: MemoryStore) {
   const router = Router();
-  const supabase = getSupabaseClient();
+  const supabase = createSupabaseServerClient();
+  const useSupabase = env.nodeEnv !== "test" && isSupabaseConfigured();
 
   router.get(
-    "/profile",
+    "/",
     authenticate(env, store),
     asyncHandler(async (req: AuthedRequest, res) => {
       const userId = req.user?.id || "user-1";
@@ -81,7 +73,7 @@ export function profileRouter(env: Env, store: MemoryStore) {
 
       let stats = store.userProfileStats(user.id);
 
-      if (isSupabaseConfigured()) {
+      if (useSupabase) {
         try {
           const { data: dbProfile } = await supabase
             .from("user_profiles")
@@ -118,7 +110,7 @@ export function profileRouter(env: Env, store: MemoryStore) {
   );
 
   router.put(
-    "/profile",
+    "/",
     authenticate(env, store),
     asyncHandler(async (req: AuthedRequest, res) => {
       const input = profileUpdateSchema.parse(req.body);
@@ -133,7 +125,7 @@ export function profileRouter(env: Env, store: MemoryStore) {
       user.photoUrl = updatedPhoto;
       user.updatedAt = new Date().toISOString();
 
-      if (isSupabaseConfigured()) {
+      if (useSupabase) {
         try {
           await supabase
             .from("user_profiles")
