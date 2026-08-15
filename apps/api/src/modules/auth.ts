@@ -11,6 +11,7 @@ import { verifyFirebaseIdToken } from "../services/firebase-admin";
 import type { AuthUser, AuthedRequest } from "../types";
 import { z } from "zod";
 import { encryptToken, generateOAuthState } from "../lib/notion-crypto";
+import { createCipheriv, createDecipheriv, createHash, randomBytes } from "node:crypto";
 
 /* ---------- Login attempt tracking for account lockout ---------- */
 const MAX_LOGIN_ATTEMPTS = 5;
@@ -66,6 +67,47 @@ const firebaseSessionSchema = z.object({
 const authHandoffExchangeSchema = z.object({
   code: z.string().min(8).max(4096)
 });
+
+/**
+ * OAuth callbacks and handoff exchanges can land on different Vercel
+ * instances. Keep the short-lived handoff self-contained instead of relying
+ * on an in-memory map that only exists on one instance.
+ */
+const consumedHandoffs = new Map<string, number>();
+const HANDOFF_TTL_MS = 5 * 60 * 1000;
+
+function handoffKey(env: Env) {
+  return createHash("sha256").update(env.jwtAccessSecret).digest();
+}
+
+function createEncryptedHandoff(env: Env, input: { accessToken: string; refreshToken: string; user: AuthUser }) {
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", handoffKey(env), iv);
+  const payload = Buffer.from(JSON.stringify({ ...input, id: randomBytes(16).toString("hex"), exp: Date.now() + HANDOFF_TTL_MS }));
+  const encrypted = Buffer.concat([cipher.update(payload), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return [iv, tag, encrypted].map((part) => part.toString("base64url")).join(".");
+}
+
+function consumeEncryptedHandoff(env: Env, code: string) {
+  const [ivEncoded, tagEncoded, payloadEncoded] = code.split(".");
+  if (!ivEncoded || !tagEncoded || !payloadEncoded) return undefined;
+  try {
+    const decipher = createDecipheriv("aes-256-gcm", handoffKey(env), Buffer.from(ivEncoded, "base64url"));
+    decipher.setAuthTag(Buffer.from(tagEncoded, "base64url"));
+    const payload = JSON.parse(Buffer.concat([decipher.update(Buffer.from(payloadEncoded, "base64url")), decipher.final()]).toString("utf8")) as {
+      id?: string; exp?: number; accessToken?: string; refreshToken?: string; user?: AuthUser;
+    };
+    if (!payload.id || !payload.exp || payload.exp < Date.now() || !payload.accessToken || !payload.refreshToken || !payload.user) return undefined;
+    const alreadyConsumed = consumedHandoffs.get(payload.id);
+    if (alreadyConsumed) return undefined;
+    consumedHandoffs.set(payload.id, payload.exp);
+    for (const [id, expiresAt] of consumedHandoffs) if (expiresAt < Date.now()) consumedHandoffs.delete(id);
+    return { accessToken: payload.accessToken, refreshToken: payload.refreshToken, user: payload.user };
+  } catch {
+    return undefined;
+  }
+}
 
 function toAuthUser(user: {
   id: string;
@@ -265,7 +307,7 @@ export function authRouter(env: Env, store: MemoryStore) {
         const auth = tokenResponse(env, toAuthUser(user));
         // The callback must not put reusable credentials in the redirect. The
         // opaque handoff code is consumed exactly once by the web client.
-        redirect.searchParams.set("handoff", store.createWebAuthHandoff(auth));
+        redirect.searchParams.set("handoff", createEncryptedHandoff(env, auth));
         redirect.searchParams.set("provider", "google");
 
         const isValidReturnPath = (pathStr: string): boolean => {
@@ -295,7 +337,7 @@ export function authRouter(env: Env, store: MemoryStore) {
     "/handoff/exchange",
     asyncHandler(async (req, res) => {
       const input = authHandoffExchangeSchema.parse(req.body);
-      const handoff = store.consumeWebAuthHandoff(input.code);
+      const handoff = consumeEncryptedHandoff(env, input.code);
 
       if (!handoff || !handoff.accessToken || !handoff.refreshToken) {
         console.error("[Handoff Exchange Failed] Invalid handoff payload or missing tokens");
