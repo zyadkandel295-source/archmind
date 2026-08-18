@@ -11,6 +11,7 @@ import { useSessionStore } from "@/lib/session-store";
 import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 import { toast } from "@/components/ui/toast";
 import { fadeDown } from "@/lib/motion";
+import * as analytics from "@/lib/analytics";
 
 import { JellyfishIcon } from "@/components/jellyfish-logo";
 
@@ -48,6 +49,8 @@ export function Nav() {
     } catch {
       // Local session is still cleared below.
     } finally {
+      analytics.track("logout");
+      analytics.clearUser();
       clearSession();
       toast({ type: "success", title: "Signed out", message: "You have been signed out successfully." });
       router.push("/auth/login");

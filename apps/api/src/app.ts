@@ -161,11 +161,7 @@ export function createApp(options: AppOptions = {}) {
     res.json(base);
   });
 
-  // Handle site activity tracking events from the frontend
-  app.post("/api/site-activity", (req, res) => {
-    // Activity tracking could be wired to a DB or analytics service here
-    res.status(201).json({ recorded: true });
-  });
+  app.use("/api", analyticsRouter(env, store));
 
   // AI Chat API Endpoint (Under Development)
   app.post("/api/ai/chat", async (_req, res) => {
@@ -195,3 +191,4 @@ export function createApp(options: AppOptions = {}) {
 
   return { app, env, store };
 }
+

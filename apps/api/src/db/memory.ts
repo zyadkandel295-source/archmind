@@ -22,6 +22,7 @@ import { HttpError } from "../lib/http-error";
 import type { AssistantActionInput, AssistantActionUpdateInput, AssistantCreateInput, AssistantUpdateInput } from "@archmind/shared";
 import { emptyPlatformState, type PlatformState } from "../platform-types";
 import type { PlatformStateStore } from "./platform-store";
+import { RealAnalyticsEngine } from "../services/analytics-engine";
 
 function now() {
   return new Date().toISOString();
@@ -127,6 +128,7 @@ export class MemoryStore implements PlatformStateStore {
   private persistPath?: string;
   private dbPool?: Pool;
   readonly demoUserId: string;
+  readonly analyticsEngine = new RealAnalyticsEngine();
 
   constructor(options: MemoryStoreOptions = {}) {
     const isTestEnvironment = process.env.NODE_ENV === "test" || Boolean(process.env.VITEST);
@@ -136,6 +138,7 @@ export class MemoryStore implements PlatformStateStore {
     if (databaseSync && process.env.DATABASE_URL) {
       try {
         this.dbPool = new Pool({ connectionString: process.env.DATABASE_URL });
+        this.analyticsEngine.setPool(this.dbPool);
         this.loadFromPg().catch((err) => {
           console.warn("[MemoryStore] loadFromPg initial sync warning:", err instanceof Error ? err.message : err);
         });

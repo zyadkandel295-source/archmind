@@ -10,6 +10,7 @@ import { establishWorkspaceSession } from "@/lib/session-bridge";
 import { readSessionCredential } from "@/lib/session-keys";
 import dynamic from "next/dynamic";
 import { useSessionStore } from "@/lib/session-store";
+import * as analytics from "@/lib/analytics";
 
 const FloatingJellyfishBackground = dynamic(
   () => import("@/components/floating-jellyfish-bg").then((mod) => mod.FloatingJellyfishBackground),
@@ -22,6 +23,22 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const setSession = useSessionStore((state) => state.setSession);
+  const accessToken = useSessionStore((state) => state.accessToken);
+  const sessionEmail = useSessionStore((state) => state.email);
+
+  // Initialize GA4 once on mount
+  useEffect(() => {
+    analytics.init();
+  }, []);
+
+  // Set or clear GA4 User-ID when the session changes
+  useEffect(() => {
+    if (accessToken && sessionEmail) {
+      void analytics.identify(sessionEmail);
+    } else {
+      analytics.clearUser();
+    }
+  }, [accessToken, sessionEmail]);
   const immersive =
     pathname === "/" ||
     pathname.startsWith("/auth/") ||

@@ -12,6 +12,7 @@ import {
 } from "firebase/auth";
 import { KeyRound, LogIn, Mail, UserPlus } from "lucide-react";
 import { recordActivity } from "@/lib/activity";
+import * as analytics from "@/lib/analytics";
 import { establishWorkspaceSession } from "@/lib/session-bridge";
 import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 import { getPlatformBaseUrl } from "@/lib/platform";
@@ -95,6 +96,7 @@ export function LoginForm() {
             photoURL: session.user.photoUrl
           });
           recordActivity("google_signin_completed", { email: session.user.email, handoff: true });
+          analytics.track("login", { method: "google" });
           router.replace(destination && destination.startsWith("/") ? destination : "/dashboard");
         } catch (err) {
           const friendlyMsg = signInErrorMessage(err);
@@ -113,6 +115,7 @@ export function LoginForm() {
     if (legacySession && legacyRenewal && legacyEmail) {
       setSession({ accessToken: legacySession, refreshToken: legacyRenewal, email: legacyEmail });
       recordActivity("google_signin_completed", { email: legacyEmail, legacy: true });
+      analytics.track("login", { method: "google" });
       const destination = params.get("returnTo");
       router.replace(destination && destination.startsWith("/") ? destination : "/dashboard");
     }
@@ -195,6 +198,7 @@ export function LoginForm() {
 
       await completeSignIn(credential.user, "password");
       recordActivity(mode === "login" ? "signin_completed" : "signup_completed", { email: credential.user.email });
+      analytics.track(mode === "login" ? "login" : "sign_up", { method: "email_password" });
       toast({
         type: "success",
         title: mode === "login" ? "Welcome back" : "Account created",
