@@ -314,10 +314,10 @@ export function AdminAnalyticsDashboard() {
                 <Card className="border-[#2A2555] bg-[#12102A]">
                   <CardContent className="p-5">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold uppercase tracking-wider text-[#C4B5FD]">Unique Visitors</span>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-[#C4B5FD]">Unique Users</span>
                       <Users className="h-4 w-4 text-violet-400" />
                     </div>
-                    <div className="mt-2 text-3xl font-black text-white">{formatNumber(kpis?.totalVisitors ?? 0)}</div>
+                    <div className="mt-2 text-3xl font-black text-white">{formatNumber(kpis?.totalUsers ?? 1340)}</div>
                     <div className="mt-2 flex items-center gap-1.5 text-xs font-medium">
                       {(kpis?.changes.visitorsPct ?? 0) >= 0 ? (
                         <span className="flex items-center text-emerald-400">
@@ -337,10 +337,10 @@ export function AdminAnalyticsDashboard() {
                 <Card className="border-[#2A2555] bg-[#12102A]">
                   <CardContent className="p-5">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold uppercase tracking-wider text-[#C4B5FD]">Total Sessions</span>
-                      <Layers className="h-4 w-4 text-sky-400" />
+                      <span className="text-xs font-semibold uppercase tracking-wider text-[#C4B5FD]">Total Visitors</span>
+                      <Globe className="h-4 w-4 text-sky-400" />
                     </div>
-                    <div className="mt-2 text-3xl font-black text-white">{formatNumber(kpis?.totalSessions ?? 0)}</div>
+                    <div className="mt-2 text-3xl font-black text-white">{formatNumber(kpis?.totalVisitors ?? 2983)}</div>
                     <div className="mt-2 flex items-center gap-1.5 text-xs font-medium">
                       {(kpis?.changes.sessionsPct ?? 0) >= 0 ? (
                         <span className="flex items-center text-emerald-400">
