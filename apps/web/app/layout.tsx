@@ -12,7 +12,7 @@ const inter = Inter({
   variable: "--font-inter"
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://agentia.ai";
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://agentia-ai.cloud";
 
 export const viewport: Viewport = {
   themeColor: "#0A071E",
