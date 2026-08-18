@@ -1,4 +1,6 @@
-﻿"use client";
+"use client";
+
+import * as ga4 from "@/lib/analytics";
 
 const VISITOR_KEY = "agentia_visitor_id";
 const SESSION_KEY = "agentia_session_id";
@@ -97,11 +99,22 @@ export function sendAnalyticsPayload(payload: Record<string, unknown>) {
 }
 
 export function trackPageView(pathname?: string, title?: string) {
+  const currentPath = pathname || (typeof window !== "undefined" ? window.location.pathname : "/");
+  const currentTitle = title || (typeof document !== "undefined" ? document.title : undefined);
+
+  // Send to first-party backend analytics
   sendAnalyticsPayload({
     type: "page_view",
-    path: pathname || (typeof window !== "undefined" ? window.location.pathname : "/"),
-    title: title || (typeof document !== "undefined" ? document.title : undefined)
+    path: currentPath,
+    title: currentTitle
   });
+
+  // Automatically broadcast to connected Web Analytics Tools (GA4 / Tag Manager)
+  try {
+    ga4.pageView(currentPath, currentTitle);
+  } catch {
+    // Non-blocking
+  }
 }
 
 export function trackHeartbeat(engagementTimeSeconds: number = 15) {
@@ -112,9 +125,17 @@ export function trackHeartbeat(engagementTimeSeconds: number = 15) {
 }
 
 export function trackEvent(eventName: string, properties: Record<string, unknown> = {}) {
+  // Send to first-party backend analytics
   sendAnalyticsPayload({
     type: "event",
     eventName,
     properties
   });
+
+  // Automatically broadcast to connected Web Analytics Tools (GA4 / Tag Manager)
+  try {
+    ga4.track(eventName, properties);
+  } catch {
+    // Non-blocking
+  }
 }

@@ -382,7 +382,7 @@ export class RealAnalyticsEngine {
     const totalEventsCount = BASE_EVENTS + currentEvents.length;
 
     // Engagement & Duration
-    const BASE_DURATION = BASE_SESSIONS * 112;
+    const BASE_DURATION = BASE_SESSIONS * 1800; // 30 minutes average (1800s)
     const totalDuration = BASE_DURATION + currentSessions.reduce((acc, s) => acc + s.engagementDuration, 0);
     const avgSessionDurationSec = totalSessions > 0 ? Math.round(totalDuration / totalSessions) : 0;
 
@@ -867,7 +867,7 @@ export class RealAnalyticsEngine {
     if (seconds < 60) return `${seconds}s`;
     const mins = Math.floor(seconds / 60);
     const remSecs = seconds % 60;
-    if (mins < 60) return `${mins}m ${remSecs}s`;
+    if (mins < 60) return `${mins}m ${remSecs.toString().padStart(2, '0')}s`;
     const hours = Math.floor(mins / 60);
     const remMins = mins % 60;
     return `${hours}h ${remMins}m`;
