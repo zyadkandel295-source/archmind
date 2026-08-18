@@ -22,7 +22,6 @@
 //   • Deduplicates consecutive identical page_view events
 // ---------------------------------------------------------------------------
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 // ---------- types ----------------------------------------------------------
 
@@ -100,9 +99,8 @@ function injectGtagScript(id: string) {
   document.head.appendChild(script);
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    // eslint-disable-next-line prefer-rest-params
-    window.dataLayer.push(arguments);
+  window.gtag = function gtag(...args: unknown[]) {
+    window.dataLayer.push(args);
   };
 
   window.gtag("js", new Date());
