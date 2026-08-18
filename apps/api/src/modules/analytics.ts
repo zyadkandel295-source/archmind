@@ -1,27 +1,20 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 import type { Env } from "../config/env";
 import type { MemoryStore } from "../db/memory";
 import { asyncHandler } from "../lib/async-handler";
 import { assertFound, HttpError } from "../lib/http-error";
 import { authenticate, optionalAuth } from "../middleware/auth";
 import type { AuthedRequest } from "../types";
+import { isPlatformAdmin } from "./admin";
 
 function authorizeAdminAccess(env: Env) {
   return (req: AuthedRequest, _res: import("express").Response, next: import("express").NextFunction) => {
     if (!req.user) {
       return next(new HttpError(401, "Authentication required for private analytics.", "UNAUTHORIZED"));
     }
-    const email = req.user.email?.toLowerCase() || "";
+    const email = req.user.email;
     const plan = req.user.plan;
-    const isAllowed =
-      Boolean(env.demoAuth) ||
-      plan === "enterprise" ||
-      plan === "pro" ||
-      email.endsWith("@archmind.ai") ||
-      email.endsWith("@archmind.dev") ||
-      email.includes("admin");
-
-    if (!isAllowed) {
+    if (!isPlatformAdmin(email, plan, env.demoAuth)) {
       return next(new HttpError(403, "Administrator access required.", "ADMIN_ACCESS_REQUIRED"));
     }
     return next();
@@ -112,12 +105,37 @@ export function analyticsRouter(env: Env, store: MemoryStore) {
   );
 
   // ---------------------------------------------------------------------------
-  // PRIVATE ADMIN DASHBOARD ANALYTICS ENDPOINTS (Authenticated & Authorized)
+  // USER OVERVIEW ENDPOINT (Available to ALL authenticated users for their dashboard)
+  // ---------------------------------------------------------------------------
+  router.get(
+    "/overview",
+    authenticate(env, store),
+    asyncHandler(async (req: AuthedRequest, res) => {
+      const userOverview = store.analyticsOverview(req.user!.id);
+      const email = req.user?.email;
+      const plan = req.user?.plan;
+
+      // If user is admin (zyadkandel295@gmail.com), also include site-wide analytics
+      if (isPlatformAdmin(email, plan, env.demoAuth)) {
+        const range = (req.query.range as any) || "30d";
+        const startDate = req.query.startDate as string | undefined;
+        const endDate = req.query.endDate as string | undefined;
+        const siteData = store.analyticsEngine.getOverview({ range, startDate, endDate });
+        return res.json({ ...siteData, overview: userOverview });
+      }
+
+      // For standard users, return their personal dashboard metrics cleanly
+      return res.json({ overview: userOverview });
+    })
+  );
+
+  // ---------------------------------------------------------------------------
+  // PRIVATE ADMIN DASHBOARD ANALYTICS ENDPOINTS (Restricted to zyadkandel295@gmail.com)
   // ---------------------------------------------------------------------------
   const adminAuth = [authenticate(env, store), authorizeAdminAccess(env)];
 
   router.get(
-    "/overview",
+    "/admin/overview",
     adminAuth,
     asyncHandler(async (req: AuthedRequest, res) => {
       const range = (req.query.range as any) || "30d";

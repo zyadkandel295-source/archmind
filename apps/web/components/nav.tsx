@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2, LogOut, UserCircle } from "lucide-react";
@@ -15,13 +15,11 @@ import * as analytics from "@/lib/analytics";
 
 import { JellyfishIcon } from "@/components/jellyfish-logo";
 
-const links = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/ai-base", label: "AI Base ✨" },
-  { href: "/assistants/new", label: "Builder" },
-  { href: "/analytics", label: "Activity" },
-  { href: "/profile", label: "Profile" },
-  { href: "/credits", label: "Credits" }
+const ADMIN_EMAILS = [
+  "zyadkandel295@gmail.com",
+  "zyad.2524033@stemelsadat.moe.edu.eg",
+  "demo@archmind.dev",
+  "demo@archmind.ai"
 ];
 
 export function Nav() {
@@ -38,6 +36,28 @@ export function Nav() {
   const displayName = useSessionStore((state) => state.displayName);
   const photoURL = useSessionStore((state) => state.photoURL);
   const [loggingOut, setLoggingOut] = useState(false);
+
+  const isAdmin = useMemo(() => {
+    if (!email) return false;
+    const clean = email.toLowerCase().trim();
+    return ADMIN_EMAILS.includes(clean) || clean.endsWith("@archmind.ai") || clean.endsWith("@archmind.dev");
+  }, [email]);
+
+  const navLinks = useMemo(() => {
+    const base = [
+      { href: "/dashboard", label: "Dashboard" },
+      { href: "/ai-base", label: "AI Base ✨" },
+      { href: "/assistants/new", label: "Builder" },
+      { href: "/profile", label: "Profile" },
+      { href: "/credits", label: "Credits" }
+    ];
+
+    if (isAdmin) {
+      base.splice(3, 0, { href: "/admin", label: "Analytics" });
+    }
+
+    return base;
+  }, [isAdmin]);
 
   async function logout() {
     if (loggingOut) return;
@@ -63,69 +83,86 @@ export function Nav() {
       variants={fadeDown}
       initial="hidden"
       animate="visible"
-      className="sticky top-0 z-40 border-b border-[#2A3545] bg-[#0F141C] text-[#F4F7FB] shadow-lg shadow-black/20"
+      className="sticky top-0 z-40 border-b border-[#2A2555] bg-[#0A071E]/80 backdrop-blur-xl"
     >
-      <div className="mx-auto flex min-h-[4rem] max-w-7xl flex-wrap items-center justify-between gap-3 px-[clamp(1rem,3vw,2rem)] py-3">
-        <Link href="/" className="interactive-lift flex min-w-0 items-center gap-3 text-[clamp(1.05rem,2.4vw,1.25rem)] font-black tracking-normal">
-          <motion.span
-            whileHover={{ rotate: 8, scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 16 }}
-            className="grid size-[clamp(2.75rem,5vw,3.25rem)] shrink-0 place-items-center overflow-hidden rounded-xl border border-sky-400/50 bg-slate-950 p-0.5 shadow-lg shadow-sky-500/30"
-          >
-            <JellyfishIcon className="h-full w-full drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" />
-          </motion.span>
-          <span>
-            AGENT<span className="text-sky-400">IA</span>
-          </span>
-        </Link>
-
-        <nav className="hidden flex-wrap items-center gap-1 md:flex">
-          {links.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "relative rounded-lg px-[clamp(0.7rem,1.8vw,0.9rem)] py-2 text-[clamp(0.82rem,1.7vw,0.9rem)] font-semibold transition duration-200",
-                  active
-                    ? "border border-blue-400/60 bg-[#10233F] text-[#D9E8FF] nav-link-active"
-                    : "text-[#B7C0CE] hover:bg-[#232D3B] hover:text-white"
-                )}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <Link
-            href="/profile"
-            className={cn(
-              "interactive-lift flex min-w-0 items-center gap-2 rounded-lg border border-[#2A3545] bg-[#151B24] px-2 py-1.5 text-sm font-bold text-[#B7C0CE] transition hover:border-[#3A4658] hover:bg-[#232D3B] hover:text-white sm:px-2.5",
-              pathname === "/profile" && "border-blue-400/60 bg-[#10233F] text-[#D9E8FF]"
-            )}
-            title={mounted ? (displayName || email || "My profile") : "My profile"}
-          >
-            {mounted && photoURL ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={photoURL} alt="" className="size-7 shrink-0 rounded-full object-cover" />
-            ) : (
-              <UserCircle className="h-7 w-7" />
-            )}
-            <span className="hidden max-w-[120px] truncate sm:inline">{mounted ? (displayName || email || "Profile") : "Profile"}</span>
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="grid h-10 w-10 place-items-center rounded-xl border border-violet-500/30 bg-violet-600/20 text-white shadow-lg shadow-violet-600/20 transition-all group-hover:scale-105 group-hover:border-violet-400 group-hover:bg-violet-600/30">
+              <JellyfishIcon className="h-6 w-6 text-violet-300" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-black tracking-tight text-white">AGENTIA</span>
+                <span className="rounded-md border border-violet-500/30 bg-violet-500/10 px-1.5 py-0.5 text-[10px] font-bold text-violet-300">
+                  AI PLATFORM
+                </span>
+              </div>
+              <p className="text-[11px] font-medium text-[#C4B5FD]">Autonomous Intelligence</p>
+            </div>
           </Link>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => void logout()}
-            disabled={loggingOut}
-            className="grid size-9 shrink-0 place-items-center rounded-lg border border-[#2A3545] bg-[#151B24] text-[#B7C0CE] transition hover:border-[#3A4658] hover:bg-[#232D3B] hover:text-white disabled:text-[#8C98AA]"
-            aria-label="Log out"
-          >
-            {loggingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
-          </motion.button>
+
+          <nav className="hidden items-center gap-1 md:flex">
+            {navLinks.map((item) => {
+              const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
+                    active
+                      ? "bg-violet-600 text-white shadow-md shadow-violet-600/30"
+                      : "text-[#C4B5FD] hover:bg-[#1A1638] hover:text-white"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {mounted && email ? (
+            <div className="flex items-center gap-3">
+              <Link href="/profile" className="flex items-center gap-2.5 rounded-xl border border-[#2A2555] bg-[#12102A] px-3 py-1.5 transition-colors hover:border-violet-500/40">
+                {photoURL ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={photoURL} alt="" className="h-6 w-6 rounded-full object-cover" />
+                ) : (
+                  <UserCircle className="h-6 w-6 text-violet-400" />
+                )}
+                <div className="hidden text-left sm:block">
+                  <p className="text-xs font-bold text-white truncate max-w-[120px]">{displayName || email.split("@")[0]}</p>
+                  <p className="text-[10px] text-[#C4B5FD] truncate max-w-[120px]">{email}</p>
+                </div>
+              </Link>
+              <button
+                onClick={logout}
+                disabled={loggingOut}
+                className="grid h-9 w-9 place-items-center rounded-xl border border-[#2A2555] bg-[#12102A] text-[#C4B5FD] transition-colors hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-300"
+                title="Sign out"
+              >
+                {loggingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/auth/login"
+                className="rounded-xl border border-[#2A2555] bg-[#12102A] px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-[#1A1638]"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/auth/login?mode=signup"
+                className="rounded-xl bg-violet-600 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-violet-600/30 transition-all hover:bg-violet-500"
+              >
+                Get Started
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </motion.header>

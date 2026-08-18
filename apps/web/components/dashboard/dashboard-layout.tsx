@@ -121,9 +121,9 @@ export function AdvancedDashboard() {
                       View All Assistants
                     </button>
                   </Link>
-                  <Link href="/analytics" className="block">
+                  <Link href="/ai-base" className="block">
                     <button className="w-full py-2 px-4 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-lg text-yellow-300 hover:bg-yellow-500/20 transition-colors text-left font-medium">
-                      Analytics Report
+                      AI Knowledge Base
                     </button>
                   </Link>
                 </div>

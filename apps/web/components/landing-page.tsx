@@ -7,6 +7,7 @@ import {
   Activity,
   ArrowRight,
   Bot,
+  Sparkles,
   FileSearch,
   Gauge,
   Globe2,
