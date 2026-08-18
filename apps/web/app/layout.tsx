@@ -5,6 +5,7 @@ import "./globals.css";
 import { AppChrome } from "@/components/app-chrome";
 import { ActivityTracker } from "@/components/activity-tracker";
 import { DataPersistenceProvider } from "@/lib/context/data-persistence-context";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ActivityTracker />
           <AppChrome>{children}</AppChrome>
         </DataPersistenceProvider>
+        <Analytics />
       </body>
     </html>
   );
