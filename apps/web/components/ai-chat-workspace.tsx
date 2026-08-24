@@ -268,7 +268,15 @@ function readStoredSessions(assistantId?: string): ChatSession[] {
   try {
     const raw = window.localStorage.getItem(sessionsKey(assistantId));
     const parsed = raw ? (JSON.parse(raw) as ChatSession[]) : [];
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : [createSession()];
+    if (!Array.isArray(parsed) || parsed.length === 0) return [createSession()];
+    return parsed.map((session) => ({
+      ...session,
+      // Remove the legacy error left behind by a deleted assistant. The chat
+      // now recovers automatically instead of preserving that dead-end state.
+      messages: (session.messages ?? []).filter(
+        (message) => !/Assistant not found\. Create or select an assistant from your dashboard\./i.test(message.content)
+      )
+    }));
   } catch {
     return [createSession()];
   }
@@ -323,6 +331,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
   const [voiceStatus, setVoiceStatus] = useState<string>();
   const [assistantMeta, setAssistantMeta] = useState<AssistantMeta>();
+  const [fallbackToWorkspace, setFallbackToWorkspace] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const activeIdRef = useRef(activeId);
@@ -363,6 +372,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     setSessions(readStoredSessions(assistantId));
     setActiveId(window.localStorage.getItem(activeKey(assistantId)) ?? "");
     setPinnedIds(readPinnedSessionIds(assistantId));
+    setFallbackToWorkspace(false);
   }, [assistantId]);
 
   useEffect(() => {
@@ -408,12 +418,13 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   useEffect(() => {
     fetch(`${getPlatformBaseUrl()}/api/health`)
       .then((response) => response.json())
-      .then((health: { dependencies?: { llm?: boolean } }) => setApiReady(Boolean(health.dependencies?.llm)))
+      .then((health: { assistantReady?: boolean }) => setApiReady(Boolean(health.assistantReady)))
       .catch(() => setApiReady(null));
   }, []);
 
   useEffect(() => {
     if (!assistantId) return;
+    let active = true;
     setHistoryLoading(true);
     const credential = readSessionCredential();
     const headers = new Headers();
@@ -428,6 +439,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
           )
       )
       .then((data: { assistant?: AssistantMeta; openingExperience?: AssistantOpeningExperience } | undefined) => {
+        if (!active) return;
         if (data?.assistant) {
           setAssistantMeta({
             ...data.assistant,
@@ -440,13 +452,32 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                 starterPrompts: data.assistant.starterPrompts
               })
           });
+        } else {
+          setFallbackToWorkspace(true);
+          setAssistantMeta({
+            name: "AGENTIA Assistant",
+            description: "A workspace assistant ready to help.",
+            openingExperience: generateAssistantOpeningExperience({
+              name: "AGENTIA Assistant",
+              description: "A workspace assistant ready to help."
+            })
+          });
         }
       })
-      .catch(() => undefined);
+      .catch(() => {
+        if (!active) return;
+        setFallbackToWorkspace(true);
+      })
+      .finally(() => {
+        if (active) setHistoryLoading(false);
+      });
+    return () => {
+      active = false;
+    };
   }, [assistantId]);
 
   useEffect(() => {
-    if (!assistantId) return;
+    if (!assistantId || fallbackToWorkspace) return;
     const credential = readSessionCredential();
     const headers = new Headers();
     if (credential) headers.set("Authorization", `Bearer ${credential}`);
@@ -474,7 +505,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         toast({ type: "error", title: "Chat history failed to load", message: "Your local draft is still available." });
       })
       .finally(() => setHistoryLoading(false));
-  }, [assistantId]);
+  }, [assistantId, fallbackToWorkspace]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -619,7 +650,8 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
       if (!hasFiles) headers.set("Content-Type", "application/json");
       if (credential) headers.set("Authorization", `Bearer ${credential}`);
       const lastUserMessage = [...messages].reverse().find((message) => message.role === "user");
-      const desktopBridge = assistantId ? getDesktopBridge() : undefined;
+      const useAssistantRoute = Boolean(assistantId && !fallbackToWorkspace);
+      const desktopBridge = useAssistantRoute ? getDesktopBridge() : undefined;
       if (desktopBridge && !hasFiles) {
         const result = await desktopBridge.chat({
           message: lastUserMessage?.content ?? "",
@@ -640,29 +672,33 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         }));
         return;
       }
-      const endpoint = assistantId ? `/api/assistants/${assistantId}/chat` : "/api/chat";
-      const payload = assistantId
+      const endpoint = useAssistantRoute ? `/api/assistants/${assistantId}/chat` : "/api/chat";
+      const assistantPayload = {
+        message: lastUserMessage?.content ?? "",
+        attachments: lastUserMessage?.attachments ?? [],
+        conversationId: activeSession.conversationId,
+        sessionId: activeSession.id,
+        responseLength: "balanced",
+        language: "English",
+        webSearch: webSearchActive
+      };
+      const workspacePayload = {
+        model: activeSession.model,
+        temperature,
+        messages: messages
+          .filter((message) => message.content.trim())
+          .slice(-24)
+          .map((message) => ({
+            role: message.role,
+            content: message.content,
+            attachments: message.attachments ?? []
+          }))
+      };
+      const payload = useAssistantRoute
         ? {
-          message: lastUserMessage?.content ?? "",
-          attachments: lastUserMessage?.attachments ?? [],
-          conversationId: activeSession.conversationId,
-          sessionId: activeSession.id,
-          responseLength: "balanced",
-          language: "English",
-          webSearch: webSearchActive
+          ...assistantPayload
         }
-        : {
-          model: activeSession.model,
-          temperature,
-          messages: messages
-            .filter((message) => message.content.trim())
-            .slice(-24)
-            .map((message) => ({
-              role: message.role,
-              content: message.content,
-              attachments: message.attachments ?? []
-            }))
-        };
+        : workspacePayload;
 
       let body: BodyInit;
       if (hasFiles) {
@@ -674,12 +710,25 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         body = JSON.stringify(payload);
       }
 
-      const response = await fetch(`${getPlatformBaseUrl()}${endpoint}`, {
+      let response = await fetch(`${getPlatformBaseUrl()}${endpoint}`, {
         method: "POST",
         headers,
         signal: controller.signal,
         body
       });
+
+      if (response.status === 404 && useAssistantRoute) {
+        setFallbackToWorkspace(true);
+        const fallbackHeaders = new Headers();
+        fallbackHeaders.set("Content-Type", "application/json");
+        if (credential) fallbackHeaders.set("Authorization", `Bearer ${credential}`);
+        response = await fetch(`${getPlatformBaseUrl()}/api/chat`, {
+          method: "POST",
+          headers: fallbackHeaders,
+          signal: controller.signal,
+          body: JSON.stringify(workspacePayload)
+        });
+      }
 
       if (!response.ok || !response.body) {
         const errorPayload = (await response.json().catch(() => null)) as { error?: { message?: string } } | null;

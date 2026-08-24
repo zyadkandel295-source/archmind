@@ -57,7 +57,7 @@ export function ChatInterface({
 
     // Generate assistant response
     setTimeout(async () => {
-      const assistantReply = `I am ${assistant.name}, an intelligent agent on AGENTIA, powered by PHOENIX 1.0, developed by Zyad Kandel. I have received your command: "${userText}". How else may I assist you today?`;
+      const assistantReply = `I am ${assistant.name}, your AGENTIA assistant. I have received your message: "${userText}". How else may I assist you today?`;
       if (onMessageSend) {
         onMessageSend({ role: 'assistant', content: assistantReply });
       } else if (activeChatId) {
@@ -97,7 +97,7 @@ export function ChatInterface({
                 Start commanding {assistant.name}
               </h3>
               <p className="text-slate-400 text-xs leading-relaxed">
-                Powered by PHOENIX 1.0 developed by Zyad Kandel. Send commands and I&apos;ll execute operations on your systems.
+                Send a request and I&apos;ll help with your workspace tasks.
               </p>
             </div>
           </motion.div>

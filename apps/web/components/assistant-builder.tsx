@@ -163,7 +163,7 @@ export function AssistantBuilder() {
                     <Textarea value={systemPrompt} onChange={(event) => setSystemPrompt(event.target.value)} className="min-h-44" />
                   </div>
                   <div>
-                    <label className="mb-2 block text-sm font-semibold">Response Engine</label>
+                    <label className="mb-2 block text-sm font-semibold">Response profile</label>
                     <Select value={engine} onChange={(event) => setEngine(event.target.value)}>
                       {ENGINE_OPTIONS.map((option) => (
                         <option key={option.tier} value={option.value}>

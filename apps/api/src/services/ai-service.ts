@@ -16,7 +16,7 @@ export interface AiChoice {
 }
 
 export const AI_PROVIDERS_UNAVAILABLE_MESSAGE =
-  "AI chat is not configured yet. Add OPENROUTER_API_KEY to the server environment and restart the API.";
+  "The assistant service is not ready yet. Please try again shortly.";
 
 const OPENROUTER_CHAT_URL = "https://openrouter.ai/api/v1/chat/completions";
 
@@ -27,6 +27,15 @@ type OpenRouterResponse = {
 
 function extractUserMessage(messages: AiMessage[]): string {
   return [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
+}
+
+function resolveConfiguredModel(requestedModel: string | undefined, env: Env) {
+  // Browser clients only send opaque response-profile values. Keep the actual
+  // configured runtime choice on the server and never expose it in the UI.
+  if (!requestedModel || ["standard", "reasoning", "specialist"].includes(requestedModel)) {
+    return env.openrouterDefaultModel;
+  }
+  return requestedModel;
 }
 
 export function detectTaskType(message: string): TaskType {
@@ -46,7 +55,7 @@ export function chooseAiModel(
 
   return {
     provider: _env.openrouterApiKey ? "openrouter" : "under_development",
-    model: assistantConfig?.model || _env.openrouterDefaultModel || "qwen/qwen3-coder",
+    model: resolveConfiguredModel(assistantConfig?.model, _env),
     taskType,
     reason: assistantConfig?.model ? "assistant_model" : "default_model"
   };
@@ -96,15 +105,15 @@ export async function generateAiResponse(input: {
     });
     const payload = (await response.json().catch(() => ({}))) as OpenRouterResponse;
     if (!response.ok) {
-      throw new Error(payload.error?.message || `OpenRouter request failed (${response.status})`);
+      throw new Error(payload.error?.message || `Assistant request failed (${response.status})`);
     }
     const content = payload.choices?.[0]?.message?.content;
     const answer = Array.isArray(content) ? content.map((part) => part.text ?? "").join("") : content;
-    if (!answer?.trim()) throw new Error("OpenRouter returned an empty response.");
+    if (!answer?.trim()) throw new Error("The assistant returned an empty response.");
     return answer.trim();
   } catch (error) {
-    const detail = error instanceof Error ? error.message : "Unknown provider error";
-    throw new Error(`AI provider error: ${detail}`);
+    const detail = error instanceof Error ? error.message : "Unknown service error";
+    throw new Error(`Assistant service error: ${detail}`);
   }
 }
 

@@ -139,7 +139,12 @@ export function createApp(options: AppOptions = {}) {
   });
 
   app.get("/api/health", (_req, res) => {
-    const base = { ok: true, service: "agentia-api", uptime: Math.floor(process.uptime()) };
+    const base = {
+      ok: true,
+      service: "agentia-api",
+      uptime: Math.floor(process.uptime()),
+      assistantReady: Boolean(env.openrouterApiKey)
+    };
 
     // Only expose dependency status in non-production environments
     if (env.nodeEnv !== "production") {
@@ -151,9 +156,7 @@ export function createApp(options: AppOptions = {}) {
         dependencies: {
           postgres: Boolean(env.databaseUrl),
           redis: Boolean(env.redisUrl),
-          llmProvider: env.llmProvider,
-          llm: Boolean(env.openrouterApiKey),
-          openrouter: Boolean(env.openrouterApiKey),
+          assistantService: Boolean(env.openrouterApiKey),
           firebaseAdmin: Boolean(env.firebaseProjectId && env.firebaseClientEmail && env.firebasePrivateKey),
           stripe: Boolean(env.stripeSecretKey),
           s3: Boolean(env.s3Bucket && env.s3Region)
@@ -166,10 +169,10 @@ export function createApp(options: AppOptions = {}) {
 
   app.use("/api", analyticsRouter(env, store));
 
-  // OpenAI-compatible-style chat endpoint for integrations. The API key stays server-side.
+  // Authenticated chat endpoint. Service credentials always remain server-side.
   app.post("/api/ai/chat", (req, res, next) => {
     if (!env.openrouterApiKey || env.llmProvider !== "openrouter") {
-      return res.status(503).json({ success: false, errorCode: "MODEL_UNAVAILABLE", message: AI_PROVIDERS_UNAVAILABLE_MESSAGE });
+      return res.status(503).json({ success: false, errorCode: "ASSISTANT_UNAVAILABLE", message: AI_PROVIDERS_UNAVAILABLE_MESSAGE });
     }
     return authenticate(env, store)(req, res, next);
   }, async (req, res, next) => {
@@ -181,7 +184,7 @@ export function createApp(options: AppOptions = {}) {
         temperature: input.temperature,
         assistantConfig: input.model ? { model: input.model } : undefined
       });
-      return res.status(200).json({ success: true, model: input.model ?? env.openrouterDefaultModel, answer });
+      return res.status(200).json({ success: true, answer });
     } catch (error) {
       next(error);
     }

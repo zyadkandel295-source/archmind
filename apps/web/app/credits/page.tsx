@@ -27,37 +27,34 @@ export default function CreditsPage() {
             </div>
           </section>
 
-          {/* PHOENIX 1.0 */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-blue-300 mb-4">AI Engine</h2>
+            <h2 className="text-2xl font-semibold text-blue-300 mb-4">Platform capabilities</h2>
             <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
-              <p className="text-lg font-semibold text-white mb-2">PHOENIX 1.0</p>
+              <p className="text-lg font-semibold text-white mb-2">Built for useful work</p>
               <p className="text-blue-200/80 mb-4">
-                PHOENIX 1.0 is an advanced AI model powering all intelligent capabilities in AGENTIA. Built on the open-source Qwen Coder foundation architecture, it was extensively trained and fine-tuned by Zyad Kandel on domain-specific datasets and custom function-calling algorithms.
+                AGENTIA helps people plan, research, build, and organize work through focused assistants and knowledge bases.
               </p>
               <ul className="list-disc list-inside text-blue-200/70 space-y-2">
-                <li>Foundation: Open-source Qwen Coder architecture</li>
-                <li>Trained on specialized code, logic, and function-calling datasets</li>
-                <li>Custom execution algorithms for precise system operations</li>
-                <li>Advanced natural language understanding and multi-turn session support</li>
+                <li>Focused assistants for different kinds of work</li>
+                <li>Knowledge-aware conversations and document synthesis</li>
+                <li>Multi-step planning, coding, and technical problem-solving</li>
+                <li>Private workspaces with multi-turn conversation support</li>
               </ul>
             </div>
           </section>
 
-          {/* PHOENIX 1.0 Model */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-blue-300 mb-4">Model Details</h2>
+            <h2 className="text-2xl font-semibold text-blue-300 mb-4">Workspace experience</h2>
             <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
-              <p className="text-lg font-semibold text-white mb-2">PHOENIX 1.0 Advanced Fine-Tuned Model</p>
+              <p className="text-lg font-semibold text-white mb-2">Make an assistant your own</p>
               <p className="text-blue-200/80 mb-4">
-                Renamed and optimized as PHOENIX 1.0 by developer Zyad Kandel, this specialized model excels at:
+                Start with a role, add clear instructions and sources, then refine the assistant as your work changes.
               </p>
               <ul className="list-disc list-inside text-blue-200/70 space-y-2">
-                <li>Automated agent deployment and precise function calling</li>
-                <li>Specialized algorithms for computer and system control</li>
-                <li>Knowledge integration (RAG) and document synthesis</li>
-                <li>Real-time system operation processing</li>
-                <li>Multi-domain programming and technical reasoning</li>
+                <li>Custom instructions, tone, and starter prompts</li>
+                <li>Dedicated source collections for grounded answers</li>
+                <li>Downloadable code and Markdown files when requested</li>
+                <li>Specialist suggestions when a request needs a different focus</li>
               </ul>
             </div>
           </section>

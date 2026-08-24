@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-2 text-sm text-slate-300">
               <li><strong className="text-slate-100">Account Credentials:</strong> Email address, display name, and authentication tokens provided when signing in directly or via Google OAuth.</li>
-              <li><strong className="text-slate-100">AI Prompt & Workflow Data:</strong> Messages, prompts, and document context submitted to AGENTIA for execution by our AI model engine.</li>
+              <li><strong className="text-slate-100">Assistant Prompt & Workflow Data:</strong> Messages, prompts, and document context submitted to AGENTIA so your assistants can complete requested work.</li>
               <li><strong className="text-slate-100">Technical Logs & Usage:</strong> IP address, browser metadata, rate limits, and daily execution credit usage for platform security and quota management.</li>
             </ul>
           </section>
@@ -59,16 +59,16 @@ export default function PrivacyPolicyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-2 text-sm text-slate-300">
               <li>Authenticating user sessions and safeguarding account security.</li>
-              <li>Routing AI requests through our secure AI engine infrastructure.</li>
+              <li>Routing assistant requests through our secure processing infrastructure.</li>
               <li>Enforcing per-user daily token usage limits and quota credits.</li>
-              <li>Improving model response accuracy, latency, and platform uptime.</li>
+              <li>Improving assistant response accuracy, latency, and platform uptime.</li>
             </ul>
           </section>
 
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-white">3. Data Protection & Security</h2>
             <p className="text-slate-300 text-sm leading-relaxed">
-              We employ industry-standard encryption protocols (TLS/HTTPS in transit and AES-256 at rest). Sensitive credentials, secret API keys, and private knowledge stores are stored securely on isolated serverless infrastructure and are never exposed to browser clients or unauthorized third parties.
+              We employ industry-standard encryption protocols (TLS/HTTPS in transit and AES-256 at rest). Sensitive credentials and private knowledge stores are stored securely on isolated serverless infrastructure and are never exposed to browser clients or unauthorized third parties.
             </p>
           </section>
 

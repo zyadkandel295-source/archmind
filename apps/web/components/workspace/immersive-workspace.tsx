@@ -42,7 +42,7 @@ export function ImmersiveWorkspace() {
       await createAssistant({
         name: newAssistantName.trim(),
         description: newAssistantDesc.trim() || 'Custom AI Agent',
-        instructions: `You are ${newAssistantName.trim()}, an intelligent agent deployed on AGENTIA, powered by PHOENIX 1.0, developed by Zyad Kandel. Help users with precision.`,
+        instructions: `You are ${newAssistantName.trim()}, an assistant deployed on AGENTIA. Help users with precision.`,
         icon: '✨',
         color: 'from-cyan-500 to-indigo-500',
       });

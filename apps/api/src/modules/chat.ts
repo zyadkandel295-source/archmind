@@ -15,10 +15,6 @@ function estimateTokens(text: string) {
   return Math.ceil(text.trim().split(/\s+/).filter(Boolean).length * 1.35);
 }
 
-function activeModelLabel(env: Env, requestedModel?: string) {
-  return requestedModel ?? env.openrouterDefaultModel;
-}
-
 type SpecialistSuggestion = {
   title: string;
   description: string;
@@ -43,7 +39,6 @@ function getSpecialistSuggestion(assistant: { name: string; description?: string
 function writeSseResponse(
   res: import("express").Response,
   input: {
-    model: string;
     token: string;
     conversationId?: string;
     sources?: unknown[];
@@ -60,7 +55,6 @@ function writeSseResponse(
 
   res.write(
     `event: meta\ndata: ${JSON.stringify({
-      model: input.model,
       conversationId: input.conversationId,
       sources: input.sources,
       specialistSuggestion: input.specialistSuggestion
@@ -91,8 +85,8 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
         userId: req.user!.id,
         name: "AGENTIA Agent",
         description: "AI Agent",
-        systemPrompt: "You are an intelligent agent powered by PHOENIX 1.0, developed by Zyad Kandel.",
-        model: "qwen/qwen3-coder",
+        systemPrompt: "You are a helpful assistant deployed on AGENTIA.",
+        model: "standard",
         temperature: 0.7,
         tone: "professional" as const,
         isPublic: true,
@@ -106,32 +100,10 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      const model = activeModelLabel(env, input.model ?? assistant.model);
       const originalSystemPrompt = assistant.systemPrompt;
       const systemPrompt = `
-You are an intelligent agent powered by PHOENIX 1.0, 
-developed by Zyad Kandel, deployed on AGENTIA.
-
-Model Information & Architecture:
-- Model Name: PHOENIX 1.0
-- Base Foundation: Open-source Qwen Coder architecture
-- Training & Fine-Tuning: Trained by Zyad Kandel on specialized domain datasets, custom execution logic, and function-calling algorithms.
-- Primary Function: System automation, computer operation, intelligent agent deployment, and code execution.
-
-When asked "What is your name?" or "Who are you?", respond with:
-"I am ${assistant.name}, an intelligent agent deployed on AGENTIA.
-I'm powered by PHOENIX 1.0 (built on open-source Qwen Coder foundation architecture and fine-tuned by Zyad Kandel on specialized domain datasets and custom function-calling algorithms). 
-I'm here to automate and control your computer operations."
-
-When asked about your model architecture or capabilities, credit:
-- Model: PHOENIX 1.0
-- Base Architecture: Open-source Qwen Coder
-- Training: Fine-tuned on specialized dataset & function-calling algorithms by Zyad Kandel
-- Platform: AGENTIA
-
-Agent Name: ${assistant.name}
-AI Engine: PHOENIX 1.0 (Qwen Coder Base, Fine-Tuned)
-Developed by: Zyad Kandel
+You are ${assistant.name}, a helpful assistant deployed on AGENTIA.
+Describe yourself using your configured role and capabilities only. Do not mention internal services, providers, model names, or implementation details.
 
 ${originalSystemPrompt}
 
@@ -139,7 +111,6 @@ Answer in clear Markdown. Stay faithful to this assistant's role. If a request i
 `;
       const hasSystemMessage = input.messages.some((message) => message.role === "system");
       const answer = await llm.chat({
-        model,
         temperature: input.temperature ?? assistant.temperature,
         assistantConfig: assistant,
         messages: [
@@ -154,7 +125,6 @@ Answer in clear Markdown. Stay faithful to this assistant's role. If a request i
       const sanitizedAnswer = sanitizeLLMResponse(answer);
 
       writeSseResponse(res, {
-        model,
         token: sanitizedAnswer,
         specialistSuggestion: getSpecialistSuggestion(assistant, input.messages.filter((message) => message.role === "user").at(-1)?.content ?? "")
       });
@@ -227,7 +197,6 @@ Answer in clear Markdown. Stay faithful to this assistant's role. If a request i
     });
 
     writeSseResponse(res, {
-      model: activeModelLabel(env, assistant.model),
       conversationId: conversation.id,
       sources: chunks,
       token: sanitizedAnswer,

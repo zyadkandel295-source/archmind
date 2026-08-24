@@ -134,7 +134,7 @@ export function AdvancedDashboard() {
                 <h3 className="font-semibold text-white mb-4">System Status</h3>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-400">API Status</span>
+                    <span className="text-slate-400">Service Status</span>
                     <motion.span
                       animate={{ color: ['#22c55e', '#22c55e'] }}
                       className="text-green-500 font-semibold"

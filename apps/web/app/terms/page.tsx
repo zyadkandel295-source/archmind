@@ -67,7 +67,7 @@ export default function TermsOfServicePage() {
             <ul className="list-disc pl-5 space-y-2 text-sm text-slate-300">
               <li>Generating harmful, illegal, defamatory, or malicious content.</li>
               <li>Attempting to reverse-engineer, exploit, or bypass rate limits or authentication security controls.</li>
-              <li>Automated scraping or abusive API spamming without prior written consent.</li>
+              <li>Automated scraping or abusive request traffic without prior written consent.</li>
             </ul>
           </section>
 

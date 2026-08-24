@@ -1,7 +1,7 @@
 {
   "name": "AGENTIA",
   "short_name": "AGENTIA",
-  "description": "Deploy intelligent agents powered by PHOENIX 1.0.",
+  "description": "Create, organize, and deploy intelligent assistants.",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",

@@ -714,7 +714,7 @@ export class MemoryStore implements PlatformStateStore {
         createdByUserId: "system",
         name: "AGENTIA Public Assistant",
         description: "Public AI Assistant",
-        systemPrompt: "You are an intelligent assistant powered by PHOENIX 1.0.",
+        systemPrompt: "You are a helpful assistant deployed on AGENTIA.",
         tone: "professional",
         visibility: "public",
         version: 1,

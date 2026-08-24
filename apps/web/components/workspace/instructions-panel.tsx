@@ -54,7 +54,7 @@ export function InstructionsPanel({ assistant }: InstructionsPanelProps) {
           </p>
         </motion.div>
 
-        {/* Model Info */}
+        {/* Workspace details */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -62,24 +62,24 @@ export function InstructionsPanel({ assistant }: InstructionsPanelProps) {
           className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-4"
         >
           <h4 className="text-[10px] font-semibold text-cyan-300 mb-3 uppercase tracking-wider">
-            AI Engine & Architecture
+            Workspace details
           </h4>
           <div className="space-y-2 text-xs">
             <div className="flex justify-between">
-              <span className="text-slate-400">Model:</span>
-              <span className="text-cyan-300 font-semibold">PHOENIX 1.0</span>
+              <span className="text-slate-400">Mode:</span>
+              <span className="text-cyan-300 font-semibold">Assistant workspace</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Foundation:</span>
-              <span className="text-cyan-300 font-semibold">Qwen Coder (Open Source)</span>
+              <span className="text-slate-400">Context:</span>
+              <span className="text-cyan-300 font-semibold">Instructions and knowledge</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Training:</span>
-              <span className="text-cyan-300 font-semibold">Domain Data & Function Algorithms</span>
+              <span className="text-slate-400">Status:</span>
+              <span className="text-cyan-300 font-semibold">Ready to help</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Developer:</span>
-              <span className="text-cyan-300 font-semibold">Zyad Kandel</span>
+              <span className="text-slate-400">Platform:</span>
+              <span className="text-cyan-300 font-semibold">AGENTIA</span>
             </div>
           </div>
         </motion.div>

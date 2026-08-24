@@ -256,7 +256,7 @@ class MultiHeadAttention(nn.Module):
           "Hallucination under Out-of-Distribution Inputs: Autoregressive sampling lacks explicit factual verification bounds."
         ],
         realWorldApplications: [
-          "Large Language Models (GPT-4, Claude, LLaMA, PHOENIX)",
+          "Large Language Models (GPT-4, Claude, LLaMA)",
           "Code Synthesis & Refactoring Engines",
           "Multimodal Vision-Language Models (CLIP, LLaVA)"
         ],

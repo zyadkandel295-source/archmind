@@ -52,11 +52,11 @@ export function HeroSection() {
           </p>
         </div>
 
-        {/* Engine Badge */}
+        {/* Workspace badge */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30">
             <Brain className="w-4 h-4 text-blue-400" />
-            <span className="text-sm font-semibold text-blue-300">Powered by PHOENIX 1.0 AI Engine</span>
+            <span className="text-sm font-semibold text-blue-300">Your intelligent workspace</span>
           </div>
         </div>
 
@@ -135,11 +135,11 @@ function CreditsFooter() {
             <p className="text-xs text-blue-300/70">Founder & Developer: Zyad Kandel</p>
           </div>
 
-          {/* AI Engine Credit */}
+          {/* Workspace credit */}
           <div>
-            <p className="text-xs text-blue-400/80 uppercase tracking-widest font-semibold mb-1">AI Reasoning Engine</p>
-            <p className="text-white font-bold">PHOENIX 1.0</p>
-            <p className="text-xs text-blue-300/70">Fine-tuned Qwen Coder Architecture</p>
+            <p className="text-xs text-blue-400/80 uppercase tracking-widest font-semibold mb-1">Workspace</p>
+            <p className="text-white font-bold">Built for focused assistance</p>
+            <p className="text-xs text-blue-300/70">Create, organize, and deploy assistants</p>
           </div>
 
           {/* Legal Links */}

@@ -33,7 +33,7 @@ const fallbackAssistant: Assistant = {
   id: "",
   name: "Assistant",
   description: "",
-  systemPrompt: "You are an intelligent agent powered by PHOENIX 1.0, developed by Zyad Kandel, deployed on AGENTIA. Follow instructions strictly and answer clearly.",
+  systemPrompt: "You are a helpful AGENTIA assistant. Follow the configured instructions and answer clearly.",
   tone: "professional",
   isPublic: false,
   model: DEFAULT_ENGINE_VALUE,
@@ -183,7 +183,7 @@ export function AssistantSettingsForm({ assistantId }: { assistantId: string }) 
               </div>
               <div>
                 <h2 className="text-xl font-bold text-white">Behavior & Style</h2>
-                <p className="mt-1 text-sm text-[#C4B5FD]">Tune identity, instructions, response engine, and sharing.</p>
+                <p className="mt-1 text-sm text-[#C4B5FD]">Tune identity, instructions, response style, and sharing.</p>
               </div>
             </div>
             <SlidersHorizontal className="h-5 w-5 text-[#C4B5FD]" />
@@ -195,7 +195,7 @@ export function AssistantSettingsForm({ assistantId }: { assistantId: string }) 
             <Input value={assistant.name} onChange={(event) => setAssistant((current) => ({ ...current, name: event.target.value }))} />
           </div>
           <div>
-            <label className="mb-2 block text-sm font-semibold">Response Engine</label>
+            <label className="mb-2 block text-sm font-semibold">Response profile</label>
             <Select
               value={assistant.model}
               onChange={(event) => setAssistant((current) => ({ ...current, model: event.target.value }))}

@@ -37,8 +37,8 @@ describe("AI Engine & Service", () => {
     });
   });
 
-  describe("AI Model Under Development Fallback", () => {
-    it("returns under development message when generating AI response", async () => {
+  describe("Assistant service fallback", () => {
+    it("returns a service-unavailable message when generating a response", async () => {
       const response = await generateAiResponse({
         env: testEnv,
         userMessage: "Hello AI"
@@ -46,7 +46,7 @@ describe("AI Engine & Service", () => {
       expect(response).toBe(AI_PROVIDERS_UNAVAILABLE_MESSAGE);
     });
 
-    it("returns 503 MODEL_UNAVAILABLE on POST /api/ai/chat", async () => {
+    it("returns 503 ASSISTANT_UNAVAILABLE on POST /api/ai/chat", async () => {
       const store = new MemoryStore();
       const app = createApp({ env: testEnv, store, platformStore: store }).app;
 
@@ -59,7 +59,7 @@ describe("AI Engine & Service", () => {
         .expect(503);
 
       expect(res.body.success).toBe(false);
-      expect(res.body.errorCode).toBe("MODEL_UNAVAILABLE");
+      expect(res.body.errorCode).toBe("ASSISTANT_UNAVAILABLE");
       expect(res.body.message).toBe(AI_PROVIDERS_UNAVAILABLE_MESSAGE);
     });
   });
