@@ -9,6 +9,7 @@ import type { MemoryStore } from "../db/memory";
 import type { AssistantRecord, RetrievedChunk } from "../types";
 import { LlmService } from "./llm";
 import { performWebSearch, formatWebSearchPrompt } from "./web-search";
+import { buildAgentiaSystemPrompt } from "./agentia-system-prompt";
 
 function interpolate(template: string, values: Record<string, string | number>) {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => String(values[key] ?? ""));
@@ -61,7 +62,10 @@ export class RagService {
             source_names: sourceNames
           });
 
-    const attributionPrompt = `You are ${assistant.name}, an assistant deployed on AGENTIA. Describe yourself through your configured role and capabilities. Do not mention internal services, providers, model names, or implementation details.`;
+    const attributionPrompt = buildAgentiaSystemPrompt({
+      assistantName: assistant.name,
+      roleInstructions: assistant.systemPrompt || assistant.description
+    });
     const systemPrompt = `${attributionPrompt}\n\n` + interpolate(CORE_RAG_SYSTEM_PROMPT, {
       assistant_name: assistant.name,
       role_definition: assistant.systemPrompt || assistant.description || "a helpful RAG-enhanced assistant",

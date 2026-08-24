@@ -10,6 +10,7 @@ import { RagService } from "../services/rag";
 import { getAssistantOpeningExperience } from "../services/assistant-opening";
 import type { AuthedRequest } from "../types";
 import { sanitizeUserInput, sanitizeLLMResponse, validateMessageLength } from "../lib/sanitization";
+import { buildAgentiaSystemPrompt } from "../services/agentia-system-prompt";
 
 function estimateTokens(text: string) {
   return Math.ceil(text.trim().split(/\s+/).filter(Boolean).length * 1.35);
@@ -100,23 +101,19 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      const originalSystemPrompt = assistant.systemPrompt;
-      const systemPrompt = `
-You are ${assistant.name}, a helpful assistant deployed on AGENTIA.
-Describe yourself using your configured role and capabilities only. Do not mention internal services, providers, model names, or implementation details.
+      const systemPrompt = `${buildAgentiaSystemPrompt({
+        assistantName: assistant.name,
+        roleInstructions: assistant.systemPrompt
+      })}
 
-${originalSystemPrompt}
-
-Answer in clear Markdown. Stay faithful to this assistant's role. If a request is clearly outside the configured role, give a useful short answer and recommend a dedicated specialist assistant. For requested code projects, provide complete files in fenced code blocks, beginning each with a line formatted exactly as FILE: filename.ext. You can interpret, improve, and generate Markdown documents while preserving their structure.
-`;
-      const hasSystemMessage = input.messages.some((message) => message.role === "system");
+Stay faithful to this assistant's role. If a request is clearly outside the configured role, give a useful short answer and recommend a dedicated specialist assistant. For requested code projects, provide complete files in fenced code blocks, beginning each with a line formatted exactly as FILE: filename.ext. You can interpret, improve, and generate Markdown documents while preserving their structure.`;
       const answer = await llm.chat({
         temperature: input.temperature ?? assistant.temperature,
         assistantConfig: assistant,
         messages: [
-          ...(hasSystemMessage ? [] : [{ role: "system" as const, content: systemPrompt }]),
+          { role: "system" as const, content: systemPrompt },
           ...input.messages.map((message) => ({
-            role: message.role,
+            role: message.role === "system" ? "user" : message.role,
             content: sanitizeUserInput(message.content)
           }))
         ]

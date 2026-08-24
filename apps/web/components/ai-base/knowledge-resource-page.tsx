@@ -11,7 +11,7 @@ const depths: KnowledgeDepth[] = ["Foundation", "Intermediate", "Advanced", "Res
 export function KnowledgeResourcePage({ resource }: { resource: KnowledgeResource }) {
   const [depth, setDepth] = useState<KnowledgeDepth>(resource.difficulty === "Research" ? "Research" : "Foundation");
   const content = getDepthContent(resource, depth);
-  const context = useMemo(() => `I am studying ${resource.field.title} → ${resource.topic} at ${depth} depth. ${content.prompts[0]}`, [content.prompts, depth, resource.field.title, resource.topic]);
+  const context = useMemo(() => `AI Base context:\nRESOURCE_TITLE: ${resource.title}\nFIELD: ${resource.field.title}\nDISCIPLINE: ${resource.discipline}\nTOPIC: ${resource.topic}\nLEVEL: ${depth}\nRESOURCE_ID: ${resource.id}\nRESOURCE_TYPE: ${resource.type}\n\nRequest: ${content.prompts[0]}`, [content.prompts, depth, resource]);
   const chatHref = `/p/default-agent?prompt=${encodeURIComponent(context)}`;
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100"><AIBaseHeader /><main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
