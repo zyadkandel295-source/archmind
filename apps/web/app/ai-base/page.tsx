@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AIBaseHeader } from "@/components/ai-base/ai-base-header";
 import { GradientDescentVisualizer, AttentionMatrixVisualizer, RagPipelineVisualizer } from "@/components/ai-base/interactive-visualizers";
 import { ResearchAgentUI } from "@/components/ai-base/research-agent-ui";
+import { KnowledgeExplorer } from "@/components/ai-base/knowledge-explorer";
 import { Sparkles, BookOpen, Atom, Library, Wrench, ArrowRight, Brain, Zap, Terminal } from "lucide-react";
 
 export const metadata = {
@@ -63,6 +64,8 @@ export default function AIBasePortalPage() {
             </div>
           </div>
         </section>
+
+        <KnowledgeExplorer />
 
         {/* Core Pillars Grid */}
         <section className="space-y-6">

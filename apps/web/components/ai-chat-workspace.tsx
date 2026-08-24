@@ -412,6 +412,12 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   }, [theme]);
 
   useEffect(() => {
+    const contextualPrompt = new URLSearchParams(window.location.search).get("prompt")?.trim();
+    if (!contextualPrompt || input.trim()) return;
+    setInput(contextualPrompt);
+  }, [input]);
+
+  useEffect(() => {
     window.localStorage.setItem(pinnedKey(assistantId), JSON.stringify([...pinnedIds]));
   }, [assistantId, pinnedIds]);
 

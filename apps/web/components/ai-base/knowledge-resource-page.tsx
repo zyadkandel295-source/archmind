@@ -1,0 +1,32 @@
+"use client";
+
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import { ArrowLeft, BookOpen, CheckCircle2, Clock3, ExternalLink, Lightbulb, MessageCircleQuestion, Quote, Sparkles } from "lucide-react";
+import { AIBaseHeader } from "@/components/ai-base/ai-base-header";
+import { getDepthContent, type KnowledgeDepth, type KnowledgeResource } from "@/lib/knowledge-catalog";
+
+const depths: KnowledgeDepth[] = ["Foundation", "Intermediate", "Advanced", "Research"];
+
+export function KnowledgeResourcePage({ resource }: { resource: KnowledgeResource }) {
+  const [depth, setDepth] = useState<KnowledgeDepth>(resource.difficulty === "Research" ? "Research" : "Foundation");
+  const content = getDepthContent(resource, depth);
+  const context = useMemo(() => `I am studying ${resource.field.title} → ${resource.topic} at ${depth} depth. ${content.prompts[0]}`, [content.prompts, depth, resource.field.title, resource.topic]);
+  const chatHref = `/p/default-agent?prompt=${encodeURIComponent(context)}`;
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100"><AIBaseHeader /><main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+      <Link href={`/ai-base/${resource.field.slug}`} className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-cyan-200"><ArrowLeft className="h-4 w-4" /> Back to {resource.field.title}</Link>
+      <article className="mt-6">
+        <div className="rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-7 sm:p-10"><div className="flex flex-wrap gap-2 text-xs font-medium"><span className="rounded-full bg-cyan-400/10 px-3 py-1.5 text-cyan-200">{resource.type}</span><span className="rounded-full bg-slate-800 px-3 py-1.5 text-slate-300">{resource.status}</span><span className="rounded-full bg-amber-400/10 px-3 py-1.5 text-amber-200">{resource.verification}</span></div><h1 className="mt-5 text-3xl font-extrabold tracking-tight text-white sm:text-5xl">{resource.title}</h1><p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">{resource.description}</p><div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-400"><span className="inline-flex items-center gap-2"><Clock3 className="h-4 w-4 text-cyan-300" />{resource.readingMinutes} min read</span><span>Field: {resource.field.title}</span><span>Discipline: {resource.discipline}</span></div></div>
+
+        <section className="mt-7 rounded-2xl border border-slate-800 bg-slate-900/60 p-5"><p className="text-sm font-bold text-white">Choose your depth</p><div className="mt-4 flex flex-wrap gap-2">{depths.map((item) => <button key={item} type="button" onClick={() => setDepth(item)} className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${depth === item ? "bg-cyan-400 text-slate-950" : "border border-slate-700 bg-slate-950 text-slate-300 hover:border-cyan-400/50"}`}>{item}</button>)}</div></section>
+
+        <section className="mt-7 grid gap-6 lg:grid-cols-[1.35fr_0.65fr]"><div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8"><p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-300">{depth} level</p><h2 className="mt-3 text-2xl font-bold text-white">{content.heading}</h2><p className="mt-5 text-base leading-8 text-slate-300">{content.body}</p><div className="mt-8 border-t border-slate-800 pt-6"><h3 className="flex items-center gap-2 text-sm font-bold text-white"><Lightbulb className="h-4 w-4 text-amber-300" /> Study prompts</h3><ul className="mt-4 space-y-3">{content.prompts.map((prompt) => <li key={prompt} className="text-sm leading-6 text-slate-400">{prompt}</li>)}</ul></div></div><aside className="space-y-5"><div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5"><h2 className="flex items-center gap-2 text-sm font-bold text-white"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> Learning objectives</h2><ul className="mt-4 space-y-3">{resource.objectives.map((item) => <li key={item} className="text-sm leading-6 text-slate-400">{item}</li>)}</ul></div><div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5"><h2 className="flex items-center gap-2 text-sm font-bold text-white"><BookOpen className="h-4 w-4 text-cyan-300" /> Key concepts</h2><div className="mt-4 flex flex-wrap gap-2">{resource.keyConcepts.map((item) => <span key={item} className="rounded-full bg-slate-800 px-2.5 py-1 text-xs text-slate-300">{item}</span>)}</div></div></aside></section>
+
+        <section className="mt-7 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-6"><div className="flex flex-wrap items-start justify-between gap-5"><div><h2 className="flex items-center gap-2 text-lg font-bold text-white"><MessageCircleQuestion className="h-5 w-5 text-cyan-300" /> Ask AGENTIA about this resource</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">The chat opens with the field, topic, and selected depth as concise context. It does not send the entire article.</p></div><Link href={chatHref} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-cyan-300"><Sparkles className="h-4 w-4" /> Ask a question</Link></div><div className="mt-5 flex flex-wrap gap-2">{["Explain this", "Simplify this", "Go deeper", "Give me an example", "Quiz me", "Create study notes"].map((label) => <Link key={label} href={`/p/default-agent?prompt=${encodeURIComponent(`${context} ${label}.`)}`} className="rounded-lg border border-cyan-400/20 bg-slate-950/50 px-3 py-2 text-xs font-semibold text-cyan-100 hover:bg-cyan-400/10">{label}</Link>)}</div></section>
+
+        <section className="mt-7 rounded-2xl border border-slate-800 bg-slate-900/50 p-6"><h2 className="flex items-center gap-2 text-lg font-bold text-white"><Quote className="h-5 w-5 text-amber-300" /> References and verification</h2><p className="mt-3 text-sm leading-6 text-slate-400">This educational overview does not claim external citations. When you need formal sources, ask for a source-verification workflow and check the original publication, author, date, and link before using it.</p><a href="https://www.crossref.org/" target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200">Find publication metadata with Crossref <ExternalLink className="h-4 w-4" /></a></section>
+      </article>
+    </main></div>
+  );
+}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sparkles, BookOpen, Atom, Library, Wrench, Search, Rocket } from "lucide-react";
+import { Sparkles, BookOpen, Atom, Library, Wrench, Rocket, Compass } from "lucide-react";
 
 export function AIBaseHeader() {
   const pathname = usePathname();
@@ -11,6 +11,7 @@ export function AIBaseHeader() {
 
   const categories = [
     { href: "/ai-base", label: "Overview", icon: BookOpen },
+    { href: "/ai-base/physics", label: "Explore fields", icon: Compass },
     { href: "/ai-base/fundamentals", label: "Fundamentals", icon: Sparkles },
     { href: "/ai-base/math", label: "Mathematics", icon: BookOpen },
     { href: "/ai-base/machine-learning", label: "Machine Learning", icon: Wrench },
