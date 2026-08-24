@@ -62,6 +62,13 @@ interface ChatMessage {
   error?: boolean;
   sourceNames?: string[];
   attachments?: { name: string; type: string; size: number; url?: string }[];
+  specialistSuggestion?: SpecialistSuggestion;
+}
+
+interface SpecialistSuggestion {
+  title: string;
+  description: string;
+  template: string;
 }
 
 interface ChatSession {
@@ -187,6 +194,27 @@ function createMessage(role: Role, content: string, attachments?: { name: string
 function inferTitle(message: string) {
   const clean = message.replace(/\s+/g, " ").trim();
   return clean.length > 42 ? `${clean.slice(0, 42)}...` : clean || "New chat";
+}
+
+function getGeneratedFiles(content: string) {
+  const files: Array<{ name: string; content: string }> = [];
+  const expression = /(?:^|\n)FILE:\s*([^\n\\/:*?"<>|]+)\s*\n```[^\n]*\n([\s\S]*?)```/g;
+  for (const match of content.matchAll(expression)) {
+    const name = match[1]?.trim();
+    const fileContent = match[2] ?? "";
+    if (name && name.length <= 120 && fileContent.length <= 1_000_000) files.push({ name, content: fileContent });
+  }
+  return files;
+}
+
+function downloadGeneratedFile(file: { name: string; content: string }) {
+  const blob = new Blob([file.content], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = file.name;
+  anchor.click();
+  URL.revokeObjectURL(url);
 }
 
 function parseSseEvents(buffer: string) {
@@ -717,6 +745,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
             const data = JSON.parse(dataLine) as {
               conversationId?: string;
               sources?: Array<{ sourceName?: string; filename?: string }>;
+              specialistSuggestion?: SpecialistSuggestion;
             };
             const sourceNames = data.sources
               ? [...new Set(data.sources.map((source) => source.filename ?? source.sourceName).filter(Boolean) as string[])]
@@ -726,9 +755,11 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                 ...session,
                 conversationId: data.conversationId,
                 messages:
-                  eventName === "meta" && sourceNames.length > 0
+                  eventName === "meta" && (sourceNames.length > 0 || data.specialistSuggestion)
                     ? session.messages.map((message) =>
-                      message.id === assistantMessageId ? { ...message, sourceNames } : message
+                      message.id === assistantMessageId
+                        ? { ...message, sourceNames, specialistSuggestion: data.specialistSuggestion }
+                        : message
                     )
                     : session.messages,
                 updatedAt: Date.now()
@@ -1473,6 +1504,7 @@ function ChatBubble({
   onRegenerate: () => void;
 }) {
   const isAssistant = message.role === "assistant";
+  const generatedFiles = isAssistant ? getGeneratedFiles(message.content) : [];
 
   return (
     <motion.div
@@ -1542,6 +1574,33 @@ function ChatBubble({
                     <div className="text-xs text-[#C4B5FD]">{att.type || 'file'} · {Math.round((att.size || 0) / 1024)} KB</div>
                   </div>
                 </div>
+              ))}
+            </div>
+          ) : null}
+          {isAssistant && message.specialistSuggestion ? (
+            <a
+              href={`/assistants/new?template=${encodeURIComponent(message.specialistSuggestion.template)}`}
+              className="mt-4 flex items-start gap-3 rounded-xl border border-cyan-400/30 bg-cyan-400/10 p-3 text-left transition hover:border-cyan-300/70 hover:bg-cyan-400/15"
+            >
+              <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
+              <span>
+                <span className="block text-xs font-black text-cyan-200">{message.specialistSuggestion.title}</span>
+                <span className="mt-1 block text-xs leading-5 text-cyan-50/80">{message.specialistSuggestion.description}</span>
+              </span>
+            </a>
+          ) : null}
+          {generatedFiles.length > 0 ? (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {generatedFiles.map((file) => (
+                <button
+                  key={file.name}
+                  type="button"
+                  onClick={() => downloadGeneratedFile(file)}
+                  className="inline-flex items-center gap-2 rounded-lg border border-emerald-400/40 bg-emerald-400/10 px-3 py-2 text-xs font-bold text-emerald-100 transition hover:bg-emerald-400/20"
+                >
+                  <FileDown className="h-3.5 w-3.5" />
+                  Download {file.name}
+                </button>
               ))}
             </div>
           ) : null}

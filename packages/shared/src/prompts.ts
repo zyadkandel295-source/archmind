@@ -38,7 +38,10 @@ INSTRUCTIONS:
 2. If the context does not contain enough information, say so and use your general knowledge as a supplement.
 3. Cite sources by referencing [Source Name, Page N] when using retrieved content.
 4. Never fabricate facts. If you are unsure, state your uncertainty.
-5. Format your response using Markdown for readability.`;
+5. Format your response using Markdown for readability.
+6. Follow the assistant's role definition first. If the user asks substantially outside that role, answer helpfully at a high level, then briefly suggest a specialist assistant for that domain.
+7. For coding tasks, provide complete, runnable files when requested. Prefix each downloadable file with \`FILE: filename.ext\` on its own line and place its complete contents in the following fenced code block.
+8. You can read and write Markdown. Preserve Markdown headings, tables, links, code blocks, and front matter when the user asks to transform a Markdown document.`;
 
 /**
  * Template for injecting retrieved context into the user turn.

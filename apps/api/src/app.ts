@@ -12,6 +12,7 @@ import { MemoryStore } from "./db/memory";
 import type { PlatformStateStore } from "./db/platform-store";
 import { PostgresPlatformStore } from "./db/postgres-platform";
 import { createRateLimiter } from "./middleware/rate-limit";
+import { authenticate } from "./middleware/auth";
 import { errorHandler, notFoundHandler } from "./middleware/errors";
 import { HttpError } from "./lib/http-error";
 import { authRouter } from "./modules/auth";
@@ -27,6 +28,8 @@ import { assistantsV2Router } from "./modules/assistants-v2";
 import { chatsV2Router } from "./modules/chats-v2";
 import { aiBaseRouter } from "./modules/ai-base";
 import { AI_PROVIDERS_UNAVAILABLE_MESSAGE } from "./services/ai-service";
+import { generateAiResponse } from "./services/ai-service";
+import { aiChatRequestSchema } from "@archmind/shared";
 
 export interface AppOptions {
   env?: Env;
@@ -149,8 +152,8 @@ export function createApp(options: AppOptions = {}) {
           postgres: Boolean(env.databaseUrl),
           redis: Boolean(env.redisUrl),
           llmProvider: env.llmProvider,
-          llm: false,
-          openrouter: false,
+          llm: Boolean(env.openrouterApiKey),
+          openrouter: Boolean(env.openrouterApiKey),
           firebaseAdmin: Boolean(env.firebaseProjectId && env.firebaseClientEmail && env.firebasePrivateKey),
           stripe: Boolean(env.stripeSecretKey),
           s3: Boolean(env.s3Bucket && env.s3Region)
@@ -163,13 +166,25 @@ export function createApp(options: AppOptions = {}) {
 
   app.use("/api", analyticsRouter(env, store));
 
-  // AI Chat API Endpoint (Under Development)
-  app.post("/api/ai/chat", async (_req, res) => {
-    return res.status(503).json({
-      success: false,
-      errorCode: "MODEL_UNAVAILABLE",
-      message: AI_PROVIDERS_UNAVAILABLE_MESSAGE
-    });
+  // OpenAI-compatible-style chat endpoint for integrations. The API key stays server-side.
+  app.post("/api/ai/chat", (req, res, next) => {
+    if (!env.openrouterApiKey || env.llmProvider !== "openrouter") {
+      return res.status(503).json({ success: false, errorCode: "MODEL_UNAVAILABLE", message: AI_PROVIDERS_UNAVAILABLE_MESSAGE });
+    }
+    return authenticate(env, store)(req, res, next);
+  }, async (req, res, next) => {
+    try {
+      const input = aiChatRequestSchema.parse(req.body);
+      const answer = await generateAiResponse({
+        env,
+        messages: input.messages,
+        temperature: input.temperature,
+        assistantConfig: input.model ? { model: input.model } : undefined
+      });
+      return res.status(200).json({ success: true, model: input.model ?? env.openrouterDefaultModel, answer });
+    } catch (error) {
+      next(error);
+    }
   });
 
   app.use("/api/auth", authRouter(env, store));

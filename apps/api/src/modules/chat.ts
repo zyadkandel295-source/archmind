@@ -19,6 +19,27 @@ function activeModelLabel(env: Env, requestedModel?: string) {
   return requestedModel ?? env.openrouterDefaultModel;
 }
 
+type SpecialistSuggestion = {
+  title: string;
+  description: string;
+  template: string;
+};
+
+function getSpecialistSuggestion(assistant: { name: string; description?: string; systemPrompt?: string }, message: string): SpecialistSuggestion | undefined {
+  const configuredRole = `${assistant.name} ${assistant.description ?? ""} ${assistant.systemPrompt ?? ""}`.toLowerCase();
+  const text = message.toLowerCase();
+  const isCodingAssistant = /code|developer|program|software|typescript|python|engineer/.test(configuredRole);
+  const isChemistryQuestion = /chemistry|chemical|molecule|reaction|stoichiometr|organic|periodic table|ph\b/.test(text);
+  if (isCodingAssistant && isChemistryQuestion) {
+    return {
+      title: "Create a Chemistry Assistant",
+      description: "Get chemistry-specific explanations, equations, source-aware study help, and a dedicated knowledge base.",
+      template: "chemistry"
+    };
+  }
+  return undefined;
+}
+
 function writeSseResponse(
   res: import("express").Response,
   input: {
@@ -26,6 +47,7 @@ function writeSseResponse(
     token: string;
     conversationId?: string;
     sources?: unknown[];
+    specialistSuggestion?: SpecialistSuggestion;
   }
 ) {
   const sanitizedToken = sanitizeLLMResponse(input.token);
@@ -40,7 +62,8 @@ function writeSseResponse(
     `event: meta\ndata: ${JSON.stringify({
       model: input.model,
       conversationId: input.conversationId,
-      sources: input.sources
+      sources: input.sources,
+      specialistSuggestion: input.specialistSuggestion
     })}\n\n`
   );
   if (sanitizedToken) {
@@ -69,7 +92,7 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
         name: "AGENTIA Agent",
         description: "AI Agent",
         systemPrompt: "You are an intelligent agent powered by PHOENIX 1.0, developed by Zyad Kandel.",
-        model: "llama-3.3-70b-versatile",
+        model: "qwen/qwen3-coder",
         temperature: 0.7,
         tone: "professional" as const,
         isPublic: true,
@@ -111,6 +134,8 @@ AI Engine: PHOENIX 1.0 (Qwen Coder Base, Fine-Tuned)
 Developed by: Zyad Kandel
 
 ${originalSystemPrompt}
+
+Answer in clear Markdown. Stay faithful to this assistant's role. If a request is clearly outside the configured role, give a useful short answer and recommend a dedicated specialist assistant. For requested code projects, provide complete files in fenced code blocks, beginning each with a line formatted exactly as FILE: filename.ext. You can interpret, improve, and generate Markdown documents while preserving their structure.
 `;
       const hasSystemMessage = input.messages.some((message) => message.role === "system");
       const answer = await llm.chat({
@@ -130,7 +155,8 @@ ${originalSystemPrompt}
 
       writeSseResponse(res, {
         model,
-        token: sanitizedAnswer
+        token: sanitizedAnswer,
+        specialistSuggestion: getSpecialistSuggestion(assistant, input.messages.filter((message) => message.role === "user").at(-1)?.content ?? "")
       });
     })
   );
@@ -204,7 +230,8 @@ ${originalSystemPrompt}
       model: activeModelLabel(env, assistant.model),
       conversationId: conversation.id,
       sources: chunks,
-      token: sanitizedAnswer
+      token: sanitizedAnswer,
+      specialistSuggestion: getSpecialistSuggestion(assistant, sanitizedUserMessage)
     });
   });
 

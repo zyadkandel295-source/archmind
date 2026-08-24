@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronRight, Eye, Loader2, Palette, Sparkles } from "lucide-react";
 import { requestData } from "@/lib/data-client";
@@ -20,9 +20,11 @@ const steps = ["Identity", "Behavior", "Launch"];
 
 export function AssistantBuilder() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const chemistryTemplate = searchParams.get("template") === "chemistry";
   const [step, setStep] = useState(1);
-  const [name, setName] = useState("Customer Support Assistant");
-  const [description, setDescription] = useState("Answers customer questions from support docs with citations.");
+  const [name, setName] = useState(chemistryTemplate ? "Chemistry Assistant" : "Customer Support Assistant");
+  const [description, setDescription] = useState(chemistryTemplate ? "Explains chemistry with balanced equations, safe lab guidance, and citations from your knowledge base." : "Answers customer questions from support docs with citations.");
   const [tone, setTone] = useState("professional");
   const [engine, setEngine] = useState(DEFAULT_ENGINE_VALUE);
   const [temperature, setTemperature] = useState(0.7);
@@ -31,7 +33,9 @@ export function AssistantBuilder() {
   const [color, setColor] = useState("#8B5CF6");
   const [starterPrompts, setStarterPrompts] = useState("How can you help me?\nSummarize this document.\nHelp me write better code.");
   const [systemPrompt, setSystemPrompt] = useState(
-    "You are a precise support assistant. Follow these instructions strictly. Use retrieved context first when relevant, cite sources when available, and fall back to general knowledge for normal questions."
+    chemistryTemplate
+      ? "You are a rigorous chemistry assistant. Explain concepts step by step, show balanced equations and units when relevant, distinguish established facts from assumptions, cite uploaded sources, and include practical safety cautions for laboratory procedures."
+      : "You are a precise support assistant. Follow these instructions strictly. Use retrieved context first when relevant, cite sources when available, and fall back to general knowledge for normal questions."
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string>();

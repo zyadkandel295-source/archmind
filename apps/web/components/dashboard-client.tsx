@@ -12,6 +12,8 @@ import {
   MessageSquare,
   Plus,
   Rocket,
+  Radio,
+  Cpu,
   Settings,
   ShieldCheck,
   Sparkles,
@@ -233,6 +235,12 @@ export function DashboardClient() {
 
   return (
     <>
+      <section className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2 rounded-lg border border-cyan-400/15 bg-slate-950/60 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400 shadow-inner shadow-cyan-950/20">
+        <span className="flex items-center gap-2 text-emerald-300"><Radio className="h-3 w-3 animate-pulse" /> System online</span>
+        <span className="flex items-center gap-2"><Cpu className="h-3 w-3 text-cyan-300" /> Agent runtime ready</span>
+        <span>Knowledge mesh: {overview.sources} indexed nodes</span>
+        <span className="text-slate-500">v1.0 · secure operator console</span>
+      </section>
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -244,7 +252,7 @@ export function DashboardClient() {
             <Badge tone="blue">Secured environment</Badge>
             {notice ? <Badge tone="amber">Notice</Badge> : null}
           </div>
-          <h1 className="mt-4 text-3xl font-black md:text-5xl">AGENTIA Command Center</h1>
+          <h1 className="mt-4 text-3xl font-black tracking-tight md:text-5xl">AGENTIA Command Center</h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
             Manage your AI agents, command operations, review system activity, and deploy automation from one central control room.
           </p>
@@ -261,8 +269,11 @@ export function DashboardClient() {
 
 
       {/* AI Brain Visualization Canvas */}
-      <section className="mt-8 h-80 w-full overflow-hidden rounded-xl border border-slate-700/50 shadow-lg">
+      <section className="relative mt-8 h-80 w-full overflow-hidden rounded-xl border border-cyan-400/25 bg-slate-950 shadow-2xl shadow-cyan-950/30">
         <AIBrainVisualization />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between border-t border-cyan-400/15 bg-slate-950/80 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-cyan-100/70 backdrop-blur">
+          <span>Neural operations map</span><span>Live telemetry · encrypted</span>
+        </div>
       </section>
 
       <section className="mt-8 grid gap-5 lg:grid-cols-[1fr_320px]">

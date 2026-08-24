@@ -675,3 +675,14 @@ nextjs-portal,
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 200, 255, 0.5);
 }
+/* Command-center grid and scanline texture for the operator dashboard. */
+.agentia-command-bg {
+  position: relative;
+  isolation: isolate;
+  background-color: #070b14;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 50% 0%, rgba(8, 145, 178, 0.14), transparent 45%);
+  background-size: 32px 32px, 32px 32px, auto;
+}
