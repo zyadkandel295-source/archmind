@@ -137,6 +137,13 @@ function readFromStorage<T>(key: string, fallback: T): T {
 export function DataPersistenceProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isPublicRoute = pathname === '/' || pathname.startsWith('/auth/');
+  // Dedicated assistant chat has its own versioned conversation API. Keeping
+  // this legacy provider from also synchronizing /api/chats avoids duplicate
+  // requests and stale local-cache fallback messages in the export screen.
+  const isDedicatedAssistantChat =
+    (pathname.startsWith('/assistants/') && pathname.endsWith('/chat')) ||
+    pathname.startsWith('/p/') ||
+    pathname.startsWith('/a/');
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [selectedAssistant, setSelectedAssistantState] = useState<Assistant | null>(null);
   const [isLoadingAssistants, setIsLoadingAssistants] = useState(false);
@@ -455,11 +462,11 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
 
     // Public pages share this provider, but protected API calls should only
     // start after an authenticated workspace session exists.
-    if (readSessionCredential()) {
+    if (!isDedicatedAssistantChat && readSessionCredential()) {
       void fetchAssistants();
       void fetchChats();
     }
-  }, [fetchAssistants, fetchChats]);
+  }, [fetchAssistants, fetchChats, isDedicatedAssistantChat]);
 
   // ============================================================================
   // SUPABASE REAL-TIME SYNCHRONIZATION LISTENERS
@@ -468,7 +475,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
   // Real-time synchronization for Assistants table
   useRealtimeSubscription<Assistant>({
     table: 'assistants',
-    enabled: !isPublicRoute && Boolean(readSessionCredential()),
+    enabled: !isPublicRoute && !isDedicatedAssistantChat && Boolean(readSessionCredential()),
     onInsert: (newAssistant) => {
       setAssistants((prev) => {
         if (prev.some((a) => a.id === newAssistant.id)) return prev;
@@ -496,7 +503,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
   // Real-time synchronization for Chats table
   useRealtimeSubscription<Chat>({
     table: 'chats',
-    enabled: !isPublicRoute && Boolean(readSessionCredential()),
+    enabled: !isPublicRoute && !isDedicatedAssistantChat && Boolean(readSessionCredential()),
     onInsert: (newChat) => {
       setChats((prev) => {
         if (prev.some((c) => c.id === newChat.id)) return prev;
@@ -521,7 +528,7 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
   // Real-time synchronization for Messages table
   useRealtimeSubscription<Message>({
     table: 'messages',
-    enabled: !isPublicRoute && Boolean(readSessionCredential()),
+    enabled: !isPublicRoute && !isDedicatedAssistantChat && Boolean(readSessionCredential()),
     onInsert: (newMessage) => {
       if (selectedChat?.id === newMessage.chat_id) {
         setMessages((prev) => {

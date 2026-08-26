@@ -181,6 +181,19 @@ function createSession(): ChatSession {
   };
 }
 
+// The first server and browser render must be identical. Browser persistence
+// is restored after hydration, where UUIDs and timestamps are safe to create.
+function createHydrationSession(): ChatSession {
+  return {
+    id: "initial-chat",
+    title: "New chat",
+    messages: [],
+    model: DEFAULT_ENGINE_VALUE,
+    createdAt: 0,
+    updatedAt: 0
+  };
+}
+
 function createMessage(role: Role, content: string, attachments?: { name: string; type: string; size: number; url?: string }[], error = false): ChatMessage {
   return {
     id: makeId(),
@@ -307,12 +320,9 @@ function serverConversationToSession(conversation: ServerConversation): ChatSess
 
 export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId?: string; embedded?: boolean }) {
   const router = useRouter();
-  const [sessions, setSessions] = useState<ChatSession[]>(() => readStoredSessions(assistantId));
+  const [sessions, setSessions] = useState<ChatSession[]>(() => [createHydrationSession()]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeId, setActiveId] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return window.localStorage.getItem(activeKey(assistantId)) ?? "";
-  });
+  const [activeId, setActiveId] = useState("");
   const [input, setInput] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(!embedded);
@@ -321,19 +331,17 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [webSearchActive, setWebSearchActive] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [desktopConnected, setDesktopConnected] = useState(false);
-  const [pinnedIds, setPinnedIds] = useState<Set<string>>(() => readPinnedSessionIds(assistantId));
+  const [pinnedIds, setPinnedIds] = useState<Set<string>>(() => new Set());
   const [copiedId, setCopiedId] = useState<string>();
   const [temperature, setTemperature] = useState(0.7);
   const [apiReady, setApiReady] = useState<boolean | null>(null);
-  const [theme, setTheme] = useState<"dark" | "light">(() => {
-    if (typeof window === "undefined") return "dark";
-    return (window.localStorage.getItem(THEME_KEY) as "dark" | "light" | null) ?? "dark";
-  });
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
   const [voiceStatus, setVoiceStatus] = useState<string>();
   const [assistantMeta, setAssistantMeta] = useState<AssistantMeta>();
   const [fallbackToWorkspace, setFallbackToWorkspace] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [hasRestoredBrowserState, setHasRestoredBrowserState] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const activeIdRef = useRef(activeId);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -373,18 +381,22 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     setSessions(readStoredSessions(assistantId));
     setActiveId(window.localStorage.getItem(activeKey(assistantId)) ?? "");
     setPinnedIds(readPinnedSessionIds(assistantId));
+    setTheme((window.localStorage.getItem(THEME_KEY) as "dark" | "light" | null) ?? "dark");
     setFallbackToWorkspace(false);
+    setHasRestoredBrowserState(true);
   }, [assistantId]);
 
   useEffect(() => {
+    if (!hasRestoredBrowserState) return;
     window.localStorage.setItem(sessionsKey(assistantId), JSON.stringify(sessions));
-  }, [assistantId, sessions]);
+  }, [assistantId, hasRestoredBrowserState, sessions]);
 
   useEffect(() => {
+    if (!hasRestoredBrowserState) return;
     if (activeSession.id) {
       window.localStorage.setItem(activeKey(assistantId), activeSession.id);
     }
-  }, [activeSession.id, assistantId]);
+  }, [activeSession.id, assistantId, hasRestoredBrowserState]);
 
   useEffect(() => {
     if (embedded) setSidebarOpen(false);
@@ -409,8 +421,9 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   }, []);
 
   useEffect(() => {
+    if (!hasRestoredBrowserState) return;
     window.localStorage.setItem(THEME_KEY, theme);
-  }, [theme]);
+  }, [hasRestoredBrowserState, theme]);
 
   useEffect(() => {
     const contextualPrompt = new URLSearchParams(window.location.search).get("prompt")?.trim();
@@ -419,8 +432,9 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   }, [input]);
 
   useEffect(() => {
+    if (!hasRestoredBrowserState) return;
     window.localStorage.setItem(pinnedKey(assistantId), JSON.stringify([...pinnedIds]));
-  }, [assistantId, pinnedIds]);
+  }, [assistantId, hasRestoredBrowserState, pinnedIds]);
 
   useEffect(() => {
     fetch(`${getPlatformBaseUrl()}/api/health`)
