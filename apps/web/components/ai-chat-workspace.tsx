@@ -50,6 +50,7 @@ import { toast } from "@/components/ui/toast";
 import { AssistantAvatar } from "@/components/ui/assistant-avatar";
 import { IconButton } from "@/components/ui/icon-button";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { requestData, requestFile } from "@/lib/data-client";
 
 
 type Role = "user" | "assistant";
@@ -316,7 +317,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [isGenerating, setIsGenerating] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(!embedded);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [downloadOpen, setDownloadOpen] = useState(false);
+  const [isExportingApp, setIsExportingApp] = useState(false);
   const [webSearchActive, setWebSearchActive] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [desktopConnected, setDesktopConnected] = useState(false);
@@ -605,6 +606,69 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     link.remove();
     URL.revokeObjectURL(url);
     toast({ type: "success", title: "Chat exported", message: "The active chat was saved as a Markdown file.", duration: 2200 });
+  }
+
+  /** Build the signed package, wait for the real worker artifact, then download it. */
+  async function exportAssistantApp() {
+    if (!assistantId || fallbackToWorkspace) {
+      toast({ type: "error", title: "Choose an assistant first", message: "Open a saved assistant before exporting an app." });
+      return;
+    }
+    if (isExportingApp) return;
+    setIsExportingApp(true);
+    try {
+      const safeName = (assistantMeta?.name ?? "agentia-assistant").toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 40) || "assistant";
+      const packageId = `com.agentia.${safeName}`;
+      const exported = await requestData<{ package: { id: string } }>(`/api/platform/assistants/${assistantId}/exports`, {
+        method: "POST",
+        body: JSON.stringify({
+          application: {
+            id: packageId,
+            name: assistantMeta?.name ?? "Agentia Assistant",
+            description: assistantMeta?.description ?? "",
+            version: "1.0.0",
+            publisher: "Agentia",
+            authenticationMode: "agentia_account",
+            platform: "windows",
+            architecture: "x64"
+          },
+          inferenceMode: "cloud",
+          requestedPermissions: ["network", "notifications"],
+          requiredPermissions: [],
+          syncEnabled: true,
+          releaseNotes: "Exported from Agentia chat."
+        })
+      });
+      const created = await requestData<{ build: { id: string; status: string; error?: string } }>("/api/platform/desktop/builds", {
+        method: "POST",
+        headers: { "Idempotency-Key": crypto.randomUUID() },
+        body: JSON.stringify({ assistantId, packageId: exported.package.id, platform: "win32", architecture: "x64" })
+      });
+      toast({ type: "info", title: "Building your app", message: "The installer will download automatically when it is ready.", duration: 4200 });
+      let build = created.build;
+      const deadline = Date.now() + 10 * 60_000;
+      while (["validating", "queued", "building", "packaging", "validating_artifact"].includes(build.status) && Date.now() < deadline) {
+        await new Promise((resolve) => window.setTimeout(resolve, 2_000));
+        const current = await requestData<{ build: typeof build }>(`/api/platform/desktop/builds/${build.id}`);
+        build = current.build;
+      }
+      if (build.status !== "ready") throw new Error(build.error || "The app build did not finish. Please try again.");
+      const authorization = await requestData<{ downloadToken: string }>(`/api/platform/desktop/builds/${build.id}/download-authorization`, { method: "POST" });
+      const file = await requestFile(`/api/platform/desktop/builds/${build.id}/download?token=${encodeURIComponent(authorization.downloadToken)}`);
+      const url = URL.createObjectURL(file.blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = file.filename ?? `${assistantMeta?.name ?? "Agentia Assistant"} Setup.exe`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      toast({ type: "success", title: "App downloaded", message: "Your Windows installer is ready to run.", duration: 3200 });
+    } catch (error) {
+      toast({ type: "error", title: "App export failed", message: error instanceof Error ? error.message : "Please try again." });
+    } finally {
+      setIsExportingApp(false);
+    }
   }
 
   function copyActiveChatLink() {
@@ -1178,13 +1242,14 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
               {!desktopConnected ? (
                 <button
                   type="button"
-                  onClick={() => setDownloadOpen(true)}
-                  className="flex items-center gap-2 rounded-xl border border-violet-500/40 bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-xs font-black text-white shadow-md shadow-violet-600/25 transition hover:from-violet-500 hover:to-indigo-500 active:scale-95"
-                  title="Download Windows App & Floating Bubble"
+                  onClick={() => void exportAssistantApp()}
+                  disabled={isExportingApp}
+                  className="flex items-center gap-2 rounded-xl border border-violet-500/40 bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-xs font-black text-white shadow-md shadow-violet-600/25 transition hover:from-violet-500 hover:to-indigo-500 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                  title="Export and download Windows app"
                 >
-                  <Download className="h-4 w-4 text-amber-300" />
-                  <span className="hidden sm:inline">Export App & Bubble</span>
-                  <span className="sm:hidden">App</span>
+                  {isExportingApp ? <RefreshCcw className="h-4 w-4 animate-spin text-amber-300" /> : <Download className="h-4 w-4 text-amber-300" />}
+                  <span className="hidden sm:inline">{isExportingApp ? "Building App…" : "Export App"}</span>
+                  <span className="sm:hidden">{isExportingApp ? "Building" : "Export"}</span>
                 </button>
               ) : null}
 

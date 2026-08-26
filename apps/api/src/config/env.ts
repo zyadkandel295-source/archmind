@@ -80,7 +80,9 @@ export function loadEnv(): Env {
     corsOrigin: process.env.API_CORS_ORIGIN ?? (nodeEnv === "production" ? appUrl : "*"),
     databaseUrl: process.env.DATABASE_URL,
     platformStore: (process.env.ARCHMIND_PLATFORM_STORE === "memory" ? "memory" : "postgres"),
-    runMigrations: process.env.ARCHMIND_RUN_MIGRATIONS === "true",
+    // New deployments apply the additive platform schema automatically. An
+    // operator can still explicitly disable this during a managed rollout.
+    runMigrations: process.env.ARCHMIND_RUN_MIGRATIONS !== "false",
     redisUrl: process.env.REDIS_URL,
     jwtAccessSecret: getJwtSecret("access-secret", "JWT_ACCESS_SECRET", nodeEnv),
     jwtRefreshSecret: getJwtSecret("refresh-secret", "JWT_REFRESH_SECRET", nodeEnv),
