@@ -3,6 +3,7 @@ import net from "node:net";
 import { MemoryStore } from "./db/memory";
 import { PostgresPlatformStore } from "./db/postgres-platform";
 import type { PlatformStateStore } from "./db/platform-store";
+import { DESKTOP_BUILD_QUEUE, processDesktopBuildJob, type DesktopBuildJobData } from "./services/desktop-build-queue";
 
 function createPlatformStore(env: ReturnType<typeof loadEnv>, memory: MemoryStore): PlatformStateStore {
   if (env.nodeEnv !== "test" && env.databaseUrl && env.platformStore !== "memory") {
@@ -80,6 +81,23 @@ async function main() {
   ingestionWorker.on("completed", (job) => console.log(`Completed ingestion job ${job.id}`));
   ingestionWorker.on("failed", (job, error) => console.error(`Failed ingestion job ${job?.id}`, error));
   ingestionWorker.on("error", (error) => console.error("Ingestion worker Redis error", error));
+
+  // Desktop builds are intentionally handled only by this trusted worker,
+  // never by a browser request or a serverless API invocation. The worker
+  // must run on a Windows-capable host with the controlled runtime template.
+  const desktopBuildWorker = new Worker<DesktopBuildJobData>(
+    DESKTOP_BUILD_QUEUE,
+    async (job) => processDesktopBuildJob(platformStore, job.data),
+    {
+      connection: {
+        url: env.redisUrl
+      }
+    }
+  );
+
+  desktopBuildWorker.on("completed", (job) => console.log(`Completed desktop build ${job.id}`));
+  desktopBuildWorker.on("failed", (job, error) => console.error(`Desktop build ${job?.id} failed`, error));
+  desktopBuildWorker.on("error", (error) => console.error("Desktop build worker Redis error", error));
 }
 
 main().catch((error) => {

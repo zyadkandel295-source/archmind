@@ -139,7 +139,9 @@ describe("six-feature platform foundation", () => {
   });
 
   it("creates a fast signed assistant install intent without creating a desktop build", async () => {
-    const directory = await fs.mkdtemp(path.join(os.tmpdir(), "archmind-runtime-")); temporary.push(directory);
+    const testArtifactsRoot = path.resolve(process.cwd(), "..", "..", ".archmind-data", "test-runtime-");
+    await fs.mkdir(testArtifactsRoot, { recursive: true });
+    const directory = await fs.mkdtemp(testArtifactsRoot); temporary.push(directory);
     const artifactPath = path.join(directory, "ArchMind Desktop Setup.exe");
     const bytes = Buffer.concat([Buffer.from("MZ"), Buffer.alloc(2048, 7)]);
     await fs.writeFile(artifactPath, bytes);
@@ -195,7 +197,7 @@ describe("six-feature platform foundation", () => {
       .get(first.body.downloadAuthorization.url)
       .set("Authorization", `Bearer ${user.token}`)
       .expect(200);
-    expect(download.headers["x-archmind-runtime-sha256"]).toBe(digest);
+    expect(download.headers["x-agentia-runtime-sha256"]).toBe(digest);
     expect(download.headers["content-disposition"]).toContain("attachment");
   });
 
@@ -204,12 +206,23 @@ describe("six-feature platform foundation", () => {
     const created = await request(app).post(`/api/platform/assistants/${user.assistantId}/packages`).set("Authorization", `Bearer ${user.token}`).send({ productName: "Safe Helper", description: "A packaged assistant", publisherName: "Test Publisher", category: "productivity", pricingType: "free" }).expect(201);
     const packageId = created.body.package.id as string;
     await request(app).post(`/api/platform/packages/${packageId}/publish`).set("Authorization", `Bearer ${user.token}`).send({ releaseNotes: "Unsafe", manifest: { assistant: { oauthToken: "must-not-ship" } } }).expect(400);
-    const published = await request(app).post(`/api/platform/packages/${packageId}/publish`).set("Authorization", `Bearer ${user.token}`).send({ releaseNotes: "First release", manifest: { assistant: { name: "Safe Helper", instructions: "Help safely" }, workflows: [] } }).expect(201);
-    expect(published.body.version.version).toBe(1);
-    expect(published.body.version.checksum).toMatch(/^[a-f0-9]{64}$/);
-    const entitlement = await request(app).post(`/api/platform/packages/${packageId}/acquire`).set("Authorization", `Bearer ${consumer.token}`).set("Idempotency-Key", "acquire-1").expect(201);
+    const exported = await request(app)
+      .post(`/api/platform/assistants/${user.assistantId}/exports`)
+      .set("Authorization", `Bearer ${user.token}`)
+      .send({
+        application: { id: "com.agentia.safehelper", name: "Client-provided name is ignored", description: "A safe exported assistant", version: "1.0.0", publisher: "Test Publisher", authenticationMode: "public", platform: "windows", architecture: "x64" },
+        inferenceMode: "cloud",
+        requestedPermissions: ["network"],
+        requiredPermissions: [],
+        syncEnabled: true,
+        releaseNotes: "First release"
+      })
+      .expect(201);
+    expect(exported.body.version.version).toBe(1);
+    expect(exported.body.version.checksum).toMatch(/^[a-f0-9]{64}$/);
+    const entitlement = await request(app).post(`/api/platform/packages/${exported.body.package.id}/acquire`).set("Authorization", `Bearer ${consumer.token}`).set("Idempotency-Key", "acquire-1").expect(201);
     expect(entitlement.body.entitlement.status).toBe("active");
-    const bootstrap = await request(app).post(`/api/platform/assistants/${user.assistantId}/bootstrap`).set("Authorization", `Bearer ${consumer.token}`).send({ packageId }).expect(201);
+    const bootstrap = await request(app).post(`/api/platform/assistants/${user.assistantId}/bootstrap`).set("Authorization", `Bearer ${consumer.token}`).send({ packageId: exported.body.package.id }).expect(201);
     expect(bootstrap.body.token).toEqual(expect.any(String));
   });
 
