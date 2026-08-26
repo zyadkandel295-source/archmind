@@ -105,6 +105,22 @@ async function readCurrentRuntimeTemplate() {
   throw new Error("Precompiled desktop runtime template is missing. Run 'node scripts/build-desktop-runtime.cjs' to initialize the desktop runtime template.");
 }
 
+async function ensureCurrentRuntimeTemplate() {
+  try {
+    return await readCurrentRuntimeTemplate();
+  } catch (initialError) {
+    // The worker builds only the controlled runtime template; it never runs
+    // project/user code. CI should prebuild this, but first local exports can
+    // safely self-initialize instead of failing with a missing-template error.
+    await run("node", ["scripts/build-desktop-runtime.cjs"], workspaceRoot);
+    try {
+      return await readCurrentRuntimeTemplate();
+    } catch {
+      throw initialError;
+    }
+  }
+}
+
 async function newestFileMtime(directory: string) {
   let newest = 0;
   for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
@@ -161,7 +177,7 @@ export async function buildDesktopInstaller(
   };
   await fs.mkdir(packageDir, { recursive: true });
 
-  const runtimeTemplate = await timed("runtime_template_validate", () => readCurrentRuntimeTemplate());
+  const runtimeTemplate = await timed("runtime_template_validate", () => ensureCurrentRuntimeTemplate());
   if (!(await pathExists(path.join(runtimeTemplate.templateDir, "resources", "app.asar")))) {
     throw new Error("Precompiled desktop runtime template is missing. Build apps/desktop once before assistant packaging.");
   }
