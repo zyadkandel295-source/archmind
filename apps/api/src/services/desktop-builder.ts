@@ -141,6 +141,7 @@ export async function buildDesktopInstaller(
     apiUrl: string;
     bootstrap: { token: string; expiresAt: string };
     assistant: { id: string; name: string; color?: string; icon?: string; instructions: string; webUrl?: string };
+    appManifest?: Record<string, unknown>;
   }
 ) {
   if (build.platform !== "win32") throw new Error("Only Windows desktop installers are enabled for this MVP.");
@@ -215,6 +216,9 @@ export async function buildDesktopInstaller(
     userDataDirectoryName: build.appId.replace(/[^a-z0-9.-]+/gi, "_"),
     runtimeTemplateVersion: runtimeTemplate.version,
     runtimeTemplateDigest: runtimeTemplate.digest,
+    // The export payload is configuration only; it is kept distinct from the
+    // short-lived bootstrap exchange credential above.
+    appManifest: input.appManifest,
     createdAt: new Date().toISOString()
   };
   await timed("manifest_write", async () => {

@@ -12,32 +12,35 @@ export interface DesktopBuildJobData {
   build: DesktopBuildRecord;
   apiUrl: string;
   assistant: { id: string; name: string; color?: string; icon?: string; instructions: string; webUrl?: string };
+  /** Strict, signed configuration captured at export time; never credentials. */
+  appManifest?: Record<string, unknown>;
 }
 
 export async function processDesktopBuildJob(platformStore: PlatformStateStore, data: DesktopBuildJobData) {
   const service = new PlatformService(platformStore);
-  await service.updateDesktopBuild(data.build.id, { status: "building", error: undefined });
+  await service.updateDesktopBuild(data.build.id, { status: "building", currentStage: "prepare", progress: 15, error: undefined });
   try {
     // Issue the single-use bootstrap immediately before packaging. Electron builds
     // can take several minutes, so minting it at request time can ship an expired
     // installer even though the build itself succeeded.
     const bootstrap = await service.issueBootstrap(data.build.ownerId, data.build.assistantId, data.build.packageId);
-    await service.updateDesktopBuild(data.build.id, { status: "packaging" });
+    await service.updateDesktopBuild(data.build.id, { status: "packaging", currentStage: "package", progress: 45 });
     const result = await buildDesktopInstaller(data.build, {
       apiUrl: data.apiUrl,
       bootstrap,
-      assistant: data.assistant
+      assistant: data.assistant,
+      appManifest: data.appManifest
     });
-    await service.updateDesktopBuild(data.build.id, { status: "validating_artifact" });
+    await service.updateDesktopBuild(data.build.id, { status: "validating_artifact", currentStage: "finalize", progress: 85 });
     return await service.updateDesktopBuild(data.build.id, {
-      status: "ready",
+      status: "ready", currentStage: "finalize", progress: 100,
       artifactPath: result.path,
       artifactSize: result.size,
       artifactSha256: result.sha256
     });
   } catch (error) {
     await service.updateDesktopBuild(data.build.id, {
-      status: "failed",
+      status: "failed", currentStage: "finalize",
       error: error instanceof Error ? error.message : String(error)
     });
     throw error;

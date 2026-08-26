@@ -275,6 +275,11 @@ export interface DesktopBuildRecord {
   runtimeVersion: string;
   assistantVersion: number;
   brandingHash: string;
+  manifestChecksum?: string;
+  sourcePackageVersion?: number;
+  correlationId?: string;
+  currentStage?: "validate" | "prepare" | "package" | "upload" | "finalize";
+  progress?: number;
   idempotencyKey?: string;
   buildQueueId?: string;
   artifactPath?: string;

@@ -13,11 +13,33 @@ import type { AssistantRecord } from "../types";
 import { HttpError } from "../lib/http-error";
 import { actionPreview, getActionPolicy } from "./risk-policy";
 import { validateWorkflow } from "./workflow-proposal";
+import { canonicalJson as canonicalManifestJson, parseAgentiaAppManifest, type AgentiaAppManifest } from "@archmind/shared";
 
 const iso = () => new Date().toISOString();
 const sha256 = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
 export const DESKTOP_RUNTIME_VERSION = "33.2.0-archmind-web-bubble-fast.4";
 const MANIFEST_SCHEMA_VERSION = 1;
+
+export type ExportManifestInput = {
+  application: {
+    id: string;
+    name: string;
+    description?: string;
+    version: string;
+    publisher: string;
+    copyright?: string;
+    authenticationMode: "agentia_account" | "private" | "public";
+    platform: "windows" | "macos" | "linux" | "web";
+    architecture: "x64" | "arm64" | "universal";
+  };
+  inferenceMode: "cloud" | "local" | "hybrid";
+  localProvider?: { id: string; model: string };
+  requestedPermissions?: Array<"filesystem" | "microphone" | "camera" | "clipboard" | "notifications" | "network" | "local_applications">;
+  requiredPermissions?: Array<"filesystem" | "microphone" | "camera" | "clipboard" | "notifications" | "network" | "local_applications">;
+  syncEnabled?: boolean;
+  releaseNotes?: string;
+  cloudEndpoint?: string;
+};
 
 function canonicalJson(value: unknown): string {
   if (value === undefined) return "null";
@@ -68,6 +90,12 @@ function manifestSigningKey() {
 
 function signManifestDigest(digest: string) {
   return createHash("sha256").update(`${manifestSigningKey()}:${digest}`).digest("base64url");
+}
+
+function verifyManifestIntegrity(manifest: AgentiaAppManifest) {
+  const { integrity, ...unsignedManifest } = manifest;
+  const digest = sha256(canonicalManifestJson(unsignedManifest));
+  return integrity.canonicalSha256 === digest && integrity.signature === signManifestDigest(digest);
 }
 
 function rotateInstallDownloadToken(intent: AssistantInstallIntentRecord, downloadToken: string) {
@@ -458,13 +486,111 @@ export class PlatformService {
     await this.save(state);
     return item;
   }
+
+  /**
+   * Creates an immutable package version from server-owned assistant state.
+   * Browser clients cannot provide a manifest or signature, which prevents
+   * them from smuggling secrets or changing assistant identity at build time.
+   */
+  async createExportPackage(ownerId: string, assistant: AssistantRecord, input: ExportManifestInput) {
+    const state = await this.state();
+    const createdAt = iso();
+    const requested = Array.from(new Set(input.requestedPermissions ?? []));
+    const required = Array.from(new Set(input.requiredPermissions ?? []));
+    if (required.some((permission) => !requested.includes(permission))) {
+      throw new HttpError(400, "Required permissions must also be requested.", "EXPORT_PERMISSION_INVALID");
+    }
+    if (input.inferenceMode !== "cloud" && !input.localProvider) {
+      throw new HttpError(400, "A local provider is required for local or hybrid inference.", "LOCAL_PROVIDER_REQUIRED");
+    }
+
+    // Only the audited calculator capability is presently portable. Other
+    // configured tools remain cloud-only until a registry descriptor exists.
+    const tools = (assistant.enabledTools ?? []).map((id) => {
+      if (id !== "calculator") throw new HttpError(409, `Tool '${id}' is not exportable yet.`, "EXPORT_TOOL_NOT_SUPPORTED");
+      return { id, version: "1", permissions: [], inputSchema: {}, outputSchema: {}, executionEnvironment: "runtime" as const, networkRequired: false };
+    });
+    const manifestBase = {
+      format: "agentia.app-manifest" as const,
+      schemaVersion: 1 as const,
+      manifestId: randomUUID(),
+      createdAt,
+      application: {
+        id: input.application.id,
+        name: input.application.name,
+        description: input.application.description ?? assistant.description ?? "",
+        version: input.application.version,
+        publisher: input.application.publisher,
+        copyright: input.application.copyright,
+        authenticationMode: input.application.authenticationMode,
+        targets: [{ platform: input.application.platform, architecture: input.application.architecture }]
+      },
+      assistant: {
+        id: assistant.id,
+        version: assistant.version,
+        name: assistant.name,
+        systemPrompt: assistant.systemPrompt,
+        model: { provider: input.inferenceMode === "local" ? input.localProvider!.id : "agentia-cloud", model: input.inferenceMode === "local" ? input.localProvider!.model : assistant.model, temperature: assistant.temperature },
+        starterPrompts: assistant.starterPrompts ?? []
+      },
+      runtime: {
+        minimumVersion: DESKTOP_RUNTIME_VERSION,
+        inferenceMode: input.inferenceMode,
+        cloudEndpoint: input.inferenceMode === "local" ? undefined : input.cloudEndpoint,
+        localProvider: input.inferenceMode === "cloud" ? undefined : input.localProvider
+      },
+      tools,
+      knowledge: { mode: "cloud" as const, references: [] },
+      memory: { conversation: true, session: true, longTerm: false, localEncryptionRequired: true },
+      permissions: { requested, required, rationale: {} },
+      sync: { enabled: Boolean(input.syncEnabled), endpoint: input.syncEnabled ? input.cloudEndpoint : undefined, conflictStrategy: "manual" as const },
+      branding: { accentColor: /^#[0-9a-f]{6}$/i.test(assistant.color ?? "") ? assistant.color! : "#2563EB", theme: "system" as const }
+    };
+    const digest = sha256(canonicalManifestJson(manifestBase));
+    const manifest = parseAgentiaAppManifest({
+      ...manifestBase,
+      integrity: { canonicalSha256: digest, signature: signManifestDigest(digest), keyId: process.env.ARCHMIND_MANIFEST_SIGNING_KEY_ID ?? "development-hmac-sha256" }
+    });
+    if (!verifyManifestIntegrity(manifest)) throw new HttpError(500, "Generated export manifest failed integrity validation.", "EXPORT_MANIFEST_INVALID");
+    const packageRecord: AssistantPackageRecord = {
+      id: randomUUID(), ownerId, assistantId: assistant.id, productName: manifest.application.name,
+      description: manifest.application.description, publisherName: manifest.application.publisher,
+      category: "assistant", pricingType: manifest.application.authenticationMode === "public" ? "free" : "private",
+      status: "published", currentVersion: 1, createdAt, updatedAt: createdAt
+    };
+    const version: PackageVersionRecord = {
+      id: randomUUID(), packageId: packageRecord.id, version: 1, releaseNotes: input.releaseNotes ?? "Initial exported application version.",
+      manifest: manifest as unknown as Record<string, unknown>, checksum: manifest.integrity.canonicalSha256, status: "published", createdAt
+    };
+    state.packages.push(packageRecord);
+    state.packageVersions.push(version);
+    await this.save(state);
+    await this.audit({ ownerId, assistantId: assistant.id, actionType: "app_export.manifest_created", riskLevel: "sensitive_data_access", status: "success", details: { packageId: packageRecord.id, version: version.version, manifestChecksum: version.checksum, target: manifest.application.targets[0] }, traceId: randomUUID() });
+    return { package: packageRecord, version, manifest };
+  }
+
+  async getPackageForOwner(ownerId: string, packageId: string) {
+    const state = await this.state();
+    const pkg = state.packages.find((item) => item.id === packageId && item.ownerId === ownerId);
+    if (!pkg) throw new HttpError(404, "Export package not found", "EXPORT_PACKAGE_NOT_FOUND");
+    const version = state.packageVersions.find((item) => item.packageId === packageId && item.version === pkg.currentVersion && item.status === "published");
+    if (!version) throw new HttpError(409, "Export package has no published version.", "EXPORT_VERSION_UNAVAILABLE");
+    const manifest = parseAgentiaAppManifest(version.manifest);
+    if (manifest.integrity.canonicalSha256 !== version.checksum || !verifyManifestIntegrity(manifest)) throw new HttpError(409, "Export manifest integrity verification failed.", "EXPORT_MANIFEST_INVALID");
+    return { package: pkg, version, manifest };
+  }
+
   async publishPackage(ownerId: string, packageId: string, input: { releaseNotes: string; manifest: Record<string, unknown> }) {
     const state = await this.state();
     const pkg = state.packages.find((item) => item.id === packageId && item.ownerId === ownerId);
     if (!pkg) throw new HttpError(404, "Package not found", "PACKAGE_NOT_FOUND");
     if (containsForbiddenPackageKey(input.manifest)) throw new HttpError(400, "The package contains a forbidden private-data field.", "UNSAFE_PACKAGE");
+    let manifest: AgentiaAppManifest;
+    try { manifest = parseAgentiaAppManifest(input.manifest); }
+    catch { throw new HttpError(400, "Package manifest is invalid or contains a secret.", "INVALID_APP_MANIFEST"); }
+    if (!verifyManifestIntegrity(manifest)) throw new HttpError(400, "Package manifest signature is invalid.", "INVALID_APP_MANIFEST_SIGNATURE");
     const versionNumber = Math.max(0, ...state.packageVersions.filter((item) => item.packageId === packageId).map((item) => item.version)) + 1;
-    const version: PackageVersionRecord = { id: randomUUID(), packageId, version: versionNumber, releaseNotes: input.releaseNotes, manifest: input.manifest, checksum: sha256(JSON.stringify(input.manifest)), status: "published", createdAt: iso() };
+    const version: PackageVersionRecord = { id: randomUUID(), packageId, version: versionNumber, releaseNotes: input.releaseNotes, manifest: manifest as unknown as Record<string, unknown>, checksum: manifest.integrity.canonicalSha256, status: "published", createdAt: iso() };
     state.packageVersions.push(version);
     pkg.status = "published";
     pkg.currentVersion = versionNumber;
@@ -763,7 +889,7 @@ export class PlatformService {
     return { session, sessionToken, assistant: { snapshot, binding } };
   }
 
-  async createDesktopBuild(ownerId: string, input: { assistantId: string; packageId?: string; platform: DesktopBuildRecord["platform"]; architecture?: DesktopBuildRecord["architecture"]; productName: string; appIcon?: string; color?: string; assistantVersion?: number; runtimeVersion?: string; idempotencyKey: string; force?: boolean }) {
+  async createDesktopBuild(ownerId: string, input: { assistantId: string; packageId?: string; platform: DesktopBuildRecord["platform"]; architecture?: DesktopBuildRecord["architecture"]; productName: string; appIcon?: string; color?: string; assistantVersion?: number; runtimeVersion?: string; manifestChecksum?: string; sourcePackageVersion?: number; idempotencyKey: string; force?: boolean }) {
     const state = await this.state();
     const runtimeVersion = input.runtimeVersion ?? DESKTOP_RUNTIME_VERSION;
     const architecture = input.architecture ?? "x64";
@@ -803,7 +929,7 @@ export class PlatformService {
     const build: DesktopBuildRecord = {
       id: randomUUID(), ownerId, assistantId: input.assistantId, packageId: input.packageId, platform: input.platform,
       architecture, status: "validating", appId: `com.archmind.assistant.${stableId}`, productName: normalizeDisplayName(input.productName),
-      runtimeVersion, assistantVersion, brandingHash: hash, idempotencyKey: input.idempotencyKey,
+      runtimeVersion, assistantVersion, brandingHash: hash, manifestChecksum: input.manifestChecksum, sourcePackageVersion: input.sourcePackageVersion, correlationId: randomUUID(), currentStage: "validate", progress: 0, idempotencyKey: input.idempotencyKey,
       protocol: `archmind-assistant-${stableId}`, downloadTokenHash: sha256(downloadToken),
       expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), createdAt, updatedAt: createdAt
     };

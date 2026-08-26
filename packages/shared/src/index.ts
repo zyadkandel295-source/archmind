@@ -6,6 +6,19 @@ export { CORE_RAG_SYSTEM_PROMPT, CONTEXT_INJECTION_TEMPLATE, RAG_FALLBACK_TEMPLA
 export { generateAssistantOpeningExperience } from "./opening";
 export type { AssistantOpeningExperience, AssistantOpeningInput } from "./opening";
 export {
+  AGENTIA_APP_MANIFEST_SCHEMA_VERSION,
+  agentiaAppManifestSchema,
+  appArchitectureSchema,
+  appAuthenticationModeSchema,
+  appInferenceModeSchema,
+  appPermissionSchema,
+  appPlatformSchema,
+  canonicalJson,
+  containsManifestSecret,
+  parseAgentiaAppManifest
+} from "./app-manifest";
+export type { AgentiaAppManifest } from "./app-manifest";
+export {
   registerSchema,
   loginSchema,
   passwordResetRequestSchema,

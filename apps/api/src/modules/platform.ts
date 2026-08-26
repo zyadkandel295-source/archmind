@@ -190,6 +190,24 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
 
   router.post("/assistants/:assistantId/packages", auth, asyncHandler(async (req: AuthedRequest, res) => { const assistant = assertFound(store.getAssistantForUser(req.params.assistantId!, req.user!.id), "Assistant not found"); const parsed = z.object({ productName: z.string().min(1).max(120), description: z.string().max(2000), publisherName: z.string().min(1).max(120), category: z.string().min(1).max(80), pricingType: z.enum(["private", "invitation", "free", "one_time", "subscription", "organization", "trial", "unlisted"]) }).parse(req.body); res.status(201).json({ package: await service.createPackage(req.user!.id, assistant.id, parsed) }); }));
   router.post("/packages/:packageId/publish", auth, asyncHandler(async (req: AuthedRequest, res) => { const parsed = z.object({ releaseNotes: z.string().max(5000), manifest: z.record(z.unknown()) }).parse(req.body); res.status(201).json({ version: await service.publishPackage(req.user!.id, req.params.packageId!, parsed) }); }));
+  router.post("/assistants/:assistantId/exports", auth, asyncHandler(async (req: AuthedRequest, res) => {
+    const parsed = z.object({
+      application: z.object({
+        id: z.string().min(3).max(180), name: z.string().trim().min(1).max(120), description: z.string().max(2_000).optional(),
+        version: z.string().min(5).max(80), publisher: z.string().trim().min(1).max(120), copyright: z.string().max(500).optional(),
+        authenticationMode: z.enum(["agentia_account", "private", "public"]), platform: z.enum(["windows", "macos", "linux", "web"]), architecture: z.enum(["x64", "arm64", "universal"])
+      }),
+      inferenceMode: z.enum(["cloud", "local", "hybrid"]),
+      localProvider: z.object({ id: z.string().min(1).max(100), model: z.string().min(1).max(200) }).optional(),
+      requestedPermissions: z.array(z.enum(["filesystem", "microphone", "camera", "clipboard", "notifications", "network", "local_applications"])).max(7).optional(),
+      requiredPermissions: z.array(z.enum(["filesystem", "microphone", "camera", "clipboard", "notifications", "network", "local_applications"])).max(7).optional(),
+      syncEnabled: z.boolean().optional(), releaseNotes: z.string().max(5_000).optional()
+    }).parse(req.body);
+    const assistant = assertFound(await syncPrincipal(req, req.params.assistantId!), "Assistant not found");
+    const apiUrl = env.appUrl.replace(/:\d+$/, `:${env.port}`);
+    const exported = await service.createExportPackage(req.user!.id, assistant, { ...parsed, cloudEndpoint: apiUrl });
+    res.status(201).json({ package: exported.package, version: exported.version, manifest: exported.manifest });
+  }));
   router.post("/packages/:packageId/acquire", auth, asyncHandler(async (req: AuthedRequest, res) => { idempotency(req); res.status(201).json({ entitlement: await service.acquirePackage(req.user!.id, req.params.packageId!) }); }));
   router.post("/assistants/:assistantId/bootstrap", auth, asyncHandler(async (req: AuthedRequest, res) => { const { packageId } = z.object({ packageId: z.string().uuid().optional() }).parse(req.body); if (!packageId) assertFound(store.getAssistantForUser(req.params.assistantId!, req.user!.id), "Assistant not found"); res.status(201).json(await service.issueBootstrap(req.user!.id, req.params.assistantId!, packageId)); }));
   router.post("/assistants/:assistantId/install-intents", auth, asyncHandler(async (req: AuthedRequest, res) => {
@@ -328,21 +346,28 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
   router.post("/desktop/builds", auth, asyncHandler(async (req: AuthedRequest, res) => {
     const parsed = z.object({ assistantId: z.string().min(1), platform: z.enum(["win32", "darwin", "linux"]).default("win32"), architecture: z.enum(["x64", "arm64"]).default("x64"), packageId: z.string().optional(), force: z.boolean().optional() }).parse(req.body);
     await syncPrincipal(req);
+    if (parsed.platform !== "win32") throw new HttpError(409, "A trusted build worker for this platform is not available yet.", "EXPORT_TARGET_UNAVAILABLE");
     const assistant = parsed.packageId
-      ? assertFound(store.getAssistant(parsed.assistantId), "Assistant not found")
+      ? assertFound(store.getAssistantForUser(parsed.assistantId, req.user!.id), "Assistant not found")
       : assertFound(store.getAssistantForUser(parsed.assistantId, req.user!.id) ?? store.getPublicAssistantBySlug(parsed.assistantId), "Assistant not found");
+    const exported = parsed.packageId ? await service.getPackageForOwner(req.user!.id, parsed.packageId) : undefined;
+    if (exported && exported.package.assistantId !== assistant.id) throw new HttpError(403, "The export package does not belong to this assistant.", "EXPORT_PACKAGE_FORBIDDEN");
+    if (exported && !exported.manifest.application.targets.some((target) => target.platform === "windows" && target.architecture === parsed.architecture)) {
+      throw new HttpError(409, "The selected architecture is not enabled in this export manifest.", "EXPORT_TARGET_MISMATCH");
+    }
     if (assistant.userId === req.user!.id) await platformStore.ensurePlatformPrincipal?.(req.user!, assistant);
     if (env.nodeEnv === "production" && !env.redisUrl) throw new HttpError(503, "Redis is required for production desktop builds.", "REDIS_REQUIRED");
     const buildIdempotencyKey = req.header("Idempotency-Key")?.trim();
     if (!buildIdempotencyKey || buildIdempotencyKey.length > 200) throw new HttpError(400, "A valid Idempotency-Key header is required.", "IDEMPOTENCY_KEY_REQUIRED");
-    const created = await service.createDesktopBuild(req.user!.id, { assistantId: assistant.id, packageId: parsed.packageId, platform: parsed.platform, architecture: parsed.architecture, productName: assistant.name, color: assistant.color, appIcon: assistant.icon, assistantVersion: assistant.version, idempotencyKey: buildIdempotencyKey, force: Boolean(parsed.force) });
+    const created = await service.createDesktopBuild(req.user!.id, { assistantId: assistant.id, packageId: parsed.packageId, platform: parsed.platform, architecture: parsed.architecture, productName: exported?.manifest.application.name ?? assistant.name, color: assistant.color, appIcon: assistant.icon, assistantVersion: assistant.version, manifestChecksum: exported?.version.checksum, sourcePackageVersion: exported?.version.version, idempotencyKey: buildIdempotencyKey, force: Boolean(parsed.force) });
     let queue: Awaited<ReturnType<typeof enqueueDesktopBuild>> | undefined;
     if (!created.reused) {
       try {
         queue = await enqueueDesktopBuild(env, platformStore, {
           build: created.build,
           apiUrl: env.appUrl.replace(/:\d+$/, `:${env.port}`),
-          assistant: { id: assistant.id, name: assistant.name, color: assistant.color, icon: assistant.icon, instructions: assistant.systemPrompt, webUrl: `${env.appUrl.replace(/\/$/, "")}/a/${encodeURIComponent(assistant.publicSlug ?? assistant.slug ?? assistant.id)}?desktop=1` }
+          assistant: { id: assistant.id, name: exported?.manifest.application.name ?? assistant.name, color: assistant.color, icon: assistant.icon, instructions: assistant.systemPrompt, webUrl: `${env.appUrl.replace(/\/$/, "")}/a/${encodeURIComponent(assistant.publicSlug ?? assistant.slug ?? assistant.id)}?desktop=1` },
+          appManifest: exported?.manifest
         });
       } catch (error) {
         const errorMsg = error instanceof Error ? error.message.slice(0, 1000) : "Desktop build could not be queued.";

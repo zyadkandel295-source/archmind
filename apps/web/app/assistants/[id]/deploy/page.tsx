@@ -1,5 +1,5 @@
-import { DeployClient } from "@/components/deploy-client";
+import { AppExportClient } from "@/components/app-export-client";
 
 export default function DeployAssistantPage({ params }: { params: { id: string } }) {
-  return <DeployClient assistantId={params.id} />;
+  return <AppExportClient assistantId={params.id} />;
 }
