@@ -1,6 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { describe, expect, test } from "vitest";
 import { canonicalJson, parseAgentiaAppManifest } from "@archmind/shared";
+import { emptyPlatformState } from "../platform-types";
+import { PlatformService } from "../services/platform-service";
+import type { AssistantRecord } from "../types";
 
 function validManifest() {
   return {
@@ -24,5 +27,28 @@ describe("Agentia App Manifest", () => {
   test("rejects credentials and non-semantic versions", () => {
     expect(() => parseAgentiaAppManifest({ ...validManifest(), apiKey: "do-not-ship" })).toThrow("credentials or secrets");
     expect(() => parseAgentiaAppManifest({ ...validManifest(), application: { ...validManifest().application, version: "release-one" } })).toThrow();
+  });
+
+  test("uses the saved assistant identity and prompt for every export", async () => {
+    const state = emptyPlatformState();
+    const service = new PlatformService({
+      getPlatformState: () => state,
+      savePlatformState: () => undefined
+    });
+    const assistant: AssistantRecord = {
+      id: randomUUID(), userId: "owner", createdByUserId: "owner", name: "Customer Support Assistant", slug: "customer-support",
+      systemPrompt: "Answer with the approved support policy.", tone: "professional", isPublic: false, visibility: "private",
+      model: "gpt-4o-mini", temperature: 0.2, starterPrompts: [], enabledTools: [], version: 7,
+      createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+    };
+
+    const exported = await service.createExportPackage("owner", assistant, {
+      application: { id: "com.agentia.untrusted", name: "Browser supplied name", version: "1.0.0", publisher: "AGENTIA", authenticationMode: "agentia_account", platform: "windows", architecture: "x64" },
+      inferenceMode: "cloud", cloudEndpoint: "https://api.example.test"
+    });
+
+    expect(exported.manifest.application.name).toBe(assistant.name);
+    expect(exported.manifest.assistant.name).toBe(assistant.name);
+    expect(exported.manifest.assistant.systemPrompt).toBe(assistant.systemPrompt);
   });
 });

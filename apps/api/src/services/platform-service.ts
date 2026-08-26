@@ -517,7 +517,10 @@ export class PlatformService {
       createdAt,
       application: {
         id: input.application.id,
-        name: input.application.name,
+        // Application identity is derived from the saved assistant, never a
+        // browser-supplied display name. This keeps the installer, package,
+        // and embedded assistant manifest aligned.
+        name: assistant.name,
         description: input.application.description ?? assistant.description ?? "",
         version: input.application.version,
         publisher: input.application.publisher,
