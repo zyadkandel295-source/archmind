@@ -18,6 +18,8 @@ import { enqueueDesktopBuild } from "../services/desktop-build-queue";
 import { downloadDesktopArtifact, isSupabaseArtifactPath } from "../services/desktop-artifact-storage";
 import { RagService } from "../services/rag";
 import { runAssistantChat } from "../services/assistant-chat";
+import { createSupabaseServerClient, isSupabaseServerConfigured } from "../services/supabase-server";
+import type { AssistantRecord } from "../types";
 
 const workflowInput = z.object({ name: z.string().trim().min(1).max(120), purpose: z.string().trim().min(1).max(2000), definition: z.record(z.unknown()) });
 const idempotency = (req: AuthedRequest) => {
@@ -86,16 +88,86 @@ async function readLocalRuntimeManifest() {
   return { manifest: parsed as LocalRuntimeManifest, artifact };
 }
 
+function stringArray(value: unknown): string[] {
+  if (Array.isArray(value)) return value.filter((item): item is string => typeof item === "string");
+  if (typeof value !== "string" || !value.trim()) return [];
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function supabaseAssistantToRecord(row: Record<string, unknown>): AssistantRecord | undefined {
+  const id = typeof row.id === "string" ? row.id : undefined;
+  const userId = typeof row.user_id === "string" ? row.user_id : undefined;
+  const name = typeof row.name === "string" && row.name.trim() ? row.name : undefined;
+  if (!id || !userId || !name) return undefined;
+
+  const nowIso = new Date().toISOString();
+  const rawVisibility = typeof row.visibility === "string" ? row.visibility : undefined;
+  const isPublic = Boolean(row.is_public) || rawVisibility === "public";
+  const rawTone = typeof row.tone === "string" ? row.tone : "professional";
+  const tone: AssistantRecord["tone"] = rawTone === "casual" || rawTone === "teacher" || rawTone === "custom" ? rawTone : "professional";
+  const slug = typeof row.slug === "string" && row.slug.trim() ? row.slug : id;
+  const publicSlug = typeof row.public_slug === "string" && row.public_slug.trim() ? row.public_slug : undefined;
+  const systemPrompt =
+    (typeof row.system_prompt === "string" && row.system_prompt.trim() ? row.system_prompt : undefined) ??
+    (typeof row.instructions === "string" && row.instructions.trim() ? row.instructions : undefined) ??
+    "You are a helpful assistant deployed on AGENTIA.";
+
+  return {
+    id,
+    userId,
+    createdByUserId: userId,
+    name,
+    slug,
+    description: typeof row.description === "string" ? row.description : "",
+    systemPrompt,
+    tone,
+    isPublic,
+    visibility: isPublic ? "public" : "private",
+    publicSlug,
+    model: (typeof row.model === "string" && row.model.trim()) || (typeof row.model_name === "string" && row.model_name.trim()) || "auto",
+    temperature: typeof row.temperature === "number" ? row.temperature : Number(row.temperature ?? 0.7) || 0.7,
+    icon: typeof row.icon === "string" ? row.icon : undefined,
+    color: typeof row.color === "string" ? row.color : undefined,
+    starterPrompts: stringArray(row.starter_prompts ?? row.starterPrompts),
+    enabledTools: stringArray(row.enabled_tools ?? row.enabledTools),
+    version: typeof row.version === "number" ? row.version : Number(row.version ?? 1) || 1,
+    createdAt: typeof row.created_at === "string" ? row.created_at : nowIso,
+    updatedAt: typeof row.updated_at === "string" ? row.updated_at : nowIso
+  };
+}
+
 export function platformRouter(env: Env, store: MemoryStore, platformStore: PlatformStateStore = store) {
   const router = Router();
   const service = new PlatformService(platformStore);
   const rag = new RagService(env, store);
   const auth = authenticate(env, store);
+  const supabase = createSupabaseServerClient();
+  const useSupabase = env.nodeEnv !== "test" && isSupabaseServerConfigured();
+  const getSupabaseAssistantForUser = async (assistantId: string, userId: string) => {
+    if (!useSupabase) return undefined;
+    const { data, error } = await supabase
+      .from("assistants")
+      .select("*")
+      .eq("id", assistantId)
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (error || !data || data.deleted_at) {
+      if (error) console.warn("[Platform] Supabase assistant lookup failed:", error.message);
+      return undefined;
+    }
+    return supabaseAssistantToRecord(data);
+  };
   const syncPrincipal = async (req: AuthedRequest, assistantId?: string) => {
     const assistant = assistantId
       ? (store.getAssistantForUser(assistantId, req.user!.id) ??
          store.getPublicAssistantBySlug(assistantId) ??
-         store.getAssistant(assistantId))
+         store.getAssistant(assistantId) ??
+         await getSupabaseAssistantForUser(assistantId, req.user!.id))
       : undefined;
     if (req.user) {
       try {
