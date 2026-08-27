@@ -10,7 +10,7 @@ import { asyncHandler } from "../lib/async-handler";
 import { assertFound, HttpError } from "../lib/http-error";
 import { authenticate } from "../middleware/auth";
 import type { WorkflowDefinition } from "../platform-types";
-import type { AuthedRequest } from "../types";
+import type { AssistantRecord, AuthedRequest, AuthUser } from "../types";
 import { PlatformService } from "../services/platform-service";
 import { listActionPolicies } from "../services/risk-policy";
 import { proposeWorkflow, validateWorkflow } from "../services/workflow-proposal";
@@ -19,7 +19,6 @@ import { downloadDesktopArtifact, isSupabaseArtifactPath } from "../services/des
 import { RagService } from "../services/rag";
 import { runAssistantChat } from "../services/assistant-chat";
 import { createSupabaseServerClient, isSupabaseServerConfigured } from "../services/supabase-server";
-import type { AssistantRecord } from "../types";
 
 const workflowInput = z.object({ name: z.string().trim().min(1).max(120), purpose: z.string().trim().min(1).max(2000), definition: z.record(z.unknown()) });
 const idempotency = (req: AuthedRequest) => {
@@ -30,6 +29,7 @@ const idempotency = (req: AuthedRequest) => {
 const workspaceRoot = path.resolve(__dirname, "..", "..", "..", "..");
 const localRuntimeArtifact = path.join(workspaceRoot, "apps", "desktop", "out", "Install AGENTIA Agent.exe");
 const localRuntimeManifest = path.join(workspaceRoot, ".archmind-data", "desktop-runtime", "current.json");
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 /** Ensure the resolved file path is within an allowed base directory to prevent path traversal. */
 function assertSafeArtifactPath(filePath: string): string {
@@ -141,6 +141,21 @@ function supabaseAssistantToRecord(row: Record<string, unknown>): AssistantRecor
   };
 }
 
+function decodedBearerClaims(req: AuthedRequest): { sub?: string; email?: string } {
+  const token = String(req.header("Authorization") ?? "").replace(/^Bearer\s+/i, "");
+  const payload = token.split(".")[1];
+  if (!payload) return {};
+  try {
+    const decoded = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as Record<string, unknown>;
+    return {
+      sub: typeof decoded.sub === "string" ? decoded.sub : undefined,
+      email: typeof decoded.email === "string" ? decoded.email : undefined
+    };
+  } catch {
+    return {};
+  }
+}
+
 export function platformRouter(env: Env, store: MemoryStore, platformStore: PlatformStateStore = store) {
   const router = Router();
   const service = new PlatformService(platformStore);
@@ -148,30 +163,45 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
   const auth = authenticate(env, store);
   const supabase = createSupabaseServerClient();
   const useSupabase = env.nodeEnv !== "test" && isSupabaseServerConfigured();
-  const getSupabaseAssistantForUser = async (assistantId: string, userId: string) => {
-    if (!useSupabase) return undefined;
+  const platformUserForRequest = (req: AuthedRequest): AuthUser => {
+    const user = req.user!;
+    if (uuidPattern.test(user.id)) return user;
+    const claims = decodedBearerClaims(req);
+    if (!claims.sub || !uuidPattern.test(claims.sub)) return user;
+    return { ...user, id: claims.sub, email: user.email || claims.email || "" };
+  };
+  const allowedAssistantOwnerIds = (req: AuthedRequest) => {
+    const platformUser = platformUserForRequest(req);
+    return Array.from(new Set([req.user!.id, platformUser.id].filter(Boolean)));
+  };
+  const getSupabaseAssistantForUser = async (assistantId: string, ownerIds: string[]) => {
+    if (!useSupabase || !uuidPattern.test(assistantId)) return undefined;
     const { data, error } = await supabase
       .from("assistants")
       .select("*")
       .eq("id", assistantId)
-      .eq("user_id", userId)
       .maybeSingle();
     if (error || !data || data.deleted_at) {
       if (error) console.warn("[Platform] Supabase assistant lookup failed:", error.message);
       return undefined;
     }
+    if (!ownerIds.includes(String(data.user_id))) return undefined;
     return supabaseAssistantToRecord(data);
   };
   const syncPrincipal = async (req: AuthedRequest, assistantId?: string) => {
+    const platformUser = platformUserForRequest(req);
+    const ownerIds = allowedAssistantOwnerIds(req);
+    const rawStoreAssistant = assistantId ? store.getAssistant(assistantId) : undefined;
     const assistant = assistantId
       ? (store.getAssistantForUser(assistantId, req.user!.id) ??
+         store.getAssistantForUser(assistantId, platformUser.id) ??
          store.getPublicAssistantBySlug(assistantId) ??
-         store.getAssistant(assistantId) ??
-         await getSupabaseAssistantForUser(assistantId, req.user!.id))
+         (rawStoreAssistant && ownerIds.includes(rawStoreAssistant.userId) ? rawStoreAssistant : undefined) ??
+         await getSupabaseAssistantForUser(assistantId, ownerIds))
       : undefined;
     if (req.user) {
       try {
-        await platformStore.ensurePlatformPrincipal?.(req.user, assistant);
+        await platformStore.ensurePlatformPrincipal?.(platformUser, assistant);
       } catch (error) {
         console.warn("[Platform] syncPrincipal non-fatal warning:", error instanceof Error ? error.message : error);
       }
@@ -277,8 +307,9 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
       syncEnabled: z.boolean().optional(), releaseNotes: z.string().max(5_000).optional()
     }).parse(req.body);
     const assistant = assertFound(await syncPrincipal(req, req.params.assistantId!), "Assistant not found");
+    const owner = platformUserForRequest(req);
     const apiUrl = env.appUrl.replace(/:\d+$/, `:${env.port}`);
-    const exported = await service.createExportPackage(req.user!.id, assistant, { ...parsed, cloudEndpoint: apiUrl });
+    const exported = await service.createExportPackage(owner.id, assistant, { ...parsed, cloudEndpoint: apiUrl });
     res.status(201).json({ package: exported.package, version: exported.version, manifest: exported.manifest });
   }));
   router.post("/packages/:packageId/acquire", auth, asyncHandler(async (req: AuthedRequest, res) => { idempotency(req); res.status(201).json({ entitlement: await service.acquirePackage(req.user!.id, req.params.packageId!) }); }));
@@ -406,33 +437,32 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
   router.delete("/devices/:deviceId", auth, asyncHandler(async (req: AuthedRequest, res) => res.json({ device: await service.revokeDevice(req.user!.id, req.params.deviceId!) })));
   router.get("/desktop/builds", auth, asyncHandler(async (req: AuthedRequest, res) => {
     const rawAssistantId = typeof req.query.assistantId === "string" ? req.query.assistantId : undefined;
-    const resolvedAssistant = rawAssistantId
-      ? store.getAssistantForUser(rawAssistantId, req.user!.id) ?? store.getPublicAssistantBySlug(rawAssistantId)
-      : undefined;
+    const owner = platformUserForRequest(req);
+    const resolvedAssistant = rawAssistantId ? await syncPrincipal(req, rawAssistantId) : undefined;
     const assistantId = resolvedAssistant?.id ?? rawAssistantId;
     await syncPrincipal(req, assistantId);
-    res.json({ builds: await service.listDesktopBuilds(req.user!.id, assistantId) });
+    res.json({ builds: await service.listDesktopBuilds(owner.id, assistantId) });
   }));
   router.get("/desktop/builds/:buildId", auth, asyncHandler(async (req: AuthedRequest, res) => {
-    res.json({ build: await service.getDesktopBuildForOwner(req.user!.id, req.params.buildId!) });
+    const owner = platformUserForRequest(req);
+    res.json({ build: await service.getDesktopBuildForOwner(owner.id, req.params.buildId!) });
   }));
   router.post("/desktop/builds", auth, asyncHandler(async (req: AuthedRequest, res) => {
     const parsed = z.object({ assistantId: z.string().min(1), platform: z.enum(["win32", "darwin", "linux"]).default("win32"), architecture: z.enum(["x64", "arm64"]).default("x64"), packageId: z.string().optional(), force: z.boolean().optional() }).parse(req.body);
+    const owner = platformUserForRequest(req);
     await syncPrincipal(req);
     if (parsed.platform !== "win32") throw new HttpError(409, "A trusted build worker for this platform is not available yet.", "EXPORT_TARGET_UNAVAILABLE");
-    const assistant = parsed.packageId
-      ? assertFound(store.getAssistantForUser(parsed.assistantId, req.user!.id), "Assistant not found")
-      : assertFound(store.getAssistantForUser(parsed.assistantId, req.user!.id) ?? store.getPublicAssistantBySlug(parsed.assistantId), "Assistant not found");
-    const exported = parsed.packageId ? await service.getPackageForOwner(req.user!.id, parsed.packageId) : undefined;
+    const assistant = assertFound(await syncPrincipal(req, parsed.assistantId), "Assistant not found");
+    const exported = parsed.packageId ? await service.getPackageForOwner(owner.id, parsed.packageId) : undefined;
     if (exported && exported.package.assistantId !== assistant.id) throw new HttpError(403, "The export package does not belong to this assistant.", "EXPORT_PACKAGE_FORBIDDEN");
     if (exported && !exported.manifest.application.targets.some((target) => target.platform === "windows" && target.architecture === parsed.architecture)) {
       throw new HttpError(409, "The selected architecture is not enabled in this export manifest.", "EXPORT_TARGET_MISMATCH");
     }
-    if (assistant.userId === req.user!.id) await platformStore.ensurePlatformPrincipal?.(req.user!, assistant);
+    if (assistant.userId === req.user!.id || assistant.userId === owner.id) await platformStore.ensurePlatformPrincipal?.(owner, assistant);
     if (env.nodeEnv === "production" && !env.redisUrl) throw new HttpError(503, "Redis is required for production desktop builds.", "REDIS_REQUIRED");
     const buildIdempotencyKey = req.header("Idempotency-Key")?.trim();
     if (!buildIdempotencyKey || buildIdempotencyKey.length > 200) throw new HttpError(400, "A valid Idempotency-Key header is required.", "IDEMPOTENCY_KEY_REQUIRED");
-    const created = await service.createDesktopBuild(req.user!.id, { assistantId: assistant.id, packageId: parsed.packageId, platform: parsed.platform, architecture: parsed.architecture, productName: exported?.manifest.application.name ?? assistant.name, color: assistant.color, appIcon: assistant.icon, assistantVersion: assistant.version, manifestChecksum: exported?.version.checksum, sourcePackageVersion: exported?.version.version, idempotencyKey: buildIdempotencyKey, force: Boolean(parsed.force) });
+    const created = await service.createDesktopBuild(owner.id, { assistantId: assistant.id, packageId: parsed.packageId, platform: parsed.platform, architecture: parsed.architecture, productName: exported?.manifest.application.name ?? assistant.name, color: assistant.color, appIcon: assistant.icon, assistantVersion: assistant.version, manifestChecksum: exported?.version.checksum, sourcePackageVersion: exported?.version.version, idempotencyKey: buildIdempotencyKey, force: Boolean(parsed.force) });
     let queue: Awaited<ReturnType<typeof enqueueDesktopBuild>> | undefined;
     if (!created.reused) {
       try {
@@ -448,16 +478,18 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
         return res.status(200).json({ build: failedBuild, downloadToken: created.downloadToken, reused: false, error: errorMsg });
       }
     }
-    const build = await service.getDesktopBuildForOwner(req.user!.id, created.build.id);
-    await service.recordDesktopAudit(req.user!.id, { assistantId: assistant.id, actionType: created.reused ? "desktop.build.reused" : "desktop.build.queued", status: build.status, details: { buildId: build.id, platform: build.platform, architecture: build.architecture, queue } });
+    const build = await service.getDesktopBuildForOwner(owner.id, created.build.id);
+    await service.recordDesktopAudit(owner.id, { assistantId: assistant.id, actionType: created.reused ? "desktop.build.reused" : "desktop.build.queued", status: build.status, details: { buildId: build.id, platform: build.platform, architecture: build.architecture, queue } });
     res.status(created.reused ? 200 : 202).json({ build, downloadToken: created.downloadToken, reused: created.reused, queue });
   }));
   router.post("/desktop/builds/:buildId/download-authorization", auth, asyncHandler(async (req: AuthedRequest, res) => {
-    res.json(await service.issueDesktopDownload(req.user!.id, req.params.buildId!));
+    const owner = platformUserForRequest(req);
+    res.json(await service.issueDesktopDownload(owner.id, req.params.buildId!));
   }));
   router.get("/desktop/builds/:buildId/download", auth, asyncHandler(async (req: AuthedRequest, res) => {
     const token = z.string().min(32).parse(req.query.token);
-    const build = await service.verifyDesktopDownload(req.user!.id, req.params.buildId!, token);
+    const owner = platformUserForRequest(req);
+    const build = await service.verifyDesktopDownload(owner.id, req.params.buildId!, token);
     if (!["ready", "downloading"].includes(build.status) || !build.artifactPath || !build.artifactSize || !build.artifactSha256) throw new HttpError(409, "Installer is not ready.", "INSTALLER_NOT_READY");
     res.setHeader("X-Agentia-Installer-Size", String(build.artifactSize));
     res.setHeader("X-Agentia-Installer-Sha256", build.artifactSha256);
