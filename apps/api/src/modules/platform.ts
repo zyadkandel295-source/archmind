@@ -15,6 +15,7 @@ import { PlatformService } from "../services/platform-service";
 import { listActionPolicies } from "../services/risk-policy";
 import { proposeWorkflow, validateWorkflow } from "../services/workflow-proposal";
 import { enqueueDesktopBuild } from "../services/desktop-build-queue";
+import { downloadDesktopArtifact, isSupabaseArtifactPath } from "../services/desktop-artifact-storage";
 import { RagService } from "../services/rag";
 import { runAssistantChat } from "../services/assistant-chat";
 
@@ -390,6 +391,15 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
     res.setHeader("X-Agentia-Installer-Sha256", build.artifactSha256);
     res.setHeader("X-Agentia-Assistant-Id", build.assistantId);
     res.setHeader("X-Agentia-Build-Id", build.id);
+    if (isSupabaseArtifactPath(build.artifactPath)) {
+      const filename = `${build.productName.replace(/[^a-z0-9 -]+/gi, "").trim() || "AGENTIA Agent"} Setup.exe`;
+      const data = await downloadDesktopArtifact(build.artifactPath);
+      res.setHeader("Content-Type", "application/vnd.microsoft.portable-executable");
+      res.setHeader("Content-Length", String(data.byteLength));
+      res.attachment(filename);
+      res.send(data);
+      return;
+    }
     res.download(assertSafeArtifactPath(build.artifactPath), `${build.productName.replace(/[^a-z0-9 -]+/gi, "").trim() || "AGENTIA Agent"} Setup.exe`);
   }));
   return router;

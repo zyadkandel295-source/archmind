@@ -4,6 +4,7 @@ import type { PlatformStateStore } from "../db/platform-store";
 import { HttpError } from "../lib/http-error";
 import type { DesktopBuildRecord } from "../platform-types";
 import { buildDesktopInstaller } from "./desktop-builder";
+import { uploadDesktopArtifact } from "./desktop-artifact-storage";
 import { PlatformService } from "./platform-service";
 
 export const DESKTOP_BUILD_QUEUE = "archmind-desktop-builds";
@@ -31,10 +32,11 @@ export async function processDesktopBuildJob(platformStore: PlatformStateStore, 
       assistant: data.assistant,
       appManifest: data.appManifest
     });
+    const artifactPath = await uploadDesktopArtifact(result.path, data.build.id);
     await service.updateDesktopBuild(data.build.id, { status: "validating_artifact", currentStage: "finalize", progress: 85 });
     return await service.updateDesktopBuild(data.build.id, {
       status: "ready", currentStage: "finalize", progress: 100,
-      artifactPath: result.path,
+      artifactPath,
       artifactSize: result.size,
       artifactSha256: result.sha256
     });
