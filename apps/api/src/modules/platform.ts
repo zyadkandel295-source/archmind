@@ -348,17 +348,17 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
         sha256: created.runtime.sha256,
         signatureStatus: created.runtime.signatureStatus
       },
-      downloadAuthorization: created.downloadToken ? { token: created.downloadToken, url: `/api/platform/install-intents/${created.intent.id}/runtime-download?token=${encodeURIComponent(created.downloadToken)}` } : null,
+      // Keep the token in a POST body so it is never placed in browser history,
+      // referrer headers, or normal request-path logging.
+      downloadAuthorization: created.downloadToken ? { token: created.downloadToken, url: `/api/platform/install-intents/${created.intent.id}/runtime-download` } : null,
       protocolLaunch,
       expiresAt: created.intent.expiresAt,
       correlationId: created.intent.correlationId,
       elapsedMs: created.elapsedMs
     });
   }));
-  router.get("/install-intents/:intentId/runtime-download", auth, asyncHandler(async (req: AuthedRequest, res) => {
-    const token = z.string().min(32).parse(req.query.token);
-    const { intent, runtime } = await service.verifyRuntimeDownload(req.user!.id, req.params.intentId!, token);
-    const snapshot = (await platformStore.getPlatformState()).assistantSnapshots.find((item) => item.id === intent.snapshotId && item.ownerId === req.user!.id);
+  const sendRuntimeDownload = async (res: import("express").Response, ownerId: string, intent: { id: string; snapshotId: string }, runtime: { artifactPath?: string; mimeType: string; byteSize: number; sha256: string; version: string }) => {
+    const snapshot = (await platformStore.getPlatformState()).assistantSnapshots.find((item) => item.id === intent.snapshotId && item.ownerId === ownerId);
     const assistantName = snapshot?.displayName ?? "Assistant";
     const safeName = `Install ${assistantName.replace(/[^a-z0-9 ._-]+/gi, "").trim().slice(0, 80) || "AGENTIA Agent"}.exe`;
     res.setHeader("Content-Type", runtime.mimeType);
@@ -368,7 +368,23 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
     res.setHeader("X-Agentia-Runtime-Version", runtime.version);
     res.setHeader("X-Agentia-Runtime-Sha256", runtime.sha256);
     res.setHeader("X-Agentia-Install-Intent-Id", intent.id);
+    if (isSupabaseArtifactPath(runtime.artifactPath)) {
+      res.send(await downloadDesktopArtifact(runtime.artifactPath!));
+      return;
+    }
     res.sendFile(assertSafeArtifactPath(runtime.artifactPath!));
+  };
+  // Retain the authenticated GET endpoint for API clients while browser UI
+  // uses the native POST download below for an immediate streamed download.
+  router.get("/install-intents/:intentId/runtime-download", auth, asyncHandler(async (req: AuthedRequest, res) => {
+    const token = z.string().min(32).parse(req.query.token);
+    const { intent, runtime } = await service.verifyRuntimeDownload(req.user!.id, req.params.intentId!, token);
+    await sendRuntimeDownload(res, req.user!.id, intent, runtime);
+  }));
+  router.post("/install-intents/:intentId/runtime-download", asyncHandler(async (req, res) => {
+    const token = z.string().min(32).parse(req.body?.token);
+    const { intent, runtime } = await service.verifyRuntimeDownloadToken(req.params.intentId!, token);
+    await sendRuntimeDownload(res, intent.ownerId, intent, runtime);
   }));
   router.post("/desktop/install-intents/claim", asyncHandler(async (req, res) => {
     const parsed = z.object({ intent: z.string().min(32), installationId: z.string().min(8).max(200), deviceName: z.string().min(1).max(200) }).parse(req.body);

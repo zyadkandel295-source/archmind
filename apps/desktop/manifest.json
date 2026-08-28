@@ -8,7 +8,7 @@
   "appId": "com.archmind.desktop",
   "productName": "ArchMind Assistant",
   "protocol": "archmind-desktop",
-  "apiUrl": "http://localhost:4000",
+  "apiUrl": "https://www.agentia-ai.cloud",
   "bootstrapToken": "development-placeholder-not-for-release",
   "bootstrapExpiresAt": "1970-01-01T00:00:00.000Z",
   "userDataDirectoryName": "com.archmind.assistant"

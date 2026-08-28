@@ -20,7 +20,7 @@
     "productName": "ArchMind Assistant",
     "electronVersion": "33.2.0",
     "npmRebuild": false,
-    "compression": "store",
+    "compression": "normal",
     "directories": {
       "output": "out"
     },
@@ -35,6 +35,15 @@
         "to": "archmind-assistant.ico"
       }
     ],
+    "protocols": [
+      {
+        "name": "AGENTIA Install Link",
+        "schemes": [
+          "archmind",
+          "archmind-desktop"
+        ]
+      }
+    ],
     "win": {
       "target": "nsis",
       "icon": "assets/archmind-assistant.ico"
@@ -46,6 +55,7 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "runAfterFinish": true,
+      "include": "build/installer.nsh",
       "installerIcon": "assets/archmind-assistant.ico",
       "uninstallerIcon": "assets/archmind-assistant.ico",
       "installerHeader": "assets/installer-header.bmp",

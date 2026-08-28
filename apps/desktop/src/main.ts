@@ -937,6 +937,10 @@ function configureIdentity() {
 async function start() {
   Menu.setApplicationMenu(null);
   app.setAsDefaultProtocolClient(manifest.protocol);
+  // Install intents use this stable scheme so one signed runtime can safely
+  // claim any assistant snapshot. Keep the app-specific scheme as well for
+  // backwards-compatible deep links.
+  app.setAsDefaultProtocolClient("archmind");
   session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
     if (!new Set(["clipboard-read", "media", "display-capture"]).has(permission)) {
       callback(false);

@@ -50,7 +50,7 @@ import { toast } from "@/components/ui/toast";
 import { AssistantAvatar } from "@/components/ui/assistant-avatar";
 import { IconButton } from "@/components/ui/icon-button";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { requestData, requestFile } from "@/lib/data-client";
+import { requestData } from "@/lib/data-client";
 
 
 type Role = "user" | "assistant";
@@ -328,6 +328,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [sidebarOpen, setSidebarOpen] = useState(!embedded);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isExportingApp, setIsExportingApp] = useState(false);
+  const [pendingDesktopInstall, setPendingDesktopInstall] = useState<string>();
   const [webSearchActive, setWebSearchActive] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [desktopConnected, setDesktopConnected] = useState(false);
@@ -622,7 +623,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     toast({ type: "success", title: "Chat exported", message: "The active chat was saved as a Markdown file.", duration: 2200 });
   }
 
-  /** Build the signed package, wait for the real worker artifact, then download it. */
+  /** Download the signed shared runtime and create a one-time assistant claim. */
   async function exportAssistantApp() {
     if (!assistantId || fallbackToWorkspace) {
       toast({ type: "error", title: "Choose an assistant first", message: "Open a saved assistant before exporting an app." });
@@ -636,7 +637,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
       // than rebuilding and recompressing Electron for every click.
       const created = await requestData<{
         nextAction: "download_runtime" | "open_runtime";
-        downloadAuthorization: { url: string } | null;
+        downloadAuthorization: { url: string; token: string } | null;
         runtime: { byteSize: number; sha256: string };
         protocolLaunch: string | null;
       }>(`/api/platform/assistants/${assistantId}/install-intents`, {
@@ -645,22 +646,33 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         body: JSON.stringify({ platform: "windows", architecture: "x64" })
       });
       if (!created.downloadAuthorization?.url) throw new Error("No compatible Windows runtime is currently available.");
-      toast({ type: "info", title: "Preparing download", message: "Your Windows installer is ready to download.", duration: 2200 });
-      const file = await requestFile(created.downloadAuthorization.url);
-      const url = URL.createObjectURL(file.blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = file.filename ?? `${assistantMeta?.name ?? "Agentia Assistant"} Setup.exe`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
-      toast({ type: "success", title: "App downloaded", message: "Your Windows installer is ready to run.", duration: 3200 });
+      // A native form download streams directly to the browser's download
+      // manager. Fetching into a Blob deferred the download until the entire
+      // installer had been buffered in memory.
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = created.downloadAuthorization.url;
+      form.style.display = "none";
+      const token = document.createElement("input");
+      token.type = "hidden";
+      token.name = "token";
+      token.value = created.downloadAuthorization.token;
+      form.appendChild(token);
+      document.body.appendChild(form);
+      form.submit();
+      form.remove();
+      setPendingDesktopInstall(created.protocolLaunch ?? undefined);
+      toast({ type: "success", title: "Download started", message: "Install the app, then select Open AGENTIA to connect this assistant.", duration: 5200 });
     } catch (error) {
       toast({ type: "error", title: "App export failed", message: error instanceof Error ? error.message : "Please try again." });
     } finally {
       setIsExportingApp(false);
     }
+  }
+
+  function openPendingDesktopInstall() {
+    if (!pendingDesktopInstall) return;
+    window.location.assign(pendingDesktopInstall);
   }
 
   function copyActiveChatLink() {
@@ -1232,17 +1244,29 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
               ) : null}
 
               {!desktopConnected ? (
-                <button
-                  type="button"
-                  onClick={() => void exportAssistantApp()}
-                  disabled={isExportingApp}
-                  className="flex items-center gap-2 rounded-xl border border-violet-500/40 bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-xs font-black text-white shadow-md shadow-violet-600/25 transition hover:from-violet-500 hover:to-indigo-500 active:scale-95 disabled:cursor-wait disabled:opacity-70"
-                  title="Export and download Windows app"
-                >
-                  {isExportingApp ? <RefreshCcw className="h-4 w-4 animate-spin text-amber-300" /> : <Download className="h-4 w-4 text-amber-300" />}
-                  <span className="hidden sm:inline">{isExportingApp ? "Building App…" : "Export App"}</span>
-                  <span className="sm:hidden">{isExportingApp ? "Building" : "Export"}</span>
-                </button>
+                <div className="flex items-center gap-2">
+                  {pendingDesktopInstall ? (
+                    <button
+                      type="button"
+                      onClick={openPendingDesktopInstall}
+                      className="flex items-center gap-2 rounded-xl border border-emerald-400/40 bg-emerald-500/15 px-3 py-1.5 text-xs font-black text-emerald-100 transition hover:bg-emerald-500/25 active:scale-95"
+                      title="After installation, open AGENTIA to connect this assistant"
+                    >
+                      <span>Open AGENTIA</span>
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    onClick={() => void exportAssistantApp()}
+                    disabled={isExportingApp}
+                    className="flex items-center gap-2 rounded-xl border border-violet-500/40 bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-xs font-black text-white shadow-md shadow-violet-600/25 transition hover:from-violet-500 hover:to-indigo-500 active:scale-95 disabled:cursor-wait disabled:opacity-70"
+                    title="Export and download Windows app"
+                  >
+                    {isExportingApp ? <RefreshCcw className="h-4 w-4 animate-spin text-amber-300" /> : <Download className="h-4 w-4 text-amber-300" />}
+                    <span className="hidden sm:inline">{isExportingApp ? "Preparing…" : "Export App"}</span>
+                    <span className="sm:hidden">{isExportingApp ? "Preparing" : "Export"}</span>
+                  </button>
+                </div>
               ) : null}
 
               <IconButton

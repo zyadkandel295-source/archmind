@@ -847,6 +847,25 @@ export class PlatformService {
     return { intent, runtime };
   }
 
+  /**
+   * A runtime-download token is an unguessable, short-lived capability. This
+   * lets the browser submit a native download form (rather than buffering a
+   * 70+ MB installer in JavaScript) while retaining the same owner-bound
+   * authorization checks as the authenticated endpoint.
+   */
+  async verifyRuntimeDownloadToken(intentId: string, token: string) {
+    const state = await this.state();
+    const intent = state.assistantInstallIntents.find((item) => item.id === intentId);
+    const tokenHash = sha256(token);
+    if (!intent || !new Set([intent.downloadTokenHash, ...(intent.downloadTokenHashes ?? [])]).has(tokenHash) || Date.parse(intent.expiresAt) <= Date.now()) {
+      throw new HttpError(403, "Desktop runtime download is not authorized.", "RUNTIME_DOWNLOAD_FORBIDDEN");
+    }
+    const runtime = state.desktopRuntimeReleases.find((item) => item.id === intent.runtimeReleaseId && item.status === "ready");
+    if (!runtime || !runtime.artifactPath) throw new HttpError(409, "Desktop runtime artifact is unavailable.", "RUNTIME_ARTIFACT_UNAVAILABLE");
+    await this.audit({ ownerId: intent.ownerId, assistantId: intent.assistantId, actionType: "desktop.runtime.download_authorized", riskLevel: "read_only", status: "success", details: { intentId: intent.id, runtimeReleaseId: runtime.id }, traceId: intent.correlationId });
+    return { intent, runtime };
+  }
+
   async claimAssistantInstallIntent(claimSecret: string, input: { installationId: string; deviceName: string }) {
     const state = await this.state();
     const intent = state.assistantInstallIntents.find((item) => item.claimSecretHash === sha256(claimSecret));

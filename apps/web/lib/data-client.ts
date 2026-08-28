@@ -77,6 +77,7 @@ function friendlyMessage(code: string | undefined, fallback: string, status: num
   if (code === "REDIS_REQUIRED") return "The desktop build worker is temporarily unavailable.";
   if (code === "INSTALLER_NOT_READY") return "The installer is still being prepared.";
   if (code === "DESKTOP_BUILD_NOT_FOUND") return "This installer is no longer available.";
+  if (code === "RUNTIME_RELEASE_UNAVAILABLE") return "Windows app downloads are temporarily unavailable while a signed runtime is being published.";
   if (status >= 500) return "The service could not complete this request.";
   return fallback || "The request could not be completed.";
 }
