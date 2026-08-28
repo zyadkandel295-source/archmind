@@ -631,50 +631,22 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     if (isExportingApp) return;
     setIsExportingApp(true);
     try {
-      const safeName = (assistantMeta?.name ?? "agentia-assistant").toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 40) || "assistant";
-      const packageId = `com.agentia.${safeName}`;
-      const exported = await requestData<{ package: { id: string } }>(`/api/platform/assistants/${assistantId}/exports`, {
-        method: "POST",
-        body: JSON.stringify({
-          application: {
-            id: packageId,
-            name: assistantMeta?.name ?? "Agentia Assistant",
-            description: assistantMeta?.description ?? "",
-            version: "1.0.0",
-            publisher: "Agentia",
-            authenticationMode: "agentia_account",
-            platform: "windows",
-            architecture: "x64"
-          },
-          inferenceMode: "cloud",
-          requestedPermissions: ["network", "notifications"],
-          requiredPermissions: [],
-          syncEnabled: true,
-          releaseNotes: "Exported from Agentia chat."
-        })
-      });
-      const created = await requestData<{ build: { id: string; status: string; error?: string }; downloadToken: string }>("/api/platform/desktop/builds", {
+      // Download the prebuilt, signed runtime immediately. Per-assistant
+      // configuration is delivered through the one-time install intent rather
+      // than rebuilding and recompressing Electron for every click.
+      const created = await requestData<{
+        nextAction: "download_runtime" | "open_runtime";
+        downloadAuthorization: { url: string } | null;
+        runtime: { byteSize: number; sha256: string };
+        protocolLaunch: string | null;
+      }>(`/api/platform/assistants/${assistantId}/install-intents`, {
         method: "POST",
         headers: { "Idempotency-Key": crypto.randomUUID() },
-        body: JSON.stringify({ assistantId, packageId: exported.package.id, platform: "win32", architecture: "x64" })
+        body: JSON.stringify({ platform: "windows", architecture: "x64" })
       });
-      toast({ type: "info", title: "Building your app", message: "The installer will download automatically when it is ready.", duration: 4200 });
-      let build = created.build;
-      const deadline = Date.now() + 10 * 60_000;
-      while (["validating", "queued", "building", "packaging", "validating_artifact"].includes(build.status) && Date.now() < deadline) {
-        await new Promise((resolve) => window.setTimeout(resolve, 2_000));
-        const current = await requestData<{ build: typeof build }>(`/api/platform/desktop/builds/${build.id}`);
-        build = current.build;
-      }
-      if (build.status !== "ready") throw new Error(build.error || "The app build did not finish. Please try again.");
-      let downloadToken = created.downloadToken;
-      try {
-        const authorization = await requestData<{ downloadToken: string }>(`/api/platform/desktop/builds/${build.id}/download-authorization`, { method: "POST" });
-        downloadToken = authorization.downloadToken || downloadToken;
-      } catch {
-        // The token returned when the build is created remains valid until the build expires.
-      }
-      const file = await requestFile(`/api/platform/desktop/builds/${build.id}/download?token=${encodeURIComponent(downloadToken)}`);
+      if (!created.downloadAuthorization?.url) throw new Error("No compatible Windows runtime is currently available.");
+      toast({ type: "info", title: "Preparing download", message: "Your Windows installer is ready to download.", duration: 2200 });
+      const file = await requestFile(created.downloadAuthorization.url);
       const url = URL.createObjectURL(file.blob);
       const link = document.createElement("a");
       link.href = url;
