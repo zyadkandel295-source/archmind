@@ -26,10 +26,19 @@ function assertValidAuthenticodeSignature(file) {
     "if (-not $signature.SignerCertificate) { Write-Error 'Missing signing certificate'; exit 1 };",
     "Write-Output $signature.SignerCertificate.Thumbprint"
   ].join(" ");
-  const result = spawnSync("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", command], {
+  // PowerShell 7 ships the security cmdlet consistently in the development
+  // environment. Use it first, with Windows PowerShell as a compatibility
+  // fallback for release hosts that only have the legacy executable.
+  let result = spawnSync("pwsh.exe", ["-NoProfile", "-NonInteractive", "-Command", command], {
     encoding: "utf8",
     env: { ...process.env, AGENTIA_RUNTIME_ARTIFACT: file }
   });
+  if (result.error && (result.error.code === "ENOENT" || result.error.code === "UNKNOWN")) {
+    result = spawnSync("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", command], {
+      encoding: "utf8",
+      env: { ...process.env, AGENTIA_RUNTIME_ARTIFACT: file }
+    });
+  }
   if (result.status !== 0) {
     throw new Error(`Refusing to publish an unsigned or invalid installer. ${(result.stderr || result.stdout || "Signature validation failed.").trim()}`);
   }
