@@ -9,6 +9,7 @@ const desktopRoot = path.join(workspaceRoot, "apps", "desktop");
 const artifactRoot = path.join(workspaceRoot, ".archmind-data", "desktop-builds");
 const legacyRuntimeTemplateDir = path.join(desktopRoot, "out", "win-unpacked");
 const currentRuntimeManifestPath = path.join(workspaceRoot, ".archmind-data", "desktop-runtime", "current.json");
+const useElectronRuntimeInstaller = process.env.ARCHMIND_DESKTOP_INSTALLER_KIND === "electron";
 
 type RuntimeTemplateManifest = {
   version: string;
@@ -38,6 +39,27 @@ function run(command: string, args: string[], cwd: string, env: NodeJS.ProcessEn
       else reject(new Error(`${command} ${args.join(" ")} failed with code ${code}\n${output.slice(-4000)}`));
     });
   });
+}
+
+function nsisQuote(value: string) {
+  return `"${value.replace(/\$/g, "$$").replace(/"/g, "$\\\"")}"`;
+}
+
+function safeWindowsLabel(value: string, fallback: string) {
+  return value.replace(/[<>:"/\\|?*\u0000-\u001f]+/g, " ").replace(/\s+/g, " ").trim().slice(0, 80) || fallback;
+}
+
+async function findMakensis() {
+  const candidates = [
+    process.env.MAKENSIS_EXE,
+    process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, "electron-builder", "Cache", "nsis", "nsis-3.0.4.1", "Bin", "makensis.exe") : undefined,
+    process.env.LOCALAPPDATA ? path.join(process.env.LOCALAPPDATA, "electron-builder", "Cache", "nsis-3.0.4.1", "nsis-3.0.4.1-1mx3n", "Bin", "makensis.exe") : undefined
+  ].filter(Boolean) as string[];
+
+  for (const candidate of candidates) {
+    if (await pathExists(candidate)) return candidate;
+  }
+  return "makensis";
 }
 
 async function copyDirectory(source: string, destination: string) {
@@ -151,6 +173,119 @@ async function desktopBundleIsFresh() {
 
 const cacheRoot = path.join(workspaceRoot, ".archmind-data", "desktop-cache");
 
+async function buildLightweightWebInstaller(
+  build: DesktopBuildRecord,
+  input: {
+    apiUrl: string;
+    bootstrap: { token: string; expiresAt: string };
+    assistant: { id: string; name: string; color?: string; icon?: string; instructions: string; webUrl?: string };
+    appManifest?: Record<string, unknown>;
+  },
+  packageDir: string,
+  outDir: string,
+  assetsDir: string,
+  timings: Record<string, number>,
+  timed: <T>(name: string, operation: () => Promise<T>) => Promise<T>
+) {
+  const installPayloadDir = path.join(packageDir, "payload");
+  await fs.mkdir(outDir, { recursive: true });
+  await fs.mkdir(installPayloadDir, { recursive: true });
+  await timed("installer_assets", () => run("node", ["scripts/generate-desktop-assets.cjs"], workspaceRoot, {
+    ARCHMIND_ASSET_OUT: assetsDir,
+    ARCHMIND_ASSET_COLOR: input.assistant.color ?? "#7C3AED",
+    ARCHMIND_ASSET_ICON: input.assistant.icon ?? "Bot"
+  }));
+
+  const webUrl = input.assistant.webUrl ?? `${process.env.APP_URL ?? "https://www.agentia-ai.cloud"}/assistants/${encodeURIComponent(input.assistant.id)}/chat`;
+  const manifest = {
+    schemaVersion: 3,
+    runtime: "agentia-web-launcher",
+    assistantId: input.assistant.id,
+    assistantName: input.assistant.name,
+    assistantColor: input.assistant.color,
+    assistantIcon: input.assistant.icon,
+    assistantInstructions: input.assistant.instructions,
+    appId: build.appId,
+    productName: build.productName,
+    protocol: build.protocol,
+    apiUrl: input.apiUrl,
+    webUrl,
+    bootstrapToken: input.bootstrap.token,
+    bootstrapExpiresAt: input.bootstrap.expiresAt,
+    buildId: build.id,
+    userDataDirectoryName: build.appId.replace(/[^a-z0-9.-]+/gi, "_"),
+    appManifest: input.appManifest,
+    createdAt: new Date().toISOString()
+  };
+
+  const launcher = [
+    "Option Explicit",
+    "Dim shell, target",
+    "Set shell = CreateObject(\"WScript.Shell\")",
+    `target = ${JSON.stringify(webUrl)}`,
+    "shell.Run target, 1, False"
+  ].join("\r\n");
+
+  await timed("manifest_write", async () => {
+    await fs.writeFile(path.join(installPayloadDir, "manifest.json"), JSON.stringify(manifest, null, 2));
+    await fs.writeFile(path.join(installPayloadDir, "Launch.vbs"), launcher);
+    await fs.copyFile(path.join(assetsDir, "archmind-assistant.ico"), path.join(installPayloadDir, "archmind-assistant.ico"));
+  });
+
+  const nsisScript = path.join(packageDir, "installer.nsi");
+  const shortcutName = safeWindowsLabel(build.productName, "AGENTIA Assistant");
+  const installerPath = path.join(outDir, `Install ${shortcutName}.exe`);
+  const appInstallDir = `$LOCALAPPDATA\\Programs\\AGENTIA\\${build.appId.replace(/[^a-z0-9._-]+/gi, "_")}`;
+  const script = [
+    "!include MUI2.nsh",
+    `Name ${nsisQuote(build.productName)}`,
+    `OutFile ${nsisQuote(installerPath)}`,
+    "Unicode true",
+    "RequestExecutionLevel user",
+    `InstallDir "${appInstallDir}"`,
+    `Icon ${nsisQuote(path.join(assetsDir, "archmind-assistant.ico"))}`,
+    `UninstallIcon ${nsisQuote(path.join(assetsDir, "archmind-assistant.ico"))}`,
+    `!define MUI_ICON ${nsisQuote(path.join(assetsDir, "archmind-assistant.ico"))}`,
+    `!define MUI_UNICON ${nsisQuote(path.join(assetsDir, "archmind-assistant.ico"))}`,
+    "!insertmacro MUI_PAGE_WELCOME",
+    "!insertmacro MUI_PAGE_DIRECTORY",
+    "!insertmacro MUI_PAGE_INSTFILES",
+    "!define MUI_FINISHPAGE_RUN \"$INSTDIR\\Launch.vbs\"",
+    `!define MUI_FINISHPAGE_RUN_TEXT ${nsisQuote(`Launch ${build.productName}`)}`,
+    "!insertmacro MUI_PAGE_FINISH",
+    "!insertmacro MUI_UNPAGE_CONFIRM",
+    "!insertmacro MUI_UNPAGE_INSTFILES",
+    "!insertmacro MUI_LANGUAGE \"English\"",
+    "Section \"Install\"",
+    "  SetOutPath \"$INSTDIR\"",
+    `  File /r ${nsisQuote(path.join(installPayloadDir, "*"))}`,
+    "  CreateDirectory \"$SMPROGRAMS\\AGENTIA\"",
+    `  CreateShortCut "$SMPROGRAMS\\AGENTIA\\${shortcutName}.lnk" "$WINDIR\\System32\\wscript.exe" '"$INSTDIR\\Launch.vbs"' "$INSTDIR\\archmind-assistant.ico"`,
+    `  CreateShortCut "$DESKTOP\\${shortcutName}.lnk" "$WINDIR\\System32\\wscript.exe" '"$INSTDIR\\Launch.vbs"' "$INSTDIR\\archmind-assistant.ico"`,
+    "  WriteUninstaller \"$INSTDIR\\Uninstall.exe\"",
+    "SectionEnd",
+    "Section \"Uninstall\"",
+    `  Delete "$SMPROGRAMS\\AGENTIA\\${shortcutName}.lnk"`,
+    `  Delete "$DESKTOP\\${shortcutName}.lnk"`,
+    "  Delete \"$INSTDIR\\manifest.json\"",
+    "  Delete \"$INSTDIR\\Launch.vbs\"",
+    "  Delete \"$INSTDIR\\archmind-assistant.ico\"",
+    "  Delete \"$INSTDIR\\Uninstall.exe\"",
+    "  RMDir \"$INSTDIR\"",
+    "SectionEnd"
+  ].join("\r\n");
+  await fs.writeFile(nsisScript, script);
+
+  const makensis = await findMakensis();
+  await timed("nsis_lightweight_installer", () => run(makensis, [nsisScript], packageDir));
+  const data = await timed("artifact_hash_read", () => fs.readFile(installerPath));
+  if (data.byteLength < 50 * 1024) throw new Error(`Generated installer is suspiciously small: ${data.byteLength} bytes.`);
+  if (data.byteLength > 50 * 1024 * 1024) throw new Error(`Generated installer is too large for the configured Supabase storage tier: ${data.byteLength} bytes.`);
+  if (data.subarray(0, 2).toString("ascii") !== "MZ") throw new Error("Generated installer does not have a Windows PE MZ header.");
+  console.log("[DesktopBuilder] Lightweight assistant installer complete", JSON.stringify({ buildId: build.id, productName: build.productName, bytes: data.byteLength, timings }));
+  return { path: installerPath, size: data.byteLength, sha256: sha256(data), timings, runtimeTemplate: { version: "agentia-web-launcher", digest: "nsis-lightweight" } };
+}
+
 export async function buildDesktopInstaller(
   build: DesktopBuildRecord,
   input: {
@@ -176,6 +311,10 @@ export async function buildDesktopInstaller(
     }
   };
   await fs.mkdir(packageDir, { recursive: true });
+
+  if (!useElectronRuntimeInstaller) {
+    return buildLightweightWebInstaller(build, input, packageDir, outDir, assetsDir, timings, timed);
+  }
 
   const runtimeTemplate = await timed("runtime_template_validate", () => ensureCurrentRuntimeTemplate());
   if (!(await pathExists(path.join(runtimeTemplate.templateDir, "resources", "app.asar")))) {
