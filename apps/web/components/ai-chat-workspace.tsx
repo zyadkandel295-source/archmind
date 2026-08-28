@@ -653,7 +653,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
           releaseNotes: "Exported from Agentia chat."
         })
       });
-      const created = await requestData<{ build: { id: string; status: string; error?: string } }>("/api/platform/desktop/builds", {
+      const created = await requestData<{ build: { id: string; status: string; error?: string }; downloadToken: string }>("/api/platform/desktop/builds", {
         method: "POST",
         headers: { "Idempotency-Key": crypto.randomUUID() },
         body: JSON.stringify({ assistantId, packageId: exported.package.id, platform: "win32", architecture: "x64" })
@@ -667,8 +667,14 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         build = current.build;
       }
       if (build.status !== "ready") throw new Error(build.error || "The app build did not finish. Please try again.");
-      const authorization = await requestData<{ downloadToken: string }>(`/api/platform/desktop/builds/${build.id}/download-authorization`, { method: "POST" });
-      const file = await requestFile(`/api/platform/desktop/builds/${build.id}/download?token=${encodeURIComponent(authorization.downloadToken)}`);
+      let downloadToken = created.downloadToken;
+      try {
+        const authorization = await requestData<{ downloadToken: string }>(`/api/platform/desktop/builds/${build.id}/download-authorization`, { method: "POST" });
+        downloadToken = authorization.downloadToken || downloadToken;
+      } catch {
+        // The token returned when the build is created remains valid until the build expires.
+      }
+      const file = await requestFile(`/api/platform/desktop/builds/${build.id}/download?token=${encodeURIComponent(downloadToken)}`);
       const url = URL.createObjectURL(file.blob);
       const link = document.createElement("a");
       link.href = url;
@@ -676,7 +682,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
       document.body.appendChild(link);
       link.click();
       link.remove();
-      URL.revokeObjectURL(url);
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
       toast({ type: "success", title: "App downloaded", message: "Your Windows installer is ready to run.", duration: 3200 });
     } catch (error) {
       toast({ type: "error", title: "App export failed", message: error instanceof Error ? error.message : "Please try again." });

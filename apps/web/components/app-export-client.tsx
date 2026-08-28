@@ -73,7 +73,7 @@ export function AppExportClient({ assistantId }: { assistantId: string }) {
     try {
       const authorization = await requestData<{ downloadToken: string }>(`/api/platform/desktop/builds/${buildId}/download-authorization`, { method: "POST" });
       const file = await requestFile(`/api/platform/desktop/builds/${buildId}/download?token=${encodeURIComponent(authorization.downloadToken)}`);
-      const url = URL.createObjectURL(file.blob); const anchor = document.createElement("a"); anchor.href = url; anchor.download = file.filename ?? "Agentia-App-Setup.exe"; anchor.click(); URL.revokeObjectURL(url);
+      const url = URL.createObjectURL(file.blob); const anchor = document.createElement("a"); anchor.href = url; anchor.download = file.filename ?? "Agentia-App-Setup.exe"; document.body.appendChild(anchor); anchor.click(); anchor.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
       await refresh();
     } catch (reason) { setError(reason instanceof Error ? reason.message : "The download could not be authorized."); }
     finally { setDownloading(undefined); }
