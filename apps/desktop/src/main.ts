@@ -925,7 +925,12 @@ function configureIdentity() {
   pendingInstallIntent = extractInstallIntent(process.argv);
   app.setName(manifest.productName);
   app.setAppUserModelId(manifest.appId);
-  app.setPath("userData", path.join(app.getPath("appData"), "AGENTIA", manifest.userDataDirectoryName));
+  // requestSingleInstanceLock() creates its lock below userData immediately,
+  // before Electron's normal startup directory creation. Ensure this
+  // assistant-specific location exists first so a clean install can launch.
+  const userDataPath = path.join(app.getPath("appData"), "AGENTIA", manifest.userDataDirectoryName);
+  fs.mkdirSync(userDataPath, { recursive: true });
+  app.setPath("userData", userDataPath);
   currentMode = "bubble";
 }
 

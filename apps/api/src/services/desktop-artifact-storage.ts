@@ -5,6 +5,14 @@ import { createSupabaseServerClient, isSupabaseServerConfigured } from "./supaba
 const storageScheme = "supabase://";
 const defaultBucket = "desktop-build-artifacts";
 
+function shouldUseSupabaseArtifactStorage() {
+  // MemoryStore is the local-development/test backend.  Its build records
+  // reference local artifacts, so forwarding them to a configured developer
+  // Supabase project can leave the queue waiting on an unrelated remote
+  // upload and strand an otherwise completed installer in "packaging".
+  return process.env.ARCHMIND_PLATFORM_STORE !== "memory" && isSupabaseServerConfigured();
+}
+
 function artifactBucket() {
   return (process.env.DESKTOP_ARTIFACT_BUCKET || defaultBucket).trim() || defaultBucket;
 }
@@ -29,7 +37,7 @@ async function ensureBucket(bucket: string) {
 }
 
 export async function uploadDesktopArtifact(localArtifactPath: string, buildId: string) {
-  if (!isSupabaseServerConfigured()) return localArtifactPath;
+  if (!shouldUseSupabaseArtifactStorage()) return localArtifactPath;
   const bucket = artifactBucket();
   const filename = path.basename(localArtifactPath);
   const key = `desktop-builds/${buildId}/${filename}`;

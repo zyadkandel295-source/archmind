@@ -9,7 +9,11 @@ const desktopRoot = path.join(workspaceRoot, "apps", "desktop");
 const artifactRoot = path.join(workspaceRoot, ".archmind-data", "desktop-builds");
 const legacyRuntimeTemplateDir = path.join(desktopRoot, "out", "win-unpacked");
 const currentRuntimeManifestPath = path.join(workspaceRoot, ".archmind-data", "desktop-runtime", "current.json");
-const useElectronRuntimeInstaller = process.env.ARCHMIND_DESKTOP_INSTALLER_KIND === "electron";
+// A Windows app export must contain the authenticated desktop runtime.  The
+// lightweight launcher is retained only as an explicit development escape
+// hatch; otherwise an export would install successfully but could not perform
+// the bootstrap/device-session first run.
+const useElectronRuntimeInstaller = process.env.ARCHMIND_DESKTOP_INSTALLER_KIND !== "lightweight";
 
 type RuntimeTemplateManifest = {
   version: string;
@@ -20,6 +24,19 @@ type RuntimeTemplateManifest = {
 
 function sha256(buffer: Buffer) {
   return createHash("sha256").update(buffer).digest("hex");
+}
+
+function runtimeApiUrl(apiUrl: string) {
+  // Electron's first-run bootstrap can hang on IPv6-first localhost resolution
+  // in Windows desktop environments even while the local API is listening on
+  // IPv4. Keep deployed URLs untouched, but make a local export unambiguous.
+  try {
+    const parsed = new URL(apiUrl);
+    if (parsed.hostname === "localhost") parsed.hostname = "127.0.0.1";
+    return parsed.toString().replace(/\/$/, "");
+  } catch {
+    return apiUrl;
+  }
 }
 
 function assertInside(parent: string, child: string) {
@@ -171,8 +188,6 @@ async function desktopBundleIsFresh() {
   return Math.min(distMainStat.mtimeMs, distPreloadStat.mtimeMs) >= newestSource;
 }
 
-const cacheRoot = path.join(workspaceRoot, ".archmind-data", "desktop-cache");
-
 async function buildLightweightWebInstaller(
   build: DesktopBuildRecord,
   input: {
@@ -208,7 +223,7 @@ async function buildLightweightWebInstaller(
     appId: build.appId,
     productName: build.productName,
     protocol: build.protocol,
-    apiUrl: input.apiUrl,
+    apiUrl: runtimeApiUrl(input.apiUrl),
     webUrl,
     bootstrapToken: input.bootstrap.token,
     bootstrapExpiresAt: input.bootstrap.expiresAt,
@@ -297,6 +312,8 @@ export async function buildDesktopInstaller(
 ) {
   if (build.platform !== "win32") throw new Error("Only Windows desktop installers are enabled for this MVP.");
 
+  const apiUrl = runtimeApiUrl(input.apiUrl);
+
   const packageDir = path.join(artifactRoot, build.id);
   const outDir = path.join(packageDir, "out");
   const assetsDir = path.join(packageDir, "assets");
@@ -321,31 +338,6 @@ export async function buildDesktopInstaller(
     throw new Error("Precompiled desktop runtime template is missing. Build apps/desktop once before assistant packaging.");
   }
 
-  // Compute persistent branding hash for instant artifact caching
-  const brandingSeed = `${input.assistant.id}:${input.assistant.name}:${input.assistant.color ?? "#7C3AED"}:${input.assistant.icon ?? "Bot"}:${input.assistant.instructions}:${runtimeTemplate.digest}`;
-  const brandingHash = createHash("sha256").update(brandingSeed).digest("hex").slice(0, 16);
-  const cachedInstallerDir = path.join(cacheRoot, brandingHash);
-  const cachedInstallerPath = path.join(cachedInstallerDir, `Install ${build.productName}.exe`);
-
-  // CACHE HIT OPTIMIZATION: If exact same branding installer already exists in persistent cache, return instantly!
-  if (await pathExists(cachedInstallerPath)) {
-    const cachedData = await fs.readFile(cachedInstallerPath).catch(() => undefined);
-    if (cachedData && cachedData.byteLength >= 10 * 1024 * 1024 && cachedData.subarray(0, 2).toString("ascii") === "MZ") {
-      await fs.mkdir(outDir, { recursive: true });
-      const targetPath = path.join(outDir, `Install ${build.productName}.exe`);
-      await fs.copyFile(cachedInstallerPath, targetPath);
-      const sha = sha256(cachedData);
-      console.log(`[DesktopBuilder] Persistent cache hit! Reused cached installer for build ${build.id} (Hash: ${brandingHash}) in 10ms`);
-      return {
-        path: targetPath,
-        size: cachedData.byteLength,
-        sha256: sha,
-        timings: { cache_hit: 10 },
-        runtimeTemplate: { version: runtimeTemplate.version, digest: runtimeTemplate.digest }
-      };
-    }
-  }
-
   await timed("copy_precompiled_payload", () => copyDirectory(runtimeTemplate.templateDir, prepackagedDir));
   await timed("icon_and_installer_assets", () => run("node", ["scripts/generate-desktop-assets.cjs"], workspaceRoot, {
     ARCHMIND_ASSET_OUT: assetsDir,
@@ -363,7 +355,7 @@ export async function buildDesktopInstaller(
     appId: build.appId,
     productName: build.productName,
     protocol: build.protocol,
-    apiUrl: input.apiUrl,
+    apiUrl,
     webUrl: input.assistant.webUrl,
     bootstrapToken: input.bootstrap.token,
     bootstrapExpiresAt: input.bootstrap.expiresAt,
@@ -397,7 +389,10 @@ export async function buildDesktopInstaller(
     productName: build.productName,
     electronVersion: "33.2.0",
     npmRebuild: false,
-    compression: "store",
+    // Stored (uncompressed) NSIS payloads have produced unstable installers
+    // on Windows. Use the builder's tested compression path for exported
+    // application payloads instead.
+    compression: "normal",
     directories: { output: "out" },
     files: ["**/*"],
     extraResources: [
@@ -432,10 +427,6 @@ export async function buildDesktopInstaller(
   if (data.byteLength < 10 * 1024 * 1024) throw new Error(`Generated installer is suspiciously small: ${data.byteLength} bytes.`);
   if (data.byteLength > 500 * 1024 * 1024) throw new Error(`Generated installer is unexpectedly large: ${data.byteLength} bytes.`);
   if (data.subarray(0, 2).toString("ascii") !== "MZ") throw new Error("Generated installer does not have a Windows PE MZ header.");
-
-  // Save generated artifact to persistent cache for future instant builds
-  await fs.mkdir(cachedInstallerDir, { recursive: true }).catch(() => undefined);
-  await fs.copyFile(artifactPath, cachedInstallerPath).catch(() => undefined);
 
   const result = { path: artifactPath, size: data.byteLength, sha256: sha256(data), timings, runtimeTemplate: { version: runtimeTemplate.version, digest: runtimeTemplate.digest } };
   console.log("[DesktopBuilder] Assistant packaging complete", JSON.stringify({ buildId: build.id, productName: build.productName, runtimeTemplate: result.runtimeTemplate, timings }));
