@@ -260,12 +260,19 @@ export class MemoryStore implements PlatformStateStore {
       try {
         await client.query("begin");
 
+        // A production account can already exist in Postgres when a cold
+        // serverless instance creates its temporary in-memory representation.
+        // Mirror users by email as well as UUID, then use the canonical
+        // database user ID for dependent assistant rows.  Without this the
+        // entire background mirror transaction rolls back on users_email_key,
+        // leaving an alarming warning on otherwise successful chat/uploads.
+        const databaseUserIds = new Map<string, string>();
+
         for (const u of this.users.values()) {
-          await client.query(
+          const result = await client.query(
             `insert into users(id, email, password_hash, google_id, firebase_uid, display_name, photo_url, provider, plan, token_usage, last_login_at, created_at, updated_at)
              values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-             on conflict (id) do update set
-               email = excluded.email,
+             on conflict (email) do update set
                password_hash = excluded.password_hash,
                google_id = excluded.google_id,
                firebase_uid = excluded.firebase_uid,
@@ -275,19 +282,23 @@ export class MemoryStore implements PlatformStateStore {
                plan = excluded.plan,
                token_usage = excluded.token_usage,
                last_login_at = excluded.last_login_at,
-               updated_at = excluded.updated_at`,
+               updated_at = excluded.updated_at
+             returning id`,
             [u.id, u.email, u.passwordHash ?? null, u.googleId ?? null, u.firebaseUid ?? null, u.displayName ?? null, u.photoUrl ?? null, u.provider ?? null, u.plan, u.tokenUsage ?? 0, u.lastLoginAt ?? null, u.createdAt, u.updatedAt]
           );
+          databaseUserIds.set(u.id, String(result.rows[0]?.id ?? u.id));
         }
 
         for (const a of this.assistants.values()) {
           const mirroredSlug = a.slug || `assistant-${a.id.slice(0, 8)}`;
           const mirroredPublicSlug = a.isPublic && a.publicSlug ? a.publicSlug : null;
+          const databaseUserId = databaseUserIds.get(a.userId) ?? a.userId;
           await client.query(
             `insert into assistants(id, user_id, name, description, system_prompt, tone, is_public, public_slug, model, temperature, version, created_at, slug, visibility, icon, color, starter_prompts, enabled_tools, updated_at)
              values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
              on conflict (id) do update set
                name = excluded.name,
+               user_id = excluded.user_id,
                description = excluded.description,
                system_prompt = excluded.system_prompt,
                tone = excluded.tone,
@@ -304,7 +315,7 @@ export class MemoryStore implements PlatformStateStore {
                enabled_tools = excluded.enabled_tools,
                updated_at = excluded.updated_at`,
             [
-              a.id, a.userId, a.name, a.description ?? "", a.systemPrompt ?? "", a.tone ?? "professional",
+              a.id, databaseUserId, a.name, a.description ?? "", a.systemPrompt ?? "", a.tone ?? "professional",
               a.isPublic ?? false, mirroredPublicSlug, a.model ?? "llama-3.1-8b-instant", a.temperature ?? 0.7, a.version ?? 1,
               a.createdAt, mirroredSlug, a.visibility ?? "private", a.icon ?? "bot", a.color ?? "indigo",
               JSON.stringify(a.starterPrompts ?? []), JSON.stringify(a.enabledTools ?? []), a.updatedAt ?? a.createdAt
