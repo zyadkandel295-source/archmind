@@ -4,44 +4,6 @@ import type { AssistantRecord, DataSourceRecord, RetrievedChunk } from "../types
 
 const KNOWLEDGE_BUCKET = "knowledge-files";
 
-// Production serverless instances do not normally run the repository's
-// migration runner. This narrowly scoped, advisory-locked bootstrap makes the
-// durable knowledge schema available before the first ingestion request. The
-// same DDL is also captured in db/migrations/011 and 014 for managed releases.
-const DURABLE_KNOWLEDGE_SCHEMA = [
-  "alter table data_sources add column if not exists user_id uuid references users(id) on delete cascade",
-  "alter table data_sources add column if not exists original_filename text",
-  "alter table data_sources add column if not exists safe_filename text",
-  "alter table data_sources add column if not exists mime_type text",
-  "alter table data_sources add column if not exists size_bytes bigint",
-  "alter table data_sources add column if not exists storage_path text",
-  "alter table data_sources add column if not exists extracted_text_length bigint not null default 0",
-  "alter table data_sources add column if not exists processing_error text",
-  `create table if not exists knowledge_chunks (
-    id uuid primary key default gen_random_uuid(),
-    source_id uuid not null references data_sources(id) on delete cascade,
-    assistant_id uuid not null references assistants(id) on delete cascade,
-    user_id uuid not null references users(id) on delete cascade,
-    document_name text not null,
-    page_number int not null default 1,
-    chunk_index int not null,
-    content text not null,
-    token_count int not null default 0,
-    created_at timestamptz not null default now(),
-    unique(source_id, chunk_index)
-  )`,
-  "update data_sources ds set user_id = a.user_id from assistants a where a.id = ds.assistant_id and ds.user_id is null",
-  "create index if not exists idx_data_sources_assistant_user on data_sources(assistant_id, user_id)",
-  "create index if not exists idx_data_sources_user_assistant_ready on data_sources(user_id, assistant_id, status)",
-  "create index if not exists idx_knowledge_chunks_assistant_user on knowledge_chunks(assistant_id, user_id, source_id)",
-  "create index if not exists idx_knowledge_chunks_search on knowledge_chunks using gin(to_tsvector('simple', content))",
-  "alter table knowledge_chunks enable row level security",
-  "drop policy if exists knowledge_chunks_owner_access on knowledge_chunks",
-  `create policy knowledge_chunks_owner_access on knowledge_chunks
-   using (exists (select 1 from assistants a where a.id = knowledge_chunks.assistant_id and a.user_id::text = current_app_user_id()::text and knowledge_chunks.user_id = a.user_id))
-   with check (exists (select 1 from assistants a where a.id = knowledge_chunks.assistant_id and a.user_id::text = current_app_user_id()::text and knowledge_chunks.user_id = a.user_id))`
-];
-
 type StoredSource = DataSourceRecord & { storagePath: string };
 
 type KnowledgePayload = {
@@ -169,30 +131,20 @@ function rankChunks(chunks: RetrievedChunk[], question: string, limit: number) {
 
 export class KnowledgeRepository {
   private pool: Pool;
-  private schemaReady?: Promise<void>;
+  private durableSchema?: Promise<boolean>;
 
   constructor(databaseUrl: string, private supabase: SupabaseClient) {
     this.pool = new Pool({ connectionString: databaseUrl });
   }
 
-  private async ensureDurableKnowledgeSchema() {
-    this.schemaReady ??= (async () => {
-      const client = await this.pool.connect();
-      try {
-        await client.query("select pg_advisory_lock(hashtext('archmind-durable-knowledge-schema'))");
-        await client.query("begin");
-        for (const statement of DURABLE_KNOWLEDGE_SCHEMA) await client.query(statement);
-        await client.query("commit");
-      } catch (error) {
-        await client.query("rollback").catch(() => undefined);
-        this.schemaReady = undefined;
-        throw error;
-      } finally {
-        await client.query("select pg_advisory_unlock(hashtext('archmind-durable-knowledge-schema'))").catch(() => undefined);
-        client.release();
-      }
-    })();
-    return this.schemaReady;
+  private async hasDurableKnowledgeSchema() {
+    this.durableSchema ??= this.pool.query(
+      `select exists (
+         select 1 from information_schema.columns
+         where table_schema = current_schema() and table_name = 'data_sources' and column_name = 'user_id'
+       ) and to_regclass('knowledge_chunks') is not null as available`
+    ).then((result) => Boolean(result.rows[0]?.available));
+    return this.durableSchema;
   }
 
   async ensureAssistant(input: { assistant: AssistantRecord; userEmail: string }) {
@@ -239,7 +191,17 @@ export class KnowledgeRepository {
     storagePath: string;
     type: DataSourceRecord["type"];
   }) {
-    await this.ensureDurableKnowledgeSchema();
+    const durable = await this.hasDurableKnowledgeSchema();
+    if (!durable) {
+      const result = await this.pool.query(
+        `insert into data_sources
+          (id, assistant_id, type, name, s3_key, url, status, chunk_count, token_count)
+         values ($1, $2, $3, $4, $5, $6, 'pending', 0, 0)
+         returning *`,
+        [input.id, input.assistantId, input.type === "pdf" ? "pdf" : "text", input.name, input.storagePath, JSON.stringify({ ...input, chunks: [] })]
+      );
+      return sourceFromRow(result.rows[0]!);
+    }
     const result = await this.pool.query(
       `insert into data_sources
         (id, user_id, assistant_id, type, name, original_filename, safe_filename, mime_type, size_bytes, storage_path, s3_key, url, status, chunk_count, token_count, extracted_text_length)
@@ -287,6 +249,14 @@ export class KnowledgeRepository {
   async markReady(id: string, textLength: number, chunks: RetrievedChunk[]) {
     const current = await this.byId(id);
     if (!current) throw new Error("Knowledge source no longer exists.");
+    const durable = await this.hasDurableKnowledgeSchema();
+    if (!durable) {
+      const result = await this.pool.query(
+        `update data_sources set status = 'ready', url = $2, chunk_count = $3, token_count = $4 where id = $1 returning *`,
+        [id, JSON.stringify(payloadFor(current, { extractedTextLength: textLength, errorMessage: undefined, chunks })), chunks.length, words(chunks.map((chunk) => chunk.text).join(" ")).length]
+      );
+      return sourceFromRow(result.rows[0]!);
+    }
     if (!current.userId) throw new Error("Knowledge source is missing its owner scope.");
     if (chunks.some((chunk) => chunk.sourceId !== current.id || chunk.assistantId !== current.assistantId || chunk.userId !== current.userId)) {
       throw new Error("Knowledge chunk scope does not match its source.");
@@ -339,6 +309,13 @@ export class KnowledgeRepository {
   async markFailed(id: string, message: string) {
     const current = await this.byId(id);
     if (!current) return undefined;
+    if (!await this.hasDurableKnowledgeSchema()) {
+      const result = await this.pool.query(
+        "update data_sources set status = 'error', url = $2 where id = $1 returning *",
+        [id, JSON.stringify(payloadFor(current, { errorMessage: message.slice(0, 500), chunks: [] }))]
+      );
+      return result.rows[0] ? sourceFromRow(result.rows[0]) : undefined;
+    }
     const result = await this.pool.query(
       "update data_sources set status = 'error', url = $2, processing_error = $3 where id = $1 returning *",
       [id, JSON.stringify(payloadFor(current, { errorMessage: message.slice(0, 500), chunks: [] })), message.slice(0, 500)]
@@ -347,10 +324,11 @@ export class KnowledgeRepository {
   }
 
   async list(assistantId: string, userId: string) {
+    const durable = await this.hasDurableKnowledgeSchema();
     const result = await this.pool.query(
       `select ds.* from data_sources ds
        inner join assistants a on a.id = ds.assistant_id
-       where ds.assistant_id = $1 and a.user_id = $2 and (ds.user_id = $2 or ds.user_id is null)
+       where ds.assistant_id = $1 and a.user_id = $2 ${durable ? "and (ds.user_id = $2 or ds.user_id is null)" : ""}
        order by ds.created_at desc`,
       [assistantId, userId]
     );
@@ -366,10 +344,11 @@ export class KnowledgeRepository {
   }
 
   async get(assistantId: string, userId: string, id: string) {
+    const durable = await this.hasDurableKnowledgeSchema();
     const result = await this.pool.query(
       `select ds.* from data_sources ds
        inner join assistants a on a.id = ds.assistant_id
-       where ds.id = $1 and ds.assistant_id = $2 and a.user_id = $3 and (ds.user_id = $3 or ds.user_id is null)`,
+       where ds.id = $1 and ds.assistant_id = $2 and a.user_id = $3 ${durable ? "and (ds.user_id = $3 or ds.user_id is null)" : ""}`,
       [id, assistantId, userId]
     );
     return result.rows[0] ? sourceFromRow(result.rows[0]) : undefined;
@@ -378,10 +357,11 @@ export class KnowledgeRepository {
   async delete(assistantId: string, userId: string, id: string) {
     const source = await this.get(assistantId, userId, id);
     if (!source) return undefined;
+    const durable = await this.hasDurableKnowledgeSchema();
     await this.pool.query(
       `delete from data_sources ds using assistants a
        where ds.id = $1 and ds.assistant_id = $2 and a.id = ds.assistant_id
-         and a.user_id = $3 and (ds.user_id = $3 or ds.user_id is null)`,
+         and a.user_id = $3 ${durable ? "and (ds.user_id = $3 or ds.user_id is null)" : ""}`,
       [id, assistantId, userId]
     );
     if (source.storagePath) {
@@ -392,7 +372,10 @@ export class KnowledgeRepository {
   }
 
   async retrieve(assistantId: string, userId: string, question: string, limit: number) {
-    await this.ensureDurableKnowledgeSchema();
+    const durableSchema = await this.hasDurableKnowledgeSchema();
+    if (!durableSchema) {
+      return this.retrieveLegacy(assistantId, userId, question, limit, false);
+    }
     const durable = await this.pool.query(
       `select kc.* from knowledge_chunks kc
        inner join data_sources ds on ds.id = kc.source_id
@@ -418,11 +401,15 @@ export class KnowledgeRepository {
     // Legacy uploads stored indexed chunks inside the source payload. The
     // compatibility read still joins the authoritative assistant owner, so it
     // cannot broaden access to another assistant or user.
+    return this.retrieveLegacy(assistantId, userId, question, limit, true);
+  }
+
+  private async retrieveLegacy(assistantId: string, userId: string, question: string, limit: number, durableSchema: boolean) {
     const legacy = await this.pool.query(
       `select ds.* from data_sources ds
        inner join assistants a on a.id = ds.assistant_id
        where ds.assistant_id = $1 and a.user_id = $2 and ds.status = 'ready'
-         and (ds.user_id = $2 or ds.user_id is null)`,
+         ${durableSchema ? "and (ds.user_id = $2 or ds.user_id is null)" : ""}`,
       [assistantId, userId]
     );
     const candidates = legacy.rows.map(sourceFromRow).flatMap((source) => source.chunks);
