@@ -32,7 +32,11 @@ function extractUserMessage(messages: AiMessage[]): string {
 function resolveConfiguredModel(requestedModel: string | undefined, env: Env) {
   // Browser clients only send opaque response-profile values. Keep the actual
   // configured runtime choice on the server and never expose it in the UI.
-  if (!requestedModel || ["standard", "reasoning", "specialist"].includes(requestedModel)) {
+  // `llama-3.1-8b-instant` was a legacy Groq identifier persisted on older
+  // assistants. It is not a valid OpenRouter model ID, so route it through the
+  // production-configured default instead of sending a request the provider
+  // will deterministically reject.
+  if (!requestedModel || ["standard", "reasoning", "specialist", "llama-3.1-8b-instant"].includes(requestedModel)) {
     return env.openrouterDefaultModel;
   }
   return requestedModel;

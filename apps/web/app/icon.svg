@@ -1,36 +1,30 @@
 <svg width="512" height="512" viewBox="110 110 292 292" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="agentiaCoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38BDF8" />
-      <stop offset="50%" stop-color="#6366F1" />
-      <stop offset="100%" stop-color="#A855F7" />
+      <stop offset="0%" stop-color="#D9892B" />
+      <stop offset="50%" stop-color="#B96B27" />
+      <stop offset="100%" stop-color="#8D501B" />
     </linearGradient>
 
     <linearGradient id="agentiaNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#22D3EE" />
-      <stop offset="100%" stop-color="#38BDF8" />
+      <stop offset="0%" stop-color="#E8C07B" />
+      <stop offset="100%" stop-color="#D9892B" />
     </linearGradient>
 
     <linearGradient id="agentiaLineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.9" />
-      <stop offset="100%" stop-color="#818CF8" stop-opacity="0.7" />
+      <stop offset="0%" stop-color="#A96342" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#D9892B" stop-opacity="0.7" />
     </linearGradient>
 
     <linearGradient id="agentiaRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.85" />
-      <stop offset="100%" stop-color="#A855F7" stop-opacity="0.6" />
+      <stop offset="0%" stop-color="#A96342" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#D9892B" stop-opacity="0.6" />
     </linearGradient>
 
-    <style>
-      .agentia-node { animation: pulse 2s ease-in-out infinite; }
-      @keyframes pulse {
-        0%, 100% { r: 12; opacity: 1; }
-        50% { r: 15; opacity: 0.85; }
-      }
-    </style>
   </defs>
 
-  <!-- Orbital Ring -->
+  <g display="none">
+  <!-- Legacy orbital mark retained only as hidden source geometry. -->
   <circle cx="256" cy="256" r="125" fill="none" stroke="url(#agentiaRingGrad)" stroke-width="5" opacity="0.9" />
 
   <!-- Connecting Lines -->
@@ -50,15 +44,20 @@
   <circle cx="256" cy="256" r="50" fill="none" stroke="#FFFFFF" stroke-width="4.5" opacity="0.95" />
 
   <!-- Command Symbol (Arrow) -->
-  <path d="M 256 214 L 280 245 L 256 270 L 232 245 Z" fill="#030712" opacity="0.98" />
+  <path d="M 256 214 L 280 245 L 256 270 L 232 245 Z" fill="#FFF9F1" opacity="0.98" />
 
   <!-- Agent Nodes (8-point configuration) -->
-  <circle class="agentia-node" cx="256" cy="150" r="12" fill="url(#agentiaNodeGrad)" />
-  <circle class="agentia-node" cx="330" cy="182" r="12" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.1s" />
-  <circle class="agentia-node" cx="362" cy="256" r="12" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.2s" />
-  <circle class="agentia-node" cx="330" cy="330" r="12" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.3s" />
-  <circle class="agentia-node" cx="256" cy="362" r="12" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.4s" />
-  <circle class="agentia-node" cx="182" cy="330" r="12" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.5s" />
-  <circle class="agentia-node" cx="150" cy="256" r="12" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.6s" />
-  <circle class="agentia-node" cx="182" cy="182" r="12" fill="url(#agentiaNodeGrad)" style="animation-delay: 0.7s" />
+  <circle cx="256" cy="150" r="12" fill="url(#agentiaNodeGrad)" />
+  <circle cx="330" cy="182" r="12" fill="url(#agentiaNodeGrad)" />
+  <circle cx="362" cy="256" r="12" fill="url(#agentiaNodeGrad)" />
+  <circle cx="330" cy="330" r="12" fill="url(#agentiaNodeGrad)" />
+  <circle cx="256" cy="362" r="12" fill="url(#agentiaNodeGrad)" />
+  <circle cx="182" cy="330" r="12" fill="url(#agentiaNodeGrad)" />
+  <circle cx="150" cy="256" r="12" fill="url(#agentiaNodeGrad)" />
+  <circle cx="182" cy="182" r="12" fill="url(#agentiaNodeGrad)" />
+  </g>
+  <rect width="512" height="512" rx="112" fill="#F5DDBA"/>
+  <rect x="116" y="116" width="142" height="142" rx="24" stroke="#8D501B" stroke-width="25"/>
+  <rect x="254" y="254" width="142" height="142" rx="24" fill="#F5DDBA" stroke="#8D501B" stroke-width="25"/>
+  <path d="M276 146H317C353.451 146 383 175.549 383 212V236M236 366H195C158.549 366 129 336.451 129 300V276M258 258L254 254" stroke="#8D501B" stroke-width="25" stroke-linecap="round"/>
 </svg>

@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'AI Assistants Workspace & Automation Hub',
+  title: 'Assistants',
   description:
     'Manage, customize, and orchestrate autonomous AI assistants. Configure custom instructions, knowledge retrieval, and automated multi-step workflows.',
   alternates: {
     canonical: '/assistants'
   },
   openGraph: {
-    title: 'AI Assistants Workspace | AGÈNTIA',
+    title: 'AGENTIA Assistants',
     description: 'Deploy, chat with, and monitor customized AI assistants.'
   }
 };

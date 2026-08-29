@@ -25,11 +25,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "AGÈNTIA - Autonomous AI Agents, System Automation & AI Base",
-    template: "%s | AGÈNTIA"
+    default: "AGENTIA — AI Assistant Workspace",
+    template: "%s | AGENTIA"
   },
   description:
-    "AGÈNTIA is the next-generation autonomous AI agent workspace and comprehensive technical AI knowledge base. Build, customize, research, and deploy secure AI assistants.",
+    "AGENTIA is the next-generation autonomous AI agent workspace and comprehensive technical AI knowledge base. Build, customize, research, and deploy secure AI assistants.",
   keywords: [
     "AI agents",
     "autonomous AI",
@@ -46,9 +46,9 @@ export const metadata: Metadata = {
     "computer vision",
     "NLP"
   ],
-  authors: [{ name: "AGÈNTIA Team", url: siteUrl }],
-  creator: "AGÈNTIA",
-  publisher: "AGÈNTIA AI",
+  authors: [{ name: "AGENTIA Team", url: siteUrl }],
+  creator: "AGENTIA",
+  publisher: "AGENTIA AI",
   category: "Technology",
   formatDetection: {
     email: false,
@@ -59,11 +59,11 @@ export const metadata: Metadata = {
     canonical: "/"
   },
   openGraph: {
-    title: "AGÈNTIA - Autonomous AI Agents, System Automation & AI Base",
+    title: "AGENTIA — AI Assistant Workspace",
     description:
       "Build, customize, research, and deploy autonomous AI assistants with knowledge retrieval, tool automation, and technical AI research.",
     url: siteUrl,
-    siteName: "AGÈNTIA",
+    siteName: "AGENTIA",
     locale: "en_US",
     type: "website",
     images: [
@@ -71,13 +71,13 @@ export const metadata: Metadata = {
         url: "/icon.svg",
         width: 1200,
         height: 630,
-        alt: "AGÈNTIA - Autonomous AI Platform"
+        alt: "AGENTIA — AI Assistant Platform"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "AGÈNTIA - Autonomous AI Platform & Knowledge Base",
+    title: "AGENTIA — AI Assistant Platform & Knowledge Base",
     description: "Next-generation AI agent builder and interactive technical AI knowledge platform.",
     creator: "@agentia_ai",
     images: ["/icon.svg"]
@@ -114,7 +114,7 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": `${siteUrl}/#website`,
       "url": siteUrl,
-      "name": "AGÈNTIA",
+      "name": "AGENTIA",
       "description": "Autonomous AI Agent Platform & Comprehensive AI Knowledge Base",
       "potentialAction": {
         "@type": "SearchAction",
@@ -128,7 +128,7 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": `${siteUrl}/#organization`,
-      "name": "AGÈNTIA",
+      "name": "AGENTIA",
       "url": siteUrl,
       "logo": `${siteUrl}/icon.svg`,
       "sameAs": [

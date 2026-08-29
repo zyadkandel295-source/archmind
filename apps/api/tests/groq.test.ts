@@ -3,7 +3,7 @@ import request from "supertest";
 import type { Env } from "../src/config/env";
 import { createApp } from "../src/app";
 import { MemoryStore } from "../src/db/memory";
-import { AI_PROVIDERS_UNAVAILABLE_MESSAGE, generateAiResponse, detectTaskType } from "../src/services/ai-service";
+import { AI_PROVIDERS_UNAVAILABLE_MESSAGE, chooseAiModel, generateAiResponse, detectTaskType } from "../src/services/ai-service";
 
 const testEnv: Env = {
   nodeEnv: "test",
@@ -35,6 +35,11 @@ describe("AI Engine & Service", () => {
       expect(detectTaskType("write python function")).toBe("coding");
       expect(detectTaskType("hello world")).toBe("normal");
     });
+  });
+
+  it("routes the retired Groq model alias through the configured OpenRouter default", () => {
+    const choice = chooseAiModel("Hello AI", { ...testEnv, openrouterDefaultModel: "qwen/qwen3-coder" }, { model: "llama-3.1-8b-instant" });
+    expect(choice.model).toBe("qwen/qwen3-coder");
   });
 
   describe("Assistant service fallback", () => {
