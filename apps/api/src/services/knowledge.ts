@@ -122,6 +122,12 @@ async function extractPages(buffer: Buffer, extension: string, filename: string)
       globals.Path2D ??= canvas.Path2D;
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { PDFParse } = require("pdf-parse") as typeof import("pdf-parse");
+      // pdf-parse ships a Node worker as an inlined data URL. Using it avoids
+      // PDF.js resolving a sibling pdf.worker.mjs file that Vercel does not
+      // include in a serverless trace.
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { getData } = require("pdf-parse/worker") as { getData: () => string };
+      PDFParse.setWorker(getData());
       const parser = new PDFParse({ data: buffer });
       const pdfData = await parser.getText();
       await parser.destroy();
