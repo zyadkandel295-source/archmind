@@ -64,7 +64,9 @@ export function Button({ className, variant = "primary", size = "md", onClick, c
       )}
       {...(props as any)}
     >
-      {children}
+      <span className="relative z-10 inline-flex items-center justify-center gap-2">
+        {children}
+      </span>
     </motion.button>
   );
 }
