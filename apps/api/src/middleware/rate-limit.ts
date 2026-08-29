@@ -114,23 +114,3 @@ export function createRegistrationRateLimiter(env?: Env) {
     }
   });
 }
-
-/** Strict rate limiter for unauthenticated desktop endpoints. */
-export function createDesktopClaimRateLimiter(env?: Env) {
-  const store = createStore(env, "desktop");
-  return rateLimit({
-    windowMs: 60 * 1000,
-    limit: 10,
-    standardHeaders: "draft-7",
-    legacyHeaders: false,
-    store: store ?? undefined,
-    passOnStoreError: true,
-    keyGenerator: (req) => req.ip ?? "unknown",
-    message: {
-      error: {
-        code: "DESKTOP_RATE_LIMITED",
-        message: "Too many desktop claim attempts. Please wait."
-      }
-    }
-  });
-}

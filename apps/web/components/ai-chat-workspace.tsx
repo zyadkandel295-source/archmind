@@ -15,7 +15,6 @@ import {
   Code2,
   Copy,
   Camera,
-  Download,
   FileDown,
   FileUp,
   Globe,
@@ -106,37 +105,6 @@ interface AssistantMeta {
   systemPrompt?: string;
   starterPrompts?: string[];
   openingExperience?: AssistantOpeningExperience;
-}
-
-interface DesktopBridge {
-  platform: string;
-  status: () => Promise<{
-    assistantId: string;
-    assistantName: string;
-    assistantIcon?: string;
-    assistantColor?: string;
-    mode: "full" | "compact" | "bubble" | "tray";
-    revoked: boolean;
-    folders: string[];
-  }>;
-  chat: (input: { message: string; conversationId?: string }) => Promise<{
-    conversationId?: string;
-    answer?: string;
-    sources?: Array<{ sourceName?: string; filename?: string }>;
-  }>;
-  selectFolder: () => Promise<unknown>;
-  undoLast: () => Promise<unknown>;
-  setMode: (mode: "full" | "compact" | "bubble" | "tray") => Promise<unknown>;
-}
-
-declare global {
-  interface Window {
-    archmindDesktop?: DesktopBridge;
-  }
-}
-
-function getDesktopBridge() {
-  return typeof window !== "undefined" ? window.archmindDesktop : undefined;
 }
 
 const STORAGE_PREFIX = "archmind.ai.sessions.v2";
@@ -328,11 +296,8 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [isGenerating, setIsGenerating] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(!embedded);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [isExportingApp, setIsExportingApp] = useState(false);
-  const [pendingDesktopInstall, setPendingDesktopInstall] = useState<string>();
   const [webSearchActive, setWebSearchActive] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
-  const [desktopConnected, setDesktopConnected] = useState(false);
   const [pinnedIds, setPinnedIds] = useState<Set<string>>(() => new Set());
   const [copiedId, setCopiedId] = useState<string>();
   const [temperature, setTemperature] = useState(0.7);
@@ -403,24 +368,6 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   useEffect(() => {
     if (embedded) setSidebarOpen(false);
   }, [embedded]);
-
-  useEffect(() => {
-    const bridge = getDesktopBridge();
-    if (!bridge) return;
-    setDesktopConnected(true);
-    setApiReady(true);
-    setSidebarOpen(false);
-    bridge.status()
-      .then((status) => {
-        setAssistantMeta((current) => ({
-          ...current,
-          name: current?.name ?? status.assistantName,
-          icon: current?.icon ?? status.assistantIcon,
-          color: current?.color ?? status.assistantColor
-        }));
-      })
-      .catch(() => undefined);
-  }, []);
 
   useEffect(() => {
     if (!hasRestoredBrowserState) return;
@@ -624,58 +571,6 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     toast({ type: "success", title: "Chat exported", message: "The active chat was saved as a Markdown file.", duration: 2200 });
   }
 
-  /** Download the signed shared runtime and create a one-time assistant claim. */
-  async function exportAssistantApp() {
-    if (!assistantId || fallbackToWorkspace) {
-      toast({ type: "error", title: "Choose an assistant first", message: "Open a saved assistant before exporting an app." });
-      return;
-    }
-    if (isExportingApp) return;
-    setIsExportingApp(true);
-    try {
-      // Download the prebuilt, signed runtime immediately. Per-assistant
-      // configuration is delivered through the one-time install intent rather
-      // than rebuilding and recompressing Electron for every click.
-      const created = await requestData<{
-        nextAction: "download_runtime" | "open_runtime";
-        downloadAuthorization: { url: string; token: string } | null;
-        runtime: { byteSize: number; sha256: string };
-        protocolLaunch: string | null;
-      }>(`/api/platform/assistants/${assistantId}/install-intents`, {
-        method: "POST",
-        headers: { "Idempotency-Key": crypto.randomUUID() },
-        body: JSON.stringify({ platform: "windows", architecture: "x64" })
-      });
-      if (!created.downloadAuthorization?.url) throw new Error("No compatible Windows runtime is currently available.");
-      // A native form download streams directly to the browser's download
-      // manager. Fetching into a Blob deferred the download until the entire
-      // installer had been buffered in memory.
-      const form = document.createElement("form");
-      form.method = "POST";
-      form.action = created.downloadAuthorization.url;
-      form.style.display = "none";
-      const token = document.createElement("input");
-      token.type = "hidden";
-      token.name = "token";
-      token.value = created.downloadAuthorization.token;
-      form.appendChild(token);
-      document.body.appendChild(form);
-      form.submit();
-      form.remove();
-      setPendingDesktopInstall(created.protocolLaunch ?? undefined);
-      toast({ type: "success", title: "Download started", message: "Install the app, then select Open AGENTIA to connect this assistant.", duration: 5200 });
-    } catch (error) {
-      toast({ type: "error", title: "App export failed", message: error instanceof Error ? error.message : "Please try again." });
-    } finally {
-      setIsExportingApp(false);
-    }
-  }
-
-  function openPendingDesktopInstall() {
-    if (!pendingDesktopInstall) return;
-    window.location.assign(pendingDesktopInstall);
-  }
-
   function copyActiveChatLink() {
     const url = `${window.location.origin}${window.location.pathname}`;
     void navigator.clipboard.writeText(url);
@@ -695,24 +590,6 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     window.setTimeout(() => setCopiedId(undefined), 1500);
   }
 
-  async function approveDesktopFolder() {
-    try {
-      await getDesktopBridge()?.selectFolder();
-      toast({ type: "success", title: "Folder approved", message: "The desktop bubble can watch that folder now.", duration: 2200 });
-    } catch (error) {
-      toast({ type: "error", title: "Folder approval failed", message: error instanceof Error ? error.message : "Try again from the desktop bubble." });
-    }
-  }
-
-  async function undoDesktopAction() {
-    try {
-      await getDesktopBridge()?.undoLast();
-      toast({ type: "success", title: "Undo requested", message: "The last supported desktop action was undone.", duration: 2200 });
-    } catch (error) {
-      toast({ type: "error", title: "Undo failed", message: error instanceof Error ? error.message : "No safe undo was available." });
-    }
-  }
-
   async function callAi(messages: ChatMessage[], assistantMessageId: string, sessionId = activeSession.id, files?: File[]) {
     const controller = new AbortController();
     abortRef.current = controller;
@@ -726,30 +603,6 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
       if (credential) headers.set("Authorization", `Bearer ${credential}`);
       const lastUserMessage = [...messages].reverse().find((message) => message.role === "user");
       const useAssistantRoute = Boolean(assistantId && !fallbackToWorkspace);
-      const desktopBridge = useAssistantRoute ? getDesktopBridge() : undefined;
-      if (desktopBridge && !hasFiles) {
-        const result = await desktopBridge.chat({
-          message: lastUserMessage?.content ?? "",
-          conversationId: activeSession.conversationId
-        });
-        const sourceNames = result.sources
-          ? [...new Set(result.sources.map((source) => source.filename ?? source.sourceName).filter(Boolean) as string[])]
-          : [];
-        const sourceReferences = result.sources
-          ? result.sources.map((source) => ({ name: source.filename ?? source.sourceName ?? "Source", page: undefined }))
-          : [];
-        updateSession(sessionId, (session) => ({
-          ...session,
-          conversationId: result.conversationId ?? session.conversationId,
-          messages: session.messages.map((message) =>
-            message.id === assistantMessageId
-              ? { ...message, content: result.answer ?? "Done.", sourceNames, sourceReferences }
-              : message
-          ),
-          updatedAt: Date.now()
-        }));
-        return;
-      }
       const endpoint = useAssistantRoute ? `/api/assistants/${assistantId}/chat` : "/api/chat";
       const assistantPayload = {
         message: lastUserMessage?.content ?? "",
@@ -1229,53 +1082,6 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
             </div>
 
             <div className="flex flex-wrap items-center justify-end gap-2">
-              {desktopConnected ? (
-                <>
-                  <IconButton
-                    onClick={() => void approveDesktopFolder()}
-                    aria-label="Approve desktop folder"
-                    title="Approve folder"
-                    className="min-h-[2.6rem]"
-                  >
-                    <FileUp className="h-5 w-5" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => void undoDesktopAction()}
-                    aria-label="Undo last desktop action"
-                    title="Undo last desktop action"
-                    className="min-h-[2.6rem]"
-                  >
-                    <RefreshCcw className="h-5 w-5" />
-                  </IconButton>
-                </>
-              ) : null}
-
-              {!desktopConnected ? (
-                <div className="flex items-center gap-2">
-                  {pendingDesktopInstall ? (
-                    <button
-                      type="button"
-                      onClick={openPendingDesktopInstall}
-                      className="flex items-center gap-2 rounded-xl border border-emerald-400/40 bg-emerald-500/15 px-3 py-1.5 text-xs font-black text-emerald-100 transition hover:bg-emerald-500/25 active:scale-95"
-                      title="After installation, open AGENTIA to connect this assistant"
-                    >
-                      <span>Open AGENTIA</span>
-                    </button>
-                  ) : null}
-                  <button
-                    type="button"
-                    onClick={() => void exportAssistantApp()}
-                    disabled={isExportingApp}
-                    className="flex items-center gap-2 rounded-xl border border-violet-500/40 bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-xs font-black text-white shadow-md shadow-violet-600/25 transition hover:from-violet-500 hover:to-indigo-500 active:scale-95 disabled:cursor-wait disabled:opacity-70"
-                    title="Export and download Windows app"
-                  >
-                    {isExportingApp ? <RefreshCcw className="h-4 w-4 animate-spin text-amber-300" /> : <Download className="h-4 w-4 text-amber-300" />}
-                    <span className="hidden sm:inline">{isExportingApp ? "Preparing…" : "Export App"}</span>
-                    <span className="sm:hidden">{isExportingApp ? "Preparing" : "Export"}</span>
-                  </button>
-                </div>
-              ) : null}
-
               <IconButton
                 onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
                 className="min-h-[2.6rem]"

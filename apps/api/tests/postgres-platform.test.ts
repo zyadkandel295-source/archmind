@@ -108,7 +108,7 @@ describe.skipIf(!databaseUrl)("Postgres platform repository", () => {
     await store.close();
   });
 
-  it("mirrors duplicate assistant slugs without blocking installer state reads", async () => {
+  it("mirrors duplicate assistant slugs without blocking platform-state reads", async () => {
     const store = new PostgresPlatformStore(databaseUrl!, { runMigrations: true });
     const firstUser = authUser();
     const secondUser = authUser();
@@ -132,64 +132,5 @@ describe.skipIf(!databaseUrl)("Postgres platform repository", () => {
     }
   });
 
-  it("atomically reuses one desktop build for concurrent idempotency requests", async () => {
-    const ownerId = randomUUID();
-    const assistantId = randomUUID();
-    await seedCoreRows(ownerId, assistantId);
-    const firstStore = new PostgresPlatformStore(databaseUrl!, { runMigrations: true });
-    const secondStore = new PostgresPlatformStore(databaseUrl!, { runMigrations: true });
-    const input = {
-      assistantId, platform: "win32" as const, architecture: "x64" as const, productName: "Concurrent build",
-      appIcon: "FileText", color: "#2563eb", assistantVersion: 1, idempotencyKey: `build-${randomUUID()}`
-    };
-    try {
-      const [first, second] = await Promise.all([
-        new PlatformService(firstStore).createDesktopBuild(ownerId, input),
-        new PlatformService(secondStore).createDesktopBuild(ownerId, input)
-      ]);
-      expect(first.build.id).toBe(second.build.id);
-      expect([first.reused, second.reused].filter(Boolean)).toHaveLength(1);
-      const verificationStore = new PostgresPlatformStore(databaseUrl!, { runMigrations: true });
-      const persisted = await verificationStore.getPlatformState();
-      await verificationStore.close();
-      expect(persisted.desktopBuilds.filter((item) => item.ownerId === ownerId && item.idempotencyKey === input.idempotencyKey)).toHaveLength(1);
-    } finally {
-      await firstStore.close();
-      await secondStore.close();
-    }
-  });
 
-  it("does not reuse a ready installer across different assistants", async () => {
-    const ownerId = randomUUID();
-    const assistantA = randomUUID();
-    const assistantB = randomUUID();
-    await seedCoreRows(ownerId, assistantA);
-    await seedCoreRows(ownerId, assistantB);
-    const store = new PostgresPlatformStore(databaseUrl!, { runMigrations: true });
-    const service = new PlatformService(store);
-    const input = {
-      platform: "win32" as const,
-      architecture: "x64" as const,
-      productName: "Same visible name",
-      appIcon: "Bot",
-      color: "#2563eb",
-      assistantVersion: 1
-    };
-    try {
-      const first = await service.createDesktopBuild(ownerId, { ...input, assistantId: assistantA, idempotencyKey: `build-${randomUUID()}` });
-      await service.updateDesktopBuild(first.build.id, {
-        status: "ready",
-        artifactPath: `D:/fake/${first.build.id}.exe`,
-        artifactSize: 80_000_000,
-        artifactSha256: "a".repeat(64)
-      });
-      const second = await service.createDesktopBuild(ownerId, { ...input, assistantId: assistantB, idempotencyKey: `build-${randomUUID()}` });
-      expect(second.reused).toBe(false);
-      expect(second.build.id).not.toBe(first.build.id);
-      expect(second.build.appId).not.toBe(first.build.appId);
-      expect(second.build.protocol).not.toBe(first.build.protocol);
-    } finally {
-      await store.close();
-    }
-  });
 });

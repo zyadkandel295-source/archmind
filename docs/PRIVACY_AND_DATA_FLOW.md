@@ -2,7 +2,7 @@
 
 ## Data paths
 
-The browser sends account, assistant, workflow and chat data to the Express API over TLS in production. Platform automation data uses PostgreSQL when `DATABASE_URL` is configured and `ARCHMIND_PLATFORM_STORE` is not set to `memory`; tests and explicitly selected local development can still use the in-memory/local JSON store. Uploaded knowledge is parsed locally and may be stored locally or in configured object storage. Chat/RAG content is sent to OpenRouter only from the backend. Google/Notion/webhook data leaves ArchMind only through configured adapters and permission policy. The desktop runtime exchanges a single-use bootstrap token for a device session, stores the session secret with OS-protected Electron `safeStorage` when available, watches user-approved folders locally, and reports action audit events to the API.
+The browser sends account, assistant, workflow and chat data to the Express API over TLS in production. Platform automation data uses PostgreSQL when `DATABASE_URL` is configured and `ARCHMIND_PLATFORM_STORE` is not set to `memory`; tests and explicitly selected local development can still use the in-memory/local JSON store. Uploaded knowledge is parsed locally and may be stored locally or in configured object storage. Chat/RAG content is sent to OpenRouter only from the backend. Google/Notion/webhook data leaves ArchMind only through configured adapters and permission policy.
 
 Workflow interpretation through `/api/platform/workflows/propose` is deterministic and does not call an AI provider or run actions. `data.extract` declares that content may be sent to the configured AI provider and requires approval. Action previews disclose resources, reversibility, risk and provider before execution.
 

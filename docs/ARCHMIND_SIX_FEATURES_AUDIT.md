@@ -1,6 +1,5 @@
 # ArchMind Six-Feature Current-State Audit
 
-Audit date: 2026-07-12. Evidence is the current working tree, including staged deletions and unstaged changes. The runtime is Next.js 14, Express/TypeScript, an active JSON-backed `MemoryStore`, PostgreSQL migration definitions, BullMQ hooks, Firebase/JWT authentication, OpenRouter, and Notion/Google adapters. The prior Electron desktop files are staged for deletion and are therefore not an active capability.
 
 | Feature | Existing status | Relevant files | What works | What is mocked or broken | Missing work | Security concerns | Planned implementation |
 |---|---|---|---|---|---|---|---|
@@ -9,7 +8,6 @@ Audit date: 2026-07-12. Evidence is the current working tree, including staged d
 | Real system-level actions | Mocked | `tool-gateway.ts`, `execution-engine.ts`, `queue.ts`, `worker.ts` | Real Google/Notion code paths exist when configured; bounded retry exists. | Several adapters use mock environment values; audit-sheet write is simulated/forced; worker only returns `indexed: true`; no active local runtime. | Controlled local action executor, scoped paths, durable workflow queue/watchers. | LLM chooses gateway method names; public webhook lacks signatures/replay protection. | Controlled registry and canonical path enforcement; disable unavailable adapters honestly. |
 | Compounding personal memory | Missing | `memory.ts`, conversations and RAG source records | Conversation records and assistant-scoped source retrieval exist. | “MemoryStore” is a general persistence class, not personal memory; no memory policy or controls. | Scoped memory records, provenance, visibility, deletion/export/settings and retrieval filtering. | Cross-scope leakage if transcript/RAG is mistaken for durable memory. | Owner-first memory CRUD with scope and assistant visibility. |
 | Branded packaging and resale/licensing | Missing | `billing.ts`, public assistant routes | Public assistant pages and billing stubs exist. | No immutable package, entitlement, acquisition, license, listing or safe export. | Package/version/entitlement services and creator/library UI. | Private data and secrets could leak without a manifest allowlist. | Immutable safe manifest versions and server-authoritative entitlements; paid checkout disabled without provider. |
-| Downloadable standalone desktop assistants | Broken | staged deletions under `apps/desktop`, deleted desktop API/installer modules | Historical code and installer scratch artifacts exist. | Desktop workspace, installer service, routes and tests are staged for deletion; scratch EXEs are not release evidence. | Restore/replace runtime, secure build pipeline, signing, artifact validation and OS tests. | Old implementation embedded or distributed artifacts without current verification; scratch downloads must not be trusted. | Implement secure bootstrap/device authorization now; keep builds disabled until an intentional signed runtime exists. |
 
 ## Shared foundations
 
@@ -30,15 +28,12 @@ Audit date: 2026-07-12. Evidence is the current working tree, including staged d
 | Rate limits | Implemented but unverified | `middleware/rate-limit.ts` | Global middleware. | No route-specific quotas. | Workflow/build/webhook quotas. | Expensive endpoints can share a broad limit. | Add per-operation idempotency and bounded limits. |
 | Error monitoring | Missing | error middleware, Sentry env | Structured HTTP error shape. | Sentry is configuration only. | Provider initialization and trace correlation. | Stack/error leakage must remain disabled. | Document hook and production requirement. |
 | Analytics | Partially implemented | analytics routes, Firebase activity | Assistant analytics and site activity endpoint. | Site activity endpoint returns success without persistence. | Consent/privacy controls. | Accidental PII collection. | Minimize metadata and document flows. |
-| Automated tests | Partially implemented | `apps/api/tests/routes.test.ts` | 31 API tests passed on audit date. | No six-feature, E2E, desktop or build authorization suite. | Unit/integration/security tests for new domains. | Critical authorization unproved. | Add API integration tests and unit policy/path tests. |
 | Production deployment | Partially implemented | Dockerfiles, Railway/AWS/Kong starters | Build/deploy starters and health endpoint. | No complete runbook/readiness or migration command. | Domain, TLS, worker, storage, backups, rollback docs. | Health leaks configuration booleans; insecure defaults. | Harden health/readiness and document production setup. |
-| Desktop release process | Broken | staged desktop deletions, scratch installers | No active release pipeline. | Scratch artifacts and prior code are not trustworthy releases. | Intentional runtime, signing, CI, checksums and validation. | Installer tampering and credential embedding. | Keep build endpoint explicitly unavailable; document requirements. |
 
 ## Baseline verification
 
 - `npm test -- --reporter=verbose`: 31/31 tests passed (the npm reporter flag was ignored; Vitest still ran normally).
 - Initial combined test/typecheck/build command exceeded its wrapper timeout before emitting results; each command must be recorded independently.
-- No desktop build is possible from the current working tree because `apps/desktop` is staged for deletion.
 
 ## Architecture decision
 

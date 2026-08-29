@@ -114,7 +114,7 @@ async function ensureDockerServices() {
     console.warn("");
     console.warn("╔══════════════════════════════════════════════════════════════════╗");
     console.warn("║  Docker/PostgreSQL unavailable; using local MemoryStore         ║");
-    console.warn("║  for desktop development only. NOT suitable for production.     ║");
+    console.warn("║  for local development only. NOT suitable for production.       ║");
     console.warn("╚══════════════════════════════════════════════════════════════════╝");
     console.warn("");
     process.env.ARCHMIND_PLATFORM_STORE = "memory";
@@ -133,7 +133,7 @@ async function ensureDockerServices() {
   console.warn("");
   console.warn("╔══════════════════════════════════════════════════════════════════╗");
   console.warn("║  Docker services started but PostgreSQL/Redis not reachable.    ║");
-  console.warn("║  Falling back to local MemoryStore for desktop development.     ║");
+    console.warn("║  Falling back to local MemoryStore for development.             ║");
   console.warn("╚══════════════════════════════════════════════════════════════════╝");
   console.warn("");
   process.env.ARCHMIND_PLATFORM_STORE = "memory";
@@ -191,7 +191,7 @@ async function main() {
   await ensureDockerServices();
 
   const services = [
-    { name: "API", port: 4000, healthUrl: "http://localhost:4000/api/platform/desktop/session", args: ["run", "dev", "-w", "@archmind/api"] },
+    { name: "API", port: 4000, healthUrl: "http://localhost:4000/api/health", args: ["run", "dev", "-w", "@archmind/api"] },
     { name: "WEB", port: 3000, healthUrl: "http://localhost:3000", args: ["run", "dev", "-w", "@archmind/web"] },
     { name: "WORKER", args: ["run", "worker", "-w", "@archmind/api"] }
   ];

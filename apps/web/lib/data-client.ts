@@ -72,12 +72,6 @@ function redirectToSignInOnce() {
 
 function friendlyMessage(code: string | undefined, fallback: string, status: number) {
   if (code === "AUTH_REQUIRED" || code === "UNAUTHENTICATED") return "Your session expired. Sign in again to continue.";
-  if (code === "PLATFORM_STORE_UNAVAILABLE") return "The desktop build service is temporarily unavailable.";
-  if (code === "MIGRATION_REQUIRED") return "The desktop build service needs a database migration.";
-  if (code === "REDIS_REQUIRED") return "The desktop build worker is temporarily unavailable.";
-  if (code === "INSTALLER_NOT_READY") return "The installer is still being prepared.";
-  if (code === "DESKTOP_BUILD_NOT_FOUND") return "This installer is no longer available.";
-  if (code === "RUNTIME_RELEASE_UNAVAILABLE") return "Windows app downloads are temporarily unavailable while a signed runtime is being published.";
   if (status >= 500) return "The service could not complete this request.";
   return fallback || "The request could not be completed.";
 }

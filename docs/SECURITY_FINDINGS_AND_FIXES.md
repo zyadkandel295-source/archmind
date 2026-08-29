@@ -10,12 +10,10 @@ Status vocabulary: Verified, Implemented but unverified, Not implemented, Blocke
 
 Status: Implemented but unverified
 
-The local development launcher was updated to detect when PostgreSQL or Redis are required by `.env` and start the matching Docker Compose services when their ports are closed. This reduces false installer/build failures caused by the API returning `ECONNREFUSED` for platform-store routes.
 
 Evidence:
 
 - `scripts/dev-stack.cjs` now checks configured local service URLs and waits for required ports.
-- The prior observed failure was repeated platform-store `ECONNREFUSED` for `/api/platform/desktop/builds` and `/api/platform/devices`.
 
 Remaining verification:
 
@@ -29,26 +27,21 @@ The API Vitest timeout was increased from 15 seconds to 60 seconds to avoid fals
 
 Evidence:
 
-- Before the change, PDF/DOCX extraction, platform install-intent, and PostgreSQL integration tests exceeded the old 15-second limit.
 - After the change, `npm.cmd test` passed: 42 passed, 5 skipped.
 - PostgreSQL integration tests passed separately: 5/5.
 
-### Desktop runtime partial-artifact guard
 
 Status: Implemented but unverified
 
-The desktop runtime build path was hardened so runtime publication is atomic:
 
 - build into a temporary directory;
 - hold a runtime-version lock;
-- validate installer size, `MZ` header, SHA-256, and `app.asar`;
 - publish immutable release metadata only after validation;
 - prevent assistant builders from consuming invalid or currently-building runtime templates.
 
 Remaining verification:
 
 - Re-run the final runtime build after local command execution recovers.
-- Add a regression test for a tiny partial installer.
 
 ## Open high-priority findings
 

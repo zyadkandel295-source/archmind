@@ -1,4 +1,4 @@
--- Remove the retired Export App / desktop-installer subsystem.
+-- Remove obsolete desktop-delivery tables from existing deployments.
 -- This migration is intentionally limited to tables owned exclusively by that
 -- feature. Run through the normal reviewed migration workflow; it does not
 -- touch assistants, conversations, sources, Redis, or shared storage data.
