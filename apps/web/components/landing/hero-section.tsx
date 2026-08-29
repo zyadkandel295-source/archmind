@@ -3,34 +3,34 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Brain, ShieldCheck, Sparkles, Users, FileText, Lock, Cpu, Database } from 'lucide-react';
+import { ArrowRight, Boxes, ShieldCheck, Users, FileText, Lock, Cpu, Database } from 'lucide-react';
 import { AgentiaLogo } from '@/components/jellyfish-logo';
 
 export function HeroSection() {
   return (
-    <div className="relative min-h-screen flex flex-col justify-between px-4 overflow-hidden bg-[#080B10]">
+    <div className="relative flex min-h-screen flex-col justify-between overflow-hidden bg-[#EFE3D2] px-4 text-[#29231E]">
       {/* Top Navbar Header */}
-      <header className="w-full max-w-6xl mx-auto py-6 flex items-center justify-between z-20 border-b border-blue-500/20">
+      <header className="z-20 mx-auto flex w-full max-w-6xl items-center justify-between border-b border-[#DDD0BE] py-6">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="p-1.5 rounded-xl bg-slate-950/90 border border-sky-400/60 shadow-lg shadow-sky-500/30 group-hover:scale-105 transition-transform">
-            <AgentiaLogo className="w-9 h-9 drop-shadow-[0_0_12px_rgba(56,189,248,0.9)]" />
+          <div className="rounded-[10px] border border-[#D7B77F] bg-[#F6E4C9] p-1.5 text-[#8D501B] transition-transform group-hover:scale-105">
+            <AgentiaLogo className="h-9 w-9" />
           </div>
-          <span className="text-3xl font-black tracking-tight text-white group-hover:text-cyan-300 transition-colors">
+          <span className="text-3xl font-black tracking-tight text-[#29231E] transition-colors group-hover:text-[#9A5B21]">
             AGENTIA
           </span>
         </Link>
 
-        <nav className="flex items-center gap-6 text-sm font-semibold text-blue-200/80">
-          <Link href="/privacy" className="hover:text-cyan-300 transition-colors flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-cyan-400" />
+        <nav className="flex items-center gap-6 text-sm font-semibold text-[#6D6257]">
+          <Link href="/privacy" className="flex items-center gap-1.5 transition-colors hover:text-[#9A5B21]">
+            <ShieldCheck className="h-4 w-4 text-[#A96342]" />
             Privacy Policy
           </Link>
-          <Link href="/terms" className="hover:text-cyan-300 transition-colors flex items-center gap-1.5">
-            <FileText className="w-4 h-4 text-cyan-400" />
+          <Link href="/terms" className="flex items-center gap-1.5 transition-colors hover:text-[#9A5B21]">
+            <FileText className="h-4 w-4 text-[#A96342]" />
             Terms of Service
           </Link>
           <Link href="/auth/login">
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-500 text-white font-bold">
+            <Button size="sm" className="font-bold">
               Sign In
             </Button>
           </Link>
@@ -41,22 +41,22 @@ export function HeroSection() {
       <div className="neural-content-overlay my-auto py-12 max-w-5xl mx-auto text-center">
         {/* Brand Logo & Name */}
         <div className="flex flex-col items-center mb-6">
-          <div className="p-3.5 rounded-3xl bg-slate-950/90 border border-sky-400/60 shadow-2xl shadow-sky-500/40 mb-4">
-            <AgentiaLogo className="w-20 h-20 drop-shadow-[0_0_20px_rgba(56,189,248,0.9)]" />
+          <div className="mb-4 rounded-[12px] border border-[#D7B77F] bg-[#F6E4C9] p-3.5 text-[#8D501B] shadow-[0_14px_34px_rgba(82,61,39,0.10)]">
+            <AgentiaLogo className="h-20 w-20" />
           </div>
-          <h1 className="text-6xl md:text-7xl font-black text-white tracking-tight">
+          <h1 className="text-6xl font-black tracking-tight text-[#29231E] md:text-7xl">
             AGENTIA
           </h1>
-          <p className="mt-2 text-xl font-bold text-cyan-400 tracking-wide">
+          <p className="mt-2 text-xl font-bold tracking-wide text-[#9A5B21]">
             AI Agent Workspace & System Automation Platform
           </p>
         </div>
 
         {/* Workspace badge */}
         <div className="flex justify-center mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30">
-            <Brain className="w-4 h-4 text-blue-400" />
-            <span className="text-sm font-semibold text-blue-300">Your intelligent workspace</span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#E2C798] bg-[#F6E4C9] px-4 py-2">
+            <Boxes className="h-4 w-4 text-[#A96342]" />
+            <span className="text-sm font-semibold text-[#855719]">Your intelligent workspace</span>
           </div>
         </div>
 

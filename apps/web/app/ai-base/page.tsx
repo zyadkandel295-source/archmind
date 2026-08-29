@@ -3,7 +3,7 @@ import { AIBaseHeader } from "@/components/ai-base/ai-base-header";
 import { GradientDescentVisualizer, AttentionMatrixVisualizer, RagPipelineVisualizer } from "@/components/ai-base/interactive-visualizers";
 import { ResearchAgentUI } from "@/components/ai-base/research-agent-ui";
 import { KnowledgeExplorer } from "@/components/ai-base/knowledge-explorer";
-import { Sparkles, BookOpen, Atom, Library, Wrench, ArrowRight, Brain, Zap, Terminal } from "lucide-react";
+import { Boxes, BookOpen, Atom, Library, Wrench, ArrowRight, Layers, Zap, Terminal } from "lucide-react";
 
 export const metadata = {
   title: "AGENTIA AI BASE | Comprehensive AI Knowledge & Research Engine",
@@ -12,10 +12,10 @@ export const metadata = {
 
 export default function AIBasePortalPage() {
   const learningPillars = [
-    { href: "/ai-base/fundamentals", title: "1. Fundamentals", desc: "History of AI, Symbolic AI, ML vs DL, Foundation Models, Multimodal AI, AGI Concepts.", icon: Sparkles, color: "from-cyan-500/20 to-blue-500/20 text-cyan-300" },
+    { href: "/ai-base/fundamentals", title: "1. Fundamentals", desc: "History of AI, Symbolic AI, ML vs DL, Foundation Models, Multimodal AI, AGI Concepts.", icon: Boxes, color: "from-cyan-500/20 to-blue-500/20 text-cyan-300" },
     { href: "/ai-base/math", title: "2. Mathematics for AI", desc: "Linear Algebra, Calculus, Probability, Statistics, Optimization, Derivations & LaTeX.", icon: BookOpen, color: "from-blue-500/20 to-indigo-500/20 text-blue-300" },
     { href: "/ai-base/machine-learning", title: "3. Machine Learning", desc: "Supervised & Unsupervised Algorithms, Pseudocode, Python, Complexity, Failure Modes.", icon: Wrench, color: "from-indigo-500/20 to-violet-500/20 text-indigo-300" },
-    { href: "/ai-base/deep-learning", title: "4. Deep Learning", desc: "MLPs, Backpropagation, CNNs, RNNs, LSTMs, VAEs, GANs, Diffusion Models, GNNs, MoE.", icon: Brain, color: "from-violet-500/20 to-fuchsia-500/20 text-violet-300" },
+    { href: "/ai-base/deep-learning", title: "4. Deep Learning", desc: "MLPs, Backpropagation, CNNs, RNNs, LSTMs, VAEs, GANs, Diffusion Models, GNNs, MoE.", icon: Layers, color: "from-violet-500/20 to-fuchsia-500/20 text-violet-300" },
     { href: "/ai-base/llms", title: "5. Transformers & LLMs", desc: "Self-Attention, Embeddings, RLHF, DPO, Fine-Tuning (LoRA/QLoRA), KV Cache, Temperature.", icon: Zap, color: "from-fuchsia-500/20 to-pink-500/20 text-fuchsia-300" },
     { href: "/ai-base/agents", title: "6. AI Agents", desc: "ReAct Loop, Planning, Memory, Function Calling, Multi-Agent Swarms, Tool Orchestration.", icon: Terminal, color: "from-emerald-500/20 to-teal-500/20 text-emerald-300" },
     { href: "/ai-base/science", title: "7. AI + Scientific Research", desc: "Biology, Drug Discovery, Clinical Medicine, Chemistry, Physics, Astronomy, Climate Science.", icon: Atom, color: "from-teal-500/20 to-cyan-500/20 text-teal-300" },
@@ -33,7 +33,7 @@ export default function AIBasePortalPage() {
 
           <div className="max-w-3xl relative z-10 space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
+              <Boxes className="w-3.5 h-3.5" />
               AGENTIA CORE SERVICE #2
             </div>
 

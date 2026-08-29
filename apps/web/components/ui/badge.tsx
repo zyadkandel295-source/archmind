@@ -7,15 +7,15 @@ import { cn } from "@/lib/utils";
 type BadgeTone = "blue" | "green" | "amber" | "red" | "slate" | "online" | "warning" | "new" | "neutral";
 
 const tones: Record<BadgeTone, string> = {
-  blue: "bg-[#10233F] text-[#D9E8FF] ring-1 ring-[#3B82F6]/60",
-  green: "bg-[#10291B] text-[#CFFADE] ring-1 ring-[#22C55E]/55",
-  amber: "bg-[#2C210C] text-[#FFE7B0] ring-1 ring-[#F59E0B]/55",
-  red: "bg-[#321417] text-[#FFD4D8] ring-1 ring-[#EF4444]/55",
-  slate: "bg-[#1B2330] text-[#D6DCE6] ring-1 ring-[#3A4658]",
-  online: "bg-[#10291B] text-[#CFFADE] ring-1 ring-[#22C55E]/55",
-  warning: "bg-[#2C210C] text-[#FFE7B0] ring-1 ring-[#F59E0B]/55",
-  new: "bg-[#10233F] text-[#D9E8FF] ring-1 ring-[#3B82F6]/60",
-  neutral: "bg-[#1B2330] text-[#D6DCE6] ring-1 ring-[#3A4658]"
+  blue: "bg-[#F6E4C9] text-[#8A501E] ring-1 ring-[#E4BD86]",
+  green: "bg-[#E5EEE3] text-[#47664E] ring-1 ring-[#BFD1C1]",
+  amber: "bg-[#F7E9D0] text-[#855719] ring-1 ring-[#E4C48D]",
+  red: "bg-[#F4E1DC] text-[#934237] ring-1 ring-[#DFB7AE]",
+  slate: "bg-[#F1E7DA] text-[#62574C] ring-1 ring-[#DDD0BE]",
+  online: "bg-[#E5EEE3] text-[#47664E] ring-1 ring-[#BFD1C1]",
+  warning: "bg-[#F7E9D0] text-[#855719] ring-1 ring-[#E4C48D]",
+  new: "bg-[#F6E4C9] text-[#8A501E] ring-1 ring-[#E4BD86]",
+  neutral: "bg-[#F1E7DA] text-[#62574C] ring-1 ring-[#DDD0BE]"
 };
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {

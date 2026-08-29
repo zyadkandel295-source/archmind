@@ -8,14 +8,8 @@ import { ToastViewport } from "@/components/ui/toast";
 import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 import { establishWorkspaceSession } from "@/lib/session-bridge";
 import { readSessionCredential } from "@/lib/session-keys";
-import dynamic from "next/dynamic";
 import { useSessionStore } from "@/lib/session-store";
 import * as analytics from "@/lib/analytics";
-
-const FloatingJellyfishBackground = dynamic(
-  () => import("@/components/floating-jellyfish-bg").then((mod) => mod.FloatingJellyfishBackground),
-  { ssr: false }
-);
 
 const PUBLIC_PATHS = ["/", "/auth/login"];
 
@@ -89,12 +83,11 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <FloatingJellyfishBackground />
       {immersive ? null : <Nav />}
       {immersive ? (
         <div className="relative z-10 w-full">{children}</div>
       ) : (
-        <div className="relative z-10 arch-shell neural-grid min-h-screen text-[#F0EAFF]">
+        <div className="app-main-shell relative z-10 arch-shell min-h-screen text-[#29231E]">
           <div className="flex min-h-screen w-full min-w-0 flex-col">{children}</div>
         </div>
       )}

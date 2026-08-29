@@ -222,10 +222,10 @@ export function SourceUploader({ assistantId }: { assistantId: string }) {
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <FileUp className="h-5 w-5 text-[#C4B5FD]" />
+              <FileUp className="h-5 w-5 text-[#A96342]" />
               <h2 className="text-lg font-bold">Knowledge files</h2>
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-xs text-[#C4B5FD]">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-[#74695E]">
               <span>{ACCEPTED_TYPES.replaceAll(",", ", ")}</span>
               <span>Max {formatSize(MAX_SIZE_BYTES)}</span>
             </div>
@@ -240,23 +240,23 @@ export function SourceUploader({ assistantId }: { assistantId: string }) {
             onDragLeave={() => setDragActive(false)}
             onDrop={onDrop}
             className={`rounded-xl border border-dashed p-6 text-center transition ${
-              dragActive ? "border-blue-500 bg-[#1E1145]" : "border-[#2A2555] bg-[#12102A]"
+              dragActive ? "border-[#D9892B] bg-[#F6E4C9]" : "border-[#D7C5AF] bg-[#FAF5ED]"
             }`}
           >
             <input ref={fileInputRef} type="file" accept={ACCEPTED_TYPES} className="hidden" onChange={onFileSelected} />
-            <FileUp className="mx-auto h-8 w-8 text-[#C4B5FD]" />
-            <p className="mt-3 text-sm font-semibold text-white">Drop a file here or choose one from your device.</p>
-            <p className="mt-1 text-sm text-[#C4B5FD]">Ready is shown only after parsing and indexing complete.</p>
+            <FileUp className="mx-auto h-8 w-8 text-[#A96342]" />
+            <p className="mt-3 text-sm font-semibold text-[#29231E]">Drop a file here or choose one from your device.</p>
+            <p className="mt-1 text-sm text-[#74695E]">Ready is shown only after parsing and indexing complete.</p>
             <Button type="button" className="mt-4" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
               {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileUp className="h-4 w-4" />}
               {uploading ? "Uploading" : "Choose file"}
             </Button>
             {uploading ? (
               <div className="mx-auto mt-4 max-w-md">
-                <div className="h-2 overflow-hidden rounded-full bg-[#0C0B18]">
-                  <div className="h-full bg-blue-500 transition-all" style={{ width: `${uploadProgress}%` }} />
+                <div className="h-2 overflow-hidden rounded-full bg-[#E8DDCE]">
+                  <div className="h-full bg-[#D9892B] transition-all" style={{ width: `${uploadProgress}%` }} />
                 </div>
-                <div className="mt-2 text-xs font-semibold text-[#DDD6FE]">{uploadProgress}% uploaded</div>
+                <div className="mt-2 text-xs font-semibold text-[#855719]">{uploadProgress}% uploaded</div>
               </div>
             ) : null}
           </div>
@@ -275,24 +275,24 @@ export function SourceUploader({ assistantId }: { assistantId: string }) {
         </CardHeader>
         <CardContent className="space-y-3">
           {loadingList ? (
-            <p className="text-sm text-[#C4B5FD]">Loading knowledge files...</p>
+            <p className="text-sm text-[#74695E]">Loading knowledge files...</p>
           ) : files.length === 0 ? (
-            <p className="text-sm leading-6 text-[#C4B5FD]">No knowledge files yet. Upload a supported file to make it available during chat.</p>
+            <p className="text-sm leading-6 text-[#74695E]">No knowledge files yet. Upload a supported file to make it available during chat.</p>
           ) : (
             files.map((file) => (
-              <div key={file.id} className="flex flex-col justify-between gap-3 rounded-lg border border-[#2A2555] bg-[#12102A] p-4 text-[#F0EAFF] md:flex-row md:items-center">
+              <div key={file.id} className="flex flex-col justify-between gap-3 rounded-[10px] border border-[#E3D4C2] bg-[#FAF5ED] p-4 text-[#29231E] transition hover:border-[#D7B77F] md:flex-row md:items-center">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    {file.status === "ready" ? <CheckCircle2 className="h-4 w-4 text-emerald-300" /> : null}
-                    {file.status === "failed" ? <XCircle className="h-4 w-4 text-amber-300" /> : null}
-                    {file.status === "processing" || file.status === "uploading" ? <Loader2 className="h-4 w-4 animate-spin text-[#C4B5FD]" /> : null}
+                    {file.status === "ready" ? <CheckCircle2 className="h-4 w-4 text-[#58785F]" /> : null}
+                    {file.status === "failed" ? <XCircle className="h-4 w-4 text-[#A54F41]" /> : null}
+                    {file.status === "processing" || file.status === "uploading" ? <Loader2 className="h-4 w-4 animate-spin text-[#A16B27]" /> : null}
                     <h3 className="truncate font-bold">{file.filename}</h3>
                     <Badge tone={statusTone(file.status)}>{file.status}</Badge>
                   </div>
-                  <p className="mt-2 text-sm text-[#C4B5FD]">
+                  <p className="mt-2 text-sm text-[#74695E]">
                     {formatSize(file.sizeBytes)} · {file.chunks} chunks · {file.textLength} characters
                   </p>
-                  {file.errorMessage ? <p className="mt-2 text-sm text-amber-200">{file.errorMessage}</p> : null}
+                  {file.errorMessage ? <p className="mt-2 text-sm text-[#934237]">{file.errorMessage}</p> : null}
                 </div>
                 <div className="flex items-center gap-2">
                   {file.status === "failed" ? <Button type="button" variant="ghost" size="sm" onClick={() => void retryFile(file)}><RefreshCcw className="h-4 w-4" />Retry</Button> : null}

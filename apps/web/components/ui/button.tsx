@@ -11,11 +11,11 @@ type ButtonSize = "sm" | "md" | "lg" | "icon";
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "border border-blue-400/60 bg-blue-600 text-white shadow-sm hover:border-blue-300 hover:bg-blue-700 focus-visible:ring-blue-400",
+    "border border-[#C77A2B] bg-[#D9892B] text-[#29231E] shadow-sm hover:border-[#AD661F] hover:bg-[#BD7024] focus-visible:ring-[#D9892B]",
   secondary:
-    "border border-[#3A4658] bg-[#1B2330] text-[#F4F7FB] shadow-sm hover:border-blue-400/70 hover:bg-[#232D3B] hover:text-white focus-visible:ring-blue-400",
-  ghost: "border border-transparent text-[#B7C0CE] hover:border-[#3A4658] hover:bg-[#232D3B] hover:text-white focus-visible:ring-blue-400",
-  danger: "border border-red-500/60 bg-red-600 text-white shadow-sm hover:bg-red-700 focus-visible:ring-red-500"
+    "border border-[#DDD0BE] bg-[#FFF9F1] text-[#29231E] shadow-sm hover:border-[#CDB99F] hover:bg-[#F6EAD9] focus-visible:ring-[#D9892B]",
+  ghost: "border border-transparent text-[#5F564D] hover:border-[#DDD0BE] hover:bg-[#F6EAD9] hover:text-[#29231E] focus-visible:ring-[#D9892B]",
+  danger: "border border-[#9C4438] bg-[#A54F41] text-[#FFF9F1] shadow-sm hover:bg-[#8D4135] focus-visible:ring-[#A54F41]"
 };
 
 const sizes: Record<ButtonSize, string> = {
@@ -57,7 +57,7 @@ export function Button({ className, variant = "primary", size = "md", onClick, c
       transition={springSnappy}
       onClick={handleClick}
       className={cn(
-        "relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-[clamp(0.65rem,1.6vw,0.85rem)] font-semibold transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#080B10] disabled:pointer-events-none disabled:translate-y-0 disabled:border-[#2A3545] disabled:bg-[#111720] disabled:text-[#8C98AA] disabled:opacity-100",
+        "relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-[9px] font-semibold transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D9892B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EFE3D2] disabled:pointer-events-none disabled:translate-y-0 disabled:border-[#DDD0BE] disabled:bg-[#E8DDCE] disabled:text-[#8A7D6F] disabled:opacity-100",
         variants[variant],
         sizes[size],
         className

@@ -18,7 +18,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSel
       whileFocus={reduceMotion ? undefined : { scale: 1.005 }}
       transition={{ type: "spring", stiffness: 400, damping: 28 }}
       className={cn(
-        "min-h-[2.75rem] w-full rounded-[clamp(0.65rem,1.6vw,0.85rem)] border border-[#3A4658] bg-[#0F141C] px-[clamp(0.85rem,2vw,1rem)] text-[clamp(0.88rem,1.8vw,0.95rem)] text-[#F4F7FB] shadow-sm outline-none transition hover:border-blue-400/70 focus:border-blue-400 focus:ring-4 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:border-[#2A3545] disabled:bg-[#111720] disabled:text-[#8C98AA] [&_option]:bg-[#0F141C] [&_option]:text-[#F4F7FB]",
+        "min-h-[2.75rem] w-full rounded-[9px] border border-[#CFBDA6] bg-[#FFF9F1] px-[clamp(0.85rem,2vw,1rem)] text-[clamp(0.88rem,1.8vw,0.95rem)] text-[#29231E] shadow-sm outline-none transition hover:border-[#BCA68B] focus:border-[#D9892B] focus:ring-4 focus:ring-[#D9892B]/15 disabled:cursor-not-allowed disabled:border-[#DDD0BE] disabled:bg-[#EDE1D1] disabled:text-[#8C98AA] [&_option]:bg-[#FFF9F1] [&_option]:text-[#29231E]",
         className
       )}
       {...(props as any)}

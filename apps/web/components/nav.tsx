@@ -1,74 +1,52 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Loader2, LogOut, UserCircle } from "lucide-react";
+import { BarChart3, Bot, CreditCard, LayoutDashboard, LibraryBig, Loader2, LogOut, UserCircle, UserRound, Wrench } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { cn } from "@/lib/utils";
 import { useSessionStore } from "@/lib/session-store";
 import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
 import { toast } from "@/components/ui/toast";
-import { fadeDown } from "@/lib/motion";
 import * as analytics from "@/lib/analytics";
 
-import { JellyfishIcon } from "@/components/jellyfish-logo";
-
-const ADMIN_EMAILS = [
-  "zyadkandel295@gmail.com",
-  "zyad.2524033@stemelsadat.moe.edu.eg",
-  "demo@archmind.dev",
-  "demo@archmind.ai"
-];
+const ADMIN_EMAILS = ["zyadkandel295@gmail.com", "zyad.2524033@stemelsadat.moe.edu.eg", "demo@archmind.dev", "demo@archmind.ai"];
 
 export function Nav() {
   const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+  const [loggingOut, setLoggingOut] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const clearSession = useSessionStore((state) => state.clearSession);
   const email = useSessionStore((state) => state.email);
   const displayName = useSessionStore((state) => state.displayName);
   const photoURL = useSessionStore((state) => state.photoURL);
-  const [loggingOut, setLoggingOut] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const isAdmin = useMemo(() => {
-    if (!email) return false;
-    const clean = email.toLowerCase().trim();
-    return ADMIN_EMAILS.includes(clean) || clean.endsWith("@archmind.ai") || clean.endsWith("@archmind.dev");
+    const clean = email?.toLowerCase().trim();
+    return Boolean(clean && (ADMIN_EMAILS.includes(clean) || clean.endsWith("@archmind.ai") || clean.endsWith("@archmind.dev")));
   }, [email]);
 
   const navLinks = useMemo(() => {
     const base = [
-      { href: "/dashboard", label: "Dashboard" },
-      { href: "/ai-base", label: "AI Base ✨" },
-      { href: "/assistants/new", label: "Builder" },
-      { href: "/profile", label: "Profile" },
-      { href: "/credits", label: "Credits" }
+      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/ai-base", label: "AI Base", icon: LibraryBig },
+      { href: "/assistants/new", label: "Builder", icon: Wrench },
+      { href: "/profile", label: "Profile", icon: UserRound },
+      { href: "/credits", label: "Credits", icon: CreditCard }
     ];
-
-    if (isAdmin) {
-      base.splice(3, 0, { href: "/admin", label: "Analytics" });
-    }
-
+    if (isAdmin) base.splice(3, 0, { href: "/admin", label: "Analytics", icon: BarChart3 });
     return base;
   }, [isAdmin]);
 
   async function logout() {
     if (loggingOut) return;
     setLoggingOut(true);
-    try {
-      if (isFirebaseConfigured()) {
-        await signOut(getFirebaseAuth());
-      }
-    } catch {
-      // Local session is still cleared below.
-    } finally {
+    try { if (isFirebaseConfigured()) await signOut(getFirebaseAuth()); } catch { /* local session is cleared below */ }
+    finally {
       analytics.track("logout");
       analytics.clearUser();
       clearSession();
@@ -78,93 +56,54 @@ export function Nav() {
     }
   }
 
+  const accountName = displayName || email?.split("@")[0] || "Account";
+
   return (
-    <motion.header
-      variants={fadeDown}
-      initial="hidden"
-      animate="visible"
-      className="sticky top-0 z-40 border-b border-[#2A2555] bg-[#0A071E]/80 backdrop-blur-xl"
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="grid h-10 w-10 place-items-center rounded-xl border border-violet-500/30 bg-violet-600/20 text-white shadow-lg shadow-violet-600/20 transition-all group-hover:scale-105 group-hover:border-violet-400 group-hover:bg-violet-600/30">
-              <JellyfishIcon className="h-6 w-6 text-violet-300" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-black tracking-tight text-white">AGENTIA</span>
-                <span className="rounded-md border border-violet-500/30 bg-violet-500/10 px-1.5 py-0.5 text-[10px] font-bold text-violet-300">
-                  AI PLATFORM
-                </span>
-              </div>
-              <p className="text-[11px] font-medium text-[#C4B5FD]">Autonomous Intelligence</p>
-            </div>
-          </Link>
+    <>
+      <aside className="agentia-sidebar fixed inset-y-0 left-0 z-40 hidden w-[15.5rem] flex-col p-4 md:flex">
+        <Link href="/" className="flex items-center gap-3 px-2 py-2" aria-label="AGENTIA home">
+          <span className="agentia-mark" aria-hidden="true" />
+          <span>
+            <span className="block text-[15px] font-extrabold tracking-[-.04em] text-[#29231E]">AGENTIA</span>
+            <span className="block pt-0.5 text-[10px] font-semibold uppercase tracking-[.14em] text-[#83776B]">Workspace</span>
+          </span>
+        </Link>
 
-          <nav className="hidden items-center gap-1 md:flex">
-            {navLinks.map((item) => {
-              const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
-                    active
-                      ? "bg-violet-600 text-white shadow-md shadow-violet-600/30"
-                      : "text-[#C4B5FD] hover:bg-[#1A1638] hover:text-white"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
+        <nav className="mt-8 space-y-1" aria-label="Main navigation">
+          <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[.14em] text-[#83776B]">Workspace</p>
+          {navLinks.map((item) => {
+            const Icon = item.icon;
+            const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+            return <Link key={item.href} href={item.href} data-active={active} className="agentia-nav-link"><Icon className="h-4 w-4" /><span>{item.label}</span></Link>;
+          })}
+        </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="mt-auto border-t border-[#DDD0BE] pt-4">
           {mounted && email ? (
-            <div className="flex items-center gap-3">
-              <Link href="/profile" className="flex items-center gap-2.5 rounded-xl border border-[#2A2555] bg-[#12102A] px-3 py-1.5 transition-colors hover:border-violet-500/40">
-                {photoURL ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={photoURL} alt="" className="h-6 w-6 rounded-full object-cover" />
-                ) : (
-                  <UserCircle className="h-6 w-6 text-violet-400" />
-                )}
-                <div className="hidden text-left sm:block">
-                  <p className="text-xs font-bold text-white truncate max-w-[120px]">{displayName || email.split("@")[0]}</p>
-                  <p className="text-[10px] text-[#C4B5FD] truncate max-w-[120px]">{email}</p>
-                </div>
+            <div className="rounded-[10px] border border-[#E3D4C2] bg-[#FFF9F1] p-2">
+              <Link href="/profile" className="flex min-w-0 items-center gap-2.5 rounded-lg p-1.5 hover:bg-[#F6EAD9]">
+                {photoURL ? <img src={photoURL} alt="" className="h-8 w-8 rounded-full object-cover" /> : <UserCircle className="h-8 w-8 text-[#A96342]" />}
+                <span className="min-w-0 flex-1"><span className="block truncate text-xs font-bold text-[#29231E]">{accountName}</span><span className="block truncate pt-0.5 text-[11px] text-[#83776B]">{email}</span></span>
               </Link>
-              <button
-                onClick={logout}
-                disabled={loggingOut}
-                className="grid h-9 w-9 place-items-center rounded-xl border border-[#2A2555] bg-[#12102A] text-[#C4B5FD] transition-colors hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-300"
-                title="Sign out"
-              >
-                {loggingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
+              <button onClick={logout} disabled={loggingOut} className="mt-1 flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-semibold text-[#6B5344] transition hover:bg-[#F4E1DC] hover:text-[#934237]">
+                {loggingOut ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <LogOut className="h-3.5 w-3.5" />} Sign out
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/auth/login"
-                className="rounded-xl border border-[#2A2555] bg-[#12102A] px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-[#1A1638]"
-              >
-                Sign in
-              </Link>
-              <Link
-                href="/auth/login?mode=signup"
-                className="rounded-xl bg-violet-600 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-violet-600/30 transition-all hover:bg-violet-500"
-              >
-                Get Started
-              </Link>
+            <div className="space-y-1">
+              <Link href="/auth/login" className="agentia-nav-link"><Bot className="h-4 w-4" /> Sign in</Link>
+              <Link href="/auth/login?mode=signup" className="agentia-nav-link bg-[#D9892B] text-[#FFF9F1] hover:bg-[#BF7223]"><UserRound className="h-4 w-4" /> Get started</Link>
             </div>
           )}
         </div>
-      </div>
-    </motion.header>
+      </aside>
+
+      <header className="agentia-sidebar sticky top-0 z-40 flex min-h-[3.7rem] items-center gap-3 border-b px-4 md:hidden">
+        <Link href="/" className="flex items-center gap-2" aria-label="AGENTIA home"><span className="agentia-mark scale-75" aria-hidden="true" /><span className="text-sm font-extrabold tracking-[-.04em]">AGENTIA</span></Link>
+        <nav className="ml-auto flex min-w-0 items-center gap-1 overflow-x-auto" aria-label="Mobile navigation">
+          {navLinks.map((item) => { const Icon = item.icon; const active = pathname === item.href || pathname.startsWith(item.href); return <Link key={item.href} href={item.href} data-active={active} className={cn("agentia-nav-link shrink-0 px-2", active && "bg-[#F6E4C9]")} aria-label={item.label}><Icon className="h-4 w-4" /></Link>; })}
+        </nav>
+      </header>
+    </>
   );
 }

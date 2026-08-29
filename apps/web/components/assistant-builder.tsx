@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronRight, Eye, Loader2, Palette, Sparkles } from "lucide-react";
+import { Check, ChevronRight, Eye, Loader2, Palette, Save } from "lucide-react";
 import { requestData } from "@/lib/data-client";
 import { DEFAULT_ENGINE_VALUE, ENGINE_OPTIONS, engineLabel } from "@/lib/engine-options";
 import { cn } from "@/lib/utils";
@@ -240,7 +240,7 @@ export function AssistantBuilder() {
                 </Button>
               ) : (
                 <Button type="submit" disabled={saving}>
-                  {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                  {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                   {saving ? "Creating assistant" : "Create assistant"}
                 </Button>
               )}

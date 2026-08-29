@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 type StatusTone = "online" | "warning" | "offline" | "info";
 
 const toneClass: Record<StatusTone, string> = {
-  online: "bg-[#22C55E] text-[#052E16]",
-  warning: "bg-[#F59E0B] text-[#2C1700]",
-  offline: "bg-[#EF4444] text-[#450A0A]",
-  info: "bg-[#3B82F6] text-white"
+  online: "bg-[#58785F] text-[#F7F0E7]",
+  warning: "bg-[#A16B27] text-[#FFF8EC]",
+  offline: "bg-[#A54F41] text-[#FFF4EF]",
+  info: "bg-[#D9892B] text-[#2D2117]"
 };
 
 interface StatusBadgeProps extends HTMLAttributes<HTMLSpanElement> {
@@ -21,7 +21,7 @@ export function StatusBadge({ className, tone = "online", pulse = false, childre
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-[#2A3545] bg-[#151B24] px-[clamp(0.6rem,1.6vw,0.8rem)] py-1 text-[clamp(0.72rem,1.6vw,0.8rem)] font-semibold text-[#D6DCE6]",
+        "inline-flex items-center gap-2 rounded-full border border-[#DDD0BE] bg-[#FFF9F1] px-[clamp(0.6rem,1.6vw,0.8rem)] py-1 text-[clamp(0.72rem,1.6vw,0.8rem)] font-semibold text-[#62574C]",
         className
       )}
       {...props}

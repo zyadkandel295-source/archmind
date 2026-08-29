@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const fieldClass =
-  "w-full rounded-[clamp(0.65rem,1.6vw,0.85rem)] border border-[#3A4658] bg-[#0F141C] text-[clamp(0.88rem,1.8vw,0.95rem)] text-[#F4F7FB] shadow-sm outline-none transition placeholder:text-[#7D899A] hover:border-[#4B5A70] focus:border-[#3B82F6] focus:ring-4 focus:ring-blue-500/15 disabled:cursor-not-allowed disabled:border-[#2A3545] disabled:bg-[#111720] disabled:text-[#8C98AA]";
+  "w-full rounded-[9px] border border-[#CFBDA6] bg-[#FFF9F1] text-[clamp(0.88rem,1.8vw,0.95rem)] text-[#29231E] shadow-sm outline-none transition placeholder:text-[#83776B] hover:border-[#BCA68B] focus:border-[#D9892B] focus:ring-4 focus:ring-[#D9892B]/15 disabled:cursor-not-allowed disabled:border-[#DDD0BE] disabled:bg-[#EDE1D1] disabled:text-[#8A7D6F]";
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input(
   { className, ...props },

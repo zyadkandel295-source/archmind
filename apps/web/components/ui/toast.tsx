@@ -64,9 +64,9 @@ function dismissToast(id: string) {
 }
 
 const toastStyles: Record<ToastType, string> = {
-  success: "border-[#22C55E]/60 bg-[#151B24] text-[#F4F7FB]",
-  error: "border-[#EF4444]/60 bg-[#151B24] text-[#F4F7FB]",
-  info: "border-[#3B82F6]/60 bg-[#151B24] text-[#F4F7FB]"
+  success: "border-[#BFD1C1] bg-[#FFF9F1] text-[#29231E]",
+  error: "border-[#DFB7AE] bg-[#FFF9F1] text-[#29231E]",
+  info: "border-[#E4BD86] bg-[#FFF9F1] text-[#29231E]"
 };
 
 const icons = {
@@ -105,17 +105,17 @@ export function ToastViewport() {
               )}
             >
               <div className="flex gap-3">
-                <div className="mt-0.5 grid aspect-square min-h-[2rem] shrink-0 place-items-center rounded-lg border border-[#3A4658] bg-[#1B2330] text-current">
+                <div className="mt-0.5 grid aspect-square min-h-[2rem] shrink-0 place-items-center rounded-lg border border-[#DDD0BE] bg-[#F6EAD9] text-current">
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-[clamp(0.86rem,1.8vw,0.92rem)] font-black">{item.title}</div>
-                  {item.message ? <div className="mt-1 text-[clamp(0.82rem,1.8vw,0.9rem)] leading-5 text-[#B7C0CE]">{item.message}</div> : null}
+                  {item.message ? <div className="mt-1 text-[clamp(0.82rem,1.8vw,0.9rem)] leading-5 text-[#5F564D]">{item.message}</div> : null}
                 </div>
                 <button
                   type="button"
                   onClick={() => dismissToast(item.id)}
-                  className="rounded-lg p-1 text-[#B7C0CE] transition hover:bg-[#232D3B] hover:text-white"
+                  className="rounded-lg p-1 text-[#74695E] transition hover:bg-[#F6EAD9] hover:text-[#29231E]"
                   aria-label="Dismiss notification"
                 >
                   <X className="h-4 w-4" />

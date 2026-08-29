@@ -33,7 +33,7 @@ import {
   Search,
   Send,
   SlidersHorizontal,
-  Sparkles,
+  Lightbulb,
   Square,
   Sun,
   Trash2,
@@ -1531,7 +1531,7 @@ function ChatBubble({
               href={`/assistants/new?template=${encodeURIComponent(message.specialistSuggestion.template)}`}
               className="mt-4 flex items-start gap-3 rounded-xl border border-cyan-400/30 bg-cyan-400/10 p-3 text-left transition hover:border-cyan-300/70 hover:bg-cyan-400/15"
             >
-              <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
+              <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
               <span>
                 <span className="block text-xs font-black text-cyan-200">{message.specialistSuggestion.title}</span>
                 <span className="mt-1 block text-xs leading-5 text-cyan-50/80">{message.specialistSuggestion.description}</span>
@@ -1556,15 +1556,15 @@ function ChatBubble({
         </div>
 
         {isAssistant && message.content ? (
-          <div className="mt-2 flex flex-wrap items-center gap-1 text-[#C4B5FD]">
+          <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[#74695E]">
             {message.sourceReferences && message.sourceReferences.length > 0 ? (
-              <div className="rounded-lg border border-violet-400/40 bg-[#1E1145] px-2 py-1 text-xs font-semibold text-[#DDD6FE]">
-                <span>Sources: </span>{[...new Map(message.sourceReferences.map((source) => [`${source.name}:${source.page ?? ""}`, source])).values()].map((source, index) => <span key={`${source.name}-${source.page ?? index}`}>{index ? " · " : ""}{source.name}{source.page ? ` - Page ${source.page}` : ""}</span>)}
+              <div className="rounded-[8px] border border-[#E3C898] bg-[#F8EAD2] px-2.5 py-1.5 text-xs font-semibold text-[#70461F]">
+                <span className="mr-1 text-[#9A5B21]">Sources</span>{[...new Map(message.sourceReferences.map((source) => [`${source.name}:${source.page ?? ""}`, source])).values()].map((source, index) => <span key={`${source.name}-${source.page ?? index}`}>{index ? " · " : ""}{source.name}{source.page ? ` · p. ${source.page}` : ""}</span>)}
               </div>
-            ) : message.sourceNames && message.sourceNames.length > 0 ? <span className="rounded-lg border border-violet-400/40 bg-[#1E1145] px-2 py-1 text-xs font-semibold text-[#DDD6FE]">Sources: {message.sourceNames.join(", ")}</span> : null}
+            ) : message.sourceNames && message.sourceNames.length > 0 ? <span className="rounded-[8px] border border-[#E3C898] bg-[#F8EAD2] px-2.5 py-1.5 text-xs font-semibold text-[#70461F]">Sources {message.sourceNames.join(", ")}</span> : null}
             <button
               onClick={onCopy}
-              className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition hover:bg-white/10 hover:text-white"
+              className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition hover:bg-[#F1E6D7] hover:text-[#29231E]"
             >
               {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
               {copied ? "Copied" : "Copy"}

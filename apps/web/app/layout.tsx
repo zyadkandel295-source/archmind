@@ -15,11 +15,11 @@ const inter = Inter({
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://agentia-ai.cloud";
 
 export const viewport: Viewport = {
-  themeColor: "#0A071E",
+  themeColor: "#EFE3D2",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  colorScheme: "dark"
+  colorScheme: "light"
 };
 
 export const metadata: Metadata = {

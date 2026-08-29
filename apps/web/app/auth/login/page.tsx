@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LockKeyhole, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { LockKeyhole, ShieldCheck, Boxes, Zap } from "lucide-react";
 import { LoginForm } from "@/components/login-form";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Reveal } from "@/components/motion/reveal";
@@ -44,7 +44,7 @@ export default function LoginPage() {
         <Card className="overflow-hidden">
           <div className="ink-panel flex items-center justify-between border-b border-[#2A3545] px-5 py-4 text-white">
             <div className="flex items-center gap-2 text-sm font-black">
-              <Sparkles className="h-4 w-4 text-[#93C5FD]" />
+              <Boxes className="h-4 w-4 text-[#A96342]" />
               AGENTIA Access
             </div>
             <span className="rounded-full border border-blue-400/40 bg-[#10233F] px-2.5 py-1 text-xs font-bold text-[#D9E8FF]">Secure</span>

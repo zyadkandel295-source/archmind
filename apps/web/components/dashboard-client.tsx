@@ -15,7 +15,6 @@ import {
   Cpu,
   Settings,
   ShieldCheck,
-  Sparkles,
   Trash2,
   UploadCloud
 } from "lucide-react";
@@ -28,7 +27,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/toast";
 import { getAssistantIcon } from "@/lib/assistant-icons";
-import { AIBrainVisualization } from "./dashboard/ai-brain-viz";
 
 interface Assistant {
   id: string;
@@ -266,14 +264,6 @@ export function DashboardClient() {
       </motion.div>
 
 
-
-      {/* AI Brain Visualization Canvas */}
-      <section className="relative mt-8 h-80 w-full overflow-hidden rounded-xl border border-cyan-400/25 bg-slate-950 shadow-2xl shadow-cyan-950/30">
-        <AIBrainVisualization />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between border-t border-cyan-400/15 bg-slate-950/80 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-cyan-100/70 backdrop-blur">
-          <span>Neural operations map</span><span>Live telemetry · encrypted</span>
-        </div>
-      </section>
 
       <section className="mt-8 grid gap-5 lg:grid-cols-[1fr_320px]">
         <Card className="overflow-hidden">

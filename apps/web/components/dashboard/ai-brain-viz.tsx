@@ -99,7 +99,7 @@ export function AIBrainVisualization() {
     // Animation loop
     const animate = () => {
       // Clear with fade
-      ctx.fillStyle = 'rgba(20, 30, 50, 0.1)';
+      ctx.fillStyle = 'rgba(255, 249, 241, 0.14)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update activities
@@ -126,9 +126,9 @@ export function AIBrainVisualization() {
           const nodeActivity = Math.max(node.activity, connectedNode.activity);
           const color = nodeActivity > 0.5 ? 0.8 : 0.3;
 
-          gradient.addColorStop(0, `rgba(100, 200, 255, ${color * 0.3})`);
-          gradient.addColorStop(0.5, `rgba(100, 200, 255, ${color * 0.6})`);
-          gradient.addColorStop(1, `rgba(100, 200, 255, ${color * 0.3})`);
+          gradient.addColorStop(0, `rgba(169, 99, 66, ${color * 0.24})`);
+          gradient.addColorStop(0.5, `rgba(217, 137, 43, ${color * 0.52})`);
+          gradient.addColorStop(1, `rgba(169, 99, 66, ${color * 0.24})`);
 
           ctx.strokeStyle = gradient;
           ctx.lineWidth = nodeActivity * 2;
@@ -150,9 +150,9 @@ export function AIBrainVisualization() {
           node.radius * 2
         );
 
-        const color = node.activity > 0.5 ? 200 : 100;
-        gradient.addColorStop(0, `rgba(${color}, 220, 255, ${node.activity})`);
-        gradient.addColorStop(1, `rgba(100, 150, 200, ${node.activity * 0.5})`);
+        const color = node.activity > 0.5 ? '217, 137, 43' : '169, 99, 66';
+        gradient.addColorStop(0, `rgba(${color}, ${node.activity})`);
+        gradient.addColorStop(1, `rgba(182, 139, 99, ${node.activity * 0.4})`);
 
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -160,7 +160,7 @@ export function AIBrainVisualization() {
         ctx.fill();
 
         // Glow
-        ctx.strokeStyle = `rgba(100, 200, 255, ${node.activity * 0.8})`;
+        ctx.strokeStyle = `rgba(217, 137, 43, ${node.activity * 0.42})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius * (2 + node.activity), 0, Math.PI * 2);
@@ -183,7 +183,7 @@ export function AIBrainVisualization() {
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-full rounded-lg bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"
+      className="h-full w-full rounded-lg bg-[#F7EBDD]"
     />
   );
 }

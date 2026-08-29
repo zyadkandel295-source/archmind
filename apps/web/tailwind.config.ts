@@ -6,21 +6,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#080B10",
-        muted: "#B7C0CE",
-        line: "#2A3545",
+        ink: "#29231E",
+        muted: "#5F564D",
+        line: "#DDD0BE",
         glass: {
-          panel: "#151B24",
-          card: "#1B2330",
-          hover: "#232D3B"
+          panel: "#FAF5ED",
+          card: "#FFF9F1",
+          hover: "#F6EAD9"
         },
         brand: {
-          50: "#EAF2FF",
-          100: "#CFE1FF",
-          300: "#93C5FD",
-          500: "#3B82F6",
-          600: "#2563EB",
-          700: "#1D4ED8"
+          50: "#FFF4E5",
+          100: "#F6E4C9",
+          300: "#E4BD86",
+          500: "#D9892B",
+          600: "#BD7024",
+          700: "#9A5B21"
         },
         mint: {
           50: "#ecfdf5",
@@ -36,16 +36,16 @@ const config: Config = {
           600: "#e11d48"
         },
         graphite: {
-          800: "#1B2330",
-          900: "#151B24",
-          950: "#080B10"
+          800: "#5F564D",
+          900: "#3D352E",
+          950: "#29231E"
         }
       },
       boxShadow: {
-        soft: "0 14px 38px rgba(0, 0, 0, 0.3)",
-        lift: "0 18px 46px rgba(0, 0, 0, 0.36)",
-        glow: "0 0 0 1px rgba(59, 130, 246, 0.28)",
-        glass: "0 18px 52px rgba(0, 0, 0, 0.38)"
+        soft: "0 10px 30px rgba(82, 61, 39, 0.08)",
+        lift: "0 18px 42px rgba(82, 61, 39, 0.12)",
+        glow: "0 0 0 2px rgba(217, 137, 43, 0.18)",
+        glass: "0 18px 42px rgba(82, 61, 39, 0.12)"
       },
       transitionTimingFunction: {
         "out-expo": "cubic-bezier(0.16, 1, 0.3, 1)"

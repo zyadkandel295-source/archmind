@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sparkles, BookOpen, Atom, Library, Wrench, Rocket, Compass } from "lucide-react";
+import { Boxes, BookOpen, Atom, Library, Wrench, Rocket, Compass, Layers } from "lucide-react";
 
 export function AIBaseHeader() {
   const pathname = usePathname();
@@ -12,11 +12,11 @@ export function AIBaseHeader() {
   const categories = [
     { href: "/ai-base", label: "Overview", icon: BookOpen },
     { href: "/ai-base/physics", label: "Explore fields", icon: Compass },
-    { href: "/ai-base/fundamentals", label: "Fundamentals", icon: Sparkles },
+    { href: "/ai-base/fundamentals", label: "Fundamentals", icon: Boxes },
     { href: "/ai-base/math", label: "Mathematics", icon: BookOpen },
     { href: "/ai-base/machine-learning", label: "Machine Learning", icon: Wrench },
-    { href: "/ai-base/deep-learning", label: "Deep Learning", icon: Sparkles },
-    { href: "/ai-base/llms", label: "LLMs & Transformers", icon: Sparkles },
+    { href: "/ai-base/deep-learning", label: "Deep Learning", icon: Layers },
+    { href: "/ai-base/llms", label: "LLMs & Transformers", icon: Boxes },
     { href: "/ai-base/computer-vision", label: "Computer Vision", icon: BookOpen },
     { href: "/ai-base/nlp", label: "NLP & RAG", icon: BookOpen },
     { href: "/ai-base/agents", label: "AI Agents", icon: Wrench },
@@ -57,7 +57,7 @@ export function AIBaseHeader() {
                   : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <Boxes className="w-3.5 h-3.5 text-cyan-400" />
               AGENTIA AI BASE
             </Link>
           </div>
