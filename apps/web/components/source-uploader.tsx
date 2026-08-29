@@ -247,7 +247,12 @@ export function SourceUploader({ assistantId }: { assistantId: string }) {
             <FileUp className="mx-auto h-8 w-8 text-[#A96342]" />
             <p className="mt-3 text-sm font-semibold text-[#29231E]">Drop a file here or choose one from your device.</p>
             <p className="mt-1 text-sm text-[#74695E]">Ready is shown only after parsing and indexing complete.</p>
-            <Button type="button" className="mt-4" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
+            <Button
+              type="button"
+              className="mt-4 border-[#D7C5AF] bg-[#FFF9F1] text-[#29231E] shadow-sm hover:border-[#CDB99F] hover:bg-white disabled:border-[#D7C5AF] disabled:bg-[#FFF9F1] disabled:text-[#29231E]"
+              disabled={uploading}
+              onClick={() => fileInputRef.current?.click()}
+            >
               {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileUp className="h-4 w-4" />}
               {uploading ? "Uploading" : "Choose file"}
             </Button>
@@ -267,7 +272,14 @@ export function SourceUploader({ assistantId }: { assistantId: string }) {
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-lg font-bold">File status</h2>
-            <Button type="button" variant="ghost" size="sm" disabled={loadingList} onClick={() => void refreshFiles()}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="border-[#D7C5AF] bg-[#FFF9F1] text-[#29231E] hover:border-[#CDB99F] hover:bg-white hover:text-[#29231E] disabled:border-[#D7C5AF] disabled:bg-[#FFF9F1] disabled:text-[#29231E]"
+              disabled={loadingList}
+              onClick={() => void refreshFiles()}
+            >
               {loadingList ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCcw className="h-4 w-4" />}
               Refresh
             </Button>
