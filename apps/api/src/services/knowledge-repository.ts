@@ -93,25 +93,9 @@ function words(text: string) {
 
 export class KnowledgeRepository {
   private pool: Pool;
-  private bucketReady?: Promise<void>;
 
   constructor(databaseUrl: string, private supabase: SupabaseClient) {
     this.pool = new Pool({ connectionString: databaseUrl });
-  }
-
-  private async ensureBucket() {
-    if (!this.bucketReady) {
-      this.bucketReady = (async () => {
-        const { error: lookupError } = await this.supabase.storage.getBucket(KNOWLEDGE_BUCKET);
-        if (!lookupError) return;
-        const { error } = await this.supabase.storage.createBucket(KNOWLEDGE_BUCKET, {
-          public: false,
-          fileSizeLimit: 15 * 1024 * 1024
-        });
-        if (error && !/already exists/i.test(error.message)) throw error;
-      })();
-    }
-    return this.bucketReady;
   }
 
   async create(input: {
@@ -137,7 +121,6 @@ export class KnowledgeRepository {
   }
 
   async upload(storagePath: string, buffer: Buffer, contentType: string) {
-    await this.ensureBucket();
     const { error } = await this.supabase.storage.from(KNOWLEDGE_BUCKET).upload(storagePath, buffer, {
       contentType: contentType || "application/octet-stream",
       upsert: false
@@ -146,7 +129,6 @@ export class KnowledgeRepository {
   }
 
   async download(storagePath: string) {
-    await this.ensureBucket();
     const { data, error } = await this.supabase.storage.from(KNOWLEDGE_BUCKET).download(storagePath);
     if (error || !data) throw error ?? new Error("Uploaded file could not be found.");
     return Buffer.from(await data.arrayBuffer());
