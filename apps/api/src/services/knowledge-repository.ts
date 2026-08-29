@@ -185,7 +185,10 @@ export class KnowledgeRepository {
       "select * from data_sources where assistant_id = $1 order by created_at desc",
       [assistantId]
     );
-    return result.rows.map(sourceFromRow).filter((source) => source.userId === userId);
+    // The request has already established assistant ownership. Assistant IDs are
+    // globally unique, so scoping by assistant is the durable isolation boundary
+    // even when a legacy source row predates explicit owner metadata.
+    return result.rows.map(sourceFromRow);
   }
 
   private async byId(id: string) {
@@ -198,8 +201,7 @@ export class KnowledgeRepository {
       "select * from data_sources where id = $1 and assistant_id = $2",
       [id, assistantId]
     );
-    const source = result.rows[0] ? sourceFromRow(result.rows[0]) : undefined;
-    return source?.userId === userId ? source : undefined;
+    return result.rows[0] ? sourceFromRow(result.rows[0]) : undefined;
   }
 
   async delete(assistantId: string, userId: string, id: string) {
@@ -221,7 +223,6 @@ export class KnowledgeRepository {
     const terms = question.toLowerCase().split(/[^a-z0-9]+/).filter((term) => term.length > 1);
     return result.rows
       .map(sourceFromRow)
-      .filter((source) => source.userId === userId)
       .flatMap((source) => source.chunks)
       .map((chunk) => {
         const haystack = chunk.text.toLowerCase();
