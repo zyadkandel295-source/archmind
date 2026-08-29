@@ -148,8 +148,9 @@ export class KnowledgeService {
   private repository?: KnowledgeRepository;
 
   constructor(private store: MemoryStore, private env?: Env) {
-    if (env?.nodeEnv !== "test" && env?.databaseUrl) {
-      this.repository = new KnowledgeRepository(env.databaseUrl, createSupabaseServerClient());
+    const databaseUrl = env?.databaseUrl ?? process.env.DATABASE_URL;
+    if (env?.nodeEnv !== "test" && databaseUrl) {
+      this.repository = new KnowledgeRepository(databaseUrl, createSupabaseServerClient());
     }
   }
 

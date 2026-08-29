@@ -51,8 +51,9 @@ export class RagService {
     private store: MemoryStore
   ) {
     this.llm = new LlmService(env);
-    if (env.nodeEnv !== "test" && env.databaseUrl) {
-      this.repository = new KnowledgeRepository(env.databaseUrl, createSupabaseServerClient());
+    const databaseUrl = env.databaseUrl ?? process.env.DATABASE_URL;
+    if (env.nodeEnv !== "test" && databaseUrl) {
+      this.repository = new KnowledgeRepository(databaseUrl, createSupabaseServerClient());
     }
   }
 
