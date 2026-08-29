@@ -137,6 +137,8 @@ export interface RetrievedChunk {
   filename?: string;
   chunkIndex?: number;
   page?: number;
+  sourceType?: "upload" | "ai_base";
+  sourceUrl?: string;
   text: string;
   similarity: number;
 }

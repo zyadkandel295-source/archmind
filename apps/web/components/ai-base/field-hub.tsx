@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, Compass, Layers3, SearchCheck } from "lucide-reac
 import { AIBaseHeader } from "@/components/ai-base/ai-base-header";
 import type { KnowledgeField } from "@/lib/knowledge-catalog";
 import { getFieldResources, getKnowledgeField } from "@/lib/knowledge-catalog";
+import { KnowledgeBookLibrary } from "./knowledge-book-library";
 
 export function FieldHub({ field }: { field: KnowledgeField }) {
   const resources = getFieldResources(field);
@@ -25,6 +26,7 @@ export function FieldHub({ field }: { field: KnowledgeField }) {
         </section>
 
         <section><div className="flex items-end justify-between gap-4 border-b border-slate-800 pb-4"><div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Resources</p><h2 className="mt-2 text-2xl font-bold text-white">Start exploring {field.title}</h2></div><span className="text-sm text-slate-500">{resources.length} currently available</span></div><div className="mt-6 grid gap-5 md:grid-cols-3">{resources.map((resource) => <Link key={resource.id} href={`/ai-base/${field.slug}/${resource.slug}`} className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-5 transition hover:border-cyan-400/50"><BookOpen className="h-5 w-5 text-cyan-300" /><div className="mt-5 flex gap-2"><span className="rounded-full bg-cyan-400/10 px-2.5 py-1 text-xs font-semibold text-cyan-200">{resource.type}</span><span className="rounded-full bg-slate-800 px-2.5 py-1 text-xs text-slate-300">{resource.difficulty}</span></div><h3 className="mt-4 text-lg font-bold text-white group-hover:text-cyan-200">{resource.title}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{resource.description}</p><div className="mt-5 flex items-center gap-2 text-sm font-semibold text-cyan-300">Read resource <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></div></Link>)}</div></section>
+        <KnowledgeBookLibrary fieldSlug={field.slug} />
 
         {related.length > 0 && <section className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6"><div className="flex items-center gap-2 text-sm font-bold text-white"><Layers3 className="h-4 w-4 text-violet-300" /> Connected fields</div><div className="mt-4 flex flex-wrap gap-3">{related.map((item) => <Link key={item.slug} href={`/ai-base/${item.slug}`} className="rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm font-medium text-slate-200 hover:border-cyan-400/40 hover:text-cyan-200">{item.title}</Link>)}</div></section>}
       </main>

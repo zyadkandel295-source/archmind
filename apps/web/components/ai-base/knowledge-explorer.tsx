@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowRight, BookOpen, Filter, Search, Sparkles } from "lucide-react";
 import { getAllKnowledgeResources, KNOWLEDGE_FIELDS, type KnowledgeDepth } from "@/lib/knowledge-catalog";
+import { KnowledgeBookLibrary } from "./knowledge-book-library";
 
 export function KnowledgeExplorer() {
   const [query, setQuery] = useState("");
@@ -71,6 +72,7 @@ export function KnowledgeExplorer() {
         ))}
       </div>}
       {(filteringResources ? matchingResources : visible).length === 0 && <div className="rounded-2xl border border-dashed border-slate-700 p-8 text-center text-sm text-slate-400"><Sparkles className="mx-auto mb-3 h-5 w-5 text-cyan-300" />No resource matches that search yet. Try a broader topic or clear a filter.</div>}
+      <KnowledgeBookLibrary />
     </section>
   );
 }

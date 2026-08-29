@@ -10,6 +10,7 @@ import type { AssistantRecord, RetrievedChunk } from "../types";
 import { LlmService } from "./llm";
 import { performWebSearch, formatWebSearchPrompt } from "./web-search";
 import { buildAgentiaSystemPrompt } from "./agentia-system-prompt";
+import { BaseKnowledgeService } from "./base-knowledge";
 
 function interpolate(template: string, values: Record<string, string | number>) {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => String(values[key] ?? ""));
@@ -40,6 +41,7 @@ Answer normally using your general knowledge and reasoning. Do not refuse solely
 
 export class RagService {
   private llm: LlmService;
+  private baseKnowledge = new BaseKnowledgeService();
 
   constructor(
     private env: Env,
@@ -49,7 +51,11 @@ export class RagService {
   }
 
   retrieve(assistantId: string, question: string, userId?: string) {
-    return this.store.retrieveChunks(assistantId, question, 5, userId);
+    const uploaded = this.store.retrieveChunks(assistantId, question, 5, userId);
+    // Uploaded assistant knowledge has priority. The curated library fills any
+    // remaining context budget and is cited as AGENTIA Knowledge Base.
+    const base = this.baseKnowledge.retrieve(question, Math.max(0, 5 - uploaded.length));
+    return [...uploaded, ...base];
   }
 
   buildPrompt(assistant: AssistantRecord, question: string, chunks: RetrievedChunk[], options: { responseLength: string; language: string }) {

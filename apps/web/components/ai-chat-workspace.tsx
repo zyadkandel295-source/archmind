@@ -62,6 +62,7 @@ interface ChatMessage {
   createdAt: number;
   error?: boolean;
   sourceNames?: string[];
+  sourceReferences?: Array<{ name: string; page?: number }>;
   attachments?: { name: string; type: string; size: number; url?: string }[];
   specialistSuggestion?: SpecialistSuggestion;
 }
@@ -734,12 +735,15 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         const sourceNames = result.sources
           ? [...new Set(result.sources.map((source) => source.filename ?? source.sourceName).filter(Boolean) as string[])]
           : [];
+        const sourceReferences = result.sources
+          ? result.sources.map((source) => ({ name: source.filename ?? source.sourceName ?? "Source", page: undefined }))
+          : [];
         updateSession(sessionId, (session) => ({
           ...session,
           conversationId: result.conversationId ?? session.conversationId,
           messages: session.messages.map((message) =>
             message.id === assistantMessageId
-              ? { ...message, content: result.answer ?? "Done.", sourceNames }
+              ? { ...message, content: result.answer ?? "Done.", sourceNames, sourceReferences }
               : message
           ),
           updatedAt: Date.now()
@@ -867,11 +871,14 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
           if (eventName === "meta" || eventName === "done") {
             const data = JSON.parse(dataLine) as {
               conversationId?: string;
-              sources?: Array<{ sourceName?: string; filename?: string }>;
+              sources?: Array<{ sourceName?: string; filename?: string; page?: number }>;
               specialistSuggestion?: SpecialistSuggestion;
             };
             const sourceNames = data.sources
               ? [...new Set(data.sources.map((source) => source.filename ?? source.sourceName).filter(Boolean) as string[])]
+              : [];
+            const sourceReferences = data.sources
+              ? data.sources.map((source) => ({ name: source.filename ?? source.sourceName ?? "Source", page: source.page }))
               : [];
             if (data.conversationId) {
               updateSession(sessionId, (session) => ({
@@ -881,7 +888,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                   eventName === "meta" && (sourceNames.length > 0 || data.specialistSuggestion)
                     ? session.messages.map((message) =>
                       message.id === assistantMessageId
-                        ? { ...message, sourceNames, specialistSuggestion: data.specialistSuggestion }
+                        ? { ...message, sourceNames, sourceReferences, specialistSuggestion: data.specialistSuggestion }
                         : message
                     )
                     : session.messages,
@@ -1744,11 +1751,11 @@ function ChatBubble({
 
         {isAssistant && message.content ? (
           <div className="mt-2 flex flex-wrap items-center gap-1 text-[#C4B5FD]">
-            {message.sourceNames && message.sourceNames.length > 0 ? (
-              <span className="rounded-lg border border-violet-400/40 bg-[#1E1145] px-2 py-1 text-xs font-semibold text-[#DDD6FE]">
-                Used knowledge: {message.sourceNames.join(", ")}
-              </span>
-            ) : null}
+            {message.sourceReferences && message.sourceReferences.length > 0 ? (
+              <div className="rounded-lg border border-violet-400/40 bg-[#1E1145] px-2 py-1 text-xs font-semibold text-[#DDD6FE]">
+                <span>Sources: </span>{[...new Map(message.sourceReferences.map((source) => [`${source.name}:${source.page ?? ""}`, source])).values()].map((source, index) => <span key={`${source.name}-${source.page ?? index}`}>{index ? " · " : ""}{source.name}{source.page ? ` - Page ${source.page}` : ""}</span>)}
+              </div>
+            ) : message.sourceNames && message.sourceNames.length > 0 ? <span className="rounded-lg border border-violet-400/40 bg-[#1E1145] px-2 py-1 text-xs font-semibold text-[#DDD6FE]">Sources: {message.sourceNames.join(", ")}</span> : null}
             <button
               onClick={onCopy}
               className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition hover:bg-white/10 hover:text-white"

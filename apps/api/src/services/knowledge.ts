@@ -147,7 +147,7 @@ async function extractText(filePath: string, extension: string) {
         return pdfData.text.trim();
       }
     } catch (err) {
-      console.warn("[PDF Parse Warning]", err);
+      console.warn("[Knowledge] PDF extraction failed", { reason: err instanceof Error ? err.message : "unknown" });
       throw new Error("The PDF is invalid or could not be parsed.");
     }
     throw new Error("The PDF did not contain readable text.");
@@ -199,8 +199,13 @@ export class KnowledgeService {
     const directory = path.join(storageRoot(), input.userId, input.assistantId, fileId, "original-file");
     const storagePath = path.join(directory, safeFilename);
 
-    await fs.mkdir(directory, { recursive: true });
-    await fs.writeFile(storagePath, input.file.buffer, { flag: "wx" });
+    try {
+      await fs.mkdir(directory, { recursive: true });
+      await fs.writeFile(storagePath, input.file.buffer, { flag: "wx" });
+    } catch (error) {
+      console.error("[Knowledge] Could not persist upload", { assistantId: input.assistantId, fileId, error });
+      throw new HttpError(503, "Source storage is temporarily unavailable. Please try again.", "SOURCE_STORAGE_UNAVAILABLE");
+    }
 
     const source = this.store.createKnowledgeSource({
       id: fileId,
@@ -214,8 +219,10 @@ export class KnowledgeService {
       storagePath
     });
 
-    void this.processFile(source.id, extension);
-    return source;
+    // Processing used to be detached from the request while the queue worker
+    // only acknowledged jobs. That could leave a source permanently stuck in
+    // Processing. A completed upload now always has a real terminal result.
+    return (await this.processFile(source.id, extension)) ?? source;
   }
 
   async processFile(fileId: string, extension?: string) {
@@ -235,7 +242,8 @@ export class KnowledgeService {
         extractedTextLength: text.length
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "File parsing failed.";
+      console.error("[Knowledge] Source processing failed", { fileId, error });
+      const message = error instanceof Error && error.message ? error.message : "Source indexing failed.";
       return this.store.markKnowledgeSourceFailed(source.id, message);
     }
   }
@@ -257,5 +265,14 @@ export class KnowledgeService {
       await fs.rm(path.dirname(fileDir), { recursive: true, force: true }).catch(() => undefined);
     }
     return source;
+  }
+
+  async retry(assistantId: string, userId: string, fileId: string) {
+    const source = this.store.getKnowledgeFile(assistantId, userId, fileId);
+    if (!source) return undefined;
+    if (!source.storagePath) {
+      return this.store.markKnowledgeSourceFailed(source.id, "The original uploaded file is no longer available for reprocessing.");
+    }
+    return this.processFile(source.id, path.extname(source.originalFilename ?? source.name).toLowerCase());
   }
 }

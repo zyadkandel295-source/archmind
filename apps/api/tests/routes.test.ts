@@ -526,7 +526,7 @@ describe("ArchMind API", () => {
         .set("Authorization", `Bearer ${token}`)
         .attach("file", Buffer.from("Algebra chapter two explains quadratic equations."), "algebra-notes.txt")
         .expect(201);
-      expect(upload.body.status).toBe("processing");
+      expect(upload.body.status).toBe("ready");
 
       const ready = await waitForKnowledgeStatus(app, token, assistant.id, upload.body.fileId);
       expect(ready.status).toBe("ready");

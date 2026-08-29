@@ -1,7 +1,4 @@
 import { Router } from "express";
-import { createHash } from "node:crypto";
-import fs from "node:fs/promises";
-import path from "node:path";
 import { z } from "zod";
 import type { Env } from "../config/env";
 import type { MemoryStore } from "../db/memory";
@@ -14,10 +11,6 @@ import type { AssistantRecord, AuthedRequest, AuthUser } from "../types";
 import { PlatformService } from "../services/platform-service";
 import { listActionPolicies } from "../services/risk-policy";
 import { proposeWorkflow, validateWorkflow } from "../services/workflow-proposal";
-import { enqueueDesktopBuild } from "../services/desktop-build-queue";
-import { downloadDesktopArtifact, isSupabaseArtifactPath } from "../services/desktop-artifact-storage";
-import { RagService } from "../services/rag";
-import { runAssistantChat } from "../services/assistant-chat";
 import { createSupabaseServerClient, isSupabaseServerConfigured } from "../services/supabase-server";
 
 const workflowInput = z.object({ name: z.string().trim().min(1).max(120), purpose: z.string().trim().min(1).max(2000), definition: z.record(z.unknown()) });
@@ -26,67 +19,7 @@ const idempotency = (req: AuthedRequest) => {
   if (!key || key.length > 200) throw new HttpError(400, "A valid Idempotency-Key header is required.", "IDEMPOTENCY_KEY_REQUIRED");
   return key;
 };
-const workspaceRoot = path.resolve(__dirname, "..", "..", "..", "..");
-const localRuntimeArtifact = path.join(workspaceRoot, "apps", "desktop", "out", "Install AGENTIA Agent.exe");
-const localRuntimeManifest = path.join(workspaceRoot, ".archmind-data", "desktop-runtime", "current.json");
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-/** Ensure the resolved file path is within an allowed base directory to prevent path traversal. */
-function assertSafeArtifactPath(filePath: string): string {
-  const resolved = path.resolve(filePath);
-  const allowedBases = [
-    path.join(workspaceRoot, "apps", "desktop", "out"),
-    path.join(workspaceRoot, ".archmind-data"),
-    path.join(workspaceRoot, "apps", "api", "storage")
-  ];
-  if (!allowedBases.some((base) => resolved.startsWith(base + path.sep) || resolved === base)) {
-    throw new HttpError(403, "Access to the requested file is denied.", "PATH_TRAVERSAL_DENIED");
-  }
-  return resolved;
-}
-
-type LocalRuntimeManifest = {
-  version: string;
-  platform: "windows";
-  architecture: "x64";
-  installerPath: string;
-  installerName: string;
-  installerSize: number;
-  installerSha256: string;
-  signatureStatus?: "unsigned-dev" | "signed" | "blocked";
-  buildFinishedAt?: string;
-};
-
-async function sha256File(filePath: string) {
-  return createHash("sha256").update(await fs.readFile(filePath)).digest("hex");
-}
-
-async function validateLocalRuntimeArtifact(filePath: string) {
-  const stat = await fs.stat(filePath).catch(() => undefined);
-  if (!stat?.isFile()) return undefined;
-  if (stat.size < 50 * 1024 * 1024) return undefined;
-  const handle = await fs.open(filePath, "r");
-  try {
-    const header = Buffer.alloc(2);
-    await handle.read(header, 0, 2, 0);
-    if (header.toString("ascii") !== "MZ") return undefined;
-  } finally {
-    await handle.close();
-  }
-  return { stat, sha256: await sha256File(filePath) };
-}
-
-async function readLocalRuntimeManifest() {
-  const raw = await fs.readFile(localRuntimeManifest, "utf8").catch(() => undefined);
-  if (!raw) return undefined;
-  const parsed = JSON.parse(raw) as Partial<LocalRuntimeManifest>;
-  if (!parsed.version || !parsed.installerPath || !parsed.installerName) return undefined;
-  const artifact = await validateLocalRuntimeArtifact(parsed.installerPath);
-  if (!artifact) return undefined;
-  if (parsed.installerSize && parsed.installerSize !== artifact.stat.size) return undefined;
-  if (parsed.installerSha256 && parsed.installerSha256 !== artifact.sha256) return undefined;
-  return { manifest: parsed as LocalRuntimeManifest, artifact };
-}
 
 function stringArray(value: unknown): string[] {
   if (Array.isArray(value)) return value.filter((item): item is string => typeof item === "string");
@@ -159,7 +92,6 @@ function decodedBearerClaims(req: AuthedRequest): { sub?: string; email?: string
 export function platformRouter(env: Env, store: MemoryStore, platformStore: PlatformStateStore = store) {
   const router = Router();
   const service = new PlatformService(platformStore);
-  const rag = new RagService(env, store);
   const auth = authenticate(env, store);
   const supabase = createSupabaseServerClient();
   const useSupabase = env.nodeEnv !== "test" && isSupabaseServerConfigured();
@@ -208,6 +140,7 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
     }
     return assistant;
   };
+  /* Removed Export App / desktop-runtime implementation.
   const desktopAssistantPayload = (assistantId: string, ownerId: string) => {
     const assistant = store.getAssistantForUser(assistantId, ownerId) ?? store.getAssistant(assistantId);
     if (!assistant || assistant.userId !== ownerId) return undefined;
@@ -245,6 +178,7 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
       publishedAt: current?.manifest.buildFinishedAt ?? artifact.stat.mtime.toISOString()
     });
   };
+  */
 
   router.get("/actions", auth, (_req, res) => res.json({ actions: listActionPolicies() }));
   router.post("/workflows/propose", auth, asyncHandler(async (req: AuthedRequest, res) => {
@@ -291,6 +225,9 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
   router.delete("/memories/:memoryId", auth, asyncHandler(async (req: AuthedRequest, res) => res.json(await service.deleteMemory(req.user!.id, req.params.memoryId!))));
   router.get("/memories/export", auth, asyncHandler(async (req: AuthedRequest, res) => { res.setHeader("Content-Disposition", "attachment; filename=archmind-memories.json"); res.json({ exportedAt: new Date().toISOString(), memories: await service.listMemories(req.user!.id) }); }));
 
+  /* Removed Export App API routes: package manifests, desktop installers,
+     runtime downloads, device sessions, build queues, and desktop chat. */
+  /*
   router.post("/assistants/:assistantId/packages", auth, asyncHandler(async (req: AuthedRequest, res) => { const assistant = assertFound(store.getAssistantForUser(req.params.assistantId!, req.user!.id), "Assistant not found"); const parsed = z.object({ productName: z.string().min(1).max(120), description: z.string().max(2000), publisherName: z.string().min(1).max(120), category: z.string().min(1).max(80), pricingType: z.enum(["private", "invitation", "free", "one_time", "subscription", "organization", "trial", "unlisted"]) }).parse(req.body); res.status(201).json({ package: await service.createPackage(req.user!.id, assistant.id, parsed) }); }));
   router.post("/packages/:packageId/publish", auth, asyncHandler(async (req: AuthedRequest, res) => { const parsed = z.object({ releaseNotes: z.string().max(5000), manifest: z.record(z.unknown()) }).parse(req.body); res.status(201).json({ version: await service.publishPackage(req.user!.id, req.params.packageId!, parsed) }); }));
   router.post("/assistants/:assistantId/exports", auth, asyncHandler(async (req: AuthedRequest, res) => {
@@ -522,5 +459,6 @@ export function platformRouter(env: Env, store: MemoryStore, platformStore: Plat
     }
     res.download(assertSafeArtifactPath(build.artifactPath), `${build.productName.replace(/[^a-z0-9 -]+/gi, "").trim() || "AGENTIA Agent"} Setup.exe`);
   }));
+  */
   return router;
 }

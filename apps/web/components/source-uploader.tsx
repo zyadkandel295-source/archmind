@@ -24,7 +24,7 @@ interface KnowledgeFile {
   errorMessage?: string;
 }
 
-const ACCEPTED_TYPES = ".txt,.md,.pdf,.docx,.doc,.csv,.json,.png,.jpg,.jpeg,.webp";
+const ACCEPTED_TYPES = ".txt,.md,.pdf,.docx,.doc,.csv,.json";
 const MAX_SIZE_BYTES = 15 * 1024 * 1024;
 
 function formatSize(bytes: number) {
@@ -202,6 +202,20 @@ export function SourceUploader({ assistantId }: { assistantId: string }) {
     }
   }
 
+  async function retryFile(file: KnowledgeFile) {
+    try {
+      const result = await requestData<{ status: KnowledgeStatus; errorMessage?: string }>(`/api/assistants/${assistantId}/knowledge/${file.id}/retry`, { method: "POST" });
+      await refreshFiles();
+      toast({
+        type: result.status === "ready" ? "success" : "error",
+        title: result.status === "ready" ? "Knowledge ready" : "Processing failed",
+        message: result.status === "ready" ? `${file.filename} was re-indexed and is available in chat.` : result.errorMessage ?? "The file could not be processed."
+      });
+    } catch (error) {
+      toast({ type: "error", title: "Retry failed", message: error instanceof Error ? error.message : "Could not retry this file." });
+    }
+  }
+
   return (
     <div className="space-y-5">
       <Card>
@@ -280,10 +294,13 @@ export function SourceUploader({ assistantId }: { assistantId: string }) {
                   </p>
                   {file.errorMessage ? <p className="mt-2 text-sm text-amber-200">{file.errorMessage}</p> : null}
                 </div>
-                <Button type="button" variant="ghost" size="sm" onClick={() => void deleteFile(file)}>
-                  <Trash2 className="h-4 w-4" />
-                  Delete
-                </Button>
+                <div className="flex items-center gap-2">
+                  {file.status === "failed" ? <Button type="button" variant="ghost" size="sm" onClick={() => void retryFile(file)}><RefreshCcw className="h-4 w-4" />Retry</Button> : null}
+                  <Button type="button" variant="ghost" size="sm" onClick={() => void deleteFile(file)}>
+                    <Trash2 className="h-4 w-4" />
+                    Delete
+                  </Button>
+                </div>
               </div>
             ))
           )}

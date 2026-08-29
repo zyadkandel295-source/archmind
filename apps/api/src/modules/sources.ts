@@ -6,7 +6,6 @@ import type { MemoryStore } from "../db/memory";
 import { asyncHandler } from "../lib/async-handler";
 import { assertFound, HttpError } from "../lib/http-error";
 import { authenticate } from "../middleware/auth";
-import { enqueueIngestion } from "../services/queue";
 import { KnowledgeService } from "../services/knowledge";
 import type { AuthedRequest } from "../types";
 import { notifyAssistantUpdate } from "../services/events";
@@ -60,9 +59,8 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
         name,
         text
       });
-      const queue = await enqueueIngestion(env, { assistantId: assistant.id, sourceId: source.id });
       notifyAssistantUpdate(assistant.id);
-      res.status(201).json({ source, queue });
+      res.status(201).json({ source, status: source.status });
     })
   );
 
@@ -177,6 +175,24 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
   );
 
   router.post(
+    "/assistants/:id/knowledge/:fileId/retry",
+    authenticate(env, store),
+    asyncHandler(async (req: AuthedRequest, res) => {
+      const assistant = assertFound(store.getAssistantForUser(req.params.id!, req.user!.id), "Assistant not found");
+      const source = assertFound(await knowledge.retry(assistant.id, req.user!.id, req.params.fileId!), "Knowledge file not found");
+      notifyAssistantUpdate(assistant.id);
+      res.json({
+        fileId: source.id,
+        filename: source.originalFilename ?? source.name,
+        status: source.status === "error" ? "failed" : source.status,
+        chunks: source.chunkCount,
+        textLength: source.extractedTextLength ?? 0,
+        errorMessage: source.errorMessage
+      });
+    })
+  );
+
+  router.post(
     "/assistants/:id/sources/url",
     authenticate(env, store),
     asyncHandler(async (req: AuthedRequest, res) => {
@@ -186,11 +202,10 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
         type: "url",
         name: input.name,
         url: input.url,
-        text: `Website URL ${input.url} was added to ${assistant.name}. Replace the demo scraper with a production crawler to extract page text.`
+        text: `Website URL ${input.url} was added to ${assistant.name}.`
       });
-      const queue = await enqueueIngestion(env, { assistantId: assistant.id, sourceId: source.id });
       notifyAssistantUpdate(assistant.id);
-      res.status(201).json({ source, queue });
+      res.status(201).json({ source, status: source.status });
     })
   );
 

@@ -13,7 +13,6 @@ import type { AssistantRecord } from "../types";
 import { HttpError } from "../lib/http-error";
 import { actionPreview, getActionPolicy } from "./risk-policy";
 import { validateWorkflow } from "./workflow-proposal";
-import { canonicalJson as canonicalManifestJson, parseAgentiaAppManifest, type AgentiaAppManifest } from "@archmind/shared";
 
 const iso = () => new Date().toISOString();
 const sha256 = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
@@ -48,6 +47,12 @@ function canonicalJson(value: unknown): string {
   const record = value as Record<string, unknown>;
   return `{${Object.keys(record).filter((key) => record[key] !== undefined).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson(record[key])}`).join(",")}}`;
 }
+
+// Kept only to allow historical platform-state rows to deserialize while the
+// export subsystem is retired; no active API route can create or consume one.
+type AgentiaAppManifest = Record<string, any>;
+const canonicalManifestJson = canonicalJson;
+const parseAgentiaAppManifest = (value: unknown) => value as AgentiaAppManifest;
 
 function containsForbiddenPackageKey(value: unknown): boolean {
   if (Array.isArray(value)) return value.some(containsForbiddenPackageKey);
