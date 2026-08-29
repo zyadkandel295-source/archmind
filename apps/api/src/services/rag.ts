@@ -12,7 +12,7 @@ import { performWebSearch, formatWebSearchPrompt } from "./web-search";
 import { buildAgentiaSystemPrompt } from "./agentia-system-prompt";
 import { BaseKnowledgeService } from "./base-knowledge";
 import { KnowledgeRepository } from "./knowledge-repository";
-import { createSupabaseServerClient, isSupabaseServerConfigured } from "./supabase-server";
+import { createSupabaseServerClient } from "./supabase-server";
 
 function interpolate(template: string, values: Record<string, string | number>) {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => String(values[key] ?? ""));
@@ -51,7 +51,7 @@ export class RagService {
     private store: MemoryStore
   ) {
     this.llm = new LlmService(env);
-    if (env.nodeEnv !== "test" && env.databaseUrl && isSupabaseServerConfigured()) {
+    if (env.nodeEnv !== "test" && env.databaseUrl) {
       this.repository = new KnowledgeRepository(env.databaseUrl, createSupabaseServerClient());
     }
   }

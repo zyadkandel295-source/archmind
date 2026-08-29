@@ -7,7 +7,7 @@ import type { Env } from "../config/env";
 import { HttpError } from "../lib/http-error";
 import type { DataSourceRecord, RetrievedChunk } from "../types";
 import { KnowledgeRepository } from "./knowledge-repository";
-import { createSupabaseServerClient, isSupabaseServerConfigured } from "./supabase-server";
+import { createSupabaseServerClient } from "./supabase-server";
 
 export const KNOWLEDGE_MAX_FILE_SIZE = 15 * 1024 * 1024;
 
@@ -148,7 +148,7 @@ export class KnowledgeService {
   private repository?: KnowledgeRepository;
 
   constructor(private store: MemoryStore, private env?: Env) {
-    if (env?.nodeEnv !== "test" && env?.databaseUrl && isSupabaseServerConfigured()) {
+    if (env?.nodeEnv !== "test" && env?.databaseUrl) {
       this.repository = new KnowledgeRepository(env.databaseUrl, createSupabaseServerClient());
     }
   }
