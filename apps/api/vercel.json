@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": "storage/ai-base/**"
+    }
+  },
   "redirects": [
     {
       "source": "/",
