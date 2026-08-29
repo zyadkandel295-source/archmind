@@ -182,8 +182,8 @@ export class KnowledgeRepository {
 
   async list(assistantId: string, userId: string) {
     const result = await this.pool.query(
-      "select * from data_sources where assistant_id = $1 and user_id = $2 order by created_at desc",
-      [assistantId, userId]
+      "select * from data_sources where assistant_id = $1 order by created_at desc",
+      [assistantId]
     );
     return result.rows.map(sourceFromRow).filter((source) => source.userId === userId);
   }
