@@ -11,6 +11,7 @@ import { getAssistantOpeningExperience } from "../services/assistant-opening";
 import type { AuthedRequest } from "../types";
 import { sanitizeUserInput, sanitizeLLMResponse, validateMessageLength } from "../lib/sanitization";
 import { buildAgentiaSystemPrompt } from "../services/agentia-system-prompt";
+import { resolveAuthoritativeAssistant } from "../services/authoritative-assistant";
 
 function estimateTokens(text: string) {
   return Math.ceil(text.trim().split(/\s+/).filter(Boolean).length * 1.35);
@@ -141,7 +142,7 @@ Stay faithful to this assistant's role. If a request is clearly outside the conf
     }
 
     const assistantId = req.params.assistantId!;
-    const ownedAssistant = store.getAssistantForUser(assistantId, req.user!.id);
+    const ownedAssistant = await resolveAuthoritativeAssistant(env, store, assistantId, req.user!.id);
     const publicAssistant = store.getPublicAssistantBySlug(assistantId);
     const assistant = ownedAssistant ?? publicAssistant;
 

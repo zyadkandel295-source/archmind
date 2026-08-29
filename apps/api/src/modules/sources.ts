@@ -9,9 +9,7 @@ import { authenticate } from "../middleware/auth";
 import { KnowledgeService } from "../services/knowledge";
 import type { AuthedRequest } from "../types";
 import { notifyAssistantUpdate } from "../services/events";
-import { createSupabaseServerClient, isSupabaseServerConfigured } from "../services/supabase-server";
-
-const isSupabaseConfigured = isSupabaseServerConfigured;
+import { resolveAuthoritativeAssistant } from "../services/authoritative-assistant";
 
 const upload = multer({
   // KnowledgeService owns the durable temporary file lifecycle and requires
@@ -25,8 +23,6 @@ const upload = multer({
 export function sourcesRouter(env: Env, store: MemoryStore) {
   const router = Router();
   const knowledge = new KnowledgeService(store, env);
-  const supabase = createSupabaseServerClient();
-  const useSupabase = env.nodeEnv !== "test" && isSupabaseConfigured();
 
   router.post(
     "/assistants/:id/sources/upload",
@@ -44,7 +40,8 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
       if (uploadedFile) {
         const source = await knowledge.createUpload({
           userId: req.user!.id,
-          assistantId: assistant.id,
+          userEmail: req.user!.email,
+          assistant,
           file: uploadedFile
         });
         notifyAssistantUpdate(assistant.id);
@@ -71,47 +68,7 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
     asyncHandler(async (req: AuthedRequest, res) => {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
-      let assistant = store.getAssistantForUser(assistantId, userId);
-
-      if (!assistant && useSupabase) {
-        try {
-          const { data: dbAssistant } = await supabase
-            .from("assistants")
-            .select("*")
-            .eq("id", assistantId)
-            .eq("user_id", userId)
-            .single();
-          if (dbAssistant) {
-            assistant = {
-              id: dbAssistant.id,
-              userId: dbAssistant.user_id || userId,
-              createdByUserId: dbAssistant.user_id || userId,
-              name: dbAssistant.name || "AGENTIA Assistant",
-              description: dbAssistant.description || "",
-              systemPrompt: dbAssistant.instructions || dbAssistant.system_prompt || "",
-              tone: "professional",
-              visibility: dbAssistant.is_public ? "public" : "private",
-              version: 1,
-              isPublic: dbAssistant.is_public ?? true,
-              publicSlug: dbAssistant.slug || assistantId,
-              slug: dbAssistant.slug || assistantId,
-              model: dbAssistant.model_name || "llama-3.3-70b-versatile",
-              temperature: 0.7,
-              icon: dbAssistant.icon || "Bot",
-              color: dbAssistant.color || "#06b6d4",
-              starterPrompts: [],
-              enabledTools: [],
-              createdAt: dbAssistant.created_at || new Date().toISOString(),
-              updatedAt: dbAssistant.updated_at || new Date().toISOString()
-            };
-            store.createAssistant(userId, assistant);
-          }
-        } catch {
-          // Fall back below
-        }
-      }
-
-      assistant = assertFound(assistant, "Assistant not found");
+      const assistant = assertFound(await resolveAuthoritativeAssistant(env, store, assistantId, userId), "Assistant not found");
 
       if (!req.file) {
         throw new HttpError(400, "Choose a file to upload.", "VALIDATION_ERROR");
@@ -119,7 +76,8 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
 
       const source = await knowledge.createUpload({
         userId,
-        assistantId: assistant.id,
+        userEmail: req.user?.email ?? "",
+        assistant,
         file: req.file
       });
       notifyAssistantUpdate(assistant.id);
@@ -138,7 +96,7 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
     asyncHandler(async (req: AuthedRequest, res) => {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
-      const assistant = assertFound(store.getAssistantForUser(assistantId, userId), "Assistant not found");
+      const assistant = assertFound(await resolveAuthoritativeAssistant(env, store, assistantId, userId), "Assistant not found");
       res.json({ files: await knowledge.list(assistant.id, userId) });
     })
   );
@@ -149,7 +107,7 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
     asyncHandler(async (req: AuthedRequest, res) => {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
-      const assistant = assertFound(store.getAssistantForUser(assistantId, userId), "Assistant not found");
+      const assistant = assertFound(await resolveAuthoritativeAssistant(env, store, assistantId, userId), "Assistant not found");
       const file = assertFound(await knowledge.getStatus(assistant.id, userId, req.params.fileId!), "Knowledge file not found");
       res.json({
         fileId: file.id,
@@ -167,7 +125,7 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
     asyncHandler(async (req: AuthedRequest, res) => {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
-      const assistant = assertFound(store.getAssistantForUser(assistantId, userId), "Assistant not found");
+      const assistant = assertFound(await resolveAuthoritativeAssistant(env, store, assistantId, userId), "Assistant not found");
       assertFound(await knowledge.delete(assistant.id, userId, req.params.fileId!), "Knowledge file not found");
       notifyAssistantUpdate(assistant.id);
       res.status(204).send();
@@ -178,7 +136,7 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
     "/assistants/:id/knowledge/:fileId/retry",
     authenticate(env, store),
     asyncHandler(async (req: AuthedRequest, res) => {
-      const assistant = assertFound(store.getAssistantForUser(req.params.id!, req.user!.id), "Assistant not found");
+      const assistant = assertFound(await resolveAuthoritativeAssistant(env, store, req.params.id!, req.user!.id), "Assistant not found");
       const source = assertFound(await knowledge.retry(assistant.id, req.user!.id, req.params.fileId!), "Knowledge file not found");
       notifyAssistantUpdate(assistant.id);
       res.json({

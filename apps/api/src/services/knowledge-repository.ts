@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { DataSourceRecord, RetrievedChunk } from "../types";
+import type { AssistantRecord, DataSourceRecord, RetrievedChunk } from "../types";
 
 const KNOWLEDGE_BUCKET = "knowledge-files";
 
@@ -96,6 +96,38 @@ export class KnowledgeRepository {
 
   constructor(databaseUrl: string, private supabase: SupabaseClient) {
     this.pool = new Pool({ connectionString: databaseUrl });
+  }
+
+  async ensureAssistant(input: { assistant: AssistantRecord; userEmail: string }) {
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      const existingUser = await client.query("select id from users where lower(email) = lower($1) limit 1", [input.userEmail]);
+      const databaseUserId = existingUser.rows[0]?.id ?? input.assistant.userId;
+      if (!existingUser.rows[0]) {
+        await client.query(
+          "insert into users(id, email, plan, token_usage, created_at, updated_at) values($1, $2, 'free', 0, now(), now()) on conflict(email) do nothing",
+          [databaseUserId, input.userEmail]
+        );
+      }
+      await client.query(
+        `insert into assistants(id, user_id, name, description, system_prompt, tone, is_public, public_slug, model, temperature, version, created_at, slug, visibility, icon, color, starter_prompts, enabled_tools, updated_at)
+         values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
+         on conflict(id) do update set name=excluded.name, description=excluded.description, system_prompt=excluded.system_prompt, tone=excluded.tone, model=excluded.model, temperature=excluded.temperature, updated_at=excluded.updated_at`,
+        [
+          input.assistant.id, databaseUserId, input.assistant.name, input.assistant.description ?? "", input.assistant.systemPrompt ?? "", input.assistant.tone,
+          input.assistant.isPublic, input.assistant.publicSlug ?? null, input.assistant.model, input.assistant.temperature, input.assistant.version,
+          input.assistant.createdAt, input.assistant.slug, input.assistant.visibility, input.assistant.icon ?? "Bot", input.assistant.color ?? "#06b6d4",
+          JSON.stringify(input.assistant.starterPrompts ?? []), JSON.stringify(input.assistant.enabledTools ?? []), input.assistant.updatedAt
+        ]
+      );
+      await client.query("commit");
+    } catch (error) {
+      await client.query("rollback").catch(() => undefined);
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
   async create(input: {

@@ -61,6 +61,12 @@ export class RagService {
     const uploaded = this.repository && userId
       ? await this.repository.retrieve(assistantId, userId, question, 5)
       : this.store.retrieveChunks(assistantId, question, 5, userId);
+    console.info("[Knowledge] Retrieval completed", {
+      assistantId,
+      retrievedChunkCount: uploaded.length,
+      sourceIds: [...new Set(uploaded.map((chunk) => chunk.sourceId))],
+      scores: uploaded.map((chunk) => chunk.similarity)
+    });
     // Uploaded assistant knowledge has priority. The curated library fills any
     // remaining context budget and is cited as AGENTIA Knowledge Base.
     const base = this.baseKnowledge.retrieve(question, Math.max(0, 5 - uploaded.length));
@@ -118,6 +124,11 @@ export class RagService {
     webSearch?: boolean;
     chatHistory?: Array<{ role: "user" | "assistant"; content: string }>;
   }) {
+    console.info("[Knowledge] LLM context prepared", {
+      assistantId: input.assistant.id,
+      sourceContextIncluded: input.chunks.length > 0,
+      sourceIds: [...new Set(input.chunks.map((chunk) => chunk.sourceId))]
+    });
     const prompts = this.buildPrompt(input.assistant, input.question, input.chunks, {
       responseLength: input.responseLength,
       language: input.language

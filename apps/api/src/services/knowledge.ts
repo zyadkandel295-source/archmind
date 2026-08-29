@@ -5,7 +5,7 @@ import mammoth from "mammoth";
 import type { MemoryStore } from "../db/memory";
 import type { Env } from "../config/env";
 import { HttpError } from "../lib/http-error";
-import type { DataSourceRecord, RetrievedChunk } from "../types";
+import type { AssistantRecord, DataSourceRecord, RetrievedChunk } from "../types";
 import { KnowledgeRepository } from "./knowledge-repository";
 import { createSupabaseServerClient } from "./supabase-server";
 
@@ -171,20 +171,21 @@ export class KnowledgeService {
     return { extension, type };
   }
 
-  async createUpload(input: { userId: string; assistantId: string; file: Express.Multer.File }) {
+  async createUpload(input: { userId: string; userEmail: string; assistant: AssistantRecord; file: Express.Multer.File }) {
     const { extension, type } = this.validateUpload(input.file);
     const fileId = randomUUID();
     const originalFilename = path.basename(input.file.originalname.replace(/\\/g, "/"));
     const safeFilename = `${fileId}-${sanitizeFilename(originalFilename)}`;
-    const storagePath = `${input.userId}/${input.assistantId}/${fileId}/${safeFilename}`;
+    const storagePath = `${input.userId}/${input.assistant.id}/${fileId}/${safeFilename}`;
 
     if (this.repository) {
       let source: DataSourceRecord | undefined;
       try {
+        await this.repository.ensureAssistant({ assistant: input.assistant, userEmail: input.userEmail });
         source = await this.repository.create({
           id: fileId,
           userId: input.userId,
-          assistantId: input.assistantId,
+          assistantId: input.assistant.id,
           type,
           name: originalFilename,
           originalFilename,
@@ -203,7 +204,7 @@ export class KnowledgeService {
       } catch (error) {
         const message = error instanceof Error && error.message ? error.message : "Knowledge indexing failed.";
         if (source) await this.repository.markFailed(fileId, message).catch(() => undefined);
-        console.error("[Knowledge] Persistent ingestion failed", { assistantId: input.assistantId, fileId, message });
+        console.error("[Knowledge] Persistent ingestion failed", { assistantId: input.assistant.id, fileId, message });
         if (/bucket|storage|upload|network|fetch/i.test(message)) {
           throw new HttpError(503, "Knowledge storage is temporarily unavailable. Please try again.", "KNOWLEDGE_STORAGE_UNAVAILABLE");
         }
@@ -212,21 +213,21 @@ export class KnowledgeService {
     }
 
     // Test and local-memory fallback only. Production never writes uploads to its filesystem.
-    const directory = path.join(process.cwd(), ".archmind-data", "knowledge", input.userId, input.assistantId, fileId);
+    const directory = path.join(process.cwd(), ".archmind-data", "knowledge", input.userId, input.assistant.id, fileId);
     const localPath = path.join(directory, safeFilename);
     try {
       const fs = await import("node:fs/promises");
       await fs.mkdir(directory, { recursive: true });
       await fs.writeFile(localPath, input.file.buffer, { flag: "wx" });
     } catch (error) {
-      console.error("[Knowledge] Could not persist upload", { assistantId: input.assistantId, fileId, error });
+      console.error("[Knowledge] Could not persist upload", { assistantId: input.assistant.id, fileId, error });
       throw new HttpError(503, "Source storage is temporarily unavailable. Please try again.", "SOURCE_STORAGE_UNAVAILABLE");
     }
 
     const source = this.store.createKnowledgeSource({
       id: fileId,
       userId: input.userId,
-      assistantId: input.assistantId,
+      assistantId: input.assistant.id,
       type,
       originalFilename,
       safeFilename,
