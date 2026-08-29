@@ -4,6 +4,44 @@ import type { AssistantRecord, DataSourceRecord, RetrievedChunk } from "../types
 
 const KNOWLEDGE_BUCKET = "knowledge-files";
 
+// Production serverless instances do not normally run the repository's
+// migration runner. This narrowly scoped, advisory-locked bootstrap makes the
+// durable knowledge schema available before the first ingestion request. The
+// same DDL is also captured in db/migrations/011 and 014 for managed releases.
+const DURABLE_KNOWLEDGE_SCHEMA = [
+  "alter table data_sources add column if not exists user_id uuid references users(id) on delete cascade",
+  "alter table data_sources add column if not exists original_filename text",
+  "alter table data_sources add column if not exists safe_filename text",
+  "alter table data_sources add column if not exists mime_type text",
+  "alter table data_sources add column if not exists size_bytes bigint",
+  "alter table data_sources add column if not exists storage_path text",
+  "alter table data_sources add column if not exists extracted_text_length bigint not null default 0",
+  "alter table data_sources add column if not exists processing_error text",
+  `create table if not exists knowledge_chunks (
+    id uuid primary key default gen_random_uuid(),
+    source_id uuid not null references data_sources(id) on delete cascade,
+    assistant_id uuid not null references assistants(id) on delete cascade,
+    user_id uuid not null references users(id) on delete cascade,
+    document_name text not null,
+    page_number int not null default 1,
+    chunk_index int not null,
+    content text not null,
+    token_count int not null default 0,
+    created_at timestamptz not null default now(),
+    unique(source_id, chunk_index)
+  )`,
+  "update data_sources ds set user_id = a.user_id from assistants a where a.id = ds.assistant_id and ds.user_id is null",
+  "create index if not exists idx_data_sources_assistant_user on data_sources(assistant_id, user_id)",
+  "create index if not exists idx_data_sources_user_assistant_ready on data_sources(user_id, assistant_id, status)",
+  "create index if not exists idx_knowledge_chunks_assistant_user on knowledge_chunks(assistant_id, user_id, source_id)",
+  "create index if not exists idx_knowledge_chunks_search on knowledge_chunks using gin(to_tsvector('simple', content))",
+  "alter table knowledge_chunks enable row level security",
+  "drop policy if exists knowledge_chunks_owner_access on knowledge_chunks",
+  `create policy knowledge_chunks_owner_access on knowledge_chunks
+   using (exists (select 1 from assistants a where a.id = knowledge_chunks.assistant_id and a.user_id::text = current_app_user_id()::text and knowledge_chunks.user_id = a.user_id))
+   with check (exists (select 1 from assistants a where a.id = knowledge_chunks.assistant_id and a.user_id::text = current_app_user_id()::text and knowledge_chunks.user_id = a.user_id))`
+];
+
 type StoredSource = DataSourceRecord & { storagePath: string };
 
 type KnowledgePayload = {
@@ -131,9 +169,30 @@ function rankChunks(chunks: RetrievedChunk[], question: string, limit: number) {
 
 export class KnowledgeRepository {
   private pool: Pool;
+  private schemaReady?: Promise<void>;
 
   constructor(databaseUrl: string, private supabase: SupabaseClient) {
     this.pool = new Pool({ connectionString: databaseUrl });
+  }
+
+  private async ensureDurableKnowledgeSchema() {
+    this.schemaReady ??= (async () => {
+      const client = await this.pool.connect();
+      try {
+        await client.query("select pg_advisory_lock(hashtext('archmind-durable-knowledge-schema'))");
+        await client.query("begin");
+        for (const statement of DURABLE_KNOWLEDGE_SCHEMA) await client.query(statement);
+        await client.query("commit");
+      } catch (error) {
+        await client.query("rollback").catch(() => undefined);
+        this.schemaReady = undefined;
+        throw error;
+      } finally {
+        await client.query("select pg_advisory_unlock(hashtext('archmind-durable-knowledge-schema'))").catch(() => undefined);
+        client.release();
+      }
+    })();
+    return this.schemaReady;
   }
 
   async ensureAssistant(input: { assistant: AssistantRecord; userEmail: string }) {
@@ -180,6 +239,7 @@ export class KnowledgeRepository {
     storagePath: string;
     type: DataSourceRecord["type"];
   }) {
+    await this.ensureDurableKnowledgeSchema();
     const result = await this.pool.query(
       `insert into data_sources
         (id, user_id, assistant_id, type, name, original_filename, safe_filename, mime_type, size_bytes, storage_path, s3_key, url, status, chunk_count, token_count, extracted_text_length)
@@ -332,6 +392,7 @@ export class KnowledgeRepository {
   }
 
   async retrieve(assistantId: string, userId: string, question: string, limit: number) {
+    await this.ensureDurableKnowledgeSchema();
     const durable = await this.pool.query(
       `select kc.* from knowledge_chunks kc
        inner join data_sources ds on ds.id = kc.source_id
