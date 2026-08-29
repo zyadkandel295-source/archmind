@@ -12,10 +12,10 @@ export function IconButton({ className, active, type = "button", ...props }: Ico
     <button
       type={type}
       className={cn(
-        "inline-grid aspect-square min-h-[2.5rem] place-items-center rounded-[clamp(0.65rem,1.6vw,0.85rem)] border transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#080B10] disabled:cursor-not-allowed disabled:border-[#2A3545] disabled:bg-[#111720] disabled:text-[#8C98AA]",
+        "inline-grid aspect-square min-h-[2.5rem] place-items-center rounded-[clamp(0.65rem,1.6vw,0.85rem)] border border-[#DDD0BE] bg-[#FFF9F1] text-[#62574C] shadow-sm transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D9892B]/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#EFE3D2] disabled:cursor-not-allowed disabled:border-[#DDD0BE] disabled:bg-[#EDE1D1] disabled:text-[#9A8E80]",
         active
-          ? "border-blue-400/80 bg-[#10233F] text-[#D9E8FF]"
-          : "border-[#2A3545] bg-[#151B24] text-[#B7C0CE] hover:border-[#3B82F6] hover:bg-[#232D3B] hover:text-white",
+          ? "border-[#D7B77F] bg-[#F6E4C9] text-[#7D481C]"
+          : "hover:border-[#CDB99F] hover:bg-[#F6EAD9] hover:text-[#29231E]",
         className
       )}
       {...props}
