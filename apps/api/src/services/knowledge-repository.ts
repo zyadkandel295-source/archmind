@@ -49,19 +49,29 @@ function payloadFromRow(row: Record<string, unknown>): KnowledgePayload {
 
 function sourceFromRow(row: Record<string, unknown>): StoredSource {
   const payload = payloadFromRow(row);
+  const userId = row.user_id ? String(row.user_id) : payload.userId || undefined;
+  const originalFilename = row.original_filename ? String(row.original_filename) : payload.originalFilename;
+  const safeFilename = row.safe_filename ? String(row.safe_filename) : payload.safeFilename;
+  const storagePath = row.storage_path ? String(row.storage_path) : payload.storagePath;
+  const mimeType = row.mime_type ? String(row.mime_type) : payload.mimeType;
+  const sizeBytes = row.size_bytes == null ? payload.sizeBytes : Number(row.size_bytes);
+  const extractedTextLength = row.extracted_text_length == null
+    ? payload.extractedTextLength ?? 0
+    : Number(row.extracted_text_length);
+  const errorMessage = row.processing_error ? String(row.processing_error) : payload.errorMessage;
   return {
     id: String(row.id),
-    userId: payload.userId || undefined,
+    userId,
     assistantId: String(row.assistant_id),
     type: (row.type === "pdf" ? "pdf" : "text") as DataSourceRecord["type"],
     name: String(row.name),
-    originalFilename: payload.originalFilename,
-    safeFilename: payload.safeFilename,
-    mimeType: payload.mimeType,
-    sizeBytes: payload.sizeBytes,
-    storagePath: payload.storagePath,
-    extractedTextLength: payload.extractedTextLength ?? 0,
-    errorMessage: payload.errorMessage,
+    originalFilename,
+    safeFilename,
+    mimeType,
+    sizeBytes,
+    storagePath,
+    extractedTextLength,
+    errorMessage,
     s3Key: row.s3_key ? String(row.s3_key) : undefined,
     status: row.status === "error" ? "failed" : String(row.status) as DataSourceRecord["status"],
     chunkCount: Number(row.chunk_count ?? 0),
@@ -89,6 +99,34 @@ function payloadFor(source: StoredSource, changes: Partial<KnowledgePayload> = {
 
 function words(text: string) {
   return text.trim().split(/\s+/).filter(Boolean);
+}
+
+function chunkFromRow(row: Record<string, unknown>): RetrievedChunk {
+  return {
+    sourceId: String(row.source_id),
+    sourceName: String(row.document_name),
+    userId: String(row.user_id),
+    assistantId: String(row.assistant_id),
+    fileId: String(row.source_id),
+    filename: String(row.document_name),
+    chunkIndex: Number(row.chunk_index),
+    page: Number(row.page_number),
+    text: String(row.content),
+    similarity: 0
+  };
+}
+
+function rankChunks(chunks: RetrievedChunk[], question: string, limit: number) {
+  const terms = question.toLowerCase().split(/[^a-z0-9]+/).filter((term) => term.length > 1);
+  return chunks
+    .map((chunk) => {
+      const haystack = chunk.text.toLowerCase();
+      const matches = terms.filter((term) => haystack.includes(term)).length;
+      return { ...chunk, similarity: terms.length > 0 ? matches / terms.length : 0 };
+    })
+    .filter((chunk) => chunk.similarity > 0)
+    .sort((a, b) => b.similarity - a.similarity || (a.chunkIndex ?? 0) - (b.chunkIndex ?? 0))
+    .slice(0, limit);
 }
 
 export class KnowledgeRepository {
@@ -144,10 +182,22 @@ export class KnowledgeRepository {
   }) {
     const result = await this.pool.query(
       `insert into data_sources
-        (id, assistant_id, type, name, s3_key, url, status, chunk_count, token_count)
-       values ($1, $2, $3, $4, $5, $6, 'pending', 0, 0)
+        (id, user_id, assistant_id, type, name, original_filename, safe_filename, mime_type, size_bytes, storage_path, s3_key, url, status, chunk_count, token_count, extracted_text_length)
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $10, $11, 'pending', 0, 0, 0)
        returning *`,
-      [input.id, input.assistantId, input.type === "pdf" ? "pdf" : "text", input.name, input.storagePath, JSON.stringify({ ...input, chunks: [] })]
+      [
+        input.id,
+        input.userId,
+        input.assistantId,
+        input.type === "pdf" ? "pdf" : "text",
+        input.name,
+        input.originalFilename,
+        input.safeFilename,
+        input.mimeType,
+        input.sizeBytes,
+        input.storagePath,
+        JSON.stringify({ ...input, chunks: [] })
+      ]
     );
     return sourceFromRow(result.rows[0]!);
   }
@@ -177,27 +227,72 @@ export class KnowledgeRepository {
   async markReady(id: string, textLength: number, chunks: RetrievedChunk[]) {
     const current = await this.byId(id);
     if (!current) throw new Error("Knowledge source no longer exists.");
-    const result = await this.pool.query(
-      `update data_sources set status = 'ready', url = $2, chunk_count = $3, token_count = $4 where id = $1 returning *`,
-      [id, JSON.stringify(payloadFor(current, { extractedTextLength: textLength, errorMessage: undefined, chunks })), chunks.length, words(chunks.map((chunk) => chunk.text).join(" ")).length]
-    );
-    return sourceFromRow(result.rows[0]!);
+    if (!current.userId) throw new Error("Knowledge source is missing its owner scope.");
+    if (chunks.some((chunk) => chunk.sourceId !== current.id || chunk.assistantId !== current.assistantId || chunk.userId !== current.userId)) {
+      throw new Error("Knowledge chunk scope does not match its source.");
+    }
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      await client.query("delete from knowledge_chunks where source_id = $1", [id]);
+      for (const chunk of chunks) {
+        await client.query(
+          `insert into knowledge_chunks
+            (source_id, assistant_id, user_id, document_name, page_number, chunk_index, content, token_count)
+           values ($1,$2,$3,$4,$5,$6,$7,$8)`,
+          [
+            current.id,
+            current.assistantId,
+            current.userId,
+            current.originalFilename ?? current.name,
+            chunk.page ?? 1,
+            chunk.chunkIndex ?? 0,
+            chunk.text,
+            words(chunk.text).length
+          ]
+        );
+      }
+      const result = await client.query(
+        `update data_sources
+         set status = 'ready', url = $2, chunk_count = $3, token_count = $4,
+             extracted_text_length = $5, processing_error = null
+         where id = $1
+         returning *`,
+        [
+          id,
+          JSON.stringify(payloadFor(current, { extractedTextLength: textLength, errorMessage: undefined, chunks })),
+          chunks.length,
+          words(chunks.map((chunk) => chunk.text).join(" ")).length,
+          textLength
+        ]
+      );
+      await client.query("commit");
+      return sourceFromRow(result.rows[0]!);
+    } catch (error) {
+      await client.query("rollback").catch(() => undefined);
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
   async markFailed(id: string, message: string) {
     const current = await this.byId(id);
     if (!current) return undefined;
     const result = await this.pool.query(
-      "update data_sources set status = 'error', url = $2 where id = $1 returning *",
-      [id, JSON.stringify(payloadFor(current, { errorMessage: message.slice(0, 500), chunks: [] }))]
+      "update data_sources set status = 'error', url = $2, processing_error = $3 where id = $1 returning *",
+      [id, JSON.stringify(payloadFor(current, { errorMessage: message.slice(0, 500), chunks: [] })), message.slice(0, 500)]
     );
     return result.rows[0] ? sourceFromRow(result.rows[0]) : undefined;
   }
 
   async list(assistantId: string, userId: string) {
     const result = await this.pool.query(
-      "select * from data_sources where assistant_id = $1 order by created_at desc",
-      [assistantId]
+      `select ds.* from data_sources ds
+       inner join assistants a on a.id = ds.assistant_id
+       where ds.assistant_id = $1 and a.user_id = $2 and (ds.user_id = $2 or ds.user_id is null)
+       order by ds.created_at desc`,
+      [assistantId, userId]
     );
     // The request has already established assistant ownership. Assistant IDs are
     // globally unique, so scoping by assistant is the durable isolation boundary
@@ -212,8 +307,10 @@ export class KnowledgeRepository {
 
   async get(assistantId: string, userId: string, id: string) {
     const result = await this.pool.query(
-      "select * from data_sources where id = $1 and assistant_id = $2",
-      [id, assistantId]
+      `select ds.* from data_sources ds
+       inner join assistants a on a.id = ds.assistant_id
+       where ds.id = $1 and ds.assistant_id = $2 and a.user_id = $3 and (ds.user_id = $3 or ds.user_id is null)`,
+      [id, assistantId, userId]
     );
     return result.rows[0] ? sourceFromRow(result.rows[0]) : undefined;
   }
@@ -221,7 +318,12 @@ export class KnowledgeRepository {
   async delete(assistantId: string, userId: string, id: string) {
     const source = await this.get(assistantId, userId, id);
     if (!source) return undefined;
-    await this.pool.query("delete from data_sources where id = $1 and assistant_id = $2", [id, assistantId]);
+    await this.pool.query(
+      `delete from data_sources ds using assistants a
+       where ds.id = $1 and ds.assistant_id = $2 and a.id = ds.assistant_id
+         and a.user_id = $3 and (ds.user_id = $3 or ds.user_id is null)`,
+      [id, assistantId, userId]
+    );
     if (source.storagePath) {
       const { error } = await this.supabase.storage.from(KNOWLEDGE_BUCKET).remove([source.storagePath]);
       if (error) console.error("[Knowledge] Stored object removal failed", { sourceId: id, message: error.message });
@@ -230,21 +332,48 @@ export class KnowledgeRepository {
   }
 
   async retrieve(assistantId: string, userId: string, question: string, limit: number) {
-    const result = await this.pool.query(
-      "select * from data_sources where assistant_id = $1 and status = 'ready'",
-      [assistantId]
+    const durable = await this.pool.query(
+      `select kc.* from knowledge_chunks kc
+       inner join data_sources ds on ds.id = kc.source_id
+       inner join assistants a on a.id = ds.assistant_id
+       where kc.assistant_id = $1 and kc.user_id = $2
+         and ds.assistant_id = $1 and ds.user_id = $2 and ds.status = 'ready'
+         and a.user_id = $2`,
+      [assistantId, userId]
     );
-    const terms = question.toLowerCase().split(/[^a-z0-9]+/).filter((term) => term.length > 1);
-    return result.rows
-      .map(sourceFromRow)
-      .flatMap((source) => source.chunks)
-      .map((chunk) => {
-        const haystack = chunk.text.toLowerCase();
-        const matches = terms.filter((term) => haystack.includes(term)).length;
-        return { ...chunk, similarity: terms.length > 0 ? matches / terms.length : 0 };
-      })
-      .filter((chunk) => chunk.similarity > 0)
-      .sort((a, b) => b.similarity - a.similarity || (a.chunkIndex ?? 0) - (b.chunkIndex ?? 0))
-      .slice(0, limit);
+    if (durable.rows.length > 0) {
+      const retrieved = rankChunks(durable.rows.map(chunkFromRow), question, limit);
+      console.info("[Knowledge] Assistant-scoped retrieval", {
+        assistantId,
+        userId,
+        storage: "knowledge_chunks",
+        candidateChunkCount: durable.rows.length,
+        retrievedChunkCount: retrieved.length,
+        sourceIds: [...new Set(retrieved.map((chunk) => chunk.sourceId))]
+      });
+      return retrieved;
+    }
+
+    // Legacy uploads stored indexed chunks inside the source payload. The
+    // compatibility read still joins the authoritative assistant owner, so it
+    // cannot broaden access to another assistant or user.
+    const legacy = await this.pool.query(
+      `select ds.* from data_sources ds
+       inner join assistants a on a.id = ds.assistant_id
+       where ds.assistant_id = $1 and a.user_id = $2 and ds.status = 'ready'
+         and (ds.user_id = $2 or ds.user_id is null)`,
+      [assistantId, userId]
+    );
+    const candidates = legacy.rows.map(sourceFromRow).flatMap((source) => source.chunks);
+    const retrieved = rankChunks(candidates, question, limit);
+    console.info("[Knowledge] Assistant-scoped retrieval", {
+      assistantId,
+      userId,
+      storage: "legacy_source_payload",
+      candidateChunkCount: candidates.length,
+      retrievedChunkCount: retrieved.length,
+      sourceIds: [...new Set(retrieved.map((chunk) => chunk.sourceId))]
+    });
+    return retrieved;
   }
 }

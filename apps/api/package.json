@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@archmind/shared": "file:../../packages/shared",
+    "@napi-rs/canvas": "0.1.80",
     "@notionhq/client": "^5.22.0",
     "@supabase/supabase-js": "^2.110.8",
     "axios": "^1.18.1",

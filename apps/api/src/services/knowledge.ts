@@ -109,6 +109,17 @@ async function extractPages(buffer: Buffer, extension: string, filename: string)
 
   if (extension === ".pdf") {
     try {
+      // pdf-parse/pdf.js requires DOM geometry primitives in Node. Its canvas
+      // package is optional from pdf.js' perspective, so Vercel omitted it
+      // from the serverless trace and PDF extraction failed with
+      // "DOMMatrix is not defined". Keeping this explicit module reference
+      // makes the Linux native package part of the API deployment.
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const canvas = require("@napi-rs/canvas") as typeof import("@napi-rs/canvas");
+      const globals = globalThis as Record<string, unknown>;
+      globals.DOMMatrix ??= canvas.DOMMatrix;
+      globals.ImageData ??= canvas.ImageData;
+      globals.Path2D ??= canvas.Path2D;
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { PDFParse } = require("pdf-parse") as typeof import("pdf-parse");
       const parser = new PDFParse({ data: buffer });
@@ -176,11 +187,18 @@ export class KnowledgeService {
     const fileId = randomUUID();
     const originalFilename = path.basename(input.file.originalname.replace(/\\/g, "/"));
     const safeFilename = `${fileId}-${sanitizeFilename(originalFilename)}`;
-    const storagePath = `${input.userId}/${input.assistant.id}/${fileId}/${safeFilename}`;
+    const storagePath = `users/${input.userId}/assistants/${input.assistant.id}/knowledge/${fileId}/${safeFilename}`;
 
     if (this.repository) {
       let source: DataSourceRecord | undefined;
       try {
+        console.info("[Knowledge] Upload ingestion started", {
+          assistantId: input.assistant.id,
+          userId: input.userId,
+          fileId,
+          mimeType: input.file.mimetype,
+          sizeBytes: input.file.size
+        });
         await this.repository.ensureAssistant({ assistant: input.assistant, userEmail: input.userEmail });
         source = await this.repository.create({
           id: fileId,
@@ -200,7 +218,15 @@ export class KnowledgeService {
         const text = pages.map((page) => page.text).join("\n\n");
         const chunks = chunkExtractedText(pages, source);
         if (chunks.length === 0) throw new Error("The file did not contain readable text to index.");
-        return await this.repository.markReady(fileId, text.length, chunks);
+        const ready = await this.repository.markReady(fileId, text.length, chunks);
+        console.info("[Knowledge] Upload ingestion ready", {
+          assistantId: input.assistant.id,
+          userId: input.userId,
+          fileId,
+          pageCount: pages.length,
+          chunkCount: chunks.length
+        });
+        return ready;
       } catch (error) {
         const message = error instanceof Error && error.message ? error.message : "Knowledge indexing failed.";
         if (source) await this.repository.markFailed(fileId, message).catch(() => undefined);
