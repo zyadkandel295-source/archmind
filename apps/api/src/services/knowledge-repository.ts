@@ -328,7 +328,7 @@ export class KnowledgeRepository {
     const result = await this.pool.query(
       `select ds.* from data_sources ds
        inner join assistants a on a.id = ds.assistant_id
-       where ds.assistant_id = $1 and a.user_id = $2 ${durable ? "and (ds.user_id = $2 or ds.user_id is null)" : ""}
+       where ds.assistant_id = $1 and a.user_id::text = $2::text ${durable ? "and (ds.user_id::text = $2::text or ds.user_id is null)" : ""}
        order by ds.created_at desc`,
       [assistantId, userId]
     );
@@ -348,7 +348,7 @@ export class KnowledgeRepository {
     const result = await this.pool.query(
       `select ds.* from data_sources ds
        inner join assistants a on a.id = ds.assistant_id
-       where ds.id = $1 and ds.assistant_id = $2 and a.user_id = $3 ${durable ? "and (ds.user_id = $3 or ds.user_id is null)" : ""}`,
+       where ds.id = $1 and ds.assistant_id = $2 and a.user_id::text = $3::text ${durable ? "and (ds.user_id::text = $3::text or ds.user_id is null)" : ""}`,
       [id, assistantId, userId]
     );
     return result.rows[0] ? sourceFromRow(result.rows[0]) : undefined;
@@ -361,7 +361,7 @@ export class KnowledgeRepository {
     await this.pool.query(
       `delete from data_sources ds using assistants a
        where ds.id = $1 and ds.assistant_id = $2 and a.id = ds.assistant_id
-         and a.user_id = $3 ${durable ? "and (ds.user_id = $3 or ds.user_id is null)" : ""}`,
+         and a.user_id::text = $3::text ${durable ? "and (ds.user_id::text = $3::text or ds.user_id is null)" : ""}`,
       [id, assistantId, userId]
     );
     if (source.storagePath) {
@@ -380,9 +380,9 @@ export class KnowledgeRepository {
       `select kc.* from knowledge_chunks kc
        inner join data_sources ds on ds.id = kc.source_id
        inner join assistants a on a.id = ds.assistant_id
-       where kc.assistant_id = $1 and kc.user_id = $2
-         and ds.assistant_id = $1 and ds.user_id = $2 and ds.status = 'ready'
-         and a.user_id = $2`,
+       where kc.assistant_id = $1 and kc.user_id::text = $2::text
+         and ds.assistant_id = $1 and ds.user_id::text = $2::text and ds.status = 'ready'
+         and a.user_id::text = $2::text`,
       [assistantId, userId]
     );
     if (durable.rows.length > 0) {
@@ -408,8 +408,8 @@ export class KnowledgeRepository {
     const legacy = await this.pool.query(
       `select ds.* from data_sources ds
        inner join assistants a on a.id = ds.assistant_id
-       where ds.assistant_id = $1 and a.user_id = $2 and ds.status = 'ready'
-         ${durableSchema ? "and (ds.user_id = $2 or ds.user_id is null)" : ""}`,
+       where ds.assistant_id = $1 and a.user_id::text = $2::text and ds.status = 'ready'
+         ${durableSchema ? "and (ds.user_id::text = $2::text or ds.user_id is null)" : ""}`,
       [assistantId, userId]
     );
     const candidates = legacy.rows.map(sourceFromRow).flatMap((source) => source.chunks);
