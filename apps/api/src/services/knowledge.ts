@@ -1,11 +1,13 @@
-import fs from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { parse as parseCsv } from "csv-parse/sync";
 import mammoth from "mammoth";
 import type { MemoryStore } from "../db/memory";
+import type { Env } from "../config/env";
 import { HttpError } from "../lib/http-error";
 import type { DataSourceRecord, RetrievedChunk } from "../types";
+import { KnowledgeRepository } from "./knowledge-repository";
+import { createSupabaseServerClient, isSupabaseServerConfigured } from "./supabase-server";
 
 export const KNOWLEDGE_MAX_FILE_SIZE = 15 * 1024 * 1024;
 
@@ -17,17 +19,6 @@ const SUPPORTED_TYPES: Record<string, DataSourceRecord["type"]> = {
   ".csv": "csv",
   ".json": "json"
 };
-
-function apiRoot() {
-  const cwd = process.cwd();
-  if (path.basename(cwd) === "api" && path.basename(path.dirname(cwd)) === "apps") return cwd;
-  const nested = path.join(cwd, "apps", "api");
-  return nested;
-}
-
-function storageRoot() {
-  return path.join(apiRoot(), "storage", "knowledge");
-}
 
 function sanitizeFilename(filename: string) {
   const parsed = path.parse(filename.replace(/\\/g, "/"));
@@ -53,63 +44,43 @@ function assertReadableText(text: string, label: string) {
 }
 
 function chunkExtractedText(
-  text: string,
+  pages: Array<{ page: number; text: string }>,
   source: Pick<DataSourceRecord, "id" | "assistantId" | "userId" | "name" | "originalFilename">
 ): RetrievedChunk[] {
-  const words = text.trim().split(/\s+/).filter(Boolean);
   const chunks: RetrievedChunk[] = [];
-
-  for (let index = 0; index < words.length; index += 160) {
-    chunks.push({
-      sourceId: source.id,
-      sourceName: source.originalFilename ?? source.name,
-      userId: source.userId,
-      assistantId: source.assistantId,
-      fileId: source.id,
-      filename: source.originalFilename ?? source.name,
-      chunkIndex: chunks.length,
-      page: Math.floor(index / 480) + 1,
-      text: words.slice(index, index + 200).join(" "),
-      similarity: Number((0.92 - chunks.length * 0.04).toFixed(2))
-    });
+  for (const page of pages) {
+    const pageWords = page.text.trim().split(/\s+/).filter(Boolean);
+    for (let index = 0; index < pageWords.length; index += 160) {
+      chunks.push({
+        sourceId: source.id,
+        sourceName: source.originalFilename ?? source.name,
+        userId: source.userId,
+        assistantId: source.assistantId,
+        fileId: source.id,
+        filename: source.originalFilename ?? source.name,
+        chunkIndex: chunks.length,
+        page: page.page,
+        text: pageWords.slice(index, index + 200).join(" "),
+        similarity: 0
+      });
+    }
   }
-
-  if (chunks.length === 0) {
-    chunks.push({
-      sourceId: source.id,
-      sourceName: source.originalFilename ?? source.name,
-      userId: source.userId,
-      assistantId: source.assistantId,
-      fileId: source.id,
-      filename: source.originalFilename ?? source.name,
-      chunkIndex: 0,
-      page: 1,
-      text: text.trim() || `[Uploaded Resource File: ${source.originalFilename ?? source.name}]`,
-      similarity: 0.95
-    });
-  }
-
   return chunks;
 }
 
-async function extractText(filePath: string, extension: string) {
-  const buffer = await fs.readFile(filePath);
-
-  if ([".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp"].includes(extension)) {
-    return `[Image Source File: ${path.basename(filePath)} - Size: ${buffer.length} bytes]`;
-  }
+async function extractPages(buffer: Buffer, extension: string, filename: string) {
 
   if (extension === ".txt" || extension === ".md") {
     const txt = buffer.toString("utf8").trim();
-    return txt || `[Text file: ${path.basename(filePath)}]`;
+    return [{ page: 1, text: assertReadableText(txt, "Text file") }];
   }
 
   if (extension === ".json") {
     try {
       const parsed = JSON.parse(buffer.toString("utf8"));
-      return JSON.stringify(parsed, null, 2);
+      return [{ page: 1, text: assertReadableText(JSON.stringify(parsed, null, 2), "JSON file") }];
     } catch {
-      return buffer.toString("utf8").trim() || `[JSON file: ${path.basename(filePath)}]`;
+      return [{ page: 1, text: assertReadableText(buffer.toString("utf8"), "JSON file") }];
     }
   }
 
@@ -121,18 +92,18 @@ async function extractText(filePath: string, extension: string) {
         skip_empty_lines: true
       }) as string[][];
       const text = rows.map((row) => row.map((cell) => String(cell).trim()).filter(Boolean).join(" | ")).join("\n");
-      return text || `[CSV file: ${path.basename(filePath)}]`;
+      return [{ page: 1, text: assertReadableText(text, "CSV file") }];
     } catch {
-      return buffer.toString("utf8").trim() || `[CSV file: ${path.basename(filePath)}]`;
+      return [{ page: 1, text: assertReadableText(buffer.toString("utf8"), "CSV file") }];
     }
   }
 
-  if (extension === ".docx" || extension === ".doc") {
+  if (extension === ".docx") {
     try {
       const result = await mammoth.extractRawText({ buffer });
-      return result.value || `[Document file: ${path.basename(filePath)}]`;
-    } catch {
-      return `[Document file: ${path.basename(filePath)}]`;
+      return [{ page: 1, text: assertReadableText(result.value, "DOCX file") }];
+    } catch (error) {
+      throw new Error(`Could not process this DOCX file${error instanceof Error && error.message ? `: ${error.message}` : "."}`);
     }
   }
 
@@ -143,8 +114,10 @@ async function extractText(filePath: string, extension: string) {
       const parser = new PDFParse({ data: buffer });
       const pdfData = await parser.getText();
       await parser.destroy();
-      if (pdfData.text?.trim()) {
-        return pdfData.text.trim();
+      if (pdfData.pages?.length) {
+        return pdfData.pages
+          .map((page) => ({ page: page.num, text: normalizeExtractedText(page.text) }))
+          .filter((page) => page.text.length > 0);
       }
     } catch (err) {
       console.warn("[Knowledge] PDF extraction failed", { reason: err instanceof Error ? err.message : "unknown" });
@@ -153,7 +126,7 @@ async function extractText(filePath: string, extension: string) {
     throw new Error("The PDF did not contain readable text.");
   }
 
-  return buffer.toString("utf8").trim() || `[Resource file: ${path.basename(filePath)}]`;
+  throw new Error(`Unsupported file type: ${filename}.`);
 }
 
 function toKnowledgeStatus(source: DataSourceRecord) {
@@ -172,7 +145,13 @@ function toKnowledgeStatus(source: DataSourceRecord) {
 }
 
 export class KnowledgeService {
-  constructor(private store: MemoryStore) {}
+  private repository?: KnowledgeRepository;
+
+  constructor(private store: MemoryStore, private env?: Env) {
+    if (env?.nodeEnv !== "test" && env?.databaseUrl && isSupabaseServerConfigured()) {
+      this.repository = new KnowledgeRepository(env.databaseUrl, createSupabaseServerClient());
+    }
+  }
 
   validateUpload(file: Express.Multer.File) {
     if (!file) {
@@ -185,7 +164,7 @@ export class KnowledgeService {
     const extension = path.extname(file.originalname).toLowerCase() || ".txt";
     const type = SUPPORTED_TYPES[extension];
     if (!type) {
-      throw new HttpError(400, "Unsupported file type. Use TXT, MD, PDF, DOCX, DOC, CSV, JSON, or source-code files.", "UNSUPPORTED_FILE_TYPE");
+      throw new HttpError(400, "Unsupported file type. Use TXT, MD, PDF, DOCX, CSV, or JSON.", "UNSUPPORTED_FILE_TYPE");
     }
 
     return { extension, type };
@@ -196,12 +175,48 @@ export class KnowledgeService {
     const fileId = randomUUID();
     const originalFilename = path.basename(input.file.originalname.replace(/\\/g, "/"));
     const safeFilename = `${fileId}-${sanitizeFilename(originalFilename)}`;
-    const directory = path.join(storageRoot(), input.userId, input.assistantId, fileId, "original-file");
-    const storagePath = path.join(directory, safeFilename);
+    const storagePath = `${input.userId}/${input.assistantId}/${fileId}/${safeFilename}`;
 
+    if (this.repository) {
+      let source: DataSourceRecord | undefined;
+      try {
+        source = await this.repository.create({
+          id: fileId,
+          userId: input.userId,
+          assistantId: input.assistantId,
+          type,
+          name: originalFilename,
+          originalFilename,
+          safeFilename,
+          mimeType: input.file.mimetype,
+          sizeBytes: input.file.size,
+          storagePath
+        });
+        await this.repository.upload(storagePath, input.file.buffer, input.file.mimetype);
+        await this.repository.markProcessing(fileId);
+        const pages = await extractPages(input.file.buffer, extension, originalFilename);
+        const text = pages.map((page) => page.text).join("\n\n");
+        const chunks = chunkExtractedText(pages, source);
+        if (chunks.length === 0) throw new Error("The file did not contain readable text to index.");
+        return await this.repository.markReady(fileId, text.length, chunks);
+      } catch (error) {
+        const message = error instanceof Error && error.message ? error.message : "Knowledge indexing failed.";
+        if (source) await this.repository.markFailed(fileId, message).catch(() => undefined);
+        console.error("[Knowledge] Persistent ingestion failed", { assistantId: input.assistantId, fileId, message });
+        if (/bucket|storage|upload|network|fetch/i.test(message)) {
+          throw new HttpError(503, "Knowledge storage is temporarily unavailable. Please try again.", "KNOWLEDGE_STORAGE_UNAVAILABLE");
+        }
+        throw new HttpError(422, `Could not process this ${extension.slice(1).toUpperCase()} file.`, "KNOWLEDGE_PROCESSING_FAILED");
+      }
+    }
+
+    // Test and local-memory fallback only. Production never writes uploads to its filesystem.
+    const directory = path.join(process.cwd(), ".archmind-data", "knowledge", input.userId, input.assistantId, fileId);
+    const localPath = path.join(directory, safeFilename);
     try {
+      const fs = await import("node:fs/promises");
       await fs.mkdir(directory, { recursive: true });
-      await fs.writeFile(storagePath, input.file.buffer, { flag: "wx" });
+      await fs.writeFile(localPath, input.file.buffer, { flag: "wx" });
     } catch (error) {
       console.error("[Knowledge] Could not persist upload", { assistantId: input.assistantId, fileId, error });
       throw new HttpError(503, "Source storage is temporarily unavailable. Please try again.", "SOURCE_STORAGE_UNAVAILABLE");
@@ -216,7 +231,7 @@ export class KnowledgeService {
       safeFilename,
       mimeType: input.file.mimetype,
       sizeBytes: input.file.size,
-      storagePath
+      storagePath: localPath
     });
 
     // Processing used to be detached from the request while the queue worker
@@ -231,8 +246,11 @@ export class KnowledgeService {
 
     try {
       const ext = extension ?? path.extname(source.originalFilename ?? source.name).toLowerCase();
-      const text = await extractText(source.storagePath, ext);
-      const chunks = chunkExtractedText(text, source);
+      const fs = await import("node:fs/promises");
+      const buffer = await fs.readFile(source.storagePath);
+      const pages = await extractPages(buffer, ext, source.originalFilename ?? source.name);
+      const text = pages.map((page) => page.text).join("\n\n");
+      const chunks = chunkExtractedText(pages, source);
       if (chunks.length === 0) {
         throw new Error("File did not contain enough readable text to index.");
       }
@@ -248,19 +266,26 @@ export class KnowledgeService {
     }
   }
 
-  list(assistantId: string, userId: string) {
+  async list(assistantId: string, userId: string) {
+    if (this.repository) return (await this.repository.list(assistantId, userId)).map(toKnowledgeStatus);
     return this.store.listKnowledgeFiles(assistantId, userId).map(toKnowledgeStatus);
   }
 
-  getStatus(assistantId: string, userId: string, fileId: string) {
+  async getStatus(assistantId: string, userId: string, fileId: string) {
+    if (this.repository) {
+      const source = await this.repository.get(assistantId, userId, fileId);
+      return source ? toKnowledgeStatus(source) : undefined;
+    }
     const source = this.store.getKnowledgeFile(assistantId, userId, fileId);
     return source ? toKnowledgeStatus(source) : undefined;
   }
 
   async delete(assistantId: string, userId: string, fileId: string) {
+    if (this.repository) return this.repository.delete(assistantId, userId, fileId);
     const source = this.store.deleteKnowledgeFile(assistantId, userId, fileId);
     if (!source) return undefined;
     if (source.storagePath) {
+      const fs = await import("node:fs/promises");
       const fileDir = path.dirname(source.storagePath);
       await fs.rm(path.dirname(fileDir), { recursive: true, force: true }).catch(() => undefined);
     }
@@ -268,6 +293,22 @@ export class KnowledgeService {
   }
 
   async retry(assistantId: string, userId: string, fileId: string) {
+    if (this.repository) {
+      const source = await this.repository.get(assistantId, userId, fileId);
+      if (!source) return undefined;
+      try {
+        await this.repository.markProcessing(fileId);
+        const buffer = await this.repository.download(source.storagePath);
+        const extension = path.extname(source.originalFilename ?? source.name).toLowerCase();
+        const pages = await extractPages(buffer, extension, source.originalFilename ?? source.name);
+        const text = pages.map((page) => page.text).join("\n\n");
+        const chunks = chunkExtractedText(pages, source);
+        return await this.repository.markReady(fileId, text.length, chunks);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Knowledge indexing failed.";
+        return this.repository.markFailed(fileId, message);
+      }
+    }
     const source = this.store.getKnowledgeFile(assistantId, userId, fileId);
     if (!source) return undefined;
     if (!source.storagePath) {

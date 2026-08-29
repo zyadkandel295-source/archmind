@@ -155,7 +155,7 @@ Stay faithful to this assistant's role. If a request is clearly outside the conf
       sessionId: input.sessionId,
       conversationId: input.conversationId
     });
-    const chunks = rag.retrieve(assistant.id, sanitizedUserMessage, req.user!.id);
+    const chunks = await rag.retrieve(assistant.id, sanitizedUserMessage, req.user!.id);
     const chatHistory = store
       .listMessages(conversation.id)
       .slice(-12)

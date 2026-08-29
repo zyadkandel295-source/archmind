@@ -11,7 +11,6 @@ import {
   Loader2,
   MessageSquare,
   Plus,
-  Rocket,
   Radio,
   Cpu,
   Settings,
@@ -440,12 +439,6 @@ function AssistantCard({
             <Button variant="ghost" size="sm">
               <UploadCloud className="h-4 w-4" />
               Sources
-            </Button>
-          </Link>
-          <Link href={`/assistants/${assistant.id}/deploy`}>
-            <Button variant="ghost" size="sm">
-              <Rocket className="h-4 w-4" />
-              Deploy
             </Button>
           </Link>
           <Button variant="ghost" size="sm" disabled={busy} onClick={onDuplicate} aria-busy={workingAction === "duplicate"}>

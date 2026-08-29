@@ -24,7 +24,7 @@ const upload = multer({
 
 export function sourcesRouter(env: Env, store: MemoryStore) {
   const router = Router();
-  const knowledge = new KnowledgeService(store);
+  const knowledge = new KnowledgeService(store, env);
   const supabase = createSupabaseServerClient();
   const useSupabase = env.nodeEnv !== "test" && isSupabaseConfigured();
 
@@ -139,7 +139,7 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
       const assistant = assertFound(store.getAssistantForUser(assistantId, userId), "Assistant not found");
-      res.json({ files: knowledge.list(assistant.id, userId) });
+      res.json({ files: await knowledge.list(assistant.id, userId) });
     })
   );
 
@@ -150,7 +150,7 @@ export function sourcesRouter(env: Env, store: MemoryStore) {
       const assistantId = req.params.id!;
       const userId = req.user?.id || "user-1";
       const assistant = assertFound(store.getAssistantForUser(assistantId, userId), "Assistant not found");
-      const file = assertFound(knowledge.getStatus(assistant.id, userId, req.params.fileId!), "Knowledge file not found");
+      const file = assertFound(await knowledge.getStatus(assistant.id, userId, req.params.fileId!), "Knowledge file not found");
       res.json({
         fileId: file.id,
         status: file.status,

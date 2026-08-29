@@ -24,7 +24,7 @@ interface KnowledgeFile {
   errorMessage?: string;
 }
 
-const ACCEPTED_TYPES = ".txt,.md,.pdf,.docx,.doc,.csv,.json";
+const ACCEPTED_TYPES = ".txt,.md,.pdf,.docx,.csv,.json";
 const MAX_SIZE_BYTES = 15 * 1024 * 1024;
 
 function formatSize(bytes: number) {
