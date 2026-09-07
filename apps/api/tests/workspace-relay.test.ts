@@ -115,4 +115,23 @@ describe("same-origin chat and file relay", () => {
     );
     expect((await GET(req("files"), context("files"))).status).toBe(502);
   });
+  it("starts Google auth without a bearer token and passes through the provider redirect", async () => {
+    vi.stubEnv("API_INTERNAL_URL", "https://api.example");
+    const fetcher = vi.fn().mockResolvedValue(
+      new Response(null, {
+        status: 302,
+        headers: { Location: "https://accounts.google.com/o/oauth2/v2/auth?state=%2Fprofile" },
+      }),
+    );
+    vi.stubGlobal("fetch", fetcher);
+
+    const response = await GET(
+      new Request("https://workspace.example/api/workspace/auth/google?state=%2Fprofile"),
+      context("auth", "google"),
+    );
+
+    expect(response.status).toBe(302);
+    expect(response.headers.get("Location")).toContain("accounts.google.com");
+    expect(String(fetcher.mock.calls[0]![0])).toBe("https://api.example/api/auth/google?state=%2Fprofile");
+  });
 });

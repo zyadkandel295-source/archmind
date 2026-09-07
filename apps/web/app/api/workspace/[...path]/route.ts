@@ -4,7 +4,7 @@ export const maxDuration = 60;
 
 // Only known workspace endpoints; never accept a browser-supplied destination.
 const allowed =
-  /^(?:chat|assistants\/[\w-]+\/chat|files(?:\/generate|\/[\w-]+\/(?:status|download|regenerate))?|conversations\/[\w-]+\/files|auth\/refresh)$/;
+  /^(?:chat|assistants\/[\w-]+\/chat|files(?:\/generate|\/[\w-]+\/(?:status|download|regenerate))?|conversations\/[\w-]+\/files|auth\/(?:google|refresh))$/;
 const failure = (status: number, code: string, message: string) =>
   Response.json(
     { error: { code, message, retryable: status >= 500 } },
@@ -18,7 +18,7 @@ async function relay(
   const route = context.params.path.join("/");
   if (!allowed.test(route))
     return failure(404, "ROUTE_NOT_FOUND", "Route not found.");
-  if (!request.headers.get("authorization") && route !== "auth/refresh")
+  if (!request.headers.get("authorization") && route !== "auth/refresh" && route !== "auth/google")
     return failure(401, "FILE_LOGIN_REQUIRED", "Sign in again to continue.");
   const configured =
     process.env.API_INTERNAL_URL?.trim() ||
@@ -45,7 +45,7 @@ async function relay(
       throw new Error("API relay loop");
     target = new URL(`${base.toString().replace(/\/$/, "")}/api/${route}`);
     const query = new URL(request.url).searchParams;
-    for (const key of ["assistantId", "inline"]) {
+    for (const key of ["assistantId", "inline", "state"]) {
       const value = query.get(key);
       if (value !== null) target.searchParams.set(key, value);
     }
@@ -74,6 +74,18 @@ async function relay(
         ? { body: await request.arrayBuffer() }
         : {}),
     });
+    if (upstream.status >= 300 && upstream.status < 400 && route === "auth/google") {
+      const location = upstream.headers.get("location");
+      if (location) {
+        return new Response(null, {
+          status: upstream.status,
+          headers: {
+            Location: location,
+            "Cache-Control": "private, no-store",
+          },
+        });
+      }
+    }
     if (upstream.status >= 300 && upstream.status < 400)
       return failure(
         502,

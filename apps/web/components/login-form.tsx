@@ -59,6 +59,8 @@ export function LoginForm() {
       const friendlyMsg =
         errorParam === "google_oauth_error" || errorParam === "access_denied" || errorParam === "invalid_state"
           ? "Connection could not be completed."
+          : errorParam === "server_config"
+            ? "Google sign-in is not configured correctly right now."
           : "Something went wrong. Please try again.";
       setError(friendlyMsg);
       toast({ type: "error", title: "Sign-in failed", message: friendlyMsg });
@@ -153,7 +155,7 @@ export function LoginForm() {
       const params = new URLSearchParams();
       const destination = new URLSearchParams(window.location.search).get("returnTo");
       params.set("state", destination && destination.startsWith("/") ? destination : "login");
-      window.location.assign(`${getPlatformBaseUrl()}/api/auth/google?${params.toString()}`);
+      window.location.assign(`/api/workspace/auth/google?${params.toString()}`);
     } catch (err) {
       const nextError = signInErrorMessage(err);
       setError(nextError);
