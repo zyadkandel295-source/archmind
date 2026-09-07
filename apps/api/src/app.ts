@@ -27,6 +27,8 @@ import { platformRouter } from "./modules/platform";
 import { assistantsV2Router } from "./modules/assistants-v2";
 import { chatsV2Router } from "./modules/chats-v2";
 import { aiBaseRouter } from "./modules/ai-base";
+import { filesRouter, fileChatRouter } from "./modules/files";
+import { FileGenerationService } from "./services/files/generator";
 import { AI_PROVIDERS_UNAVAILABLE_MESSAGE } from "./services/ai-service";
 import { generateAiResponse } from "./services/ai-service";
 import { aiChatRequestSchema } from "@archmind/shared";
@@ -35,6 +37,7 @@ export interface AppOptions {
   env?: Env;
   store?: MemoryStore;
   platformStore?: PlatformStateStore;
+  fileService?: FileGenerationService;
 }
 
 function corsOrigins(env: Env): string[] {
@@ -73,6 +76,7 @@ export function createApp(options: AppOptions = {}) {
   const platformStore = options.platformStore ?? createPlatformStore(env, store);
   const allowedCorsOrigins = corsOrigins(env);
   const app = express();
+  const fileService = options.fileService ?? new FileGenerationService(env);
 
   app.disable("x-powered-by");
   app.set("trust proxy", 1);
@@ -195,6 +199,8 @@ export function createApp(options: AppOptions = {}) {
   app.use("/api/v1/assistants", assistantsRouter(env, store));
 
   app.use("/api", sourcesRouter(env, store));
+  app.use("/api", filesRouter(fileService, store));
+  app.use("/api", fileChatRouter(fileService, store));
   app.use("/api", chatsV2Router(env, store));
   app.use("/api", chatRouter(env, store));
   app.use("/api/analytics", analyticsRouter(env, store));

@@ -75,6 +75,8 @@ export async function generateAiResponse(input: {
   temperature?: number;
   assistantConfig?: Pick<AssistantRecord, "model"> | null;
   userId?: string;
+  maxTokens?: number;
+  signal?: AbortSignal;
 }) {
   // Tests and local scaffolds may use a placeholder key. Only a configured
   // OpenRouter runtime can call the network; mocked fetch remains supported
@@ -93,6 +95,7 @@ export async function generateAiResponse(input: {
   const choice = chooseAiModel(extractUserMessage(messages), input.env, input.assistantConfig);
   try {
     const response = await fetch(OPENROUTER_CHAT_URL, {
+      signal: input.signal,
       method: "POST",
       headers: {
         Authorization: `Bearer ${input.env.openrouterApiKey}`,
@@ -104,7 +107,7 @@ export async function generateAiResponse(input: {
         model: choice.model,
         messages,
         temperature: input.temperature ?? 0.7,
-        max_tokens: 4096
+        max_tokens: input.maxTokens ?? 4096
       })
     });
     const payload = (await response.json().catch(() => ({}))) as OpenRouterResponse;

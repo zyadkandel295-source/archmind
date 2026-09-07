@@ -50,6 +50,8 @@ import { AssistantAvatar } from "@/components/ui/assistant-avatar";
 import { IconButton } from "@/components/ui/icon-button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { requestData } from "@/lib/data-client";
+import { GeneratedFileCard } from "@/components/generated-file-card";
+import { fileFetch, type GeneratedFileView } from "@/lib/generated-files";
 
 
 type Role = "user" | "assistant";
@@ -60,6 +62,7 @@ interface ChatMessage {
   content: string;
   createdAt: number;
   error?: boolean;
+  generatedFileId?: string;
   sourceNames?: string[];
   sourceReferences?: Array<{ name: string; page?: number }>;
   attachments?: { name: string; type: string; size: number; url?: string }[];
@@ -83,6 +86,7 @@ interface ChatSession {
 }
 
 interface ServerMessage {
+  generatedFileId?: string;
   id: string;
   role: "user" | "assistant" | "system";
   content: string;
@@ -185,7 +189,7 @@ function getGeneratedFiles(content: string) {
   for (const match of content.matchAll(expression)) {
     const name = match[1]?.trim();
     const fileContent = match[2] ?? "";
-    if (name && name.length <= 120 && fileContent.length <= 1_000_000) files.push({ name, content: fileContent });
+    if (name && !/\.(pdf|docx?|pptx?)$/i.test(name) && name.length <= 120 && fileContent.length <= 1_000_000) files.push({ name, content: fileContent });
   }
   return files;
 }
@@ -271,6 +275,7 @@ function serverConversationToSession(conversation: ServerConversation): ChatSess
     .filter((message) => message.role === "user" || message.role === "assistant")
     .map((message) => ({
       id: message.id,
+      generatedFileId: message.generatedFileId,
       role: message.role as Role,
       content: message.content,
       createdAt: Date.parse(message.createdAt) || createdAt
@@ -461,7 +466,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
           .filter((conversation) => !hidden.has(conversation.id))
           .map(serverConversationToSession);
         setSessions((current) => {
-          const localDrafts = current.filter((session) => !session.conversationId);
+          const localDrafts = current.filter((session) => !session.conversationId || session.messages.some(m => m.generatedFileId));
           const serverIds = new Set(serverSessions.map((session) => session.id));
           const retainedLocal = localDrafts.filter((session) => !serverIds.has(session.id));
           const next = [...serverSessions, ...retainedLocal];
@@ -476,6 +481,31 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
       })
       .finally(() => setHistoryLoading(false));
   }, [assistantId, fallbackToWorkspace]);
+
+  useEffect(() => {
+    let active = true;
+    fileFetch(`/files${assistantId ? `?assistantId=${encodeURIComponent(assistantId)}` : ""}`)
+      .then(response => response.json())
+      .then((data: { files: GeneratedFileView[] }) => {
+        if (!active) return;
+        setSessions(current => {
+          const next = [...current];
+          for (const file of [...data.files].reverse().filter(f => assistantId ? f.assistantId === assistantId : !f.assistantId)) {
+            if (readHiddenConversationIds(assistantId).has(file.conversationId)) continue;
+            let index = next.findIndex(s => s.conversationId === file.conversationId);
+            if (index < 0) { next.push({ ...createSession(), id: file.conversationId, conversationId: file.conversationId, title: inferTitle(file.request.description), messages: [] }); index = next.length - 1; }
+            const session = next[index]!;
+            if (session.messages.some(m => m.generatedFileId === file.id)) continue;
+            next[index] = { ...session, messages: [...session.messages,
+              { id: `${file.id}-request`, role: "user", content: file.request.description, createdAt: Date.parse(file.createdAt) },
+              { id: `${file.id}-file`, role: "assistant", content: file.parentId ? "A new file version is available below." : "Your generated file", generatedFileId: file.id, createdAt: Date.parse(file.createdAt) }
+            ] };
+          }
+          return next;
+        });
+      }).catch(() => { /* Existing chat remains available; file cards show authentication errors. */ });
+    return () => { active = false; };
+  }, [assistantId]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -605,6 +635,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
       const useAssistantRoute = Boolean(assistantId && !fallbackToWorkspace);
       const endpoint = useAssistantRoute ? `/api/assistants/${assistantId}/chat` : "/api/chat";
       const assistantPayload = {
+        requestId: crypto.randomUUID(),
         message: lastUserMessage?.content ?? "",
         attachments: lastUserMessage?.attachments ?? [],
         conversationId: activeSession.conversationId,
@@ -614,6 +645,8 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         webSearch: webSearchActive
       };
       const workspacePayload = {
+        requestId: assistantPayload.requestId,
+        conversationId: activeSession.conversationId,
         model: activeSession.model,
         temperature,
         messages: messages
@@ -724,6 +757,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
           if (eventName === "meta" || eventName === "done") {
             const data = JSON.parse(dataLine) as {
               conversationId?: string;
+              generatedFile?: GeneratedFileView;
               sources?: Array<{ sourceName?: string; filename?: string; page?: number }>;
               specialistSuggestion?: SpecialistSuggestion;
             };
@@ -738,10 +772,10 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                 ...session,
                 conversationId: data.conversationId,
                 messages:
-                  eventName === "meta" && (sourceNames.length > 0 || data.specialistSuggestion)
+                  eventName === "meta" && (sourceNames.length > 0 || data.specialistSuggestion || data.generatedFile)
                     ? session.messages.map((message) =>
                       message.id === assistantMessageId
-                        ? { ...message, sourceNames, sourceReferences, specialistSuggestion: data.specialistSuggestion }
+                        ? { ...message, sourceNames, sourceReferences, specialistSuggestion: data.specialistSuggestion, generatedFileId: data.generatedFile?.id }
                         : message
                     )
                     : session.messages,
@@ -1526,6 +1560,7 @@ function ChatBubble({
               ))}
             </div>
           ) : null}
+          {message.generatedFileId ? <GeneratedFileCard id={message.generatedFileId} /> : null}
           {isAssistant && message.specialistSuggestion ? (
             <a
               href={`/assistants/new?template=${encodeURIComponent(message.specialistSuggestion.template)}`}

@@ -11,6 +11,8 @@ COPY . .
 RUN npm run build -w @archmind/shared && npm run build -w @archmind/api
 
 FROM node:22-alpine AS runner
+RUN apk add --no-cache libreoffice font-dejavu
+ENV FILE_GENERATION_SOFFICE=/usr/bin/soffice
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/package.json /app/package.json

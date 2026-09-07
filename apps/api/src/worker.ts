@@ -1,5 +1,6 @@
 import { loadEnv } from "./config/env";
 import net from "node:net";
+import { FILE_QUEUE, FILE_WORKER_HEARTBEAT, FileGenerationService } from "./services/files/generator";
 
 function canConnectToRedis(redisUrl: string) {
   return new Promise<boolean>((resolve) => {
@@ -29,11 +30,21 @@ function canConnectToRedis(redisUrl: string) {
 
 async function main() {
   const env = loadEnv();
+  const files = new FileGenerationService(env);
 
   if (!env.redisUrl) {
     if (env.nodeEnv === "production") throw new Error("REDIS_URL is required for production workers.");
-    console.log("Redis is not configured. Workers are idle in local development mode.");
-    return;
+    console.log("File worker uses persistent local files in development. Run one local worker only.");
+    // A separate process owns long jobs; no request-scoped background promises.
+    let stopping = false;
+    process.once("SIGTERM", () => { stopping = true; });
+    process.once("SIGINT", () => { stopping = true; });
+    while (!stopping) {
+      const pending = await files.repository.pending();
+      for (const file of pending) { if (stopping) break; await files.run(file.id).catch(() => undefined); }
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+    await files.repository.close(); return;
   }
 
   if (!(await canConnectToRedis(env.redisUrl))) {
@@ -43,6 +54,27 @@ async function main() {
   }
 
   const { Worker } = await import("bullmq");
+  const fileWorker = new Worker(FILE_QUEUE, job => files.run(job.data.fileId), {
+    connection: { url: env.redisUrl }, concurrency: 2, lockDuration: 120000
+  });
+  fileWorker.on("error", error => console.error("File worker connection error", error.message));
+  const heartbeat=async()=>{try{await (await fileWorker.client).set(FILE_WORKER_HEARTBEAT,new Date().toISOString(),"EX",60);}catch{ /* API fails closed when this expires. */ }};
+  await heartbeat();
+  const heartbeatTimer=setInterval(()=>void heartbeat(),15000);
+  // Reconcile the database outbox after crashes between persistence and enqueue.
+  let reconciling = false;
+  const reconcile = async () => {
+    if (reconciling) return;
+    reconciling = true;
+    try { for (const file of await files.repository.pending()) await files.enqueue(file.id); }
+    catch (error) { console.error("File queue reconciliation failed", error instanceof Error ? error.message : "Unknown error"); }
+    finally { reconciling = false; }
+  };
+  await reconcile();
+  const reconciliation = setInterval(() => void reconcile(), 30000);
+  const shutdown = async () => { clearInterval(reconciliation); clearInterval(heartbeatTimer); await fileWorker.close(); await ingestionWorker.close(); await files.repository.close(); process.exit(0); };
+  process.once("SIGTERM", () => void shutdown());
+  process.once("SIGINT", () => void shutdown());
 
   // Ingestion Worker
   const ingestionWorker = new Worker(

@@ -110,6 +110,7 @@ export interface ConversationRecord {
 }
 
 export interface MessageRecord {
+  generatedFileId?: string;
   id: string;
   conversationId: string;
   role: "user" | "assistant" | "system";
