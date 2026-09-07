@@ -35,7 +35,35 @@ export function filesRouter(
         input.conversationId,
         input.assistantId,
       );
+      if (input.assistantId && !input.conversationId) {
+        input.conversationId = store.ensureConversation({
+          assistantId: input.assistantId,
+          userId: req.user!.id,
+        }).id;
+      }
       const file = await service.submit(req.user!.id, input);
+      if (
+        file.assistantId &&
+        !store
+          .listMessages(file.conversationId)
+          .some((m) => m.generatedFileId === file.id)
+      ) {
+        store.addMessage({
+          conversationId: file.conversationId,
+          role: "user",
+          content: input.description,
+          tokensUsed: 0,
+          sources: [],
+        });
+        store.addMessage({
+          conversationId: file.conversationId,
+          role: "assistant",
+          content: "Your generated file",
+          generatedFileId: file.id,
+          tokensUsed: 0,
+          sources: [],
+        });
+      }
       res.status(202).json({ file: fileView(file) });
     }),
   );

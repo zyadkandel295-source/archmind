@@ -48,6 +48,9 @@ export function GeneratedFileCard({ id }: { id: string }) {
       const blob = await (
         await fileFetch(`/files/${id}/download${open ? "?inline=true" : ""}`)
       ).blob();
+      if (!blob.size || blob.size !== file.size) {
+        throw new Error("The download was interrupted or blocked by the browser/network. No file was saved. Please retry or check your network settings.");
+      }
       const url = URL.createObjectURL(blob);
       if (open) {
         const anchor = document.createElement("a");

@@ -2,6 +2,10 @@
 
 AGENTIA accepts natural PDF, DOCX, and PPTX requests in workspace and assistant chat. The API returns a queued file card immediately. The existing BullMQ worker plans the document, generates and validates each page/slide, checkpoints progress, renders a native file, uploads it to private storage, reads it back, and marks it ready. Maximum length is 50 pages/slides; maximum output size is 25 MiB.
 
+The composer also has a **Generate file** button. Choose PDF, Word, or PowerPoint, optionally specify 1–50 pages/slides, type a description in the message box, and press Send. Cancel returns to normal chat without discarding the draft.
+
+Chat and private file requests use the same-origin `/api/workspace/*` relay. Set `API_INTERNAL_URL` on the web server to the API host, or keep the existing `NEXT_PUBLIC_PLATFORM_URL` / `NEXT_PUBLIC_API_URL`. The relay forwards the user's authentication (not a server credential), preserves streaming and binary downloads, and reports unreachable/misconfigured backends as actionable JSON errors. The API must be a separate server origin; arbitrary destinations and redirects are rejected. Browser clients do not need cross-origin access for these calls. Other existing API calls retain their current routing.
+
 ## Production setup
 
 1. Apply `db/migrations/016_file_generation.sql` with a database administrator connection. It adds `generated_files` and the private Supabase bucket. The existing `agentia_worker` role receives SELECT, INSERT and UPDATE privileges. Other deployments must grant these privileges to their trusted server database role, which must bypass RLS. Browser roles have no table or object access.

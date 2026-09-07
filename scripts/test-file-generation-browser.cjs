@@ -45,6 +45,20 @@ async function main() {
       .waitFor({ timeout: 90000 });
     const input = page.locator("textarea").first();
     await input.waitFor({ timeout: 90000 });
+    if (process.env.FILE_ACCEPTANCE_BUTTON === "1") {
+      await page
+        .getByRole("button", { name: "Generate file", exact: true })
+        .click();
+      await page.getByLabel("File type", { exact: true }).selectOption("pptx");
+      await page.getByText("Slides (optional)", { exact: true }).waitFor();
+      await page.getByLabel("File type", { exact: true }).selectOption("docx");
+      await page.getByLabel("File type", { exact: true }).selectOption("pdf");
+      await page.getByLabel("File length", { exact: true }).fill("2");
+      await page.screenshot({
+        path: path.join(root, "file-button.png"),
+        fullPage: true,
+      });
+    }
     await input.fill(
       "Create a 2-page PDF about how plants grow, with a worked example. Include the title in the total count.",
     );

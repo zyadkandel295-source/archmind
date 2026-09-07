@@ -1,4 +1,3 @@
-import { getPlatformBaseUrl } from "./platform";
 import {
   readSessionCredential,
   readRenewalCredential,
@@ -29,7 +28,7 @@ async function refreshFileSession() {
     renewal = (async () => {
       const token = readRenewalCredential();
       if (!token) return;
-      const response = await fetch(`${getPlatformBaseUrl()}/api/auth/refresh`, {
+      const response = await fetch("/api/workspace/auth/refresh", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ refreshToken: token }),
@@ -51,7 +50,7 @@ export async function fileFetch(
   const headers = new Headers(init.headers);
   const token = readSessionCredential();
   if (token) headers.set("Authorization", `Bearer ${token}`);
-  const response = await fetch(`${getPlatformBaseUrl()}/api${route}`, {
+  const response = await fetch(`/api/workspace${route}`, {
     ...init,
     headers,
     cache: "no-store",

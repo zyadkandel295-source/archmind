@@ -101,7 +101,7 @@ export function createApp(options: AppOptions = {}) {
           fontSrc: ["'self'", "https://fonts.gstatic.com"],
           connectSrc: [
             "'self'",
-            env.corsOrigin,
+            ...allowedCorsOrigins.filter(origin => origin !== "*"),
             "https://www.googleapis.com",
             "https://notion.com",
             "https://api.stripe.com"

@@ -11,6 +11,7 @@ import { createApp } from "../src/app";
 import { MemoryStore } from "../src/db/memory";
 import { signAccessToken } from "../src/middleware/auth";
 import { FileRepository } from "../src/services/files/repository";
+import { HttpError } from "../src/lib/http-error";
 import {
   FileGenerationService,
   likelyFileRequest,
@@ -240,6 +241,76 @@ async function setup(
   };
 }
 describe("file service ownership and persistence", () => {
+  it("accepts multiple configured browser origins without an invalid CSP", async () => {
+    const { env, store, service } = await setup();
+    const app = createApp({
+      env: {
+        ...env,
+        corsOrigin: "https://first.example,https://second.example",
+      },
+      store,
+      fileService: service,
+    }).app;
+    for (const origin of ["https://first.example", "https://second.example"])
+      await request(app)
+        .get("/api/health")
+        .set("Origin", origin)
+        .expect(200)
+        .expect("Access-Control-Allow-Origin", origin);
+    await request(app)
+      .get("/api/health")
+      .set("Origin", "https://untrusted.example")
+      .expect(403);
+  });
+  it("creates an assistant conversation for the file button and avoids duplicate history", async () => {
+    const { app, auth, store, user } = await setup();
+    const assistant = store.createAssistant(user.id, {
+      name: "File Assistant",
+      description: "Documents",
+      systemPrompt: "Create useful files",
+      tone: "professional",
+      model: "standard",
+      temperature: 0.3,
+      isPublic: false,
+      enabledTools: [],
+      starterPrompts: [],
+    });
+    const input = {
+      description: "Explain artificial intelligence",
+      format: "pdf",
+      pages: 2,
+      assistantId: assistant.id,
+      requestId: randomUUID(),
+    };
+    const first = await request(app)
+      .post("/api/files/generate")
+      .set("Authorization", auth)
+      .send(input)
+      .expect(202);
+    const id = first.body.file.conversationId;
+    expect(store.getConversation(id)?.userId).toBe(user.id);
+    expect(store.listMessages(id)).toHaveLength(2);
+    await request(app)
+      .post("/api/files/generate")
+      .set("Authorization", auth)
+      .send({ ...input, conversationId: id })
+      .expect(202);
+    expect(store.listMessages(id)).toHaveLength(2);
+  });
+  it("exposes a safe actionable migration error instead of a generic failure", async () => {
+    const { app, auth, repo } = await setup();
+    vi.spyOn(repo, "assertConfigured").mockRejectedValue(
+      new HttpError(503, "internal diagnostic", "FILES_MIGRATION_REQUIRED"),
+    );
+    const result = await request(app)
+      .post("/api/files/generate")
+      .set("Authorization", auth)
+      .send({ description: "Make a PDF" })
+      .expect(503);
+    expect(result.body.error.code).toBe("FILES_MIGRATION_REQUIRED");
+    expect(result.body.error.message).toContain("migration 016");
+    expect(result.body.error.message).not.toContain("internal diagnostic");
+  });
   it("runs chat -> pipeline -> storage -> authenticated download and reload, retaining edits", async () => {
     const model = vi.fn(async (_system: string, prompt: string) => {
       const p = JSON.parse(prompt);

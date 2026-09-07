@@ -309,6 +309,8 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [apiReady, setApiReady] = useState<boolean | null>(null);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
+  const [fileFormat, setFileFormat] = useState<"pdf" | "docx" | "pptx">();
+  const [fileLength, setFileLength] = useState("");
   const [voiceStatus, setVoiceStatus] = useState<string>();
   const [assistantMeta, setAssistantMeta] = useState<AssistantMeta>();
   const [fallbackToWorkspace, setFallbackToWorkspace] = useState(false);
@@ -674,7 +676,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         body = JSON.stringify(payload);
       }
 
-      let response = await fetch(`${getPlatformBaseUrl()}${endpoint}`, {
+      let response = await fetch(`/api/workspace${endpoint.slice(4)}`, {
         method: "POST",
         headers,
         signal: controller.signal,
@@ -686,7 +688,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         const fallbackHeaders = new Headers();
         fallbackHeaders.set("Content-Type", "application/json");
         if (credential) fallbackHeaders.set("Authorization", `Bearer ${credential}`);
-        response = await fetch(`${getPlatformBaseUrl()}/api/chat`, {
+        response = await fetch("/api/workspace/chat", {
           method: "POST",
           headers: fallbackHeaders,
           signal: controller.signal,
@@ -859,6 +861,35 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   async function sendMessage(content = input) {
     const clean = content.trim();
     if (!clean || isGenerating) return;
+    if (fileFormat) {
+      if (fileLength && (!Number.isInteger(Number(fileLength)) || Number(fileLength)<1 || Number(fileLength)>50)) {
+        toast({type:"error",title:"Invalid length",message:"Choose between 1 and 50 pages or slides."});
+        return;
+      }
+      const sessionId=activeSession.id;
+      const userMessage=createMessage("user",`Create a ${fileFormat.toUpperCase()} file: ${clean}`);
+      const reply=createMessage("assistant","");
+      updateSession(sessionId,s=>({...s,title:s.messages.length?s.title:inferTitle(clean),messages:[...s.messages,userMessage,reply],updatedAt:Date.now()}));
+      setInput("");setIsGenerating(true);
+      try {
+        const {file}=await (await fileFetch("/files/generate",{
+          method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+            description:clean,format:fileFormat,requestId:crypto.randomUUID(),
+            ...(fileLength?{[fileFormat==="pptx"?"slides":"pages"]:Number(fileLength)}:{}),
+            ...(assistantId&&!fallbackToWorkspace?{assistantId}:{}),
+            ...(activeSession.conversationId?{conversationId:activeSession.conversationId}:{}),
+          }),
+        })).json() as {file:GeneratedFileView};
+        updateSession(sessionId,s=>({...s,conversationId:file.conversationId,messages:s.messages.map(m=>m.id===reply.id?{...m,generatedFileId:file.id,content:"Your file is queued. You can continue chatting while it generates."}:m),updatedAt:Date.now()}));
+        setFileFormat(undefined);setFileLength("");
+      } catch(error) {
+        const message=error instanceof Error?error.message:"The file request failed. Please retry.";
+        updateSession(sessionId,s=>({...s,messages:s.messages.map(m=>m.id===reply.id?{...m,content:`**File generation unavailable**\n\n${message}`,error:true}:m)}));
+        setInput(clean);
+        toast({type:"error",title:"File generation unavailable",message});
+      } finally {setIsGenerating(false);textareaRef.current?.focus();}
+      return;
+    }
     const attachmentsMeta = attachedFiles.map((f) => ({ name: f.name, type: f.type, size: f.size, url: URL.createObjectURL(f) }));
     const userMessage = createMessage("user", clean, attachmentsMeta.length ? attachmentsMeta : undefined);
     const assistantMessage = createMessage("assistant", "");
@@ -910,6 +941,10 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
 
   function handleFiles(files: FileList | File[] | null) {
     if (!files?.length) return;
+    if (fileFormat) {
+      toast({type:"info",title:"File generation mode",message:"Cancel file generation before attaching an existing file."});
+      return;
+    }
     if (assistantId) {
       router.push(`/assistants/${assistantId}/sources`);
       toast({ type: "info", title: "Upload on Sources", message: "Add files to your assistant knowledge base from the Sources page.", duration: 2800 });
@@ -1256,17 +1291,36 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                 }}
                 className="rounded-[clamp(0.85rem,2vw,1.1rem)] border border-[#3D3578] bg-[#12102A] p-[clamp(0.55rem,1.6vw,0.75rem)] shadow-lg shadow-black/25 transition focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-violet-500/15"
               >
+                {fileFormat && (
+                  <div className="mb-3 flex flex-wrap items-end gap-3 rounded-xl border border-violet-400/30 bg-violet-400/5 p-3" role="region" aria-label="File generation options">
+                    <label className="flex flex-col gap-1 text-xs font-semibold">
+                      File type
+                      <select aria-label="File type" value={fileFormat} disabled={isGenerating} onChange={e=>setFileFormat(e.target.value as "pdf"|"docx"|"pptx")} className="rounded-lg border border-violet-400/40 bg-inherit px-3 py-2 text-sm">
+                        <option value="pdf">PDF document</option><option value="docx">Word document</option><option value="pptx">PowerPoint presentation</option>
+                      </select>
+                    </label>
+                    <label className="flex flex-col gap-1 text-xs font-semibold">
+                      {fileFormat==="pptx"?"Slides":"Pages"} (optional)
+                      <input aria-label="File length" type="number" min={1} max={50} value={fileLength} disabled={isGenerating} onChange={e=>setFileLength(e.target.value)} placeholder="Auto" className="w-24 rounded-lg border border-violet-400/40 bg-transparent px-3 py-2 text-sm" />
+                    </label>
+                    <p className="flex-1 text-xs opacity-80">Describe your file below. Up to 50 {fileFormat==="pptx"?"slides":"pages"}.</p>
+                    <button type="button" disabled={isGenerating} onClick={()=>setFileFormat(undefined)} aria-label="Cancel file generation" className="rounded-lg p-2 hover:bg-white/10"><X className="h-4 w-4" /></button>
+                  </div>
+                )}
                 <textarea
                   ref={textareaRef}
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
                   onKeyDown={handleKeyDown}
                   rows={1}
-                  placeholder={`Message ${assistantName}...`}
+                  placeholder={fileFormat ? "Describe the file you want: topic, audience, sections, and style..." : `Message ${assistantName}...`}
                   className="dark-scrollbar max-h-[32dvh] min-h-[clamp(3rem,8vw,4rem)] w-full resize-none bg-transparent px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.7rem,2vw,0.9rem)] text-[clamp(0.9rem,2vw,1rem)] font-medium leading-6 text-white outline-none placeholder:text-slate-400"
                 />
                 <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#2A2555] px-1 pt-2">
                   <div className="flex flex-wrap items-center gap-1">
+                    <button type="button" disabled={isGenerating||attachedFiles.length>0} aria-pressed={Boolean(fileFormat)} onClick={()=>{setFileFormat(current=>current?undefined:"pdf");textareaRef.current?.focus();}} className="inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-violet-400/40 px-2.5 py-1.5 text-xs font-bold transition hover:bg-violet-400/10 disabled:opacity-50">
+                      <FileDown className="h-4 w-4" /> Generate file
+                    </button>
                     <label className="inline-grid size-10 shrink-0 cursor-pointer place-items-center rounded-xl text-[#C4B5FD] transition hover:bg-white/10 hover:text-white" aria-label="Attach file">
                       <Paperclip className="h-5 w-5" />
                       <input type="file" multiple className="hidden" onChange={(event) => handleFiles(event.target.files)} />
@@ -1358,7 +1412,9 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                     >
                       <Mic className="h-5 w-5" />
                     </button>
-                    {isGenerating ? (
+                    {isGenerating && fileFormat ? (
+                      <button type="button" disabled className="inline-flex min-h-10 items-center rounded-lg border border-violet-400/40 px-4 text-sm opacity-70">Queuing file…</button>
+                    ) : isGenerating ? (
                       <button
                         type="button"
                         onClick={stopGenerating}

@@ -73,10 +73,19 @@ export const errorHandler: ErrorRequestHandler = (error, req, res, _next) => {
   }
 
   if (error instanceof HttpError) {
+    const fileSetupMessages: Record<string,string> = {
+      FILES_MIGRATION_REQUIRED: "File generation needs a database update. Ask the administrator to apply migration 016.",
+      FILES_UNAVAILABLE: "File generation is not configured yet. Ask the administrator to configure the database, private storage, and worker.",
+      FILES_STORAGE_UNAVAILABLE: "Private file storage is unavailable. Ask the administrator to check its configuration.",
+      FILES_MODEL_UNAVAILABLE: "The document model is not configured. Ask the administrator to check the model settings.",
+      FILE_WORKER_UNAVAILABLE: "The document worker is offline. Please retry after the administrator starts the worker.",
+      FILE_STORAGE_UNAVAILABLE: "The file could not be downloaded from storage. Please retry shortly.",
+    };
+    const setupMessage = fileSetupMessages[error.code];
     return res.status(error.status).json({
       error: {
-        code: isInternal ? "INTERNAL_SERVER_ERROR" : error.code,
-        message: isInternal ? "We couldn't process your request." : error.message,
+        code: isInternal && !setupMessage ? "INTERNAL_SERVER_ERROR" : error.code,
+        message: setupMessage ?? (isInternal ? "We couldn't process your request." : error.message),
         correlationId,
         retryable: error.status === 429 || error.status === 502 || error.status === 503 || error.status === 504,
         ...(isInternal ? {} : { details: error.details })
