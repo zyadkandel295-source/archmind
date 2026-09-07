@@ -11,11 +11,30 @@ const failure = (status: number, code: string, message: string) =>
     { status, headers: { "Cache-Control": "private, no-store" } },
   );
 
+type WorkspaceRouteContext = {
+  params: { path?: string[] } | Promise<{ path?: string[] }>;
+};
+
+async function resolveRoute(context: WorkspaceRouteContext) {
+  const params = await context.params;
+  return Array.isArray(params.path) ? params.path.join("/") : "";
+}
+
+function googleFailureRedirect(request: Request, code = "server_config") {
+  const redirect = new URL("/auth/login", request.url);
+  redirect.searchParams.set("error", code);
+  const state = new URL(request.url).searchParams.get("state");
+  if (state?.startsWith("/") && !state.startsWith("//") && !state.includes("://")) {
+    redirect.searchParams.set("returnTo", state);
+  }
+  return Response.redirect(redirect, 302);
+}
+
 async function relay(
   request: Request,
-  context: { params: { path: string[] } },
+  context: WorkspaceRouteContext,
 ) {
-  const route = context.params.path.join("/");
+  const route = await resolveRoute(context);
   if (!allowed.test(route))
     return failure(404, "ROUTE_NOT_FOUND", "Route not found.");
   if (!request.headers.get("authorization") && route !== "auth/refresh" && route !== "auth/google")
@@ -63,13 +82,16 @@ async function relay(
   }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 55000);
+  const abortUpstream = () => controller.abort();
+  if (request.signal.aborted) controller.abort();
+  else request.signal.addEventListener("abort", abortUpstream, { once: true });
   try {
     const upstream = await fetch(target, {
       method: request.method,
       headers,
       cache: "no-store",
       redirect: "manual",
-      signal: AbortSignal.any([request.signal, controller.signal]),
+      signal: controller.signal,
       ...(request.method === "POST"
         ? { body: await request.arrayBuffer() }
         : {}),
@@ -111,6 +133,9 @@ async function relay(
       headers: outgoing,
     });
   } catch {
+    if (route === "auth/google") {
+      return googleFailureRedirect(request, controller.signal.aborted ? "timeout" : "server_config");
+    }
     return failure(
       controller.signal.aborted ? 504 : 502,
       "API_CONNECTION_FAILED",
@@ -120,7 +145,23 @@ async function relay(
     );
   } finally {
     clearTimeout(timeout);
+    request.signal.removeEventListener("abort", abortUpstream);
   }
 }
-export const GET = relay;
-export const POST = relay;
+async function safeRelay(request: Request, context: WorkspaceRouteContext) {
+  try {
+    return await relay(request, context);
+  } catch (error) {
+    console.error("[Workspace Relay Error]", error);
+    const route = await resolveRoute(context).catch(() => "");
+    if (route === "auth/google") return googleFailureRedirect(request);
+    return failure(
+      502,
+      "API_CONNECTION_FAILED",
+      "The chat server could not be reached. Please retry; if this continues, ask the administrator to check the API deployment.",
+    );
+  }
+}
+
+export const GET = safeRelay;
+export const POST = safeRelay;
