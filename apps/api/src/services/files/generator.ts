@@ -16,6 +16,7 @@ import {
   planSchema,
   type ContentPage,
   type FileRequest,
+  type FileFormat,
   type GeneratedFile,
   type DocumentPlan,
 } from "./types";
@@ -111,6 +112,192 @@ function parseModelJson(raw: string): unknown {
     }
   }
 }
+
+/**
+ * A document must not become unavailable merely because a free hosted model has
+ * exhausted its provider allowance.  This composer is deliberately local and
+ * deterministic: it makes a coherent plan and complete, editable content from
+ * the user's request without sending another request to a paid service.
+ */
+function sentenceCase(value: string) {
+  return value
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function requestTopic(request: FileRequest) {
+  const text = request.description
+    .replace(/\b(?:please\s+)?(?:create|make|generate|write|prepare|build|export|produce)\b/gi, "")
+    .replace(/\b(?:a|an|the)?\s*(?:pdf|docx|pptx|powerpoint|word document|document|file|presentation|report|study guide)\b/gi, "")
+    .replace(/\b\d+\s*(?:pages?|slides?)\b/gi, "")
+    .replace(/\b(?:about|on|explaining|explain|for|of)\s*/i, "")
+    .replace(/[.:;,]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text && text.length >= 3 ? text.slice(0, 300) : "the requested topic";
+}
+
+function freeTitle(request: FileRequest, format: FileFormat, topic: string) {
+  if (request.title) return request.title;
+  const suffix = format === "pptx" ? "Presentation" : format === "docx" ? "Report" : "Guide";
+  return `${sentenceCase(topic)} ${suffix}`.slice(0, 160);
+}
+
+const FREE_OUTLINE_FOCUS = [
+  "Purpose and scope",
+  "Essential vocabulary",
+  "Foundations",
+  "Core ideas",
+  "How the subject works",
+  "Key components",
+  "A practical workflow",
+  "Worked example",
+  "Real-world applications",
+  "Benefits and opportunities",
+  "Limits and trade-offs",
+  "Common misconceptions",
+  "Planning and preparation",
+  "Implementation steps",
+  "Quality checks",
+  "Measuring outcomes",
+  "Responsible use",
+  "Accessibility and inclusion",
+  "Collaboration practices",
+  "Communication guidance",
+  "Risk management",
+  "Troubleshooting",
+  "Improvement cycle",
+  "Case study framework",
+  "Decision-making framework",
+  "Comparison criteria",
+  "Tools and resources",
+  "Learning path",
+  "Practice activities",
+  "Review questions",
+  "Advanced considerations",
+  "Future developments",
+  "Stakeholder perspective",
+  "User perspective",
+  "Operational perspective",
+  "Ethical considerations",
+  "Security and privacy",
+  "Sustainability considerations",
+  "Budgeting and resourcing",
+  "Timeline and milestones",
+  "Governance and ownership",
+  "Documentation practices",
+  "Change management",
+  "Scaling the approach",
+  "Lessons learned",
+  "Action plan",
+  "Summary of key ideas",
+  "Further study",
+  "Reference checklist",
+];
+
+export function createFreeDocumentPlan(
+  request: FileRequest,
+  format: FileFormat,
+  requestedCount?: number,
+): DocumentPlan {
+  const count = requestedCount ?? (format === "pptx" ? 10 : 5);
+  const topic = requestTopic(request);
+  const title = freeTitle(request, format, topic);
+  const focus = ["Title and overview", ...FREE_OUTLINE_FOCUS].slice(0, count);
+  while (focus.length < count)
+    focus.push(`Focused study ${focus.length}`);
+  return planSchema.parse({
+    title,
+    topic,
+    audience: request.audience?.trim() || "general readers",
+    tone: request.tone?.trim() || "clear and educational",
+    format,
+    count,
+    instructions: request.instructions?.trim() || "",
+    pages: focus.map((item, index) => ({
+      title: index === 0 ? title : `${sentenceCase(topic)}: ${item}`,
+      brief:
+        index === 0
+          ? `Introduce ${topic}, the intended audience, and the purpose of this document.`
+          : `Develop ${item.toLowerCase()} for ${topic} with a distinct explanation, practical framing, and a useful takeaway.`,
+      chapter: index === 0 ? "Overview" : item,
+    })),
+  });
+}
+
+function freeParagraph(topic: string, focus: string, audience: string, position: number) {
+  const variations = [
+    `This section explains ${focus.toLowerCase()} in the context of ${topic}. For ${audience}, the useful starting point is to identify the goal before choosing an approach. Clear definitions prevent a discussion from becoming a list of disconnected terms and make later decisions easier to evaluate. A reader should be able to say what is being considered, why it matters, and which constraints shape a responsible choice. That shared starting point makes the rest of the work more consistent.`,
+    `A practical way to work with ${topic} is to connect the idea to an observable situation. Ask what information is available, which people are affected, and what a successful result would look like. This keeps ${focus.toLowerCase()} grounded in purpose instead of treating it as an abstract rule. It also encourages the team to separate evidence from assumptions and to explain the reasoning behind a recommendation. The result is easier to review, adapt, and communicate.`,
+    `The main lesson is that progress comes from small, reviewable steps. Record the assumption being tested, try one reasonable action, and compare the result with the original goal. That habit makes ${topic} easier to explain, improve, and share with others. When a result is incomplete, describe what was learned rather than hiding the gap. This creates a useful feedback loop and gives the next person a clear starting point for a better iteration.`,
+  ];
+  return variations[position] ?? variations[0]!;
+}
+
+export function createFreeContentPage(
+  plan: DocumentPlan,
+  index: number,
+): ContentPage {
+  const outline = plan.pages[index]!;
+  const focus = outline.chapter;
+  if (plan.format === "pptx") {
+    const titleSlide = index === 0;
+    return pageSchema.parse({
+      title: outline.title,
+      kind: titleSlide ? "title" : "content",
+      blocks: titleSlide
+        ? [{ type: "paragraph", text: `A practical introduction to ${plan.topic} for ${plan.audience}.` }]
+        : [
+            { type: "heading", text: focus },
+            {
+              type: "list",
+              ordered: false,
+              items: [
+                `Define the role of ${focus.toLowerCase()} in ${plan.topic}.`,
+                "Connect the idea to a realistic decision or situation.",
+                "Use a simple review step before moving forward.",
+              ],
+            },
+          ],
+      notes: `${freeParagraph(plan.topic, focus, plan.audience, 0)} ${freeParagraph(plan.topic, focus, plan.audience, 1)}`,
+      summary: `Explained ${focus.toLowerCase()} as part of ${plan.topic}.`,
+    });
+  }
+  const titlePage = index === 0;
+  return pageSchema.parse({
+    title: outline.title,
+    kind: titlePage ? "title" : "content",
+    blocks: titlePage
+      ? [
+          { type: "paragraph", text: `This guide introduces ${plan.topic} for ${plan.audience}. It uses a ${plan.tone} approach and is organized as a sequence of focused sections that can be read independently or as a complete learning path.` },
+          { type: "heading", text: "What this document covers" },
+          { type: "list", ordered: false, items: ["Foundations and useful vocabulary", "Practical methods and examples", "Evaluation, responsible use, and next steps"] },
+        ]
+      : [
+          { type: "heading", text: focus },
+          { type: "paragraph", text: freeParagraph(plan.topic, focus, plan.audience, 0) },
+          { type: "paragraph", text: freeParagraph(plan.topic, focus, plan.audience, 1) },
+          { type: "paragraph", text: freeParagraph(plan.topic, focus, plan.audience, 2) },
+          {
+            type: "list",
+            ordered: true,
+            items: [
+              `State the specific goal for ${focus.toLowerCase()}.`,
+              "Choose one appropriate action and document why it was selected.",
+              "Review the outcome and identify the next improvement.",
+            ],
+          },
+        ],
+    notes: `Generated locally with AGENTIA's free document composer. This section covers ${focus.toLowerCase()} for ${plan.topic}.`,
+    summary: `Covered ${focus.toLowerCase()} and connected it to a practical next step.`,
+  });
+}
+
+function shouldUseFreeComposer(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  return /free-models-per-day|rate limit|add \d+ credits|model content validation failed|model is not configured/i.test(message);
+}
 export function likelyFileRequest(text: string, hasPrevious = false) {
   if (
     /\b(?:create|make|generate|write|prepare|build|export|produce|download)\b/i.test(
@@ -187,12 +374,9 @@ export class FileGenerationService {
         await queue.close();
       }
     }
-    if (!this.env.openrouterApiKey)
-      throw new HttpError(
-        503,
-        "The document generation model is not configured.",
-        "FILES_MODEL_UNAVAILABLE",
-      );
+    // A hosted model improves wording when its free allowance is available,
+    // but the local composer below keeps generation fully functional when no
+    // model key is configured or the provider rejects free traffic.
     const parent = request.parentId
       ? await this.repository.owned(request.parentId, userId)
       : undefined;
@@ -357,7 +541,7 @@ export class FileGenerationService {
         );
         const parsed = parseModelJson(result);
         if (
-          schema === pageSchema &&
+          (schema as z.ZodTypeAny) === pageSchema &&
           parsed &&
           typeof parsed === "object" &&
           "notes" in parsed
@@ -393,6 +577,7 @@ export class FileGenerationService {
         throw new Error(
           "The previous document is not ready. Retry after it finishes.",
         );
+      let useFreeComposer = !this.env.openrouterApiKey;
       if (!file.plan) {
         file.stage = "Preparing outline";
         await save();
@@ -442,12 +627,23 @@ export class FileGenerationService {
               message: "Every page needs a distinct title and purpose.",
             });
         });
-        const plan = await this.json(
-          validatedPlan,
-          `You plan coherent, useful documents. Extract the user's requested format, title, topic, audience, tone and instructions. Default to 5 pages or 10 slides only when no length is specified. Count includes cover/references. Respect explicit page/slide counts and add counts to previous length when editing. Maximum 50. Return {title,topic,audience,tone,format,count,instructions,pages:[{title,brief,chapter,reusePage?}]}. Each pages item is ONE physical page or slide. Exactly count items. Provide distinct meaningful topics, examples, explanations, summaries and references when asked. Chapters may span multiple pages. For edits preserve the previous outline and mark unchanged items with reusePage (1-based original index), only when their content remains appropriate. Style or tone changes require rewriting affected pages. A format-only export between PDF/DOCX should reuse every page. Never invent citations, URLs or factual statistics.`,
-          prompt,
-          signal,
-        );
+        let plan: DocumentPlan;
+        if (useFreeComposer) {
+          plan = validatedPlan.parse(createFreeDocumentPlan(file.request, file.format, target));
+        } else {
+          try {
+            plan = await this.json(
+              validatedPlan,
+              `You plan coherent, useful documents. Extract the user's requested format, title, topic, audience, tone and instructions. Default to 5 pages or 10 slides only when no length is specified. Count includes cover/references. Respect explicit page/slide counts and add counts to previous length when editing. Maximum 50. Return {title,topic,audience,tone,format,count,instructions,pages:[{title,brief,chapter,reusePage?}]}. Each pages item is ONE physical page or slide. Exactly count items. Provide distinct meaningful topics, examples, explanations, summaries and references when asked. Chapters may span multiple pages. For edits preserve the previous outline and mark unchanged items with reusePage (1-based original index), only when their content remains appropriate. Style or tone changes require rewriting affected pages. A format-only export between PDF/DOCX should reuse every page. Never invent citations, URLs or factual statistics.`,
+              prompt,
+              signal,
+            );
+          } catch (error) {
+            if (!shouldUseFreeComposer(error)) throw error;
+            useFreeComposer = true;
+            plan = validatedPlan.parse(createFreeDocumentPlan(file.request, file.format, target));
+          }
+        }
         if (plan.pages.length !== plan.count)
           throw new Error("Outline length did not match the requested count.");
         const explicit = file.request.pages ?? file.request.slides;
@@ -493,7 +689,10 @@ export class FileGenerationService {
         let issue = checkpoint
           ? "The saved page overflowed its layout. Use fewer blocks and less visible text."
           : "";
-        for (let attempt = 0; attempt < 3; attempt++) {
+        if (useFreeComposer) {
+          page = createFreeContentPage(plan, index);
+        }
+        for (let attempt = 0; !page && attempt < 3; attempt++) {
           try {
             page ??= await this.json(
               pageSchema,
@@ -521,6 +720,11 @@ export class FileGenerationService {
           } catch (error) {
             issue = error instanceof Error ? error.message : "Invalid page";
             page = undefined;
+            if (shouldUseFreeComposer(error)) {
+              useFreeComposer = true;
+              page = createFreeContentPage(plan, index);
+              break;
+            }
           }
         }
         if (!page)

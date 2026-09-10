@@ -14,6 +14,8 @@ import { FileRepository } from "../src/services/files/repository";
 import { HttpError } from "../src/lib/http-error";
 import {
   FileGenerationService,
+  createFreeContentPage,
+  createFreeDocumentPlan,
   fileGenerationModelId,
   likelyFileRequest,
   validatePageContent,
@@ -252,6 +254,25 @@ describe("file service ownership and persistence", () => {
     );
     expect(fileGenerationModelId("nex-agi/nex-n2.5-mini:free")).toBe(
       "nex-agi/nex-n2.5-mini:free",
+    );
+  });
+  it("creates a complete local document when a free model has no quota", () => {
+    const documentPlan = createFreeDocumentPlan(
+      {
+        format: "pdf",
+        pages: 5,
+        description: "Create a 5 page PDF explaining artificial intelligence for beginners",
+      },
+      "pdf",
+      5,
+    );
+    const pages = documentPlan.pages.map((_, index) =>
+      createFreeContentPage(documentPlan, index),
+    );
+    expect(documentPlan.count).toBe(5);
+    expect(new Set(documentPlan.pages.map((page) => page.title)).size).toBe(5);
+    pages.forEach((page, index) =>
+      validatePageContent(page, documentPlan, index, pages),
     );
   });
   it("normalizes structured speaker notes returned by free providers", async () => {
