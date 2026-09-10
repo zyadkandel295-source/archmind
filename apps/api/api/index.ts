@@ -23,7 +23,10 @@ function sendBootFailure(req: any, res: any, error: unknown) {
   console.error("[API Boot Error]", message);
 
   const requestUrl = new URL(req.url ?? "/", "https://agentia.local");
-  if (requestUrl.pathname === "/api/auth/google") {
+  if (
+    requestUrl.pathname === "/api/auth/google" ||
+    requestUrl.pathname === "/api/workspace/auth/google"
+  ) {
     const redirect = new URL("/auth/login", appUrlFromEnv());
     redirect.searchParams.set("error", "server_config");
     redirect.searchParams.set("returnTo", safeReturnPath(requestUrl.searchParams.get("state")));

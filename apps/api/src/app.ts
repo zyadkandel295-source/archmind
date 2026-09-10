@@ -195,6 +195,10 @@ export function createApp(options: AppOptions = {}) {
   });
 
   app.use("/api/auth", authRouter(env, store));
+  // The web workspace gateway forwards Google sign-in here. Keeping this
+  // alias on the API makes OAuth work with both the current web deployment
+  // and newer deployments that use the workspace relay.
+  app.use("/api/workspace/auth", authRouter(env, store));
   app.use("/api/assistants", assistantsV2Router(env, store));
   app.use("/api/v1/assistants", assistantsRouter(env, store));
 

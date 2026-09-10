@@ -170,6 +170,25 @@ describe("ArchMind API", () => {
   });
 
   describe("Google OAuth handoff", () => {
+    it("starts Google OAuth through the workspace gateway alias", async () => {
+      const app = createApp({
+        env: {
+          ...testEnv,
+          googleClientId: "google-client",
+          googleClientSecret: "google-secret"
+        }
+      }).app;
+
+      const response = await request(app)
+        .get("/api/workspace/auth/google?state=%2Fprofile")
+        .expect(302);
+
+      const redirectUrl = new URL(response.headers.location);
+      expect(redirectUrl.origin).toBe("https://accounts.google.com");
+      expect(redirectUrl.searchParams.get("state")).toBe("/profile");
+      expect(redirectUrl.searchParams.get("client_id")).toBe("google-client");
+    });
+
     it("redirects with a single-use handoff code instead of tokens", async () => {
       const app = createApp({
         env: {
