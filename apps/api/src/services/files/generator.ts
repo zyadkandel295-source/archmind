@@ -134,6 +134,7 @@ function requestTopic(request: FileRequest) {
     .replace(/\b(?:about|on|explaining|explain|for|of)\s*/i, "")
     .replace(/[.:;,]+/g, " ")
     .replace(/\s+/g, " ")
+    .trim()
     .replace(/^(?:(?:a|an|the|file|document|that|which|to|please)\s+)+/i, "")
     .trim();
   return text && text.length >= 3 ? text.slice(0, 300) : "the requested topic";

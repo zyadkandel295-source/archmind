@@ -18,7 +18,6 @@ import {
 } from "docx";
 import PptxGenJS from "pptxgenjs";
 import JSZip from "jszip";
-import path from "node:path";
 import {
   ContentPage,
   DocumentPlan,
@@ -28,28 +27,21 @@ import {
 } from "./types";
 
 const plain = (s: string) => s.replace(/\*\*([^*]+)\*\*|\*([^*]+)\*/g, "$1$2");
-let hasBundledFonts: boolean | undefined;
+// Static paths are visible to Vercel's output-file tracer.  Supplying a font
+// in the constructor also stops PDFKit from lazily loading its optional
+// Helvetica module, which is absent from some serverless bundles.
+const PDF_FONTS = {
+  Body: require.resolve("dejavu-fonts-ttf/ttf/DejaVuSans.ttf"),
+  Bold: require.resolve("dejavu-fonts-ttf/ttf/DejaVuSans-Bold.ttf"),
+  Italic: require.resolve("dejavu-fonts-ttf/ttf/DejaVuSans-Oblique.ttf"),
+} as const;
 function setupFonts(doc: PDFKit.PDFDocument) {
-  if (hasBundledFonts === false) return;
-  try {
-    const fonts = path.join(
-      path.dirname(require.resolve("dejavu-fonts-ttf/package.json")),
-      "ttf",
-    );
-    doc.registerFont("Body", path.join(fonts, "DejaVuSans.ttf"));
-    doc.registerFont("Bold", path.join(fonts, "DejaVuSans-Bold.ttf"));
-    doc.registerFont("Italic", path.join(fonts, "DejaVuSans-Oblique.ttf"));
-    hasBundledFonts = true;
-  } catch {
-    // Vercel's output-file tracer can omit optional font packages. PDFKit's
-    // built-in fonts preserve selectable text instead of crashing every API
-    // route when a bundled font is unavailable.
-    hasBundledFonts = false;
-  }
+  doc.registerFont("Body", PDF_FONTS.Body);
+  doc.registerFont("Bold", PDF_FONTS.Bold);
+  doc.registerFont("Italic", PDF_FONTS.Italic);
 }
 function pdfFont(name: "Body" | "Bold" | "Italic") {
-  if (hasBundledFonts !== false) return name;
-  return name === "Bold" ? "Helvetica-Bold" : name === "Italic" ? "Helvetica-Oblique" : "Helvetica";
+  return name;
 }
 function runs(text: string) {
   return text
@@ -209,6 +201,7 @@ export async function validateContentPage(
 async function pdf(plan: DocumentPlan, pages: ContentPage[]) {
   const doc = new PDFDocument({
     autoFirstPage: false,
+    font: PDF_FONTS.Body,
     info: { Title: plan.title, Author: "AGENTIA", Subject: plan.topic },
   });
   const chunks: Buffer[] = [];
