@@ -1,5 +1,4 @@
-import PDFDocument from "pdfkit";
-import { PDFDocument as PdfReader } from "pdf-lib";
+import { PDFDocument as PdfReader, StandardFonts, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 import {
   Document,
   Packer,
@@ -27,22 +26,6 @@ import {
 } from "./types";
 
 const plain = (s: string) => s.replace(/\*\*([^*]+)\*\*|\*([^*]+)\*/g, "$1$2");
-// Static paths are visible to Vercel's output-file tracer.  Supplying a font
-// in the constructor also stops PDFKit from lazily loading its optional
-// Helvetica module, which is absent from some serverless bundles.
-const PDF_FONTS = {
-  Body: require.resolve("dejavu-fonts-ttf/ttf/DejaVuSans.ttf"),
-  Bold: require.resolve("dejavu-fonts-ttf/ttf/DejaVuSans-Bold.ttf"),
-  Italic: require.resolve("dejavu-fonts-ttf/ttf/DejaVuSans-Oblique.ttf"),
-} as const;
-function setupFonts(doc: PDFKit.PDFDocument) {
-  doc.registerFont("Body", PDF_FONTS.Body);
-  doc.registerFont("Bold", PDF_FONTS.Bold);
-  doc.registerFont("Italic", PDF_FONTS.Italic);
-}
-function pdfFont(name: "Body" | "Bold" | "Italic") {
-  return name;
-}
 function runs(text: string) {
   return text
     .split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g)
@@ -56,116 +39,107 @@ function runs(text: string) {
         }),
     );
 }
-function pdfPage(
-  doc: PDFKit.PDFDocument,
-  page: ContentPage,
-  title: string,
+
+function wrapPdfText(text: string, font: PDFFont, size: number, width: number) {
+  const lines: string[] = [];
+  let line = "";
+  for (const word of plain(text).split(/\s+/).filter(Boolean)) {
+    const candidate = line ? `${line} ${word}` : word;
+    if (line && font.widthOfTextAtSize(candidate, size) > width) {
+      lines.push(line);
+      line = word;
+    } else line = candidate;
+  }
+  if (line) lines.push(line);
+  return lines.length ? lines : [""];
+}
+
+function drawPdfLines(
+  page: PDFPage,
+  lines: string[],
+  x: number,
+  y: number,
+  font: PDFFont,
+  size: number,
+  color: ReturnType<typeof rgb>,
+  lineHeight: number,
+) {
+  lines.forEach((line, index) =>
+    page.drawText(line, { x, y: y - index * lineHeight, font, size, color }),
+  );
+}
+
+function drawPdfPage(
+  output: PDFPage,
+  content: ContentPage,
+  documentTitle: string,
   number: number,
   count: number,
+  body: PDFFont,
+  bold: PDFFont,
 ) {
-  doc.addPage({
-    size: "LETTER",
-    margins: { top: 60, bottom: 60, left: 54, right: 54 },
+  const left = 54;
+  const width = 504;
+  const minimumY = 58;
+  output.drawText(documentTitle.slice(0, 120), {
+    x: left,
+    y: 764,
+    font: body,
+    size: 8,
+    color: rgb(0.39, 0.45, 0.55),
   });
-  setupFonts(doc);
-  doc
-    .font(pdfFont("Body"))
-    .fontSize(8)
-    .fillColor("#64748b")
-    .text(title, 54, 28, { width: 504, lineBreak: false });
-  const bottom = doc.page.margins.bottom;
-  doc.page.margins.bottom = 0;
-  doc.text(`${number} / ${count}`, 54, 752, {
-    width: 504,
-    align: "right",
-    lineBreak: false,
+  const pageNumber = `${number} / ${count}`;
+  output.drawText(pageNumber, {
+    x: 558 - body.widthOfTextAtSize(pageNumber, 8),
+    y: 28,
+    font: body,
+    size: 8,
+    color: rgb(0.39, 0.45, 0.55),
   });
-  doc.page.margins.bottom = bottom;
-  doc.y = 66;
-  const write = (text: string, size = 11, bold = false, indent = 0) => {
-    // Measure every block before drawing: never clip or silently spill into an extra page.
-    doc.font(pdfFont(bold ? "Bold" : "Body")).fontSize(size);
-    const height = doc.heightOfString(plain(text), {
-      width: 504 - indent,
-      lineGap: 3,
-    });
-    if (doc.y + height > 716)
-      throw new Error(
-        `Page ${number} is too dense. Reduce content or split the section.`,
-      );
-    doc
-      .fillColor(bold ? "#172554" : "#1e293b")
-      .text(plain(text), 54 + indent, doc.y, {
-        width: 504 - indent,
-        lineGap: 3,
-      });
-    doc.y += 8;
+  let y = 724;
+  const write = (text: string, size: number, font: PDFFont, indent = 0) => {
+    const lineHeight = size + 3;
+    const lines = wrapPdfText(text, font, size, width - indent);
+    const height = lines.length * lineHeight;
+    if (y - height < minimumY)
+      throw new Error(`Page ${number} is too dense. Reduce content or split the section.`);
+    drawPdfLines(output, lines, left + indent, y, font, size, rgb(0.12, 0.16, 0.23), lineHeight);
+    y -= height + 8;
   };
-  write(page.title, page.kind === "title" ? 28 : 20, true);
-  for (const block of page.blocks) {
-    if (block.type === "paragraph") {
-      // Rich text runs retain native selectable text.
-      const height = doc
-        .font(pdfFont("Body"))
-        .fontSize(11)
-        .heightOfString(plain(block.text), { width: 504, lineGap: 3 });
-      if (doc.y + height + 5 > 716)
-        throw new Error(`Page ${number} is too dense.`);
-      const parts = block.text
-        .split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g)
-        .filter(Boolean);
-      const y = doc.y;
-      parts.forEach((t, i) => {
-        doc
-          .font(pdfFont(t.startsWith("**") ? "Bold" : t.startsWith("*") ? "Italic" : "Body"))
-          .fontSize(11)
-          .fillColor("#1e293b");
-        const options = {
-          width: 504,
-          lineGap: 3,
-          continued: i < parts.length - 1,
-        };
-        if (i === 0) doc.text(plain(t), 54, y, options);
-        else doc.text(plain(t), options);
-      });
-      if (doc.y > 716) throw new Error(`Page ${number} is too dense.`);
-      doc.y += 8;
-    } else if (block.type === "heading") write(block.text, 13, true);
+  write(content.title, content.kind === "title" ? 28 : 20, bold);
+  for (const block of content.blocks) {
+    if (block.type === "paragraph") write(block.text, 11, body);
+    else if (block.type === "heading") write(block.text, 13, bold);
     else if (block.type === "list" || block.type === "diagram") {
       const items = block.type === "list" ? block.items : block.steps;
-      items.forEach((item, i) =>
-        write(
-          `${block.type === "diagram" || block.ordered ? `${i + 1}.` : "•"} ${item}`,
-          11,
-          false,
-          10,
-        ),
+      items.forEach((item, index) =>
+        write(`${block.type === "diagram" || block.ordered ? `${index + 1}.` : "-"} ${item}`, 11, body, 10),
       );
     } else {
       const rows = [block.headers, ...block.rows];
-      const width = 504 / block.headers.length;
-      rows.forEach((row, index) => {
-        doc.font(pdfFont(index === 0 ? "Bold" : "Body")).fontSize(9);
-        const height =
-          Math.max(
-            ...row.map((cell) =>
-              doc.heightOfString(plain(cell), { width: width - 16 }),
-            ),
-          ) + 16;
-        if (doc.y + height > 716)
+      const columnWidth = width / block.headers.length;
+      rows.forEach((row, rowIndex) => {
+        const font = rowIndex === 0 ? bold : body;
+        const cells = row.map((cell) => wrapPdfText(cell, font, 9, columnWidth - 16));
+        const height = Math.max(...cells.map((lines) => lines.length)) * 11 + 16;
+        if (y - height < minimumY)
           throw new Error(`Page ${number} table exceeds the page.`);
-        const y = doc.y;
-        row.forEach((cell, col) => {
-          doc
-            .rect(54 + col * width, y, width, height)
-            .fillAndStroke(index === 0 ? "#e2e8f0" : "#ffffff", "#cbd5e1");
-          doc
-            .fillColor("#1e293b")
-            .text(plain(cell), 62 + col * width, y + 8, { width: width - 16 });
+        row.forEach((_, column) => {
+          const x = left + column * columnWidth;
+          output.drawRectangle({
+            x,
+            y: y - height,
+            width: columnWidth,
+            height,
+            color: rowIndex === 0 ? rgb(0.89, 0.92, 0.96) : rgb(1, 1, 1),
+            borderColor: rgb(0.8, 0.84, 0.9),
+            borderWidth: 0.5,
+          });
+          drawPdfLines(output, cells[column]!, x + 8, y - 11, font, 9, rgb(0.12, 0.16, 0.23), 11);
         });
-        doc.y = y + height;
+        y -= height;
       });
-      doc.y += 10;
+      y -= 10;
     }
   }
 }
@@ -182,13 +156,9 @@ export function assertPageFits(
       );
     return;
   }
-  const doc = new PDFDocument({ autoFirstPage: false });
-  doc.on("data", () => undefined);
-  try {
-    pdfPage(doc, page, plan.title, index + 1, plan.count);
-  } finally {
-    doc.end();
-  }
+  const words = pageText(page).split(/\s+/).filter(Boolean).length;
+  if (words > 430 || page.blocks.length > 10)
+    throw new Error(`Page ${index + 1} is too dense. Reduce content or split the section.`);
 }
 export async function validateContentPage(
   page: ContentPage,
@@ -199,22 +169,16 @@ export async function validateContentPage(
   if (plan.format === "pptx") await powerpoint({ ...plan, count: 1 }, [page]);
 }
 async function pdf(plan: DocumentPlan, pages: ContentPage[]) {
-  const doc = new PDFDocument({
-    autoFirstPage: false,
-    font: PDF_FONTS.Body,
-    info: { Title: plan.title, Author: "AGENTIA", Subject: plan.topic },
-  });
-  const chunks: Buffer[] = [];
-  const done = new Promise<Buffer>((resolve, reject) => {
-    doc.on("data", (chunk) => chunks.push(chunk));
-    doc.on("end", () => resolve(Buffer.concat(chunks)));
-    doc.on("error", reject);
-  });
-  pages.forEach((page, i) =>
-    pdfPage(doc, page, plan.title, i + 1, pages.length),
+  const doc = await PdfReader.create();
+  doc.setTitle(plan.title);
+  doc.setAuthor("AGENTIA");
+  doc.setSubject(plan.topic);
+  const body = await doc.embedFont(StandardFonts.Helvetica);
+  const bold = await doc.embedFont(StandardFonts.HelveticaBold);
+  pages.forEach((page, index) =>
+    drawPdfPage(doc.addPage([612, 792]), page, plan.title, index + 1, pages.length, body, bold),
   );
-  doc.end();
-  return done;
+  return Buffer.from(await doc.save());
 }
 async function word(plan: DocumentPlan, pages: ContentPage[]) {
   const children: (Paragraph | Table)[] = [];
@@ -405,25 +369,18 @@ async function powerpoint(plan: DocumentPlan, pages: ContentPage[]) {
     page.blocks.forEach((block) => {
       if (block.type === "table") {
         // Reserve the measured height of every wrapped row before placing the next block.
-        const measure = new PDFDocument();
-        measure.resume();
-        setupFonts(measure);
-        measure.font(pdfFont("Body")).fontSize(16);
         const rowH = [block.headers, ...block.rows].map((row) =>
           Math.max(
             0.46,
             ...row.map(
               (cell) =>
-                measure.heightOfString(plain(cell), {
-                  width: (11.9 / block.headers.length) * 72 - 18,
-                  lineGap: 2,
-                }) /
-                  72 +
-                0.2,
+                Math.ceil(
+                  plain(cell).length /
+                    Math.max(12, Math.floor((11.9 / block.headers.length) * 8)),
+                ) * 0.28 + 0.2,
             ),
           ),
         );
-        measure.end();
         const tableHeight = rowH.reduce((sum, height) => sum + height, 0);
         if (y + tableHeight > 6.8)
           throw new Error(
