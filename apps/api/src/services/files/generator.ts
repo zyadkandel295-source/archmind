@@ -92,6 +92,25 @@ function normalizeGeneratedNotes(value: unknown): unknown {
       .join("\n");
   return String(value);
 }
+
+function parseModelJson(raw: string): unknown {
+  const json = raw
+    .trim()
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/, "");
+  try {
+    return JSON.parse(json);
+  } catch (initialError) {
+    // Free providers occasionally leave a trailing comma in otherwise valid
+    // JSON. Repair only that unambiguous variation; malformed content still
+    // follows the normal retry-and-validation path.
+    try {
+      return JSON.parse(json.replace(/,\s*([}\]])/g, "$1"));
+    } catch {
+      throw initialError;
+    }
+  }
+}
 export function likelyFileRequest(text: string, hasPrevious = false) {
   if (
     /\b(?:create|make|generate|write|prepare|build|export|produce|download)\b/i.test(
@@ -336,12 +355,7 @@ export class FileGenerationService {
           `${prompt}${problem ? `\nPrevious response was invalid: ${problem}. Correct it.` : ""}`,
           signal,
         );
-        const parsed = JSON.parse(
-            result
-              .trim()
-              .replace(/^```(?:json)?\s*/i, "")
-              .replace(/\s*```$/, ""),
-          );
+        const parsed = parseModelJson(result);
         if (
           schema === pageSchema &&
           parsed &&
