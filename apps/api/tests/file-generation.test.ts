@@ -18,6 +18,7 @@ import {
   validatePageContent,
 } from "../src/services/files/generator";
 import { renderFile, validateFile } from "../src/services/files/render";
+import { usesManagedVercelFileQueue } from "../src/services/files/queue-runtime";
 import {
   cleanFilename,
   fileRequestSchema,
@@ -241,6 +242,14 @@ async function setup(
   };
 }
 describe("file service ownership and persistence", () => {
+  it("uses Vercel's managed queue in serverless production while preserving the BullMQ override", () => {
+    vi.stubEnv("VERCEL", "1");
+    expect(usesManagedVercelFileQueue()).toBe(true);
+    vi.stubEnv("FILE_GENERATION_QUEUE_BACKEND", "bullmq");
+    expect(usesManagedVercelFileQueue()).toBe(false);
+    vi.stubEnv("FILE_GENERATION_QUEUE_BACKEND", "vercel");
+    expect(usesManagedVercelFileQueue()).toBe(true);
+  });
   it("accepts multiple configured browser origins without an invalid CSP", async () => {
     const { env, store, service } = await setup();
     const app = createApp({

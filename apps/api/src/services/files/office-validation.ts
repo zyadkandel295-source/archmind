@@ -5,6 +5,7 @@ import { pathToFileURL } from "node:url";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { PDFDocument } from "pdf-lib";
+import { usesManagedVercelFileQueue } from "./queue-runtime";
 const execute = promisify(execFile);
 
 // Office clients paginate editable text. Validate that pagination in an actual
@@ -16,7 +17,11 @@ export async function validateOfficePagination(
 ) {
   const executable = process.env.FILE_GENERATION_SOFFICE;
   if (!executable) {
-    if (process.env.NODE_ENV === "production" && format === "docx")
+    if (
+      process.env.NODE_ENV === "production" &&
+      format === "docx" &&
+      !usesManagedVercelFileQueue()
+    )
       throw new Error(
         "The document worker requires FILE_GENERATION_SOFFICE for Office layout validation.",
       );

@@ -9,12 +9,12 @@ Chat and private file requests use the same-origin `/api/workspace/*` relay. Set
 ## Production setup
 
 1. Apply `db/migrations/016_file_generation.sql` with a database administrator connection. It adds `generated_files` and the private Supabase bucket. The existing `agentia_worker` role receives SELECT, INSERT and UPDATE privileges. Other deployments must grant these privileges to their trusted server database role, which must bypass RLS. Browser roles have no table or object access.
-2. API and worker need the same `DATABASE_URL`, `REDIS_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `OPENROUTER_API_KEY`, and signing configuration. Never expose the service-role key to the frontend.
-3. Run `node apps/api/dist/worker.js` as a persistent process using the API Docker image. Do not run it as a Vercel function. The images include LibreOffice for Office pagination checks. PDFs embed redistributable DejaVu fonts.
+2. API and worker need the same `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `OPENROUTER_API_KEY`, and signing configuration. Never expose the service-role key to the frontend. Non-Vercel deployments also need `REDIS_URL`.
+3. On Vercel, AGENTIA uses the managed private `archmind-file-generation` queue configured in `apps/api/vercel.json`; it does not require a daemon or a worker heartbeat. Elsewhere, run `node apps/api/dist/worker.js` as a persistent process using the API Docker image and `REDIS_URL`. The images include LibreOffice for Office pagination checks. PDFs embed redistributable DejaVu fonts.
 4. `FILE_GENERATION_MODEL` optionally overrides the existing model. The service normalizes the retired `nvidia/nemotron-3-ultra:free` identifier to `nvidia/nemotron-3-ultra-550b-a55b:free`. Provider quotas and availability still apply.
-5. `FILE_GENERATION_SOFFICE` points to the worker's LibreOffice executable. Docker sets `/usr/bin/soffice`. Production DOCX generation requires Office pagination validation. Other clients or changed fonts may repaginate editable documents after download.
+5. `FILE_GENERATION_SOFFICE` points to the worker's LibreOffice executable. Docker sets `/usr/bin/soffice` and validates DOCX pagination in a real Office engine. Vercel validates the native DOCX archive and labels its page count as an estimate when no Office engine is available. Other clients or changed fonts may repaginate editable documents after download.
 
-The API checks the schema, bucket privacy and worker heartbeat before admitting production jobs. Missing prerequisites return 503. Deployment is not complete until live database/storage/worker acceptance tests pass.
+The API checks the schema and bucket privacy before admitting production jobs. On Vercel, durable queue admission verifies the worker path; elsewhere it also checks the BullMQ worker heartbeat. Missing prerequisites return 503. Deployment is not complete until live database/storage/worker acceptance tests pass.
 
 ## Local development
 
@@ -72,7 +72,7 @@ On Windows, `scripts/verify-generated-office.ps1 -Directory <output>` opens test
 - LibreOffice successfully opened the Word report and both presentations. Visual review informed stricter outline/placeholder validation and measured presentation table spacing. Deterministic tests exercise these safeguards; the subsequent large-file rerun was stopped at the user's request to finalize and push.
 - The production private `generated-files` bucket was created. An actual generated PDF passed upload/readback equality and unauthenticated public-access denial. The temporary test object was removed; the private bucket remains.
 - Automated browser testing reached a real queued/completed card, but cross-origin download automation on the local Edge setup failed. This is not recorded as a passing browser acceptance test; user-confirmed downloads are separate evidence.
-- **Production activation remains pending:** the configured `agentia_worker` database role lacks CREATE privilege and migration 016 is not applied. An administrator must apply the migration, deploy the API and persistent worker, and verify the production database → private storage → authenticated download path. Pushing this code does not apply that migration.
+- **Production activation:** migration 016 and the private bucket are applied. Vercel deployments use its managed durable queue for document work; non-Vercel deployments retain the persistent BullMQ worker. Verify a production job after each worker deployment because queue consumer configuration is deployment-specific.
 
 Infrastructure verification (requires configured server credentials):
 

@@ -2,6 +2,17 @@
   "functions": {
     "api/index.ts": {
       "includeFiles": "storage/ai-base/**"
+    },
+    "api/file-worker.ts": {
+      "includeFiles": "storage/ai-base/**",
+      "experimentalTriggers": [
+        {
+          "type": "queue/v2beta",
+          "topic": "archmind-file-generation",
+          "retryAfterSeconds": 60,
+          "initialDelaySeconds": 0
+        }
+      ]
     }
   },
   "redirects": [

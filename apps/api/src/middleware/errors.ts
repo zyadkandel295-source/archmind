@@ -78,7 +78,7 @@ export const errorHandler: ErrorRequestHandler = (error, req, res, _next) => {
       FILES_UNAVAILABLE: "File generation is not configured yet. Ask the administrator to configure the database, private storage, and worker.",
       FILES_STORAGE_UNAVAILABLE: "Private file storage is unavailable. Ask the administrator to check its configuration.",
       FILES_MODEL_UNAVAILABLE: "The document model is not configured. Ask the administrator to check the model settings.",
-      FILE_WORKER_UNAVAILABLE: "The document worker is offline. Please retry after the administrator starts the worker.",
+      FILE_WORKER_UNAVAILABLE: "The document-generation queue is temporarily unavailable. Please try again shortly.",
       FILE_STORAGE_UNAVAILABLE: "The file could not be downloaded from storage. Please retry shortly.",
     };
     const setupMessage = fileSetupMessages[error.code];

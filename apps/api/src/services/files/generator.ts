@@ -1,10 +1,12 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { Queue } from "bullmq";
+import { send as sendVercelQueue } from "@vercel/queue";
 import type { Env } from "../../config/env";
 import { HttpError } from "../../lib/http-error";
 import { generateAiResponse } from "../ai-service";
 import { FileRepository } from "./repository";
+import { usesManagedVercelFileQueue } from "./queue-runtime";
 import { validateContentPage, renderFile } from "./render";
 import { validateOfficePagination } from "./office-validation";
 import {
@@ -125,7 +127,7 @@ export class FileGenerationService {
   }
   async submit(userId: string, request: FileRequest) {
     await this.repository.assertConfigured();
-    if (this.env.nodeEnv === "production") {
+    if (this.env.nodeEnv === "production" && !usesManagedVercelFileQueue()) {
       const queue = new Queue(FILE_QUEUE, {
         prefix: this.queuePrefix,
         connection: { url: this.env.redisUrl, maxRetriesPerRequest: 1 },
@@ -237,17 +239,39 @@ export class FileGenerationService {
       candidate.filename = parent.filename;
     }
     const file = await this.repository.create(candidate);
-    if (file.id === candidate.id && this.env.redisUrl) {
+    if (
+      file.id === candidate.id &&
+      (this.env.redisUrl || usesManagedVercelFileQueue())
+    ) {
       // Metadata is also the outbox. Worker reconciliation recovers enqueue/network failures.
       try {
         await this.enqueue(file.id);
       } catch {
+        if (usesManagedVercelFileQueue()) {
+          file.status = "failed";
+          file.stage = "Failed";
+          file.error = "Document generation could not be queued. Retry generation.";
+          await this.repository.save(file);
+          throw new HttpError(
+            503,
+            "The document-generation queue is temporarily unavailable. Please try again shortly.",
+            "FILE_WORKER_UNAVAILABLE",
+          );
+        }
         /* Reconciled by the worker from durable queued records. */
       }
     }
     return file;
   }
   async enqueue(id: string) {
+    if (usesManagedVercelFileQueue()) {
+      await sendVercelQueue(
+        FILE_QUEUE,
+        { fileId: id },
+        { idempotencyKey: id, retentionSeconds: 604800 },
+      );
+      return;
+    }
     if (!this.env.redisUrl) return;
     const queue = new Queue(FILE_QUEUE, {
       prefix: this.queuePrefix,

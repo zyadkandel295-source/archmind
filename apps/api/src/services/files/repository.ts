@@ -6,6 +6,7 @@ import type { Env } from "../../config/env";
 import { HttpError } from "../../lib/http-error";
 import { createSupabaseServerClient } from "../supabase-server";
 import { MIME, MAX_FILE_BYTES, type GeneratedFile } from "./types";
+import { usesManagedVercelFileQueue } from "./queue-runtime";
 
 export const FILE_BUCKET = "generated-files";
 export class FileRepository {
@@ -26,7 +27,7 @@ export class FileRepository {
     if (
       this.env.nodeEnv === "production" &&
       (!this.pool ||
-        !this.env.redisUrl ||
+        (!usesManagedVercelFileQueue() && !this.env.redisUrl) ||
         !process.env.SUPABASE_SERVICE_ROLE_KEY ||
         !(process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL))
     ) {
