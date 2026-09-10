@@ -72,6 +72,7 @@ export function validatePageContent(
 
 export const FILE_QUEUE = "archmind-file-generation";
 export const FILE_WORKER_HEARTBEAT = "archmind:file-worker:heartbeat";
+const FILE_GENERATION_RELIABLE_MODEL = "nex-agi/nex-n2.5-mini:free";
 export function likelyFileRequest(text: string, hasPrevious = false) {
   if (
     /\b(?:create|make|generate|write|prepare|build|export|produce|download)\b/i.test(
@@ -106,9 +107,12 @@ export class FileGenerationService {
     this.repository = repository ?? new FileRepository(env);
     const configuredModel =
       process.env.FILE_GENERATION_MODEL || env.openrouterDefaultModel;
+    // The historical free Nemotron alias now produces empty completions for
+    // structured requests on OpenRouter. Route only that retired selection to
+    // a current JSON-capable model; explicit current model IDs are preserved.
     const modelId =
       configuredModel === "nvidia/nemotron-3-ultra:free"
-        ? "nvidia/nemotron-3-ultra-550b-a55b:free"
+        ? FILE_GENERATION_RELIABLE_MODEL
         : configuredModel;
     this.model =
       model ??
