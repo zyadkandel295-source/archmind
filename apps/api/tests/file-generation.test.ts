@@ -254,6 +254,22 @@ describe("file service ownership and persistence", () => {
       "nex-agi/nex-n2.5-mini:free",
     );
   });
+  it("normalizes structured speaker notes returned by free providers", async () => {
+    const { service } = await setup(async () =>
+      JSON.stringify({
+        ...content(0),
+        notes: { speaker: "Explain the worked example.", sources: ["Course notes"] },
+      }),
+    );
+    const parsed = await service.json(
+      pageSchema,
+      "Write one page",
+      "{}",
+      new AbortController().signal,
+    );
+    expect(parsed.notes).toContain("speaker: Explain the worked example.");
+    expect(parsed.notes).toContain("sources:");
+  });
   it("uses Vercel's managed queue in serverless production while preserving the BullMQ override", () => {
     vi.stubEnv("VERCEL", "1");
     expect(usesManagedVercelFileQueue()).toBe(true);

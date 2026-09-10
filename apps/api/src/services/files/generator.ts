@@ -82,6 +82,16 @@ export function fileGenerationModelId(requestedModel: string) {
     return FILE_GENERATION_RELIABLE_MODEL;
   return requestedModel;
 }
+
+function normalizeGeneratedNotes(value: unknown): unknown {
+  if (!value || typeof value === "string") return value;
+  if (Array.isArray(value)) return value.map(String).join("\n");
+  if (typeof value === "object")
+    return Object.entries(value as Record<string, unknown>)
+      .map(([label, detail]) => `${label}: ${typeof detail === "string" ? detail : JSON.stringify(detail)}`)
+      .join("\n");
+  return String(value);
+}
 export function likelyFileRequest(text: string, hasPrevious = false) {
   if (
     /\b(?:create|make|generate|write|prepare|build|export|produce|download)\b/i.test(
@@ -326,14 +336,20 @@ export class FileGenerationService {
           `${prompt}${problem ? `\nPrevious response was invalid: ${problem}. Correct it.` : ""}`,
           signal,
         );
-        return schema.parse(
-          JSON.parse(
+        const parsed = JSON.parse(
             result
               .trim()
               .replace(/^```(?:json)?\s*/i, "")
               .replace(/\s*```$/, ""),
-          ),
-        );
+          );
+        if (
+          schema === pageSchema &&
+          parsed &&
+          typeof parsed === "object" &&
+          "notes" in parsed
+        )
+          parsed.notes = normalizeGeneratedNotes(parsed.notes);
+        return schema.parse(parsed);
       } catch (error) {
         if (signal.aborted) throw error;
         problem =
