@@ -125,7 +125,10 @@ export class FileGenerationService {
             { role: "user", content: prompt },
           ],
           temperature: 0.35,
-          maxTokens: system.includes("You plan") ? 10000 : 3000,
+          // Keep the largest request below the OpenRouter allowance used by
+          // this deployment. Six thousand tokens is ample for a 50-unit
+          // outline and prevents the queue from failing before generation.
+          maxTokens: system.includes("You plan") ? 6000 : 3000,
           signal: AbortSignal.any([signal, AbortSignal.timeout(180000)]),
         }));
   }
