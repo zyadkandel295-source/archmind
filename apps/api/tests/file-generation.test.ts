@@ -14,6 +14,7 @@ import { FileRepository } from "../src/services/files/repository";
 import { HttpError } from "../src/lib/http-error";
 import {
   FileGenerationService,
+  fileGenerationModelId,
   likelyFileRequest,
   validatePageContent,
 } from "../src/services/files/generator";
@@ -242,6 +243,17 @@ async function setup(
   };
 }
 describe("file service ownership and persistence", () => {
+  it("uses free OpenRouter models for document jobs", () => {
+    expect(fileGenerationModelId("nvidia/nemotron-3-ultra:free")).toBe(
+      "nex-agi/nex-n2.5-mini:free",
+    );
+    expect(fileGenerationModelId("qwen/qwen3-coder")).toBe(
+      "nex-agi/nex-n2.5-mini:free",
+    );
+    expect(fileGenerationModelId("nex-agi/nex-n2.5-mini:free")).toBe(
+      "nex-agi/nex-n2.5-mini:free",
+    );
+  });
   it("uses Vercel's managed queue in serverless production while preserving the BullMQ override", () => {
     vi.stubEnv("VERCEL", "1");
     expect(usesManagedVercelFileQueue()).toBe(true);

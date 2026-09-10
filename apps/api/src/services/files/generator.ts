@@ -73,6 +73,15 @@ export function validatePageContent(
 export const FILE_QUEUE = "archmind-file-generation";
 export const FILE_WORKER_HEARTBEAT = "archmind:file-worker:heartbeat";
 const FILE_GENERATION_RELIABLE_MODEL = "nex-agi/nex-n2.5-mini:free";
+/** File creation is deliberately restricted to OpenRouter's free model tier. */
+export function fileGenerationModelId(requestedModel: string) {
+  if (
+    requestedModel === "nvidia/nemotron-3-ultra:free" ||
+    !requestedModel.endsWith(":free")
+  )
+    return FILE_GENERATION_RELIABLE_MODEL;
+  return requestedModel;
+}
 export function likelyFileRequest(text: string, hasPrevious = false) {
   if (
     /\b(?:create|make|generate|write|prepare|build|export|produce|download)\b/i.test(
@@ -107,13 +116,10 @@ export class FileGenerationService {
     this.repository = repository ?? new FileRepository(env);
     const configuredModel =
       process.env.FILE_GENERATION_MODEL || env.openrouterDefaultModel;
-    // The historical free Nemotron alias now produces empty completions for
-    // structured requests on OpenRouter. Route only that retired selection to
-    // a current JSON-capable model; explicit current model IDs are preserved.
-    const modelId =
-      configuredModel === "nvidia/nemotron-3-ultra:free"
-        ? FILE_GENERATION_RELIABLE_MODEL
-        : configuredModel;
+    // The historical free Nemotron alias returns empty structured completions.
+    // Keep all document jobs on the free tier even if a general chat model is
+    // configured separately, so file generation never creates paid usage.
+    const modelId = fileGenerationModelId(configuredModel);
     this.model =
       model ??
       ((system, prompt, signal) =>
