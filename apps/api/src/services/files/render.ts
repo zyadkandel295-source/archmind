@@ -28,14 +28,28 @@ import {
 } from "./types";
 
 const plain = (s: string) => s.replace(/\*\*([^*]+)\*\*|\*([^*]+)\*/g, "$1$2");
-const fonts = path.join(
-  path.dirname(require.resolve("dejavu-fonts-ttf/package.json")),
-  "ttf",
-);
+let hasBundledFonts: boolean | undefined;
 function setupFonts(doc: PDFKit.PDFDocument) {
-  doc.registerFont("Body", path.join(fonts, "DejaVuSans.ttf"));
-  doc.registerFont("Bold", path.join(fonts, "DejaVuSans-Bold.ttf"));
-  doc.registerFont("Italic", path.join(fonts, "DejaVuSans-Oblique.ttf"));
+  if (hasBundledFonts === false) return;
+  try {
+    const fonts = path.join(
+      path.dirname(require.resolve("dejavu-fonts-ttf/package.json")),
+      "ttf",
+    );
+    doc.registerFont("Body", path.join(fonts, "DejaVuSans.ttf"));
+    doc.registerFont("Bold", path.join(fonts, "DejaVuSans-Bold.ttf"));
+    doc.registerFont("Italic", path.join(fonts, "DejaVuSans-Oblique.ttf"));
+    hasBundledFonts = true;
+  } catch {
+    // Vercel's output-file tracer can omit optional font packages. PDFKit's
+    // built-in fonts preserve selectable text instead of crashing every API
+    // route when a bundled font is unavailable.
+    hasBundledFonts = false;
+  }
+}
+function pdfFont(name: "Body" | "Bold" | "Italic") {
+  if (hasBundledFonts !== false) return name;
+  return name === "Bold" ? "Helvetica-Bold" : name === "Italic" ? "Helvetica-Oblique" : "Helvetica";
 }
 function runs(text: string) {
   return text
@@ -63,7 +77,7 @@ function pdfPage(
   });
   setupFonts(doc);
   doc
-    .font("Body")
+    .font(pdfFont("Body"))
     .fontSize(8)
     .fillColor("#64748b")
     .text(title, 54, 28, { width: 504, lineBreak: false });
@@ -78,7 +92,7 @@ function pdfPage(
   doc.y = 66;
   const write = (text: string, size = 11, bold = false, indent = 0) => {
     // Measure every block before drawing: never clip or silently spill into an extra page.
-    doc.font(bold ? "Bold" : "Body").fontSize(size);
+    doc.font(pdfFont(bold ? "Bold" : "Body")).fontSize(size);
     const height = doc.heightOfString(plain(text), {
       width: 504 - indent,
       lineGap: 3,
@@ -100,7 +114,7 @@ function pdfPage(
     if (block.type === "paragraph") {
       // Rich text runs retain native selectable text.
       const height = doc
-        .font("Body")
+        .font(pdfFont("Body"))
         .fontSize(11)
         .heightOfString(plain(block.text), { width: 504, lineGap: 3 });
       if (doc.y + height + 5 > 716)
@@ -111,9 +125,7 @@ function pdfPage(
       const y = doc.y;
       parts.forEach((t, i) => {
         doc
-          .font(
-            t.startsWith("**") ? "Bold" : t.startsWith("*") ? "Italic" : "Body",
-          )
+          .font(pdfFont(t.startsWith("**") ? "Bold" : t.startsWith("*") ? "Italic" : "Body"))
           .fontSize(11)
           .fillColor("#1e293b");
         const options = {
@@ -141,7 +153,7 @@ function pdfPage(
       const rows = [block.headers, ...block.rows];
       const width = 504 / block.headers.length;
       rows.forEach((row, index) => {
-        doc.font(index === 0 ? "Bold" : "Body").fontSize(9);
+        doc.font(pdfFont(index === 0 ? "Bold" : "Body")).fontSize(9);
         const height =
           Math.max(
             ...row.map((cell) =>
@@ -403,7 +415,7 @@ async function powerpoint(plan: DocumentPlan, pages: ContentPage[]) {
         const measure = new PDFDocument();
         measure.resume();
         setupFonts(measure);
-        measure.font("Body").fontSize(16);
+        measure.font(pdfFont("Body")).fontSize(16);
         const rowH = [block.headers, ...block.rows].map((row) =>
           Math.max(
             0.46,
