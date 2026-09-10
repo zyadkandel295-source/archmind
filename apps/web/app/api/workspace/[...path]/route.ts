@@ -80,34 +80,25 @@ async function relay(
     const value = request.headers.get(key);
     if (value) headers.set(key, value);
   }
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 55000);
-  const abortUpstream = () => controller.abort();
-  if (request.signal.aborted) controller.abort();
-  else request.signal.addEventListener("abort", abortUpstream, { once: true });
+
+  // OAuth navigation does not need a server-to-server hop. Let the browser
+  // navigate to the validated API origin, which then redirects it to Google.
+  // This avoids a Vercel function invocation failure observed when a route
+  // handler manually followed an external OAuth redirect.
+  if (route === "auth/google") {
+    return Response.redirect(target, 302);
+  }
+
   try {
     const upstream = await fetch(target, {
       method: request.method,
       headers,
       cache: "no-store",
       redirect: "manual",
-      signal: controller.signal,
       ...(request.method === "POST"
         ? { body: await request.arrayBuffer() }
         : {}),
     });
-    if (upstream.status >= 300 && upstream.status < 400 && route === "auth/google") {
-      const location = upstream.headers.get("location");
-      if (location) {
-        return new Response(null, {
-          status: upstream.status,
-          headers: {
-            Location: location,
-            "Cache-Control": "private, no-store",
-          },
-        });
-      }
-    }
     if (upstream.status >= 300 && upstream.status < 400)
       return failure(
         502,
@@ -133,19 +124,11 @@ async function relay(
       headers: outgoing,
     });
   } catch {
-    if (route === "auth/google") {
-      return googleFailureRedirect(request, controller.signal.aborted ? "timeout" : "server_config");
-    }
     return failure(
-      controller.signal.aborted ? 504 : 502,
+      502,
       "API_CONNECTION_FAILED",
-      controller.signal.aborted
-        ? "The chat server took too long to respond. Please retry."
-        : "The chat server could not be reached. Please retry; if this continues, ask the administrator to check the API deployment.",
+      "The chat server could not be reached. Please retry; if this continues, ask the administrator to check the API deployment.",
     );
-  } finally {
-    clearTimeout(timeout);
-    request.signal.removeEventListener("abort", abortUpstream);
   }
 }
 async function safeRelay(request: Request, context: WorkspaceRouteContext) {
