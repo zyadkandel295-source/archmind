@@ -74,17 +74,21 @@ CREATE TABLE IF NOT EXISTS analytics_pageviews (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS analytics_events (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    event_name VARCHAR(128) NOT NULL,
-    visitor_id VARCHAR(128) NOT NULL,
-    session_id VARCHAR(128) NOT NULL,
-    user_id VARCHAR(128),
-    pathname TEXT NOT NULL,
-    properties JSONB DEFAULT '{}'::jsonb,
-    is_bot BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
+-- `001_init.sql` already owns analytics_events for assistant usage. Extend
+-- that table instead of trying to create an incompatible second definition.
+ALTER TABLE analytics_events
+    ADD COLUMN IF NOT EXISTS event_name VARCHAR(128),
+    ADD COLUMN IF NOT EXISTS visitor_id VARCHAR(128),
+    ADD COLUMN IF NOT EXISTS session_id VARCHAR(128),
+    ADD COLUMN IF NOT EXISTS user_id VARCHAR(128),
+    ADD COLUMN IF NOT EXISTS pathname TEXT,
+    ADD COLUMN IF NOT EXISTS properties JSONB DEFAULT '{}'::jsonb,
+    ADD COLUMN IF NOT EXISTS is_bot BOOLEAN NOT NULL DEFAULT FALSE;
+
+-- Real site events do not have an assistant or legacy event type.
+ALTER TABLE analytics_events
+    ALTER COLUMN assistant_id DROP NOT NULL,
+    ALTER COLUMN event_type DROP NOT NULL;
 
 CREATE TABLE IF NOT EXISTS analytics_daily_stats (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
