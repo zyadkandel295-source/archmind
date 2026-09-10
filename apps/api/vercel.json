@@ -1,16 +1,10 @@
 {
   "functions": {
     "api/index.ts": {
-      "includeFiles": [
-        "storage/ai-base/**",
-        "node_modules/pdfkit/js/standard-fonts/**"
-      ]
+      "includeFiles": "{storage/ai-base/**,node_modules/pdfkit/js/standard-fonts/**}"
     },
     "api/file-worker.ts": {
-      "includeFiles": [
-        "storage/ai-base/**",
-        "node_modules/pdfkit/js/standard-fonts/**"
-      ],
+      "includeFiles": "{storage/ai-base/**,node_modules/pdfkit/js/standard-fonts/**}",
       "experimentalTriggers": [
         {
           "type": "queue/v2beta",
