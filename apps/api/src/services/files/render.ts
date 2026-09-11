@@ -1,4 +1,5 @@
 import { PDFDocument as PdfReader, StandardFonts, rgb, type PDFFont, type PDFPage } from "pdf-lib";
+import { PDFParse } from "pdf-parse";
 import {
   Document,
   Packer,
@@ -24,6 +25,14 @@ import {
   MAX_FILE_BYTES,
   pageText,
 } from "./types";
+
+// pdf-parse's Node worker is shipped as an inlined data URL. Configuring it
+// explicitly keeps the selectable-text validation self-contained when this
+// module is traced into a Vercel serverless function.
+const { getData: getPdfParseWorker } = require("pdf-parse/worker") as {
+  getData: () => string;
+};
+PDFParse.setWorker(getPdfParseWorker());
 
 const plain = (s: string) => s.replace(/\*\*([^*]+)\*\*|\*([^*]+)\*/g, "$1$2");
 function runs(text: string) {
@@ -516,7 +525,6 @@ export async function renderFile(plan: DocumentPlan, pages: ContentPage[]) {
       : powerpoint(plan, pages));
   await validateFile(bytes, plan.format, pages.length);
   if (plan.format === "pdf") {
-    const { PDFParse } = await import("pdf-parse");
     const parser = new PDFParse({ data: bytes });
     try {
       const text = await parser.getText();

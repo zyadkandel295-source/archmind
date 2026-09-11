@@ -25,6 +25,7 @@ import { usesManagedVercelFileQueue } from "../src/services/files/queue-runtime"
 import {
   cleanFilename,
   fileRequestSchema,
+  pageSchema,
   pageText,
   type ContentPage,
   type DocumentPlan,
@@ -35,6 +36,7 @@ afterEach(async () => {
   for (const dir of dirs.splice(0))
     await fs.rm(dir, { recursive: true, force: true });
   vi.restoreAllMocks();
+  vi.unstubAllEnvs();
 });
 function content(index: number): ContentPage {
   return {
@@ -275,6 +277,27 @@ describe("file service ownership and persistence", () => {
       validatePageContent(page, documentPlan, index, pages),
     );
   });
+  it.each(["pdf", "docx", "pptx"] as const)(
+    "renders the free built-in composer as a valid native %s file",
+    async (format) => {
+      const documentPlan = createFreeDocumentPlan(
+        {
+          format,
+          pages: format === "pptx" ? undefined : 5,
+          slides: format === "pptx" ? 10 : undefined,
+          description: `Create a ${format === "pptx" ? "10 slide" : "5 page"} guide to artificial intelligence`,
+        },
+        format,
+        format === "pptx" ? 10 : 5,
+      );
+      const pages = documentPlan.pages.map((_, index) =>
+        createFreeContentPage(documentPlan, index),
+      );
+      const bytes = await renderFile(documentPlan, pages);
+      expect(bytes.length).toBeGreaterThan(100);
+      await expect(validateFile(bytes, format, documentPlan.count)).resolves.toBeUndefined();
+    },
+  );
   it("normalizes structured speaker notes returned by free providers", async () => {
     const { service } = await setup(async () =>
       JSON.stringify({
@@ -480,6 +503,7 @@ describe("file service ownership and persistence", () => {
   });
   it("persists useful errors without publishing a download, and bounds concurrent admission", async () => {
     const { service, repo, user } = await setup(async () => "not json");
+    vi.spyOn(repo, "upload").mockRejectedValue(new Error("forced storage failure"));
     const first = await service.submit(user.id, {
       description: "Create a PDF",
       requestId: randomUUID(),
@@ -489,7 +513,7 @@ describe("file service ownership and persistence", () => {
     await expect(
       service.submit(user.id, { description: "Create a third PDF" }),
     ).rejects.toThrow(/already generating/);
-    await expect(service.run(first.id)).rejects.toThrow(/validation failed/);
+    await expect(service.run(first.id)).rejects.toThrow(/forced storage failure/);
     const failed = (await repo.get(first.id))!;
     expect(failed.status).toBe("failed");
     expect(failed.error).toContain("Retry generation");
