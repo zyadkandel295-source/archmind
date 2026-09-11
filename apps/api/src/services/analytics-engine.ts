@@ -17,6 +17,16 @@ export interface AnalyticsQueryOptions {
   range?: "today" | "7d" | "30d" | "90d" | "all" | "custom";
   startDate?: string;
   endDate?: string;
+  /** Customer dashboards exclude synthetic load-test data by default. */
+  testData?: "exclude" | "only" | "include";
+  testRunId?: string;
+}
+
+export interface AnalyticsTestMetadata {
+  isTestUser: true;
+  testRunId: string;
+  persona: string;
+  scenario: string;
 }
 
 export class RealAnalyticsEngine {
@@ -32,6 +42,21 @@ export class RealAnalyticsEngine {
 
   public setPool(pool?: Pool) {
     this.pool = pool;
+  }
+
+  /** Removes only tagged synthetic records for a completed test run. */
+  public removeTestRun(testRunId: string) {
+    for (const [id, record] of this.events) if (record.isTestUser && record.testRunId === testRunId) this.events.delete(id);
+    for (const [id, record] of this.pageViews) if (record.isTestUser && record.testRunId === testRunId) this.pageViews.delete(id);
+    for (const [id, record] of this.sessions) if (record.isTestUser && record.testRunId === testRunId) this.sessions.delete(id);
+    for (const [id, record] of this.visitors) if (record.isTestUser && record.testRunId === testRunId) this.visitors.delete(id);
+  }
+
+  private includesRecord(record: { isBot: boolean; isTestUser?: boolean; testRunId?: string }, options: AnalyticsQueryOptions = {}) {
+    if (record.isBot) return false;
+    if (options.testData === "include") return true;
+    if (options.testData === "only") return Boolean(record.isTestUser) && (!options.testRunId || record.testRunId === options.testRunId);
+    return !record.isTestUser;
   }
 
   // ---------------------------------------------------------------------------
@@ -85,9 +110,10 @@ export class RealAnalyticsEngine {
     utmCampaign?: string;
     utmTerm?: string;
     utmContent?: string;
+    test?: AnalyticsTestMetadata;
   }) {
     const nowIso = new Date().toISOString();
-    const isBot = isBotUserAgent(params.userAgent);
+    const isBot = isBotUserAgent(params.userAgent) && !params.test?.isTestUser;
     const { deviceCategory, browser, os } = parseUserAgent(params.userAgent);
     const { country, region } = parseGeoCountry(params.headers || {});
     const cleanPathname = sanitizePathname(params.pathname);
@@ -114,6 +140,10 @@ export class RealAnalyticsEngine {
         totalVisits: 1,
         totalPageviews: 1,
         isBot,
+        isTestUser: params.test?.isTestUser,
+        testRunId: params.test?.testRunId,
+        testPersona: params.test?.persona,
+        testScenario: params.test?.scenario,
         browser,
         os,
         deviceCategory,
@@ -183,6 +213,10 @@ export class RealAnalyticsEngine {
         country,
         region,
         isBot,
+        isTestUser: params.test?.isTestUser,
+        testRunId: params.test?.testRunId,
+        testPersona: params.test?.persona,
+        testScenario: params.test?.scenario,
         createdAt: nowIso
       };
     } else {
@@ -214,6 +248,10 @@ export class RealAnalyticsEngine {
       os,
       country,
       isBot,
+      isTestUser: params.test?.isTestUser,
+      testRunId: params.test?.testRunId,
+      testPersona: params.test?.persona,
+      testScenario: params.test?.scenario,
       createdAt: nowIso
     };
     this.pageViews.set(pageView.id, pageView);
@@ -254,9 +292,10 @@ export class RealAnalyticsEngine {
     pathname: string;
     properties?: Record<string, unknown>;
     userAgent?: string;
+    test?: AnalyticsTestMetadata;
   }) {
     const nowIso = new Date().toISOString();
-    const isBot = isBotUserAgent(params.userAgent);
+    const isBot = isBotUserAgent(params.userAgent) && !params.test?.isTestUser;
     const cleanPath = sanitizePathname(params.pathname);
     const sanitizedProps = sanitizeProperties(params.properties);
 
@@ -278,6 +317,10 @@ export class RealAnalyticsEngine {
       pathname: cleanPath,
       properties: sanitizedProps,
       isBot,
+      isTestUser: params.test?.isTestUser,
+      testRunId: params.test?.testRunId,
+      testPersona: params.test?.persona,
+      testScenario: params.test?.scenario,
       createdAt: nowIso
     };
     this.events.set(event.id, event);
@@ -292,27 +335,57 @@ export class RealAnalyticsEngine {
   // ---------------------------------------------------------------------------
   // Postgres Sync Helpers
   // ---------------------------------------------------------------------------
+  /** Hydrates the in-process index after a serverless cold start. */
+  public async hydrateFromPg() {
+    if (!this.pool) return;
+    const [visitors, sessions, pageViews, events] = await Promise.all([
+      this.pool.query("SELECT * FROM analytics_visitors"),
+      this.pool.query("SELECT * FROM analytics_sessions"),
+      this.pool.query("SELECT * FROM analytics_pageviews"),
+      this.pool.query("SELECT * FROM analytics_events")
+    ]);
+    const iso = (value: unknown) => new Date(value as string | number | Date).toISOString();
+    for (const row of visitors.rows as Record<string, unknown>[]) {
+      const value: AnalyticsVisitor = { id: String(row.id), visitorId: String(row.visitor_id), firstUserId: row.first_user_id ? String(row.first_user_id) : undefined, latestUserId: row.latest_user_id ? String(row.latest_user_id) : undefined, firstSeen: iso(row.first_seen), lastSeen: iso(row.last_seen), totalVisits: Number(row.total_visits || 0), totalPageviews: Number(row.total_pageviews || 0), isBot: Boolean(row.is_bot), isTestUser: Boolean(row.is_test_user), testRunId: row.test_run_id ? String(row.test_run_id) : undefined, testPersona: row.test_persona ? String(row.test_persona) : undefined, testScenario: row.test_scenario ? String(row.test_scenario) : undefined, browser: String(row.browser || "Other"), os: String(row.os || "Other"), deviceCategory: (row.device_category || "desktop") as AnalyticsVisitor["deviceCategory"], country: String(row.country || "Unknown"), region: String(row.region || "Unknown"), firstReferrer: row.first_referrer ? String(row.first_referrer) : undefined, firstUtmSource: row.first_utm_source ? String(row.first_utm_source) : undefined, firstUtmMedium: row.first_utm_medium ? String(row.first_utm_medium) : undefined, firstUtmCampaign: row.first_utm_campaign ? String(row.first_utm_campaign) : undefined, createdAt: iso(row.created_at || row.first_seen), updatedAt: iso(row.updated_at || row.last_seen) };
+      this.visitors.set(value.visitorId, value);
+    }
+    for (const row of sessions.rows as Record<string, unknown>[]) {
+      const value: AnalyticsSession = { id: String(row.id), sessionId: String(row.session_id), visitorId: String(row.visitor_id), userId: row.user_id ? String(row.user_id) : undefined, startedAt: iso(row.started_at), lastActivity: iso(row.last_activity), entryPage: String(row.entry_page || "/"), exitPage: String(row.exit_page || "/"), pageViewCount: Number(row.page_view_count || 0), eventCount: Number(row.event_count || 0), engagementDuration: Number(row.engagement_duration || 0), isEngaged: Boolean(row.is_engaged), referrer: row.referrer ? String(row.referrer) : undefined, referrerDomain: row.referrer_domain ? String(row.referrer_domain) : undefined, trafficSource: String(row.traffic_source || "Direct"), utmSource: row.utm_source ? String(row.utm_source) : undefined, utmMedium: row.utm_medium ? String(row.utm_medium) : undefined, utmCampaign: row.utm_campaign ? String(row.utm_campaign) : undefined, browser: String(row.browser || "Other"), os: String(row.os || "Other"), deviceCategory: (row.device_category || "desktop") as AnalyticsSession["deviceCategory"], country: String(row.country || "Unknown"), region: String(row.region || "Unknown"), isBot: Boolean(row.is_bot), isTestUser: Boolean(row.is_test_user), testRunId: row.test_run_id ? String(row.test_run_id) : undefined, testPersona: row.test_persona ? String(row.test_persona) : undefined, testScenario: row.test_scenario ? String(row.test_scenario) : undefined, createdAt: iso(row.created_at || row.started_at) };
+      this.sessions.set(value.sessionId, value);
+    }
+    for (const row of pageViews.rows as Record<string, unknown>[]) {
+      const value: AnalyticsPageView = { id: String(row.id), visitorId: String(row.visitor_id), sessionId: String(row.session_id), userId: row.user_id ? String(row.user_id) : undefined, pathname: String(row.pathname || "/"), title: String(row.title || row.pathname || "/"), referrer: row.referrer ? String(row.referrer) : undefined, engagementTime: Number(row.engagement_time || 0), isEntry: Boolean(row.is_entry), isExit: Boolean(row.is_exit), isBounce: Boolean(row.is_bounce), deviceCategory: String(row.device_category || "desktop"), browser: String(row.browser || "Other"), os: String(row.os || "Other"), country: String(row.country || "Unknown"), isBot: Boolean(row.is_bot), isTestUser: Boolean(row.is_test_user), testRunId: row.test_run_id ? String(row.test_run_id) : undefined, testPersona: row.test_persona ? String(row.test_persona) : undefined, testScenario: row.test_scenario ? String(row.test_scenario) : undefined, createdAt: iso(row.created_at) };
+      this.pageViews.set(value.id, value);
+    }
+    for (const row of events.rows as Record<string, unknown>[]) {
+      const rawProperties = row.properties;
+      const properties = typeof rawProperties === "string" ? JSON.parse(rawProperties) : (rawProperties || {});
+      const value: AnalyticsEvent = { id: String(row.id), eventName: String(row.event_name), visitorId: String(row.visitor_id), sessionId: String(row.session_id), userId: row.user_id ? String(row.user_id) : undefined, pathname: String(row.pathname || "/"), properties: properties as Record<string, unknown>, isBot: Boolean(row.is_bot), isTestUser: Boolean(row.is_test_user), testRunId: row.test_run_id ? String(row.test_run_id) : undefined, testPersona: row.test_persona ? String(row.test_persona) : undefined, testScenario: row.test_scenario ? String(row.test_scenario) : undefined, createdAt: iso(row.created_at) };
+      this.events.set(value.id, value);
+    }
+  }
+
   private async syncPageViewToPg(visitor: AnalyticsVisitor, session: AnalyticsSession, pageView: AnalyticsPageView) {
     if (!this.pool) return;
     try {
       await this.pool.query(
-        `INSERT INTO analytics_visitors (id, visitor_id, first_user_id, latest_user_id, first_seen, last_seen, total_visits, total_pageviews, is_bot, browser, os, device_category, country, region, first_referrer, first_utm_source, first_utm_medium, first_utm_campaign)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+        `INSERT INTO analytics_visitors (id, visitor_id, first_user_id, latest_user_id, first_seen, last_seen, total_visits, total_pageviews, is_bot, is_test_user, test_run_id, test_persona, test_scenario, browser, os, device_category, country, region, first_referrer, first_utm_source, first_utm_medium, first_utm_campaign)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)
          ON CONFLICT (visitor_id) DO UPDATE SET last_seen = EXCLUDED.last_seen, total_pageviews = analytics_visitors.total_pageviews + 1, latest_user_id = COALESCE(EXCLUDED.latest_user_id, analytics_visitors.latest_user_id), updated_at = NOW()`,
-        [visitor.id, visitor.visitorId, visitor.firstUserId || null, visitor.latestUserId || null, visitor.firstSeen, visitor.lastSeen, visitor.totalVisits, visitor.totalPageviews, visitor.isBot, visitor.browser, visitor.os, visitor.deviceCategory, visitor.country, visitor.region, visitor.firstReferrer || null, visitor.firstUtmSource || null, visitor.firstUtmMedium || null, visitor.firstUtmCampaign || null]
+        [visitor.id, visitor.visitorId, visitor.firstUserId || null, visitor.latestUserId || null, visitor.firstSeen, visitor.lastSeen, visitor.totalVisits, visitor.totalPageviews, visitor.isBot, Boolean(visitor.isTestUser), visitor.testRunId || null, visitor.testPersona || null, visitor.testScenario || null, visitor.browser, visitor.os, visitor.deviceCategory, visitor.country, visitor.region, visitor.firstReferrer || null, visitor.firstUtmSource || null, visitor.firstUtmMedium || null, visitor.firstUtmCampaign || null]
       );
 
       await this.pool.query(
-        `INSERT INTO analytics_sessions (id, session_id, visitor_id, user_id, started_at, last_activity, entry_page, exit_page, page_view_count, event_count, engagement_duration, is_engaged, referrer, referrer_domain, traffic_source, utm_source, utm_medium, utm_campaign, browser, os, device_category, country, region, is_bot)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24)
+        `INSERT INTO analytics_sessions (id, session_id, visitor_id, user_id, started_at, last_activity, entry_page, exit_page, page_view_count, event_count, engagement_duration, is_engaged, referrer, referrer_domain, traffic_source, utm_source, utm_medium, utm_campaign, browser, os, device_category, country, region, is_bot, is_test_user, test_run_id, test_persona, test_scenario)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28)
          ON CONFLICT (session_id) DO UPDATE SET last_activity = EXCLUDED.last_activity, exit_page = EXCLUDED.exit_page, page_view_count = EXCLUDED.page_view_count, engagement_duration = EXCLUDED.engagement_duration, is_engaged = EXCLUDED.is_engaged`,
-        [session.id, session.sessionId, session.visitorId, session.userId || null, session.startedAt, session.lastActivity, session.entryPage, session.exitPage, session.pageViewCount, session.eventCount, session.engagementDuration, session.isEngaged, session.referrer || null, session.referrerDomain || null, session.trafficSource, session.utmSource || null, session.utmMedium || null, session.utmCampaign || null, session.browser, session.os, session.deviceCategory, session.country, session.region, session.isBot]
+        [session.id, session.sessionId, session.visitorId, session.userId || null, session.startedAt, session.lastActivity, session.entryPage, session.exitPage, session.pageViewCount, session.eventCount, session.engagementDuration, session.isEngaged, session.referrer || null, session.referrerDomain || null, session.trafficSource, session.utmSource || null, session.utmMedium || null, session.utmCampaign || null, session.browser, session.os, session.deviceCategory, session.country, session.region, session.isBot, Boolean(session.isTestUser), session.testRunId || null, session.testPersona || null, session.testScenario || null]
       );
 
       await this.pool.query(
-        `INSERT INTO analytics_pageviews (id, visitor_id, session_id, user_id, pathname, title, referrer, engagement_time, is_entry, is_exit, is_bounce, device_category, browser, os, country, is_bot, created_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
-        [pageView.id, pageView.visitorId, pageView.sessionId, pageView.userId || null, pageView.pathname, pageView.title, pageView.referrer || null, pageView.engagementTime, pageView.isEntry, pageView.isExit, pageView.isBounce, pageView.deviceCategory, pageView.browser, pageView.os, pageView.country, pageView.isBot, pageView.createdAt]
+        `INSERT INTO analytics_pageviews (id, visitor_id, session_id, user_id, pathname, title, referrer, engagement_time, is_entry, is_exit, is_bounce, device_category, browser, os, country, is_bot, is_test_user, test_run_id, test_persona, test_scenario, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)`,
+        [pageView.id, pageView.visitorId, pageView.sessionId, pageView.userId || null, pageView.pathname, pageView.title, pageView.referrer || null, pageView.engagementTime, pageView.isEntry, pageView.isExit, pageView.isBounce, pageView.deviceCategory, pageView.browser, pageView.os, pageView.country, pageView.isBot, Boolean(pageView.isTestUser), pageView.testRunId || null, pageView.testPersona || null, pageView.testScenario || null, pageView.createdAt]
       );
     } catch (err) {
       console.warn("[RealAnalyticsEngine] syncPageViewToPg error:", err);
@@ -323,9 +396,9 @@ export class RealAnalyticsEngine {
     if (!this.pool) return;
     try {
       await this.pool.query(
-        `INSERT INTO analytics_events (id, event_name, visitor_id, session_id, user_id, pathname, properties, is_bot, created_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [event.id, event.eventName, event.visitorId, event.sessionId, event.userId || null, event.pathname, JSON.stringify(event.properties), event.isBot, event.createdAt]
+        `INSERT INTO analytics_events (id, event_name, visitor_id, session_id, user_id, pathname, properties, is_bot, is_test_user, test_run_id, test_persona, test_scenario, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+        [event.id, event.eventName, event.visitorId, event.sessionId, event.userId || null, event.pathname, JSON.stringify(event.properties), event.isBot, Boolean(event.isTestUser), event.testRunId || null, event.testPersona || null, event.testScenario || null, event.createdAt]
       );
     } catch (err) {
       console.warn("[RealAnalyticsEngine] syncEventToPg error:", err);
@@ -350,10 +423,10 @@ export class RealAnalyticsEngine {
       return t >= priorStart.getTime() && t < priorEnd.getTime();
     };
 
-    const allPageViews = [...this.pageViews.values()].filter((pv) => !pv.isBot);
-    const allSessions = [...this.sessions.values()].filter((s) => !s.isBot);
-    const allEvents = [...this.events.values()].filter((e) => !e.isBot);
-    const allVisitors = [...this.visitors.values()].filter((v) => !v.isBot);
+    const allPageViews = [...this.pageViews.values()].filter((record) => this.includesRecord(record, options));
+    const allSessions = [...this.sessions.values()].filter((record) => this.includesRecord(record, options));
+    const allEvents = [...this.events.values()].filter((record) => this.includesRecord(record, options));
+    const allVisitors = [...this.visitors.values()].filter((record) => this.includesRecord(record, options));
 
     // Current Window Metrics
     const currentPVs = allPageViews.filter((pv) => inCurrentWindow(pv.createdAt));
@@ -365,45 +438,32 @@ export class RealAnalyticsEngine {
     const fiveMinsAgo = Date.now() - 5 * 60 * 1000;
     const activeNowCount = allVisitors.filter((v) => new Date(v.lastSeen).getTime() >= fiveMinsAgo).length;
 
-    const BASE_UNIQUE_USERS = 1340;
-    const BASE_TOTAL_VISITORS = 2983;
-    const BASE_RETURNING_VISITORS = 1340;
-    const BASE_NEW_VISITORS = BASE_TOTAL_VISITORS - BASE_RETURNING_VISITORS; // 1643
-    const BASE_SESSIONS = 3620;
-    const BASE_PAGE_VIEWS = 8740;
-    const BASE_EVENTS = 5120;
-
-    // Active real delta
     const realNewVisitors = allVisitors.filter((v) => inCurrentWindow(v.firstSeen)).length;
     const realReturningVisitors = Math.max(0, currentVisitorsSet.size - realNewVisitors);
 
-    const totalVisitors = BASE_TOTAL_VISITORS + currentVisitorsSet.size;
-    const totalUsers = BASE_UNIQUE_USERS + currentVisitorsSet.size;
-    const totalReturningUsers = BASE_RETURNING_VISITORS + realReturningVisitors;
-    const totalNewUsers = Math.max(0, totalVisitors - totalReturningUsers);
+    const totalVisitors = currentVisitorsSet.size;
+    const totalUsers = new Set(currentPVs.map((pageView) => pageView.userId).filter(Boolean)).size;
+    const totalReturningUsers = realReturningVisitors;
+    const totalNewUsers = realNewVisitors;
 
-    const totalSessions = BASE_SESSIONS + currentSessions.length;
-    const totalPageViews = BASE_PAGE_VIEWS + currentPVs.length;
-    const totalEventsCount = BASE_EVENTS + currentEvents.length;
+    const totalSessions = currentSessions.length;
+    const totalPageViews = currentPVs.length;
+    const totalEventsCount = currentEvents.length;
 
-    const newUsersPct = totalVisitors > 0 ? Math.round((totalNewUsers / totalVisitors) * 100) : 55;
+    const newUsersPct = totalVisitors > 0 ? Math.round((totalNewUsers / totalVisitors) * 100) : 0;
     const returningUsersPct = 100 - newUsersPct;
 
-    // Engagement & Duration (30 Minutes target = 1800s)
-    const BASE_DURATION = BASE_SESSIONS * 1800;
-    const totalDuration = BASE_DURATION + currentSessions.reduce((acc, s) => acc + s.engagementDuration, 0);
-    const avgSessionDurationSec = totalSessions > 0 ? Math.round(totalDuration / totalSessions) : 1800;
+    const totalDuration = currentSessions.reduce((acc, s) => acc + s.engagementDuration, 0);
+    const avgSessionDurationSec = totalSessions > 0 ? Math.round(totalDuration / totalSessions) : 0;
 
-    // Bounce Rate (~28.4%)
-    const BASE_BOUNCES = Math.round(BASE_SESSIONS * 0.284);
-    const bouncedSessions = BASE_BOUNCES + currentSessions.filter((s) => s.pageViewCount === 1 && s.engagementDuration < 10).length;
-    const bounceRate = totalSessions > 0 ? Number(((bouncedSessions / totalSessions) * 100).toFixed(1)) : 28.5;
+    const bouncedSessions = currentSessions.filter((s) => s.pageViewCount === 1 && s.engagementDuration < 10).length;
+    const bounceRate = totalSessions > 0 ? Number(((bouncedSessions / totalSessions) * 100).toFixed(1)) : 0;
 
-    // Growth percentages vs prior period
-    const visitorsChangePct = 12.4;
-    const sessionsChangePct = 14.8;
-    const pageViewsChangePct = 18.2;
-    const eventsChangePct = 9.6;
+    const percentageChange = (current: number, prior: number) => prior ? Number((((current - prior) / prior) * 100).toFixed(1)) : current ? 100 : 0;
+    const visitorsChangePct = percentageChange(totalVisitors, new Set(allPageViews.filter((pv) => inPriorWindow(pv.createdAt)).map((pv) => pv.visitorId)).size);
+    const sessionsChangePct = percentageChange(totalSessions, allSessions.filter((session) => inPriorWindow(session.startedAt)).length);
+    const pageViewsChangePct = percentageChange(totalPageViews, allPageViews.filter((pageView) => inPriorWindow(pageView.createdAt)).length);
+    const eventsChangePct = percentageChange(totalEventsCount, allEvents.filter((event) => inPriorWindow(event.createdAt)).length);
 
     // Time-Series Chart Data Generation
     const chartData = this.generateTimeSeries(start, end, currentPVs, currentSessions);
@@ -493,7 +553,7 @@ export class RealAnalyticsEngine {
       return t >= start.getTime() && t <= end.getTime();
     };
 
-    const pvs = [...this.pageViews.values()].filter((pv) => !pv.isBot && inWindow(pv.createdAt));
+    const pvs = [...this.pageViews.values()].filter((pv) => this.includesRecord(pv, options) && inWindow(pv.createdAt));
     const totalPVs = pvs.length;
 
     const pageStats = new Map<
@@ -558,57 +618,14 @@ export class RealAnalyticsEngine {
       };
     });
 
-    const BASE_PAGES = [
-      { pathname: "/", views: 3240, uniqueVisitors: 1120, sessions: 1380, avgEngagementTimeSec: 64, entries: 1120, exits: 420, bounces: 120 },
-      { pathname: "/ai-base", views: 2410, uniqueVisitors: 890, sessions: 1040, avgEngagementTimeSec: 145, entries: 890, exits: 310, bounces: 80 },
-      { pathname: "/dashboard", views: 1320, uniqueVisitors: 540, sessions: 620, avgEngagementTimeSec: 180, entries: 540, exits: 190, bounces: 40 },
-      { pathname: "/assistants/new", views: 960, uniqueVisitors: 380, sessions: 420, avgEngagementTimeSec: 210, entries: 380, exits: 140, bounces: 30 },
-      { pathname: "/auth/login", views: 810, uniqueVisitors: 310, sessions: 350, avgEngagementTimeSec: 45, entries: 310, exits: 90, bounces: 25 }
-    ];
-
-    // Merge baseline with real page views
-    const mergedMap = new Map<string, any>();
-    for (const bp of BASE_PAGES) {
-      mergedMap.set(bp.pathname, { ...bp, lastActivity: new Date().toISOString() });
-    }
-
-    for (const p of pages) {
-      const existing = mergedMap.get(p.pathname);
-      if (existing) {
-        existing.views += p.views;
-        existing.uniqueVisitors += p.uniqueVisitors;
-        existing.sessions += p.sessions;
-        existing.entries += p.entries;
-        existing.exits += p.exits;
-        existing.lastActivity = p.lastActivity;
-      } else {
-        mergedMap.set(p.pathname, p);
-      }
-    }
-
-    const mergedPages = Array.from(mergedMap.values()).map(p => {
-      const avgTimeSec = p.avgEngagementTimeSec || 60;
-      return {
-        ...p,
-        avgEngagementTimeFormatted: this.formatDuration(avgTimeSec),
-        bounceRate: p.entries > 0 ? Number(((p.bounces / p.entries) * 100).toFixed(1)) : 0,
-        trafficPct: 0
-      };
-    });
-
-    const totalViewsCombined = mergedPages.reduce((acc, p) => acc + p.views, 0);
-    for (const p of mergedPages) {
-      p.trafficPct = totalViewsCombined > 0 ? Number(((p.views / totalViewsCombined) * 100).toFixed(1)) : 0;
-    }
-
-    mergedPages.sort((a, b) => b.views - a.views);
+    const realPages = pages.sort((a, b) => b.views - a.views);
 
     return {
-      totalPageViews: totalViewsCombined,
-      totalPagesCount: mergedPages.length,
-      mostVisited: mergedPages[0]?.pathname || "/",
-      leastVisited: mergedPages[mergedPages.length - 1]?.pathname || "/",
-      pages: mergedPages
+      totalPageViews: totalPVs,
+      totalPagesCount: realPages.length,
+      mostVisited: realPages[0]?.pathname || "/",
+      leastVisited: realPages[realPages.length - 1]?.pathname || "/",
+      pages: realPages
     };
   }
 
@@ -619,7 +636,7 @@ export class RealAnalyticsEngine {
       return t >= start.getTime() && t <= end.getTime();
     };
 
-    const activeSessions = [...this.sessions.values()].filter((s) => !s.isBot && inWindow(s.startedAt));
+    const activeSessions = [...this.sessions.values()].filter((s) => this.includesRecord(s, options) && inWindow(s.startedAt));
     const totalSessions = activeSessions.length;
 
     const sourceMap = new Map<string, { source: string; visitors: Set<string>; sessions: number }>();
@@ -646,37 +663,11 @@ export class RealAnalyticsEngine {
       }
     }
 
-    const BASE_SOURCES = [
-      { source: "Direct", visitors: 1180, sessions: 1420 },
-      { source: "Google", visitors: 810, sessions: 980 },
-      { source: "GitHub", visitors: 390, sessions: 460 },
-      { source: "LinkedIn", visitors: 260, sessions: 310 },
-      { source: "Reddit", visitors: 220, sessions: 280 },
-      { source: "Twitter / X", visitors: 140, sessions: 170 }
-    ];
-
-    const sourceMerged = new Map<string, { source: string; visitors: number; sessions: number }>();
-    for (const bs of BASE_SOURCES) {
-      sourceMerged.set(bs.source, { ...bs });
-    }
-
-    for (const [srcName, stat] of sourceMap.entries()) {
-      const existing = sourceMerged.get(srcName);
-      if (existing) {
-        existing.visitors += stat.visitors.size;
-        existing.sessions += stat.sessions;
-      } else {
-        sourceMerged.set(srcName, { source: srcName, visitors: stat.visitors.size, sessions: stat.sessions });
-      }
-    }
-
-    const totalCombinedSessions = Array.from(sourceMerged.values()).reduce((acc, s) => acc + s.sessions, 0);
-
-    const sources = Array.from(sourceMerged.values()).map((s) => ({
+    const sources = Array.from(sourceMap.values()).map((s) => ({
       source: s.source,
-      visitors: s.visitors,
+      visitors: s.visitors.size,
       sessions: s.sessions,
-      pct: totalCombinedSessions > 0 ? Number(((s.sessions / totalCombinedSessions) * 100).toFixed(1)) : 0
+      pct: totalSessions > 0 ? Number(((s.sessions / totalSessions) * 100).toFixed(1)) : 0
     }));
     sources.sort((a, b) => b.sessions - a.sessions);
 
@@ -687,7 +678,7 @@ export class RealAnalyticsEngine {
     }));
     campaigns.sort((a, b) => b.sessions - a.sessions);
 
-    return { totalSessions: totalCombinedSessions, sources, campaigns };
+    return { totalSessions, sources, campaigns };
   }
 
   public getEventsAnalytics(options: AnalyticsQueryOptions = {}) {
@@ -697,7 +688,7 @@ export class RealAnalyticsEngine {
       return t >= start.getTime() && t <= end.getTime();
     };
 
-    const activeEvents = [...this.events.values()].filter((e) => !e.isBot && inWindow(e.createdAt));
+    const activeEvents = [...this.events.values()].filter((e) => this.includesRecord(e, options) && inWindow(e.createdAt));
     const totalEventsCount = activeEvents.length;
 
     const eventMap = new Map<string, { eventName: string; count: number; visitors: Set<string>; lastTriggered: string }>();
@@ -733,7 +724,7 @@ export class RealAnalyticsEngine {
       return t >= start.getTime() && t <= end.getTime();
     };
 
-    const activeSessions = [...this.sessions.values()].filter((s) => !s.isBot && inWindow(s.startedAt));
+    const activeSessions = [...this.sessions.values()].filter((s) => this.includesRecord(s, options) && inWindow(s.startedAt));
     const total = activeSessions.length;
 
     const deviceMap = new Map<string, number>();
@@ -746,22 +737,12 @@ export class RealAnalyticsEngine {
       osMap.set(s.os, (osMap.get(s.os) || 0) + 1);
     }
 
-    const BASE_DEVICES: Record<string, number> = { desktop: 1840, mobile: 1020, tablet: 123 };
-    const BASE_BROWSERS: Record<string, number> = { Chrome: 1940, Safari: 680, Firefox: 210, Edge: 153 };
-    const BASE_OS: Record<string, number> = { Windows: 1510, macOS: 720, iOS: 480, Android: 240, Linux: 33 };
-
-    for (const [k, v] of Object.entries(BASE_DEVICES)) deviceMap.set(k, (deviceMap.get(k) || 0) + v);
-    for (const [k, v] of Object.entries(BASE_BROWSERS)) browserMap.set(k, (browserMap.get(k) || 0) + v);
-    for (const [k, v] of Object.entries(BASE_OS)) osMap.set(k, (osMap.get(k) || 0) + v);
-
-    const totalCombined = Array.from(deviceMap.values()).reduce((a, b) => a + b, 0);
-
     const formatList = (map: Map<string, number>) =>
       Array.from(map.entries())
         .map(([name, count]) => ({
           name,
           count,
-          pct: totalCombined > 0 ? Number(((count / totalCombined) * 100).toFixed(1)) : 0
+          pct: total > 0 ? Number(((count / total) * 100).toFixed(1)) : 0
         }))
         .sort((a, b) => b.count - a.count);
 
@@ -779,7 +760,7 @@ export class RealAnalyticsEngine {
       return t >= start.getTime() && t <= end.getTime();
     };
 
-    const activeVisitors = [...this.visitors.values()].filter((v) => !v.isBot && inWindow(v.lastSeen));
+    const activeVisitors = [...this.visitors.values()].filter((v) => this.includesRecord(v, options) && inWindow(v.lastSeen));
     const total = activeVisitors.length;
 
     const countryMap = new Map<string, number>();
@@ -789,41 +770,23 @@ export class RealAnalyticsEngine {
       countryMap.set(c, (countryMap.get(c) || 0) + 1);
     }
 
-    const BASE_COUNTRIES: Record<string, number> = {
-      "US": 1120,
-      "EG": 420,
-      "DE": 310,
-      "GB": 290,
-      "CA": 240,
-      "FR": 180,
-      "AE": 160,
-      "SA": 140,
-      "IN": 123
-    };
-
-    for (const [k, v] of Object.entries(BASE_COUNTRIES)) {
-      countryMap.set(k, (countryMap.get(k) || 0) + v);
-    }
-
-    const totalCombinedGeo = Array.from(countryMap.values()).reduce((a, b) => a + b, 0);
-
     const countries = Array.from(countryMap.entries())
       .map(([country, count]) => ({
         country,
         visitors: count,
-        pct: totalCombinedGeo > 0 ? Number(((count / totalCombinedGeo) * 100).toFixed(1)) : 0
+        pct: total > 0 ? Number(((count / total) * 100).toFixed(1)) : 0
       }))
       .sort((a, b) => b.visitors - a.visitors);
 
-    return { totalVisitors: totalCombinedGeo, countries };
+    return { totalVisitors: total, countries };
   }
 
   public getLiveActivity() {
     const fiveMinsAgo = Date.now() - 5 * 60 * 1000;
-    const activeVisitors = [...this.visitors.values()].filter((v) => !v.isBot && new Date(v.lastSeen).getTime() >= fiveMinsAgo);
+    const activeVisitors = [...this.visitors.values()].filter((v) => this.includesRecord(v) && new Date(v.lastSeen).getTime() >= fiveMinsAgo);
 
     const recentPageViews = [...this.pageViews.values()]
-      .filter((pv) => !pv.isBot)
+      .filter((pv) => this.includesRecord(pv))
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 30)
       .map((pv) => ({
@@ -838,7 +801,7 @@ export class RealAnalyticsEngine {
       }));
 
     const recentEvents = [...this.events.values()]
-      .filter((e) => !e.isBot)
+      .filter((e) => this.includesRecord(e))
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 20)
       .map((e) => ({

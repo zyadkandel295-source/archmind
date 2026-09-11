@@ -59,6 +59,7 @@ describe("RealAnalyticsEngine & Analytics Services", () => {
     // Visitor 1 Page View
     const pv1 = engine.trackPageView({
       visitorId: "vis_user_1",
+      userId: "user_1",
       pathname: "/ai-base",
       title: "AI Base",
       referrer: "https://google.com",
@@ -82,17 +83,17 @@ describe("RealAnalyticsEngine & Analytics Services", () => {
 
     // Overview Check
     const overview = engine.getOverview({ range: "30d" });
-    expect(overview.kpi.totalVisitors).toBeGreaterThanOrEqual(2983);
-    expect(overview.kpi.totalUsers).toBeGreaterThanOrEqual(1340);
-    expect(overview.kpi.totalSessions).toBeGreaterThanOrEqual(3620);
-    expect(overview.kpi.pageViews).toBeGreaterThanOrEqual(8740);
-    expect(overview.kpi.totalEvents).toBeGreaterThanOrEqual(5120);
+    expect(overview.kpi.totalVisitors).toBe(1);
+    expect(overview.kpi.totalUsers).toBe(1);
+    expect(overview.kpi.totalSessions).toBe(1);
+    expect(overview.kpi.pageViews).toBe(1);
+    expect(overview.kpi.totalEvents).toBe(1);
     expect(overview.kpi.activeNow).toBe(1);
     expect(overview.kpi.avgSessionDurationSec).toBeGreaterThanOrEqual(15);
 
     // Pages Check
     const pages = engine.getPagesAnalytics({ range: "30d" });
-    expect(pages.totalPageViews).toBeGreaterThanOrEqual(8740);
+    expect(pages.totalPageViews).toBe(1);
     expect(pages.pages.some(p => p.pathname === "/ai-base")).toBe(true);
 
     // Events Check
@@ -108,5 +109,14 @@ describe("RealAnalyticsEngine & Analytics Services", () => {
     const live = engine.getLiveActivity();
     expect(live.activeNowCount).toBe(1);
     expect(live.feed.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("keeps synthetic telemetry out of customer analytics by default", () => {
+    engine.trackPageView({ visitorId: "test_visitor", sessionId: "test_session", pathname: "/", userAgent: "AGENTIA-Test", test: { isTestUser: true, testRunId: "run-1", persona: "new_visitor", scenario: "explore" } });
+    engine.trackEvent({ visitorId: "test_visitor", sessionId: "test_session", eventName: "signup_started", pathname: "/auth/login", userAgent: "AGENTIA-Test", test: { isTestUser: true, testRunId: "run-1", persona: "new_visitor", scenario: "explore" } });
+
+    expect(engine.getOverview({ range: "30d" }).kpi.totalVisitors).toBe(0);
+    expect(engine.getOverview({ range: "30d", testData: "only", testRunId: "run-1" }).kpi.totalVisitors).toBe(1);
+    expect(engine.getLiveActivity().activeNowCount).toBe(0);
   });
 });

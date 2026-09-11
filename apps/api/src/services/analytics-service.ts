@@ -10,6 +10,10 @@ export interface AnalyticsVisitor {
   totalVisits: number;
   totalPageviews: number;
   isBot: boolean;
+  isTestUser?: boolean;
+  testRunId?: string;
+  testPersona?: string;
+  testScenario?: string;
   browser: string;
   os: string;
   deviceCategory: "desktop" | "mobile" | "tablet";
@@ -51,6 +55,10 @@ export interface AnalyticsSession {
   country: string;
   region: string;
   isBot: boolean;
+  isTestUser?: boolean;
+  testRunId?: string;
+  testPersona?: string;
+  testScenario?: string;
   createdAt: string;
 }
 
@@ -71,6 +79,10 @@ export interface AnalyticsPageView {
   os: string;
   country: string;
   isBot: boolean;
+  isTestUser?: boolean;
+  testRunId?: string;
+  testPersona?: string;
+  testScenario?: string;
   createdAt: string;
 }
 
@@ -83,6 +95,10 @@ export interface AnalyticsEvent {
   pathname: string;
   properties: Record<string, unknown>;
   isBot: boolean;
+  isTestUser?: boolean;
+  testRunId?: string;
+  testPersona?: string;
+  testScenario?: string;
   createdAt: string;
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useSessionStore } from "@/lib/session-store";
-import { AdminAnalyticsDashboard } from "@/components/admin-analytics-dashboard";
+import { AnalyticsCenter } from "@/components/analytics-center";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
@@ -51,13 +51,13 @@ export default function AnalyticsPage() {
           <Badge tone="online">Admin Telemetry</Badge>
           <Badge tone="blue">100% Real Backend Data</Badge>
         </div>
-        <h1 className="mt-3 text-3xl font-black md:text-5xl text-white">Website Activity & Analytics</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-[#C4B5FD]">
-          Live tracking metrics, visitor counters, and custom event telemetry for <strong>zyadkandel295@gmail.com</strong>.
+        <h1 className="mt-3 text-3xl font-black md:text-5xl text-[#29231E]">AGENTIA Analytics Center</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-[#5F564D]">
+          Live telemetry, test funnels, and capacity analysis for <strong>zyadkandel295@gmail.com</strong>.
         </p>
       </Reveal>
       <ErrorBoundary name="Analytics">
-        <AdminAnalyticsDashboard />
+        <AnalyticsCenter />
       </ErrorBoundary>
     </main>
   );

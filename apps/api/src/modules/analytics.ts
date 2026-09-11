@@ -1,4 +1,5 @@
-import { Router } from "express";
+import { Router, type Response } from "express";
+import { z } from "zod";
 import type { Env } from "../config/env";
 import type { MemoryStore } from "../db/memory";
 import { asyncHandler } from "../lib/async-handler";
@@ -208,6 +209,58 @@ export function analyticsRouter(env: Env, store: MemoryStore) {
       res.json(data);
     })
   );
+
+  // ---------------------------------------------------------------------------
+  // GUARDED LOAD TEST CONTROL PLANE
+  // ---------------------------------------------------------------------------
+  // The runner emits tagged telemetry and only permits localhost or an
+  // explicitly configured test origin. It never creates customer accounts or
+  // mutates assistants, files, billing, or external systems.
+  const loadTestSchema = z.object({
+    targetUrl: z.string().url(),
+    stages: z.array(z.number().int().min(1).max(2000)).min(1).max(20).optional(),
+    maxFailureRate: z.number().min(1).max(100).optional(),
+    maxP95Ms: z.number().min(100).max(120000).optional(),
+    requestTimeoutMs: z.number().min(100).max(120000).optional(),
+    thinkTimeMinMs: z.number().min(0).max(10000).optional(),
+    thinkTimeMaxMs: z.number().min(0).max(10000).optional(),
+    maxInFlightRequests: z.number().int().min(1).max(1000).optional()
+  });
+
+  router.get("/load-tests", adminAuth, (_req: AuthedRequest, res: Response) => {
+    res.json({ runs: store.loadTestService.list(), maxVirtualUsers: 2000 });
+  });
+
+  router.post("/load-tests", adminAuth, asyncHandler(async (req: AuthedRequest, res: Response) => {
+    const input = loadTestSchema.parse(req.body);
+    try {
+      const run = store.loadTestService.start(input, { appUrl: env.appUrl, nodeEnv: env.nodeEnv, createdByUserId: req.user!.id });
+      res.status(202).json({ run });
+    } catch (error) {
+      throw new HttpError(400, error instanceof Error ? error.message : "Load test configuration is invalid.", "LOAD_TEST_CONFIGURATION_INVALID");
+    }
+  }));
+
+  router.get("/load-tests/:id", adminAuth, (req: AuthedRequest, res: Response) => {
+    const run = store.loadTestService.get(req.params.id!);
+    if (!run) throw new HttpError(404, "Load test not found.", "LOAD_TEST_NOT_FOUND");
+    res.json({ run, report: store.loadTestService.report(run.id) });
+  });
+
+  router.post("/load-tests/:id/stop", adminAuth, (req: AuthedRequest, res: Response) => {
+    const run = store.loadTestService.stop(req.params.id!);
+    if (!run) throw new HttpError(404, "Load test not found.", "LOAD_TEST_NOT_FOUND");
+    res.json({ run });
+  });
+
+  router.delete("/load-tests/:id", adminAuth, asyncHandler(async (req: AuthedRequest, res: Response) => {
+    try {
+      await store.loadTestService.cleanup(req.params.id!);
+      res.status(204).end();
+    } catch (error) {
+      throw new HttpError(409, error instanceof Error ? error.message : "Load-test cleanup failed.", "LOAD_TEST_CLEANUP_FAILED");
+    }
+  }));
 
   // Per-assistant analytics endpoint
   router.get(
