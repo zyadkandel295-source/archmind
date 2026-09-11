@@ -307,7 +307,21 @@ export class LoadTestService {
     await this.acquireRequestSlot(Math.min(1000, Math.max(1, maxInFlightRequests)));
     const started = performance.now();
     try {
-      const response = await fetch(url, { headers: { "x-agentia-load-test": run.id, "user-agent": "AGENTIA-Load-Test/1.0" }, signal: AbortSignal.timeout(timeoutMs) });
+      const targetOrigin = new URL(url).origin;
+      const headers: Record<string, string> = {
+        "x-agentia-load-test": run.id,
+        "user-agent": "AGENTIA-Load-Test/1.0"
+      };
+
+      // The bypass secret is never sent to a caller-provided URL. It is used only
+      // when the request is headed to the exact staging origin allow-listed by the
+      // server, and the secret itself is configured only in the staging preview.
+      const stagingBypass = process.env.STAGING_VERCEL_PROTECTION_BYPASS_TOKEN?.trim();
+      if (stagingBypass && process.env.LOAD_TEST_ALLOWED_ORIGIN === targetOrigin) {
+        headers["x-vercel-protection-bypass"] = stagingBypass;
+      }
+
+      const response = await fetch(url, { headers, signal: AbortSignal.timeout(timeoutMs) });
       const elapsed = Math.round(performance.now() - started);
       run.latencyMs.push(elapsed); run.totalRequests += 1;
       run.statusCodes[String(response.status)] = (run.statusCodes[String(response.status)] || 0) + 1;
