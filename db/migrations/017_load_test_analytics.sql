@@ -55,6 +55,9 @@ CREATE TABLE IF NOT EXISTS analytics_load_test_errors (
   last_occurrence TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+ALTER TABLE analytics_load_test_runs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE analytics_load_test_errors ENABLE ROW LEVEL SECURITY;
+
 CREATE INDEX IF NOT EXISTS idx_analytics_events_test_run ON analytics_events(test_run_id, created_at DESC) WHERE is_test_user;
 CREATE INDEX IF NOT EXISTS idx_analytics_sessions_test_run ON analytics_sessions(test_run_id, started_at DESC) WHERE is_test_user;
 CREATE INDEX IF NOT EXISTS idx_analytics_load_test_runs_created_at ON analytics_load_test_runs(created_at DESC);
@@ -63,11 +66,16 @@ CREATE INDEX IF NOT EXISTS idx_analytics_load_test_errors_run ON analytics_load_
 -- The application uses the limited `agentia_worker` database role. RLS keeps
 -- browser clients out; this policy permits only the server-side worker to
 -- persist and remove isolated test telemetry.
-GRANT SELECT, INSERT, UPDATE, DELETE ON analytics_load_test_runs, analytics_load_test_errors TO agentia_worker;
-DROP POLICY IF EXISTS agentia_worker_load_test_runs ON analytics_load_test_runs;
-CREATE POLICY agentia_worker_load_test_runs ON analytics_load_test_runs FOR ALL TO agentia_worker USING (true) WITH CHECK (true);
-DROP POLICY IF EXISTS agentia_worker_load_test_errors ON analytics_load_test_errors;
-CREATE POLICY agentia_worker_load_test_errors ON analytics_load_test_errors FOR ALL TO agentia_worker USING (true) WITH CHECK (true);
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'agentia_worker') THEN
+    GRANT SELECT, INSERT, UPDATE, DELETE ON analytics_load_test_runs, analytics_load_test_errors TO agentia_worker;
+    DROP POLICY IF EXISTS agentia_worker_load_test_runs ON analytics_load_test_runs;
+    CREATE POLICY agentia_worker_load_test_runs ON analytics_load_test_runs FOR ALL TO agentia_worker USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS agentia_worker_load_test_errors ON analytics_load_test_errors;
+    CREATE POLICY agentia_worker_load_test_errors ON analytics_load_test_errors FOR ALL TO agentia_worker USING (true) WITH CHECK (true);
+  END IF;
+END $$;
 
 -- A single, recoverable cleanup command for a finished test run:
 -- DELETE FROM analytics_load_test_runs WHERE id = '<test-run-id>';
