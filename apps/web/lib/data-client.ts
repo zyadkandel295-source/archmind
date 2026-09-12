@@ -5,6 +5,8 @@ import {
   readSessionCredential,
   writeSessionCredentials
 } from "@/lib/session-keys";
+import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
+import { signOut } from "firebase/auth";
 
 type ApiErrorPayload = { error?: { code?: string; message?: string; correlationId?: string; retryable?: boolean } };
 
@@ -63,11 +65,19 @@ async function renewSessionOnce() {
 function redirectToSignInOnce() {
   if (typeof window === "undefined" || redirectedForAuthLoss || window.location.pathname.startsWith("/auth/login")) return;
   redirectedForAuthLoss = true;
-  // Ensure token is persisted rather than deleted on API glitch
-  const token = readSessionCredential();
-  if (token) return;
+  // A fresh Firebase-to-workspace exchange was already attempted. At this
+  // point the workspace session is no longer valid, so invalidate Firebase
+  // across all tabs rather than leaving an inconsistent local-only session.
+  clearSessionCredentials();
   const returnTo = `${window.location.pathname}${window.location.search}`;
-  window.location.assign(`/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
+  const destination = `/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
+  if (!isFirebaseConfigured()) {
+    window.location.assign(destination);
+    return;
+  }
+  void signOut(getFirebaseAuth())
+    .catch(() => undefined)
+    .finally(() => window.location.assign(destination));
 }
 
 function friendlyMessage(code: string | undefined, fallback: string, status: number) {

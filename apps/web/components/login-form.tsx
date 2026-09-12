@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   sendPasswordResetEmail,
   setPersistence,
+  signInWithPopup,
   signInWithEmailAndPassword,
   updateProfile
 } from "firebase/auth";
@@ -151,15 +153,19 @@ export function LoginForm() {
     setError(undefined);
     setMessage(undefined);
     try {
+      if (!isFirebaseConfigured()) {
+        throw new Error("Sign-in is not configured for this environment.");
+      }
       recordActivity(mode === "register" ? "google_signup_started" : "google_login_started", {});
-      const params = new URLSearchParams();
-      const destination = new URLSearchParams(window.location.search).get("returnTo");
-      params.set("state", destination && destination.startsWith("/") ? destination : "login");
-      window.location.assign(`/api/workspace/auth/google?${params.toString()}`);
+      const credential = await signInWithPopup(getFirebaseAuth(), new GoogleAuthProvider());
+      await completeSignIn(credential.user, "google.com");
+      analytics.track(mode === "register" ? "sign_up" : "login", { method: "google" });
     } catch (err) {
       const nextError = signInErrorMessage(err);
       setError(nextError);
       toast({ type: "error", title: "Google sign-in failed", message: nextError });
+    } finally {
+      setLoading(false);
     }
   }
 

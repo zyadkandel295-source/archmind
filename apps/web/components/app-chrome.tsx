@@ -2,21 +2,35 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { onAuthStateChanged } from "firebase/auth";
 import { Nav } from "@/components/nav";
 import { ToastViewport } from "@/components/ui/toast";
-import { getFirebaseAuth, isFirebaseConfigured } from "@/lib/firebase";
-import { establishWorkspaceSession } from "@/lib/session-bridge";
-import { readSessionCredential } from "@/lib/session-keys";
 import { useSessionStore } from "@/lib/session-store";
 import * as analytics from "@/lib/analytics";
 
-const PUBLIC_PATHS = ["/", "/auth/login"];
+const PROTECTED_PATHS = ["/dashboard", "/assistants", "/profile", "/settings", "/analytics", "/admin", "/credits", "/billing", "/knowledge", "/files", "/chats"];
+
+function needsAuthentication(pathname: string) {
+  return PROTECTED_PATHS.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+}
+
+function AuthLoadingScreen() {
+  return (
+    <main className="grid min-h-screen place-items-center bg-[#FFF9F1] px-6 text-[#29231E]">
+      <div className="flex items-center gap-3 rounded-2xl border border-[#E3D4C2] bg-white px-5 py-4 shadow-sm">
+        <span className="agentia-mark" aria-hidden="true" />
+        <div>
+          <p className="text-sm font-black">AGENTIA</p>
+          <p className="text-xs text-[#83776B]">Restoring your secure session…</p>
+        </div>
+      </div>
+    </main>
+  );
+}
 
 export function AppChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const setSession = useSessionStore((state) => state.setSession);
+  const authStatus = useSessionStore((state) => state.authStatus);
   const accessToken = useSessionStore((state) => state.accessToken);
   const sessionEmail = useSessionStore((state) => state.email);
 
@@ -47,39 +61,21 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const isPublic = PUBLIC_PATHS.includes(pathname);
-    if (isPublic) return;
-
-    // Dashboard shows its own account-required screen instead of redirecting away.
-    if (pathname === "/dashboard" && !readSessionCredential()) return;
-
-    if (readSessionCredential()) return;
-
-    if (!isFirebaseConfigured()) {
-      router.replace("/auth/login");
+    if (authStatus === "initializing") return;
+    if (authStatus === "authenticated" && (pathname === "/" || pathname === "/auth/login")) {
+      router.replace("/dashboard");
       return;
     }
+    if (authStatus === "unauthenticated" && needsAuthentication(pathname)) {
+      const returnTo = `${pathname}${window.location.search}`;
+      router.replace(`/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
+    }
+  }, [authStatus, pathname, router]);
 
-    const unsubscribe = onAuthStateChanged(getFirebaseAuth(), (user) => {
-      if (!user) {
-        router.replace("/auth/login");
-        return;
-      }
-      establishWorkspaceSession(user)
-        .then((session) =>
-          setSession({
-            accessToken: session.accessToken,
-            refreshToken: session.refreshToken,
-            email: session.user.email,
-            displayName: session.user.displayName,
-            photoURL: session.user.photoUrl
-          })
-        )
-        .catch(() => router.replace("/auth/login"));
-    });
-
-    return unsubscribe;
-  }, [pathname, router, setSession]);
+  const mustWaitForAuth = pathname === "/" || pathname === "/auth/login" || needsAuthentication(pathname);
+  if (authStatus === "initializing" && mustWaitForAuth) return <AuthLoadingScreen />;
+  if (authStatus === "authenticated" && (pathname === "/" || pathname === "/auth/login")) return <AuthLoadingScreen />;
+  if (authStatus === "unauthenticated" && needsAuthentication(pathname)) return <AuthLoadingScreen />;
 
   return (
     <>

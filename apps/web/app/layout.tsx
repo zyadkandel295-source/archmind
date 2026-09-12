@@ -5,6 +5,7 @@ import "./globals.css";
 import { AppChrome } from "@/components/app-chrome";
 import { ActivityTracker } from "@/components/activity-tracker";
 import { DataPersistenceProvider } from "@/lib/context/data-persistence-context";
+import { AuthProvider } from "@/lib/auth-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -160,10 +161,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={inter.className}>
-        <DataPersistenceProvider>
-          <ActivityTracker />
-          <AppChrome>{children}</AppChrome>
-        </DataPersistenceProvider>
+        <AuthProvider>
+          <DataPersistenceProvider>
+            <ActivityTracker />
+            <AppChrome>{children}</AppChrome>
+          </DataPersistenceProvider>
+        </AuthProvider>
       </body>
     </html>
   );

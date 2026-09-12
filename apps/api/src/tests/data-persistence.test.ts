@@ -18,6 +18,15 @@ describe("Data Persistence API (v2)", () => {
 
   const authToken = signAccessToken(env, testUser);
 
+  test("rejects an arbitrary bearer value instead of treating it as a user id", async () => {
+    const res = await request(app)
+      .get("/api/assistants")
+      .set("Authorization", "Bearer not-a-signed-token");
+
+    expect(res.status).toBe(401);
+    expect(res.body.error?.code).toBe("UNAUTHENTICATED");
+  });
+
   describe("Assistants v2 CRUD", () => {
     let createdAssistantId: string;
 

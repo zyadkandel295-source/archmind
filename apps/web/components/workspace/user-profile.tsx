@@ -5,11 +5,24 @@ import { motion } from 'framer-motion';
 import { LogOut, Settings } from 'lucide-react';
 import { useSessionStore } from '@/lib/session-store';
 import Link from 'next/link';
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { getFirebaseAuth, isFirebaseConfigured } from '@/lib/firebase';
 
 export function UserProfile() {
   const email = useSessionStore((state) => state.email) || 'user@agentia.dev';
   const displayName = useSessionStore((state) => state.displayName) || 'Architect';
   const clearSession = useSessionStore((state) => state.clearSession);
+  const router = useRouter();
+
+  async function logout() {
+    try {
+      if (isFirebaseConfigured()) await signOut(getFirebaseAuth());
+    } finally {
+      clearSession();
+      router.replace('/auth/login');
+    }
+  }
 
   return (
     <motion.div
@@ -69,7 +82,7 @@ export function UserProfile() {
           </button>
         </Link>
         <button
-          onClick={() => clearSession()}
+          onClick={logout}
           className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800/50 hover:text-red-400 transition-colors text-xs font-medium text-left"
         >
           <LogOut className="w-4 h-4 text-slate-400" />

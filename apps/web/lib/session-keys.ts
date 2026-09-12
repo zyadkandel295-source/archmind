@@ -4,19 +4,24 @@ const EMAIL_KEY = "archmind.email";
 const DISPLAY_NAME_KEY = "archmind.displayName";
 const PHOTO_KEY = "archmind.photoURL";
 
+// Workspace API credentials deliberately live in memory only. Firebase owns the
+// durable browser session (with its supported local persistence), while a fresh
+// short-lived workspace credential is exchanged whenever the app starts.
+// Keeping API refresh tokens out of localStorage prevents an injected script
+// from turning a browser profile into a long-lived API session.
+let workspaceAccessToken: string | undefined;
+let workspaceRefreshToken: string | undefined;
+
 /** Migrate legacy storage keys once per browser */
 function migrateLegacyKeys() {
   if (typeof window === "undefined") return;
-  const legacySession = window.localStorage.getItem("archmind.accessToken");
-  if (legacySession && !window.localStorage.getItem(SESSION_KEY)) {
-    window.localStorage.setItem(SESSION_KEY, legacySession);
-    window.localStorage.removeItem("archmind.accessToken");
-  }
-  const legacyRenewal = window.localStorage.getItem("archmind.refreshToken");
-  if (legacyRenewal && !window.localStorage.getItem(RENEWAL_KEY)) {
-    window.localStorage.setItem(RENEWAL_KEY, legacyRenewal);
-    window.localStorage.removeItem("archmind.refreshToken");
-  }
+  // Previous releases persisted both the workspace access token and refresh
+  // token in localStorage. Remove them once; Firebase remains signed in and
+  // AuthProvider will exchange a new in-memory workspace session on startup.
+  window.localStorage.removeItem(SESSION_KEY);
+  window.localStorage.removeItem(RENEWAL_KEY);
+  window.localStorage.removeItem("archmind.accessToken");
+  window.localStorage.removeItem("archmind.refreshToken");
 
   // Purge legacy hardcoded developer email defaults from existing browsers
   const email = window.localStorage.getItem(EMAIL_KEY);
@@ -27,24 +32,22 @@ function migrateLegacyKeys() {
 }
 
 export function readSessionCredential() {
-  if (typeof window === "undefined") return undefined;
-  migrateLegacyKeys();
-  const token = window.localStorage.getItem(SESSION_KEY);
-  return token || undefined;
+  return workspaceAccessToken;
 }
 
 export function readRenewalCredential() {
-  if (typeof window === "undefined") return undefined;
-  migrateLegacyKeys();
-  return window.localStorage.getItem(RENEWAL_KEY) ?? undefined;
+  return workspaceRefreshToken;
 }
 
 export function writeSessionCredentials(session: string, renewal?: string) {
-  window.localStorage.setItem(SESSION_KEY, session);
-  if (renewal) window.localStorage.setItem(RENEWAL_KEY, renewal);
+  workspaceAccessToken = session;
+  workspaceRefreshToken = renewal;
 }
 
 export function clearSessionCredentials() {
+  workspaceAccessToken = undefined;
+  workspaceRefreshToken = undefined;
+  if (typeof window === "undefined") return;
   window.localStorage.removeItem(SESSION_KEY);
   window.localStorage.removeItem(RENEWAL_KEY);
   window.localStorage.removeItem(EMAIL_KEY);
@@ -55,6 +58,7 @@ export function clearSessionCredentials() {
 }
 
 export function readProfileFromStorage() {
+  if (typeof window === "undefined") return { email: undefined, displayName: undefined, photoURL: undefined };
   migrateLegacyKeys();
   return {
     email: window.localStorage.getItem(EMAIL_KEY) ?? undefined,

@@ -114,14 +114,7 @@ export function authenticate(env: Env, store: MemoryStore) {
       };
       return next();
     } catch {
-      // Fall back to persistent session user rather than forcing 401 logout
-      const existingUser = store.findUserById(token);
-      req.user = {
-        id: token,
-        email: existingUser?.email || "",
-        plan: existingUser?.plan || "free"
-      };
-      return next();
+      return next(new HttpError(401, "Invalid or expired access token", "UNAUTHENTICATED"));
     }
   };
 }

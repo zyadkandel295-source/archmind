@@ -11,6 +11,7 @@ import {
 } from "@/lib/session-keys";
 
 interface SessionState {
+  authStatus: "initializing" | "authenticated" | "unauthenticated";
   accessToken?: string;
   refreshToken?: string;
   email?: string;
@@ -18,6 +19,7 @@ interface SessionState {
   photoURL?: string;
   setSession: (input: SessionInput) => void;
   clearSession: () => void;
+  setAuthStatus: (status: SessionState["authStatus"]) => void;
 }
 
 export interface SessionInput {
@@ -40,6 +42,7 @@ export function clearStoredSession() {
 export const useSessionStore = create<SessionState>((set) => {
   const stored = typeof window !== "undefined" ? readProfileFromStorage() : { email: undefined, displayName: undefined, photoURL: undefined };
   return {
+    authStatus: "initializing",
     accessToken: typeof window !== "undefined" ? readSessionCredential() : undefined,
     refreshToken: typeof window !== "undefined" ? readRenewalCredential() : undefined,
     email: stored.email,
@@ -47,11 +50,12 @@ export const useSessionStore = create<SessionState>((set) => {
     photoURL: stored.photoURL,
     setSession: (input) => {
       persistSession(input);
-      set(input);
+      set({ ...input, authStatus: "authenticated" });
     },
     clearSession: () => {
       clearStoredSession();
-      set({ accessToken: undefined, refreshToken: undefined, email: undefined, displayName: undefined, photoURL: undefined });
-    }
+      set({ authStatus: "unauthenticated", accessToken: undefined, refreshToken: undefined, email: undefined, displayName: undefined, photoURL: undefined });
+    },
+    setAuthStatus: (authStatus) => set({ authStatus })
   };
 });
