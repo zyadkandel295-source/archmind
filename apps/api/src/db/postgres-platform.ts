@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { Pool, type PoolClient } from "pg";
+import { createDatabasePool } from "./pool";
 import { emptyPlatformState, type PlatformState } from "../platform-types";
 import type { PlatformStateStore } from "./platform-store";
 import type { AssistantRecord, AuthUser } from "../types";
@@ -50,7 +51,7 @@ export class PostgresPlatformStore implements PlatformStateStore {
 
   constructor(databaseUrl: string, options: { runMigrations?: boolean; memoryStore?: any } = {}) {
     this.memoryStore = options.memoryStore;
-    const pool = new Pool({ connectionString: databaseUrl });
+    const pool = createDatabasePool(databaseUrl);
     this.pool = pool;
     if (options.runMigrations ?? true) {
       this.ready = (async () => {

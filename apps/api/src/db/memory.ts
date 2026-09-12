@@ -3,6 +3,7 @@ import { createHash, randomUUID } from "crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { Pool } from "pg";
+import { createDatabasePool } from "./pool";
 import type {
   AnalyticsEventRecord,
   AssistantActionRecord,
@@ -139,7 +140,7 @@ export class MemoryStore implements PlatformStateStore {
 
     if (databaseSync && process.env.DATABASE_URL) {
       try {
-        this.dbPool = new Pool({ connectionString: process.env.DATABASE_URL });
+        this.dbPool = createDatabasePool(process.env.DATABASE_URL);
         this.analyticsEngine.setPool(this.dbPool);
         this.loadTestService.setPool(this.dbPool);
         this.loadFromPg().catch((err) => {

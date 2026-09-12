@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { Pool } from "pg";
+import { createDatabasePool } from "../../db/pool";
 import type { Env } from "../../config/env";
 import { HttpError } from "../../lib/http-error";
 import { createSupabaseServerClient } from "../supabase-server";
@@ -21,7 +22,7 @@ export class FileRepository {
   ) {
     this.directory = directory;
     if (env.databaseUrl)
-      this.pool = new Pool({ connectionString: env.databaseUrl });
+      this.pool = createDatabasePool(env.databaseUrl);
   }
   async assertConfigured() {
     if (

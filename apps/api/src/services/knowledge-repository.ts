@@ -1,4 +1,5 @@
 import { Pool } from "pg";
+import { createDatabasePool } from "../db/pool";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AssistantRecord, DataSourceRecord, RetrievedChunk } from "../types";
 
@@ -134,7 +135,7 @@ export class KnowledgeRepository {
   private durableSchema?: Promise<boolean>;
 
   constructor(databaseUrl: string, private supabase: SupabaseClient) {
-    this.pool = new Pool({ connectionString: databaseUrl });
+    this.pool = createDatabasePool(databaseUrl);
   }
 
   private async hasDurableKnowledgeSchema() {
