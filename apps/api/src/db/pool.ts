@@ -17,8 +17,14 @@ export function databasePoolConfig(connectionString: string): PoolConfig {
   const config: PoolConfig = { connectionString };
 
   try {
-    const hostname = new URL(connectionString).hostname.toLowerCase();
+    const url = new URL(connectionString);
+    const hostname = url.hostname.toLowerCase();
     if (hostname.endsWith(".pooler.supabase.com")) {
+      // pg parses sslmode before its explicit ssl option, emitting a warning
+      // for the otherwise-unneeded query parameter. The explicit TLS config
+      // below is authoritative, so remove it before passing the URL to pg.
+      url.searchParams.delete("sslmode");
+      config.connectionString = url.toString();
       config.ssl = { rejectUnauthorized: false };
     }
   } catch {

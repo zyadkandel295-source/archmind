@@ -29,8 +29,7 @@ import { chatsV2Router } from "./modules/chats-v2";
 import { aiBaseRouter } from "./modules/ai-base";
 import { filesRouter, fileChatRouter } from "./modules/files";
 import { FileGenerationService } from "./services/files/generator";
-import { AI_PROVIDERS_UNAVAILABLE_MESSAGE } from "./services/ai-service";
-import { generateAiResponse } from "./services/ai-service";
+import { AI_PROVIDERS_UNAVAILABLE_MESSAGE, generateAiResponse, hasConfiguredOpenRouterKey } from "./services/ai-service";
 import { aiChatRequestSchema } from "@archmind/shared";
 
 export interface AppOptions {
@@ -147,7 +146,7 @@ export function createApp(options: AppOptions = {}) {
       ok: true,
       service: "agentia-api",
       uptime: Math.floor(process.uptime()),
-      assistantReady: Boolean(env.openrouterApiKey)
+      assistantReady: hasConfiguredOpenRouterKey(env)
     };
 
     // Only expose dependency status in non-production environments
@@ -160,7 +159,7 @@ export function createApp(options: AppOptions = {}) {
         dependencies: {
           postgres: Boolean(env.databaseUrl),
           redis: Boolean(env.redisUrl),
-          assistantService: Boolean(env.openrouterApiKey),
+          assistantService: hasConfiguredOpenRouterKey(env),
           firebaseAdmin: Boolean(env.firebaseProjectId && env.firebaseClientEmail && env.firebasePrivateKey),
           stripe: Boolean(env.stripeSecretKey),
           s3: Boolean(env.s3Bucket && env.s3Region)
@@ -175,7 +174,7 @@ export function createApp(options: AppOptions = {}) {
 
   // Authenticated chat endpoint. Service credentials always remain server-side.
   app.post("/api/ai/chat", (req, res, next) => {
-    if (!env.openrouterApiKey || env.llmProvider !== "openrouter") {
+    if (!hasConfiguredOpenRouterKey(env) || env.llmProvider !== "openrouter") {
       return res.status(503).json({ success: false, errorCode: "ASSISTANT_UNAVAILABLE", message: AI_PROVIDERS_UNAVAILABLE_MESSAGE });
     }
     return authenticate(env, store)(req, res, next);

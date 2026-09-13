@@ -3,8 +3,10 @@ import { databasePoolConfig } from "../db/pool";
 
 describe("databasePoolConfig", () => {
   it("uses the managed Supabase pooler compatibility setting only for its pooler host", () => {
-    expect(databasePoolConfig("postgresql://user:pass@aws-0-eu-central-1.pooler.supabase.com:6543/postgres").ssl)
+    const config = databasePoolConfig("postgresql://user:pass@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?sslmode=require");
+    expect(config.ssl)
       .toEqual({ rejectUnauthorized: false });
+    expect(config.connectionString).not.toContain("sslmode=");
   });
 
   it("keeps certificate validation at the driver default for other database hosts", () => {

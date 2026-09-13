@@ -25,6 +25,39 @@ type OpenRouterResponse = {
   error?: { message?: string };
 };
 
+const keyUnavailableUntil = new Map<string, number>();
+
+class NonFailoverProviderError extends Error {}
+
+function configuredOpenRouterKeys(env: Env) {
+  return [...new Set([env.openrouterApiKey, ...(env.openrouterApiKeys ?? [])]
+    .map((key) => key.trim())
+    .filter(Boolean))];
+}
+
+export function hasConfiguredOpenRouterKey(env: Env) {
+  return configuredOpenRouterKeys(env).length > 0;
+}
+
+function retryDelayMs(response: Response) {
+  const seconds = Number(response.headers.get("retry-after"));
+  return Number.isFinite(seconds) && seconds > 0
+    ? Math.min(seconds * 1_000, 24 * 60 * 60 * 1_000)
+    : 5 * 60 * 1_000;
+}
+
+function keyFailureCooldown(response: Response) {
+  if (response.status === 402) return 24 * 60 * 60 * 1_000;
+  if (response.status === 429) return retryDelayMs(response);
+  if (response.status === 401 || response.status === 403) return 60 * 60 * 1_000;
+  if (response.status >= 500) return 30 * 1_000;
+  return 0;
+}
+
+function shouldFailOver(response: Response) {
+  return response.status === 401 || response.status === 402 || response.status === 403 || response.status === 429 || response.status >= 500;
+}
+
 function extractUserMessage(messages: AiMessage[]): string {
   return [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
 }
@@ -58,7 +91,7 @@ export function chooseAiModel(
   const taskType = detectTaskType(userMessage);
 
   return {
-    provider: _env.openrouterApiKey ? "openrouter" : "under_development",
+    provider: hasConfiguredOpenRouterKey(_env) ? "openrouter" : "under_development",
     model: resolveConfiguredModel(assistantConfig?.model, _env),
     taskType,
     reason: assistantConfig?.model ? "assistant_model" : "default_model"
@@ -82,7 +115,8 @@ export async function generateAiResponse(input: {
   // OpenRouter runtime can call the network; mocked fetch remains supported
   // for deterministic integration tests.
   const fetchIsMocked = Boolean((globalThis.fetch as unknown as { mock?: unknown }).mock);
-  if (!input.env.openrouterApiKey || (input.env.llmProvider !== "openrouter" && !fetchIsMocked)) {
+  const apiKeys = configuredOpenRouterKeys(input.env);
+  if (apiKeys.length === 0 || (input.env.llmProvider !== "openrouter" && !fetchIsMocked)) {
     return AI_PROVIDERS_UNAVAILABLE_MESSAGE;
   }
 
@@ -93,35 +127,53 @@ export async function generateAiResponse(input: {
   if (messages.length === 0) return "Please send a message so I can help.";
 
   const choice = chooseAiModel(extractUserMessage(messages), input.env, input.assistantConfig);
-  try {
-    const response = await fetch(OPENROUTER_CHAT_URL, {
-      signal: input.signal,
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${input.env.openrouterApiKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": input.env.appUrl,
-        "X-Title": "AGENTIA"
-      },
-      body: JSON.stringify({
-        model: choice.model,
-        messages,
-        temperature: input.temperature ?? 0.7,
-        max_tokens: input.maxTokens ?? 4096
-      })
-    });
-    const payload = (await response.json().catch(() => ({}))) as OpenRouterResponse;
-    if (!response.ok) {
-      throw new Error(payload.error?.message || `Assistant request failed (${response.status})`);
+  let lastError: Error | undefined;
+  const now = Date.now();
+  const candidates = apiKeys.filter((key) => (keyUnavailableUntil.get(key) ?? 0) <= now);
+  const keysToTry = candidates.length > 0 ? candidates : apiKeys;
+
+  for (const apiKey of keysToTry) {
+    try {
+      const response = await fetch(OPENROUTER_CHAT_URL, {
+        signal: input.signal,
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": input.env.appUrl,
+          "X-Title": "AGENTIA"
+        },
+        body: JSON.stringify({
+          model: choice.model,
+          messages,
+          temperature: input.temperature ?? 0.7,
+          max_tokens: input.maxTokens ?? 4096
+        })
+      });
+      const payload = (await response.json().catch(() => ({}))) as OpenRouterResponse;
+      if (!response.ok) {
+        const detail = payload.error?.message || `Assistant request failed (${response.status})`;
+        if (!shouldFailOver(response)) throw new NonFailoverProviderError(detail);
+        keyUnavailableUntil.set(apiKey, Date.now() + keyFailureCooldown(response));
+        lastError = new Error(detail);
+        continue;
+      }
+      keyUnavailableUntil.delete(apiKey);
+      const content = payload.choices?.[0]?.message?.content;
+      const answer = Array.isArray(content) ? content.map((part) => part.text ?? "").join("") : content;
+      if (!answer?.trim()) throw new NonFailoverProviderError("The assistant returned an empty response.");
+      return answer.trim();
+    } catch (error) {
+      if (error instanceof NonFailoverProviderError) throw new Error(`Assistant service error: ${error.message}`);
+      if (input.signal?.aborted) throw error;
+      lastError = error instanceof Error ? error : new Error("Unknown service error");
+      // Network-level provider failures can be isolated to a credential route;
+      // make a bounded attempt with the next configured key.
+      keyUnavailableUntil.set(apiKey, Date.now() + 30 * 1_000);
     }
-    const content = payload.choices?.[0]?.message?.content;
-    const answer = Array.isArray(content) ? content.map((part) => part.text ?? "").join("") : content;
-    if (!answer?.trim()) throw new Error("The assistant returned an empty response.");
-    return answer.trim();
-  } catch (error) {
-    const detail = error instanceof Error ? error.message : "Unknown service error";
-    throw new Error(`Assistant service error: ${detail}`);
   }
+
+  throw new Error(`Assistant service error: ${lastError?.message ?? "All configured OpenRouter keys are unavailable."}`);
 }
 
 export async function generateAssistantResponse(input: {
