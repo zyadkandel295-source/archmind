@@ -32,6 +32,8 @@ export interface Env {
   googleRefreshToken?: string;
   llmProvider: "openrouter" | "under_development";
   openrouterApiKey: string;
+  /** Ordered backup keys used only when OpenRouter rejects the active key for quota/rate-limit/provider reasons. */
+  openrouterApiKeys?: string[];
   openrouterDefaultModel: string;
   enableAnswerVerification: boolean;
   verifyMath: boolean;
@@ -70,6 +72,12 @@ const getJwtSecret = (secretName: string, envVarName: string, nodeEnv: string): 
 export function loadEnv(): Env {
   const nodeEnv = process.env.NODE_ENV ?? "development";
   const appUrl = process.env.APP_URL ?? "http://localhost:3000";
+  const openrouterApiKey = process.env.OPENROUTER_API_KEY ?? "";
+  const openrouterApiKeys = [
+    process.env.OPENROUTER_API_KEY_2,
+    process.env.OPENROUTER_API_KEY_3,
+    process.env.OPENROUTER_API_KEY_4
+  ].filter((key): key is string => Boolean(key?.trim()));
 
   return {
     nodeEnv,
@@ -99,8 +107,9 @@ export function loadEnv(): Env {
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL ?? "http://localhost:4000/api/auth/google/callback",
     googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-    llmProvider: process.env.OPENROUTER_API_KEY ? "openrouter" : "under_development",
-    openrouterApiKey: process.env.OPENROUTER_API_KEY ?? "",
+    llmProvider: [openrouterApiKey, ...openrouterApiKeys].some((key) => key.trim()) ? "openrouter" : "under_development",
+    openrouterApiKey,
+    openrouterApiKeys,
     openrouterDefaultModel: process.env.OPENROUTER_DEFAULT_MODEL ?? "qwen/qwen3-coder",
     enableAnswerVerification: process.env.ENABLE_ANSWER_VERIFICATION !== "false",
     verifyMath: process.env.VERIFY_MATH !== "false",

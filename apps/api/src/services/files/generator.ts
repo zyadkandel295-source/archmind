@@ -4,7 +4,7 @@ import { Queue } from "bullmq";
 import { send as sendVercelQueue } from "@vercel/queue";
 import type { Env } from "../../config/env";
 import { HttpError } from "../../lib/http-error";
-import { generateAiResponse } from "../ai-service";
+import { generateAiResponse, hasConfiguredOpenRouterKey } from "../ai-service";
 import { FileRepository } from "./repository";
 import { usesManagedVercelFileQueue } from "./queue-runtime";
 import { validateContentPage, renderFile } from "./render";
@@ -579,7 +579,7 @@ export class FileGenerationService {
         throw new Error(
           "The previous document is not ready. Retry after it finishes.",
         );
-      let useFreeComposer = !this.env.openrouterApiKey;
+      let useFreeComposer = !hasConfiguredOpenRouterKey(this.env);
       if (!file.plan) {
         file.stage = "Preparing outline";
         await save();
