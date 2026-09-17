@@ -20,7 +20,7 @@ apps/api/api/*.js
 scratch/
 uploads/
 tmp/
-apps/api/storage/
+apps/api/storage/*
 !apps/api/storage/ai-base/
 
 # Environment Files
