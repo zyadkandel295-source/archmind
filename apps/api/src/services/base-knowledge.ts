@@ -38,7 +38,8 @@ export class BaseKnowledgeService {
     if (existing) return existing;
     try {
       const raw = fs.readFileSync(path.join(workspaceRoot(), document.textPath), "utf8");
-      const matches = [...raw.matchAll(/(?:^|\n\n)PAGE (\d+)\n([\s\S]*?)(?=\n\nPAGE \d+\n|$)/g)];
+      const normalized = raw.replace(/\r\n/g, "\n");
+      const matches = [...normalized.matchAll(/(?:^|\n\n)PAGE (\d+)\n([\s\S]*?)(?=\n\nPAGE \d+\n|$)/g)];
       const parsed = matches.map((match) => ({ page: Number(match[1]), text: match[2] ?? "" }));
       this.pages.set(document.id, parsed);
       return parsed;

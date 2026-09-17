@@ -21,6 +21,7 @@ scratch/
 uploads/
 tmp/
 apps/api/storage/
+!apps/api/storage/ai-base/
 
 # Environment Files
 .env
@@ -53,5 +54,8 @@ web-prod.log*
 .vercel/
 .railway/
 .aider*
+.superdesign/
+__pycache__/
+*.pyc
 .DS_Store
 Thumbs.db
