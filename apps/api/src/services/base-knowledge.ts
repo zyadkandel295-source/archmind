@@ -23,13 +23,30 @@ export class BaseKnowledgeService {
 
   private catalog() {
     if (this.documents) return this.documents;
-    const catalogPath = path.join(workspaceRoot(), "apps", "api", "storage", "ai-base", "knowledge-catalog.json");
+    const docs: KnowledgeDocument[] = [];
+    const root = workspaceRoot();
+    const textbooksCatalogPath = path.join(root, "apps", "api", "storage", "ai-base", "knowledge-textbooks-catalog.json");
+    const catalogPath = path.join(root, "apps", "api", "storage", "ai-base", "knowledge-catalog.json");
+
     try {
-      this.documents = JSON.parse(fs.readFileSync(catalogPath, "utf8")) as KnowledgeDocument[];
+      if (fs.existsSync(textbooksCatalogPath)) {
+        const textbooks = JSON.parse(fs.readFileSync(textbooksCatalogPath, "utf8")) as KnowledgeDocument[];
+        docs.push(...textbooks);
+      }
     } catch (error) {
-      console.warn("[AI Base] Knowledge catalog is unavailable", error instanceof Error ? error.message : error);
-      this.documents = [];
+      console.warn("[AI Base] Textbooks catalog is unavailable", error instanceof Error ? error.message : error);
     }
+
+    try {
+      if (fs.existsSync(catalogPath)) {
+        const monographs = JSON.parse(fs.readFileSync(catalogPath, "utf8")) as KnowledgeDocument[];
+        docs.push(...monographs);
+      }
+    } catch (error) {
+      console.warn("[AI Base] Monographs catalog is unavailable", error instanceof Error ? error.message : error);
+    }
+
+    this.documents = docs;
     return this.documents;
   }
 

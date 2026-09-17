@@ -1,0 +1,1538 @@
+PAGE 1
+# Applications of AI and Technology — Physics
+## Cover Page
+
+Applications of AI and Technology: Physics. A modern 220-page academic educational textbook.
+
+
+PAGE 2
+# Applications of AI and Technology — Physics
+## Open Educational License & Distribution
+
+Open educational access license and distribution policy for Physics.
+
+
+PAGE 3
+# Applications of AI and Technology — Physics
+## Curriculum Architecture & Overview
+
+Curriculum architecture, learning modules, and educational standards for Physics.
+
+
+PAGE 4
+# Applications of AI and Technology — Physics
+## Table of Contents (Part 1)
+
+Detailed syllabus mapping Chapters 1 through 3.
+
+
+PAGE 5
+# Applications of AI and Technology — Physics
+## Table of Contents (Part 2)
+
+Detailed syllabus mapping Chapters 4 through 5 and Back Matter.
+
+
+PAGE 6
+# Applications of AI and Technology — Physics
+## List of Figures and Tables
+
+Index of technical vector schematics and comparison benchmark tables.
+
+
+PAGE 7
+# Applications of AI and Technology — Physics
+## How to Use This Textbook
+
+Study guide, prerequisites, and learning pathways for students.
+
+
+PAGE 8
+# Applications of AI and Technology — Physics
+## Series Preface
+
+Pedagogical philosophy and curriculum integration of the AGENTIA collection.
+
+
+PAGE 9
+# Applications of AI and Technology — Physics
+## Field Overview
+
+Introduction to how artificial intelligence is transforming Physics.
+
+
+PAGE 10
+# Applications of AI and Technology — Physics
+## Notation and Conventions
+
+Mathematical symbols, linear algebra conventions, and study tips.
+
+
+PAGE 11
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 1 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 12
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 2 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 13
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 3 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 14
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 4 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 15
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 5 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 16
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 6 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 17
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 7 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 18
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 8 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 19
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 9 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 20
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 10 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 21
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 11 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 22
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 12 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 23
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 13 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 24
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 14 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 25
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 15 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 26
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 16 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 27
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 17 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 28
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 18 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 29
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 19 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 30
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 20 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 31
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 21 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 32
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 22 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 33
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 23 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 34
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 24 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 35
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 25 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 36
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 26 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 37
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 27 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 38
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 28 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 39
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 29 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 40
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 30 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 41
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 31 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 42
+# Applications of AI and Technology — Physics
+## Chapter 1: Mechanics and Motion (Page 32 of 32)
+
+Chapter 1: Mechanics and Motion. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 43
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 1 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 44
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 2 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 45
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 3 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 46
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 4 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 47
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 5 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 48
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 6 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 49
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 7 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 50
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 8 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 51
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 9 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 52
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 10 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 53
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 11 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 54
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 12 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 55
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 13 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 56
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 14 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 57
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 15 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 58
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 16 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 59
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 17 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 60
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 18 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 61
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 19 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 62
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 20 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 63
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 21 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 64
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 22 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 65
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 23 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 66
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 24 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 67
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 25 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 68
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 26 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 69
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 27 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 70
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 28 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 71
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 29 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 72
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 30 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 73
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 31 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 74
+# Applications of AI and Technology — Physics
+## Chapter 2: Forces, Energy, and Momentum (Page 32 of 32)
+
+Chapter 2: Forces, Energy, and Momentum. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 75
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 1 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 76
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 2 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 77
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 3 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 78
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 4 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 79
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 5 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 80
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 6 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 81
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 7 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 82
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 8 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 83
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 9 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 84
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 10 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 85
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 11 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 86
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 12 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 87
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 13 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 88
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 14 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 89
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 15 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 90
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 16 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 91
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 17 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 92
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 18 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 93
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 19 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 94
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 20 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 95
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 21 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 96
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 22 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 97
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 23 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 98
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 24 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 99
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 25 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 100
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 26 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 101
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 27 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 102
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 28 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 103
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 29 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 104
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 30 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 105
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 31 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 106
+# Applications of AI and Technology — Physics
+## Chapter 3: Waves, Optics, and Oscillations (Page 32 of 32)
+
+Chapter 3: Waves, Optics, and Oscillations. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 107
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 1 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 108
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 2 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 109
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 3 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 110
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 4 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 111
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 5 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 112
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 6 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 113
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 7 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 114
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 8 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 115
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 9 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 116
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 10 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 117
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 11 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 118
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 12 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 119
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 13 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 120
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 14 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 121
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 15 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 122
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 16 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 123
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 17 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 124
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 18 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 125
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 19 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 126
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 20 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 127
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 21 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 128
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 22 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 129
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 23 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 130
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 24 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 131
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 25 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 132
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 26 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 133
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 27 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 134
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 28 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 135
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 29 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 136
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 30 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 137
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 31 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 138
+# Applications of AI and Technology — Physics
+## Chapter 4: Electricity, Magnetism, and Fields (Page 32 of 32)
+
+Chapter 4: Electricity, Magnetism, and Fields. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 139
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 1 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 140
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 2 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 141
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 3 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 142
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 4 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 143
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 5 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 144
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 6 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 145
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 7 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 146
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 8 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 147
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 9 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 148
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 10 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 149
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 11 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 150
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 12 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 151
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 13 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 152
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 14 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 153
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 15 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 154
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 16 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 155
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 17 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 156
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 18 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 157
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 19 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 158
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 20 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 159
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 21 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 160
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 22 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 161
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 23 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 162
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 24 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 163
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 25 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 164
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 26 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 165
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 27 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 166
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 28 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 167
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 29 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 168
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 30 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 169
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 31 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 170
+# Applications of AI and Technology — Physics
+## Chapter 5: Relativity, Quantum Physics, and Matter (Page 32 of 32)
+
+Chapter 5: Relativity, Quantum Physics, and Matter. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Hamiltonian Conservation Loss: L = || (∂H_θ / ∂p) - (dq / dt) ||^2 + || (∂H_θ / ∂q) + (dp / dt) ||^2), case studies (DeepMind and EPFL deploying reinforcement learning controllers on the TCV tokamak reactor, autonomously shaping high-temperature fusion plasma at 10,000 adjustments per second.), and limitations (Accumulation of numerical integration drift during long-horizon rollouts when models encounter turbulent physical regimes outside the training envelope.).
+
+
+PAGE 171
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 1 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 172
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 2 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 173
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 3 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 174
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 4 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 175
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 5 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 176
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 6 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 177
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 7 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 178
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 8 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 179
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 9 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 180
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 10 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 181
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 11 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 182
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 12 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 183
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 13 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 184
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 14 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 185
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 15 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 186
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 16 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 187
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 17 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 188
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 18 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 189
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 19 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 190
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 20 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 191
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 21 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 192
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 22 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 193
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 23 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 194
+# Applications of AI and Technology — Physics
+## Extended Case Study (Page 24 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Physics.
+
+
+PAGE 195
+# Applications of AI and Technology — Physics
+## Annotated Bibliography (Part 1 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 196
+# Applications of AI and Technology — Physics
+## Annotated Bibliography (Part 2 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 197
+# Applications of AI and Technology — Physics
+## Annotated Bibliography (Part 3 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 198
+# Applications of AI and Technology — Physics
+## Annotated Bibliography (Part 4 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 199
+# Applications of AI and Technology — Physics
+## Annotated Bibliography (Part 5 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 200
+# Applications of AI and Technology — Physics
+## Annotated Bibliography (Part 6 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 201
+# Applications of AI and Technology — Physics
+## Annotated Bibliography (Part 7 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 202
+# Applications of AI and Technology — Physics
+## Annotated Bibliography (Part 8 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 203
+# Applications of AI and Technology — Physics
+## Glossary of Terms (Part 1 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 204
+# Applications of AI and Technology — Physics
+## Glossary of Terms (Part 2 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 205
+# Applications of AI and Technology — Physics
+## Glossary of Terms (Part 3 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 206
+# Applications of AI and Technology — Physics
+## Glossary of Terms (Part 4 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 207
+# Applications of AI and Technology — Physics
+## Glossary of Terms (Part 5 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 208
+# Applications of AI and Technology — Physics
+## Glossary of Terms (Part 6 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 209
+# Applications of AI and Technology — Physics
+## Appendix A: Mathematical Reference (Part 1 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 210
+# Applications of AI and Technology — Physics
+## Appendix A: Mathematical Reference (Part 2 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 211
+# Applications of AI and Technology — Physics
+## Appendix A: Mathematical Reference (Part 3 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 212
+# Applications of AI and Technology — Physics
+## Appendix A: Mathematical Reference (Part 4 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 213
+# Applications of AI and Technology — Physics
+## Appendix B: Open-Source Tools Registry (Part 1 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 214
+# Applications of AI and Technology — Physics
+## Appendix B: Open-Source Tools Registry (Part 2 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 215
+# Applications of AI and Technology — Physics
+## Appendix B: Open-Source Tools Registry (Part 3 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 216
+# Applications of AI and Technology — Physics
+## Appendix B: Open-Source Tools Registry (Part 4 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 217
+# Applications of AI and Technology — Physics
+## Appendix C: Research Evidence Records (Part 1 of 2)
+
+Audit trail and source verification table.
+
+
+PAGE 218
+# Applications of AI and Technology — Physics
+## Appendix C: Research Evidence Records (Part 2 of 2)
+
+Audit trail and source verification table.
+
+
+PAGE 219
+# Applications of AI and Technology — Physics
+## Subject Index
+
+Comprehensive analytical and topic index.
+
+
+PAGE 220
+# Applications of AI and Technology — Physics
+## Colophon & Production Notes
+
+Archival specifications and publishing details.

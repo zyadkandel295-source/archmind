@@ -1,0 +1,1250 @@
+[
+  {
+    "id": "ai-applications-artificial-intelligence",
+    "collection": "Applications of AI and Technology",
+    "field_id": "artificial-intelligence",
+    "field_name": "Artificial Intelligence",
+    "title": "Applications of AI and Technology \u2014 Artificial Intelligence",
+    "filename": "Applications of AI and Technology \u2014 Artificial Intelligence.pdf",
+    "category": "Artificial Intelligence",
+    "categorySlug": "artificial-intelligence",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Artificial Intelligence.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Artificial Intelligence.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Artificial Intelligence.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Foundations of Artificial Intelligence",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Knowledge Representation and Reasoning",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Machine Learning and Intelligent Systems",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "AI Agents, Planning, and Tools",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Responsible AI and Evaluation",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-computer-science",
+    "collection": "Applications of AI and Technology",
+    "field_id": "computer-science",
+    "field_name": "Computer Science",
+    "title": "Applications of AI and Technology \u2014 Computer Science",
+    "filename": "Applications of AI and Technology \u2014 Computer Science.pdf",
+    "category": "Computer Science",
+    "categorySlug": "computer-science",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Computer Science.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Computer Science.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Computer Science.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Foundations of Computer Science",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Algorithms and Data Structures",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Software Design and Engineering",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Operating Systems and Networks",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Databases, Security, and Distributed Systems",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-mathematics",
+    "collection": "Applications of AI and Technology",
+    "field_id": "mathematics",
+    "field_name": "Mathematics",
+    "title": "Applications of AI and Technology \u2014 Mathematics",
+    "filename": "Applications of AI and Technology \u2014 Mathematics.pdf",
+    "category": "Mathematics",
+    "categorySlug": "mathematics",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Mathematics.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Mathematics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Mathematics.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Mathematical Reasoning and Proof",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Algebra, Functions, and Structures",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Calculus, Change, and Optimization",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Probability, Statistics, and Inference",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Discrete Mathematics and Computation",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-physics",
+    "collection": "Applications of AI and Technology",
+    "field_id": "physics",
+    "field_name": "Physics",
+    "title": "Applications of AI and Technology \u2014 Physics",
+    "filename": "Applications of AI and Technology \u2014 Physics.pdf",
+    "category": "Physics",
+    "categorySlug": "physics",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Physics.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Physics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Physics.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Mechanics and Motion",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Forces, Energy, and Momentum",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Waves, Optics, and Oscillations",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Electricity, Magnetism, and Fields",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Relativity, Quantum Physics, and Matter",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-astronomy",
+    "collection": "Applications of AI and Technology",
+    "field_id": "astronomy",
+    "field_name": "Astronomy",
+    "title": "Applications of AI and Technology \u2014 Astronomy",
+    "filename": "Applications of AI and Technology \u2014 Astronomy.pdf",
+    "category": "Astronomy",
+    "categorySlug": "astronomy",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Astronomy.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Astronomy.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Astronomy.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "The Night Sky and Observational Astronomy",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Planetary Systems and Exoplanets",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Stars, Galaxies, and Stellar Evolution",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Cosmology and the Expanding Universe",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Astronomical Data and Space Exploration",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-chemistry",
+    "collection": "Applications of AI and Technology",
+    "field_id": "chemistry",
+    "field_name": "Chemistry",
+    "title": "Applications of AI and Technology \u2014 Chemistry",
+    "filename": "Applications of AI and Technology \u2014 Chemistry.pdf",
+    "category": "Chemistry",
+    "categorySlug": "chemistry",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Chemistry.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Chemistry.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Chemistry.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Foundations of General Chemistry",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Atomic Structure and Periodic Trends",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Chemical Bonding and Molecular Structure",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Chemical Reactions and Stoichiometry",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Thermochemistry, Equilibrium, and Acids and Bases",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-biology",
+    "collection": "Applications of AI and Technology",
+    "field_id": "biology",
+    "field_name": "Biology",
+    "title": "Applications of AI and Technology \u2014 Biology",
+    "filename": "Applications of AI and Technology \u2014 Biology.pdf",
+    "category": "Biology",
+    "categorySlug": "biology",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Biology.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Biology.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Biology.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Cell Biology and Biochemistry",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Genetics, Evolution, and Heredity",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Organisms, Physiology, and Homeostasis",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Ecology and Earth Systems",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Biological Research Methods and Bioethics",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-medicine-health-sciences",
+    "collection": "Applications of AI and Technology",
+    "field_id": "medicine-health-sciences",
+    "field_name": "Medicine and Health Sciences",
+    "title": "Applications of AI and Technology \u2014 Medicine and Health Sciences",
+    "filename": "Applications of AI and Technology \u2014 Medicine and Health Sciences.pdf",
+    "category": "Medicine and Health Sciences",
+    "categorySlug": "medicine-health-sciences",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Medicine and Health Sciences.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Medicine and Health Sciences.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Medicine and Health Sciences.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Human Anatomy and Physiology",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Evidence-Based Medicine and Clinical Reasoning",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Public Health and Disease Prevention",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Health Systems, Safety, and Quality",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Medical Ethics and Health Communication",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-engineering",
+    "collection": "Applications of AI and Technology",
+    "field_id": "engineering",
+    "field_name": "Engineering",
+    "title": "Applications of AI and Technology \u2014 Engineering",
+    "filename": "Applications of AI and Technology \u2014 Engineering.pdf",
+    "category": "Engineering",
+    "categorySlug": "engineering",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Engineering.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Engineering.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Engineering.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Engineering Design and Problem Framing",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Mechanics, Materials, and Manufacturing",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Electrical Systems and Control",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Civil Infrastructure and the Built Environment",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Safety, Reliability, and Sustainable Engineering",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-data-science-statistics",
+    "collection": "Applications of AI and Technology",
+    "field_id": "data-science-statistics",
+    "field_name": "Data Science and Statistics",
+    "title": "Applications of AI and Technology \u2014 Data Science and Statistics",
+    "filename": "Applications of AI and Technology \u2014 Data Science and Statistics.pdf",
+    "category": "Data Science and Statistics",
+    "categorySlug": "data-science-statistics",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Data Science and Statistics.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Data Science and Statistics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Data Science and Statistics.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Data Literacy and Measurement",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Probability and Statistical Inference",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Data Analysis and Visualization",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Experimental Design and Causal Reasoning",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Responsible Data Science and Reproducibility",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-economics",
+    "collection": "Applications of AI and Technology",
+    "field_id": "economics",
+    "field_name": "Economics",
+    "title": "Applications of AI and Technology \u2014 Economics",
+    "filename": "Applications of AI and Technology \u2014 Economics.pdf",
+    "category": "Economics",
+    "categorySlug": "economics",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Economics.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Economics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Economics.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Economic Thinking and Scarcity",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Microeconomics: Choices, Markets, and Firms",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Macroeconomics: Growth, Inflation, and Employment",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Public Economics and Policy",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Development, Trade, and Inequality",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-business-entrepreneurship",
+    "collection": "Applications of AI and Technology",
+    "field_id": "business-entrepreneurship",
+    "field_name": "Business and Entrepreneurship",
+    "title": "Applications of AI and Technology \u2014 Business and Entrepreneurship",
+    "filename": "Applications of AI and Technology \u2014 Business and Entrepreneurship.pdf",
+    "category": "Business and Entrepreneurship",
+    "categorySlug": "business-entrepreneurship",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Business and Entrepreneurship.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Business and Entrepreneurship.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Business and Entrepreneurship.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Value Creation and Business Models",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Customers, Markets, and Product Strategy",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Operations, Finance, and Decision Making",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Entrepreneurship and Venture Design",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Leadership, Ethics, and Sustainable Growth",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-psychology",
+    "collection": "Applications of AI and Technology",
+    "field_id": "psychology",
+    "field_name": "Psychology",
+    "title": "Applications of AI and Technology \u2014 Psychology",
+    "filename": "Applications of AI and Technology \u2014 Psychology.pdf",
+    "category": "Psychology",
+    "categorySlug": "psychology",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Psychology.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Psychology.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Psychology.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Foundations of Psychology and Research",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Cognition, Learning, and Memory",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Development, Personality, and Individual Differences",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Social Psychology and Human Behavior",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Mental Health, Ethics, and Applied Psychology",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-sociology",
+    "collection": "Applications of AI and Technology",
+    "field_id": "sociology",
+    "field_name": "Sociology",
+    "title": "Applications of AI and Technology \u2014 Sociology",
+    "filename": "Applications of AI and Technology \u2014 Sociology.pdf",
+    "category": "Sociology",
+    "categorySlug": "sociology",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Sociology.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Sociology.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Sociology.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Sociological Thinking and Research",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Culture, Identity, and Socialization",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Institutions, Organizations, and Power",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Inequality, Population, and Social Change",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Methods, Ethics, and Public Sociology",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-political-science",
+    "collection": "Applications of AI and Technology",
+    "field_id": "political-science",
+    "field_name": "Political Science",
+    "title": "Applications of AI and Technology \u2014 Political Science",
+    "filename": "Applications of AI and Technology \u2014 Political Science.pdf",
+    "category": "Political Science",
+    "categorySlug": "political-science",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Political Science.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Political Science.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Political Science.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Political Ideas, Power, and Institutions",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Comparative Government and Democracy",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Political Behavior, Media, and Participation",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "International Relations and Global Governance",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Public Policy, Ethics, and Political Analysis",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-law-public-policy",
+    "collection": "Applications of AI and Technology",
+    "field_id": "law-public-policy",
+    "field_name": "Law and Public Policy",
+    "title": "Applications of AI and Technology \u2014 Law and Public Policy",
+    "filename": "Applications of AI and Technology \u2014 Law and Public Policy.pdf",
+    "category": "Law and Public Policy",
+    "categorySlug": "law-public-policy",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Law and Public Policy.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Law and Public Policy.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Law and Public Policy.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Legal Systems, Rights, and Reasoning",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Public Policy Design and Evaluation",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Regulation, Administration, and Institutions",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Evidence, Equity, and Access to Justice",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Ethics, Governance, and Public Interest",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-environmental-science",
+    "collection": "Applications of AI and Technology",
+    "field_id": "environmental-science",
+    "field_name": "Environmental Science",
+    "title": "Applications of AI and Technology \u2014 Environmental Science",
+    "filename": "Applications of AI and Technology \u2014 Environmental Science.pdf",
+    "category": "Environmental Science",
+    "categorySlug": "environmental-science",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Environmental Science.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Environmental Science.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Environmental Science.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Earth Systems and Environmental Change",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Ecology, Biodiversity, and Conservation",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Climate Science and Risk",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Resources, Pollution, and Sustainability",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Environmental Decisions, Justice, and Policy",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-earth-science",
+    "collection": "Applications of AI and Technology",
+    "field_id": "earth-science",
+    "field_name": "Earth Science",
+    "title": "Applications of AI and Technology \u2014 Earth Science",
+    "filename": "Applications of AI and Technology \u2014 Earth Science.pdf",
+    "category": "Earth Science",
+    "categorySlug": "earth-science",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Earth Science.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Earth Science.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Earth Science.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Earth Materials, Rocks, and Geologic Time",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Plate Tectonics, Hazards, and Landscapes",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Weather, Climate, and the Atmosphere",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Oceans, Water, and the Cryosphere",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Earth Observation and Environmental History",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-history",
+    "collection": "Applications of AI and Technology",
+    "field_id": "history",
+    "field_name": "History",
+    "title": "Applications of AI and Technology \u2014 History",
+    "filename": "Applications of AI and Technology \u2014 History.pdf",
+    "category": "History",
+    "categorySlug": "history",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in History.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 History.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 History.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Historical Thinking and Evidence",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "World History: Exchange and Connection",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "States, Empires, and Political Change",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Social History, Labor, and Everyday Life",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Memory, Interpretation, and Historical Research",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-philosophy",
+    "collection": "Applications of AI and Technology",
+    "field_id": "philosophy",
+    "field_name": "Philosophy",
+    "title": "Applications of AI and Technology \u2014 Philosophy",
+    "filename": "Applications of AI and Technology \u2014 Philosophy.pdf",
+    "category": "Philosophy",
+    "categorySlug": "philosophy",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Philosophy.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Philosophy.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Philosophy.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Arguments, Logic, and Clear Thinking",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Knowledge, Truth, and Skepticism",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Ethics, Values, and Moral Reasoning",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Mind, Language, and Reality",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Political Philosophy and Public Reason",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-literature",
+    "collection": "Applications of AI and Technology",
+    "field_id": "literature",
+    "field_name": "Literature",
+    "title": "Applications of AI and Technology \u2014 Literature",
+    "filename": "Applications of AI and Technology \u2014 Literature.pdf",
+    "category": "Literature",
+    "categorySlug": "literature",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Literature.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Literature.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Literature.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Reading Literature Closely",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Narrative, Character, and Point of View",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Poetry, Drama, and Literary Form",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Literature, Culture, and Historical Context",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Interpretation, Criticism, and Creative Response",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-languages-linguistics",
+    "collection": "Applications of AI and Technology",
+    "field_id": "languages-linguistics",
+    "field_name": "Languages and Linguistics",
+    "title": "Applications of AI and Technology \u2014 Languages and Linguistics",
+    "filename": "Applications of AI and Technology \u2014 Languages and Linguistics.pdf",
+    "category": "Languages and Linguistics",
+    "categorySlug": "languages-linguistics",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Languages and Linguistics.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Languages and Linguistics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Languages and Linguistics.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Language Structure: Sounds, Words, and Sentences",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Meaning, Pragmatics, and Discourse",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Language Acquisition and Learning",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Language, Society, and Identity",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Linguistic Research and Language Change",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-education",
+    "collection": "Applications of AI and Technology",
+    "field_id": "education",
+    "field_name": "Education",
+    "title": "Applications of AI and Technology \u2014 Education",
+    "filename": "Applications of AI and Technology \u2014 Education.pdf",
+    "category": "Education",
+    "categorySlug": "education",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Education.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Education.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Education.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "How People Learn",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Teaching Design and Classroom Practice",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Assessment, Feedback, and Evidence",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Equity, Inclusion, and Learning Communities",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "Curriculum, Policy, and Educational Improvement",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  },
+  {
+    "id": "ai-applications-interdisciplinary-research",
+    "collection": "Applications of AI and Technology",
+    "field_id": "interdisciplinary-research",
+    "field_name": "Interdisciplinary Research",
+    "title": "Applications of AI and Technology \u2014 Interdisciplinary Research",
+    "filename": "Applications of AI and Technology \u2014 Interdisciplinary Research.pdf",
+    "category": "Interdisciplinary Research",
+    "categorySlug": "interdisciplinary-research",
+    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Interdisciplinary Research.",
+    "pageCount": 220,
+    "targetPages": {
+      "minimum": 200,
+      "maximum": 250
+    },
+    "status": "Published",
+    "version": "2.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Interdisciplinary Research.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Interdisciplinary Research.txt",
+    "chapters": [
+      {
+        "chapter_number": 1,
+        "title": "Framing Interdisciplinary Questions",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 2,
+        "title": "Methods, Evidence, and Mixed Approaches",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 3,
+        "title": "Systems Thinking and Complex Problems",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 4,
+        "title": "Research Ethics, Collaboration, and Communication",
+        "status": "reviewed",
+        "review_status": "approved"
+      },
+      {
+        "chapter_number": 5,
+        "title": "From Findings to Responsible Action",
+        "status": "reviewed",
+        "review_status": "approved"
+      }
+    ]
+  }
+]

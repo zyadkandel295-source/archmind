@@ -1,0 +1,1538 @@
+PAGE 1
+# Applications of AI and Technology — Languages and Linguistics
+## Cover Page
+
+Applications of AI and Technology: Languages and Linguistics. A modern 220-page academic educational textbook.
+
+
+PAGE 2
+# Applications of AI and Technology — Languages and Linguistics
+## Open Educational License & Distribution
+
+Open educational access license and distribution policy for Languages and Linguistics.
+
+
+PAGE 3
+# Applications of AI and Technology — Languages and Linguistics
+## Curriculum Architecture & Overview
+
+Curriculum architecture, learning modules, and educational standards for Languages and Linguistics.
+
+
+PAGE 4
+# Applications of AI and Technology — Languages and Linguistics
+## Table of Contents (Part 1)
+
+Detailed syllabus mapping Chapters 1 through 3.
+
+
+PAGE 5
+# Applications of AI and Technology — Languages and Linguistics
+## Table of Contents (Part 2)
+
+Detailed syllabus mapping Chapters 4 through 5 and Back Matter.
+
+
+PAGE 6
+# Applications of AI and Technology — Languages and Linguistics
+## List of Figures and Tables
+
+Index of technical vector schematics and comparison benchmark tables.
+
+
+PAGE 7
+# Applications of AI and Technology — Languages and Linguistics
+## How to Use This Textbook
+
+Study guide, prerequisites, and learning pathways for students.
+
+
+PAGE 8
+# Applications of AI and Technology — Languages and Linguistics
+## Series Preface
+
+Pedagogical philosophy and curriculum integration of the AGENTIA collection.
+
+
+PAGE 9
+# Applications of AI and Technology — Languages and Linguistics
+## Field Overview
+
+Introduction to how artificial intelligence is transforming Languages and Linguistics.
+
+
+PAGE 10
+# Applications of AI and Technology — Languages and Linguistics
+## Notation and Conventions
+
+Mathematical symbols, linear algebra conventions, and study tips.
+
+
+PAGE 11
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 1 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 12
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 2 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 13
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 3 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 14
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 4 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 15
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 5 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 16
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 6 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 17
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 7 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 18
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 8 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 19
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 9 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 20
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 10 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 21
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 11 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 22
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 12 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 23
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 13 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 24
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 14 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 25
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 15 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 26
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 16 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 27
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 17 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 28
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 18 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 29
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 19 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 30
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 20 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 31
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 21 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 32
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 22 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 33
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 23 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 34
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 24 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 35
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 25 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 36
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 26 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 37
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 27 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 38
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 28 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 39
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 29 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 40
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 30 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 41
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 31 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 42
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 1: Language Structure: Sounds, Words, and Sentences (Page 32 of 32)
+
+Chapter 1: Language Structure: Sounds, Words, and Sentences. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 43
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 1 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 44
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 2 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 45
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 3 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 46
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 4 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 47
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 5 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 48
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 6 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 49
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 7 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 50
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 8 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 51
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 9 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 52
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 10 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 53
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 11 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 54
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 12 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 55
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 13 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 56
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 14 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 57
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 15 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 58
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 16 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 59
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 17 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 60
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 18 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 61
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 19 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 62
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 20 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 63
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 21 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 64
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 22 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 65
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 23 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 66
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 24 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 67
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 25 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 68
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 26 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 69
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 27 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 70
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 28 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 71
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 29 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 72
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 30 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 73
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 31 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 74
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 2: Meaning, Pragmatics, and Discourse (Page 32 of 32)
+
+Chapter 2: Meaning, Pragmatics, and Discourse. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 75
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 1 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 76
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 2 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 77
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 3 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 78
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 4 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 79
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 5 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 80
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 6 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 81
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 7 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 82
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 8 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 83
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 9 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 84
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 10 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 85
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 11 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 86
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 12 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 87
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 13 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 88
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 14 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 89
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 15 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 90
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 16 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 91
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 17 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 92
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 18 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 93
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 19 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 94
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 20 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 95
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 21 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 96
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 22 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 97
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 23 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 98
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 24 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 99
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 25 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 100
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 26 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 101
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 27 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 102
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 28 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 103
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 29 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 104
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 30 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 105
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 31 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 106
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 3: Language Acquisition and Learning (Page 32 of 32)
+
+Chapter 3: Language Acquisition and Learning. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 107
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 1 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 108
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 2 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 109
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 3 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 110
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 4 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 111
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 5 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 112
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 6 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 113
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 7 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 114
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 8 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 115
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 9 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 116
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 10 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 117
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 11 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 118
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 12 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 119
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 13 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 120
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 14 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 121
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 15 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 122
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 16 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 123
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 17 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 124
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 18 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 125
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 19 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 126
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 20 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 127
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 21 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 128
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 22 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 129
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 23 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 130
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 24 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 131
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 25 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 132
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 26 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 133
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 27 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 134
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 28 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 135
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 29 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 136
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 30 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 137
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 31 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 138
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 4: Language, Society, and Identity (Page 32 of 32)
+
+Chapter 4: Language, Society, and Identity. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 139
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 1 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 140
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 2 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 141
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 3 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 142
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 4 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 143
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 5 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 144
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 6 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 145
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 7 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 146
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 8 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 147
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 9 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 148
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 10 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 149
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 11 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 150
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 12 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 151
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 13 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 152
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 14 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 153
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 15 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 154
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 16 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 155
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 17 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 156
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 18 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 157
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 19 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 158
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 20 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 159
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 21 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 160
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 22 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 161
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 23 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 162
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 24 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 163
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 25 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 164
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 26 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 165
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 27 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 166
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 28 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 167
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 29 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 168
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 30 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 169
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 31 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 170
+# Applications of AI and Technology — Languages and Linguistics
+## Chapter 5: Linguistic Research and Language Change (Page 32 of 32)
+
+Chapter 5: Linguistic Research and Language Change. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Connectionist Temporal Classification (CTC) Alignment Loss: L_CTC = - log P( target_text | acoustic_audio ) = - log ∑_{π ∈ B^{-1}(target)} ∏_{t=1}^T P(π_t | x_t)), case studies (Linguists and indigenous language communities using self-supervised speech models (such as MMS and Whisper) to transcribe and preserve endangered oral languages that lack standardized writing systems.), and limitations (Catastrophic dialect bias: automatic speech recognition error rates increase by more than 2x for speakers of regional dialects or non-standard accents underrepresented in training datasets.).
+
+
+PAGE 171
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 1 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 172
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 2 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 173
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 3 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 174
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 4 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 175
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 5 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 176
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 6 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 177
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 7 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 178
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 8 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 179
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 9 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 180
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 10 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 181
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 11 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 182
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 12 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 183
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 13 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 184
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 14 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 185
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 15 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 186
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 16 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 187
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 17 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 188
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 18 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 189
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 19 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 190
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 20 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 191
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 21 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 192
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 22 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 193
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 23 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 194
+# Applications of AI and Technology — Languages and Linguistics
+## Extended Case Study (Page 24 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Languages and Linguistics.
+
+
+PAGE 195
+# Applications of AI and Technology — Languages and Linguistics
+## Annotated Bibliography (Part 1 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 196
+# Applications of AI and Technology — Languages and Linguistics
+## Annotated Bibliography (Part 2 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 197
+# Applications of AI and Technology — Languages and Linguistics
+## Annotated Bibliography (Part 3 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 198
+# Applications of AI and Technology — Languages and Linguistics
+## Annotated Bibliography (Part 4 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 199
+# Applications of AI and Technology — Languages and Linguistics
+## Annotated Bibliography (Part 5 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 200
+# Applications of AI and Technology — Languages and Linguistics
+## Annotated Bibliography (Part 6 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 201
+# Applications of AI and Technology — Languages and Linguistics
+## Annotated Bibliography (Part 7 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 202
+# Applications of AI and Technology — Languages and Linguistics
+## Annotated Bibliography (Part 8 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 203
+# Applications of AI and Technology — Languages and Linguistics
+## Glossary of Terms (Part 1 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 204
+# Applications of AI and Technology — Languages and Linguistics
+## Glossary of Terms (Part 2 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 205
+# Applications of AI and Technology — Languages and Linguistics
+## Glossary of Terms (Part 3 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 206
+# Applications of AI and Technology — Languages and Linguistics
+## Glossary of Terms (Part 4 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 207
+# Applications of AI and Technology — Languages and Linguistics
+## Glossary of Terms (Part 5 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 208
+# Applications of AI and Technology — Languages and Linguistics
+## Glossary of Terms (Part 6 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 209
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix A: Mathematical Reference (Part 1 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 210
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix A: Mathematical Reference (Part 2 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 211
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix A: Mathematical Reference (Part 3 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 212
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix A: Mathematical Reference (Part 4 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 213
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix B: Open-Source Tools Registry (Part 1 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 214
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix B: Open-Source Tools Registry (Part 2 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 215
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix B: Open-Source Tools Registry (Part 3 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 216
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix B: Open-Source Tools Registry (Part 4 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 217
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix C: Research Evidence Records (Part 1 of 2)
+
+Audit trail and source verification table.
+
+
+PAGE 218
+# Applications of AI and Technology — Languages and Linguistics
+## Appendix C: Research Evidence Records (Part 2 of 2)
+
+Audit trail and source verification table.
+
+
+PAGE 219
+# Applications of AI and Technology — Languages and Linguistics
+## Subject Index
+
+Comprehensive analytical and topic index.
+
+
+PAGE 220
+# Applications of AI and Technology — Languages and Linguistics
+## Colophon & Production Notes
+
+Archival specifications and publishing details.

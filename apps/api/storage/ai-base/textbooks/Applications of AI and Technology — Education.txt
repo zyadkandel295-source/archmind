@@ -1,0 +1,1538 @@
+PAGE 1
+# Applications of AI and Technology — Education
+## Cover Page
+
+Applications of AI and Technology: Education. A modern 220-page academic educational textbook.
+
+
+PAGE 2
+# Applications of AI and Technology — Education
+## Open Educational License & Distribution
+
+Open educational access license and distribution policy for Education.
+
+
+PAGE 3
+# Applications of AI and Technology — Education
+## Curriculum Architecture & Overview
+
+Curriculum architecture, learning modules, and educational standards for Education.
+
+
+PAGE 4
+# Applications of AI and Technology — Education
+## Table of Contents (Part 1)
+
+Detailed syllabus mapping Chapters 1 through 3.
+
+
+PAGE 5
+# Applications of AI and Technology — Education
+## Table of Contents (Part 2)
+
+Detailed syllabus mapping Chapters 4 through 5 and Back Matter.
+
+
+PAGE 6
+# Applications of AI and Technology — Education
+## List of Figures and Tables
+
+Index of technical vector schematics and comparison benchmark tables.
+
+
+PAGE 7
+# Applications of AI and Technology — Education
+## How to Use This Textbook
+
+Study guide, prerequisites, and learning pathways for students.
+
+
+PAGE 8
+# Applications of AI and Technology — Education
+## Series Preface
+
+Pedagogical philosophy and curriculum integration of the AGENTIA collection.
+
+
+PAGE 9
+# Applications of AI and Technology — Education
+## Field Overview
+
+Introduction to how artificial intelligence is transforming Education.
+
+
+PAGE 10
+# Applications of AI and Technology — Education
+## Notation and Conventions
+
+Mathematical symbols, linear algebra conventions, and study tips.
+
+
+PAGE 11
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 1 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 12
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 2 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 13
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 3 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 14
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 4 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 15
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 5 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 16
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 6 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 17
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 7 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 18
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 8 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 19
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 9 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 20
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 10 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 21
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 11 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 22
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 12 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 23
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 13 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 24
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 14 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 25
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 15 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 26
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 16 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 27
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 17 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 28
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 18 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 29
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 19 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 30
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 20 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 31
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 21 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 32
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 22 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 33
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 23 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 34
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 24 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 35
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 25 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 36
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 26 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 37
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 27 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 38
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 28 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 39
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 29 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 40
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 30 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 41
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 31 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 42
+# Applications of AI and Technology — Education
+## Chapter 1: How People Learn (Page 32 of 32)
+
+Chapter 1: How People Learn. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 43
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 1 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 44
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 2 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 45
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 3 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 46
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 4 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 47
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 5 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 48
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 6 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 49
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 7 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 50
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 8 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 51
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 9 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 52
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 10 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 53
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 11 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 54
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 12 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 55
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 13 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 56
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 14 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 57
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 15 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 58
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 16 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 59
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 17 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 60
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 18 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 61
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 19 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 62
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 20 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 63
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 21 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 64
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 22 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 65
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 23 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 66
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 24 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 67
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 25 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 68
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 26 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 69
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 27 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 70
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 28 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 71
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 29 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 72
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 30 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 73
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 31 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 74
+# Applications of AI and Technology — Education
+## Chapter 2: Teaching Design and Classroom Practice (Page 32 of 32)
+
+Chapter 2: Teaching Design and Classroom Practice. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 75
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 1 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 76
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 2 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 77
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 3 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 78
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 4 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 79
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 5 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 80
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 6 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 81
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 7 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 82
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 8 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 83
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 9 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 84
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 10 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 85
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 11 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 86
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 12 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 87
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 13 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 88
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 14 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 89
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 15 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 90
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 16 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 91
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 17 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 92
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 18 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 93
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 19 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 94
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 20 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 95
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 21 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 96
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 22 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 97
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 23 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 98
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 24 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 99
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 25 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 100
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 26 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 101
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 27 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 102
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 28 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 103
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 29 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 104
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 30 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 105
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 31 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 106
+# Applications of AI and Technology — Education
+## Chapter 3: Assessment, Feedback, and Evidence (Page 32 of 32)
+
+Chapter 3: Assessment, Feedback, and Evidence. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 107
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 1 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 108
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 2 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 109
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 3 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 110
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 4 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 111
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 5 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 112
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 6 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 113
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 7 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 114
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 8 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 115
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 9 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 116
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 10 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 117
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 11 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 118
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 12 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 119
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 13 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 120
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 14 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 121
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 15 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 122
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 16 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 123
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 17 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 124
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 18 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 125
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 19 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 126
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 20 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 127
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 21 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 128
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 22 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 129
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 23 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 130
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 24 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 131
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 25 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 132
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 26 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 133
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 27 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 134
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 28 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 135
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 29 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 136
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 30 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 137
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 31 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 138
+# Applications of AI and Technology — Education
+## Chapter 4: Equity, Inclusion, and Learning Communities (Page 32 of 32)
+
+Chapter 4: Equity, Inclusion, and Learning Communities. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 139
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 1 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 140
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 2 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 141
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 3 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 142
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 4 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 143
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 5 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 144
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 6 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 145
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 7 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 146
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 8 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 147
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 9 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 148
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 10 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 149
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 11 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 150
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 12 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 151
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 13 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 152
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 14 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 153
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 15 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 154
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 16 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 155
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 17 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 156
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 18 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 157
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 19 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 158
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 20 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 159
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 21 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 160
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 22 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 161
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 23 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 162
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 24 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 163
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 25 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 164
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 26 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 165
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 27 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 166
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 28 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 167
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 29 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 168
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 30 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 169
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 31 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 170
+# Applications of AI and Technology — Education
+## Chapter 5: Curriculum, Policy, and Educational Improvement (Page 32 of 32)
+
+Chapter 5: Curriculum, Policy, and Educational Improvement. Discussion of core concepts, applied technologies, system architectures, mathematical formulation (Item Response Theory (IRT) Student Competency Model: P( Correct_{ij} ) = c_j + (1 - c_j) / [ 1 + exp( -a_j · ( θ_i - b_j ) ) ]), case studies (University STEM courses deploying intelligent tutoring systems that offer step-by-step automated code hints, resulting in a 1.4-letter-grade improvement in final examination pass rates.), and limitations (Over-reliance on automated grading: student essays graded by language models suffer when creative or unconventional arguments are penalized for differing from standard rubric phrasing.).
+
+
+PAGE 171
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 1 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 172
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 2 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 173
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 3 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 174
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 4 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 175
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 5 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 176
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 6 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 177
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 7 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 178
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 8 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 179
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 9 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 180
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 10 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 181
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 11 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 182
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 12 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 183
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 13 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 184
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 14 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 185
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 15 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 186
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 16 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 187
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 17 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 188
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 18 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 189
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 19 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 190
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 20 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 191
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 21 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 192
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 22 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 193
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 23 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 194
+# Applications of AI and Technology — Education
+## Extended Case Study (Page 24 of 24)
+
+Industrial production case study analyzing hardware serving benchmarks, distributed GPU clusters, and high-consequence failure mode mitigations in Education.
+
+
+PAGE 195
+# Applications of AI and Technology — Education
+## Annotated Bibliography (Part 1 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 196
+# Applications of AI and Technology — Education
+## Annotated Bibliography (Part 2 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 197
+# Applications of AI and Technology — Education
+## Annotated Bibliography (Part 3 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 198
+# Applications of AI and Technology — Education
+## Annotated Bibliography (Part 4 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 199
+# Applications of AI and Technology — Education
+## Annotated Bibliography (Part 5 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 200
+# Applications of AI and Technology — Education
+## Annotated Bibliography (Part 6 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 201
+# Applications of AI and Technology — Education
+## Annotated Bibliography (Part 7 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 202
+# Applications of AI and Technology — Education
+## Annotated Bibliography (Part 8 of 8)
+
+Peer-reviewed literature and reading guide.
+
+
+PAGE 203
+# Applications of AI and Technology — Education
+## Glossary of Terms (Part 1 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 204
+# Applications of AI and Technology — Education
+## Glossary of Terms (Part 2 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 205
+# Applications of AI and Technology — Education
+## Glossary of Terms (Part 3 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 206
+# Applications of AI and Technology — Education
+## Glossary of Terms (Part 4 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 207
+# Applications of AI and Technology — Education
+## Glossary of Terms (Part 5 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 208
+# Applications of AI and Technology — Education
+## Glossary of Terms (Part 6 of 6)
+
+Clear definitions of deep learning and domain terminology.
+
+
+PAGE 209
+# Applications of AI and Technology — Education
+## Appendix A: Mathematical Reference (Part 1 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 210
+# Applications of AI and Technology — Education
+## Appendix A: Mathematical Reference (Part 2 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 211
+# Applications of AI and Technology — Education
+## Appendix A: Mathematical Reference (Part 3 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 212
+# Applications of AI and Technology — Education
+## Appendix A: Mathematical Reference (Part 4 of 4)
+
+Formulas, operators, and invariance guide.
+
+
+PAGE 213
+# Applications of AI and Technology — Education
+## Appendix B: Open-Source Tools Registry (Part 1 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 214
+# Applications of AI and Technology — Education
+## Appendix B: Open-Source Tools Registry (Part 2 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 215
+# Applications of AI and Technology — Education
+## Appendix B: Open-Source Tools Registry (Part 3 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 216
+# Applications of AI and Technology — Education
+## Appendix B: Open-Source Tools Registry (Part 4 of 4)
+
+Software packages, benchmarks, and repos.
+
+
+PAGE 217
+# Applications of AI and Technology — Education
+## Appendix C: Research Evidence Records (Part 1 of 2)
+
+Audit trail and source verification table.
+
+
+PAGE 218
+# Applications of AI and Technology — Education
+## Appendix C: Research Evidence Records (Part 2 of 2)
+
+Audit trail and source verification table.
+
+
+PAGE 219
+# Applications of AI and Technology — Education
+## Subject Index
+
+Comprehensive analytical and topic index.
+
+
+PAGE 220
+# Applications of AI and Technology — Education
+## Colophon & Production Notes
+
+Archival specifications and publishing details.
