@@ -26,7 +26,6 @@ export class BaseKnowledgeService {
     const docs: KnowledgeDocument[] = [];
     const root = workspaceRoot();
     const textbooksCatalogPath = path.join(root, "apps", "api", "storage", "ai-base", "knowledge-textbooks-catalog.json");
-    const catalogPath = path.join(root, "apps", "api", "storage", "ai-base", "knowledge-catalog.json");
 
     try {
       if (fs.existsSync(textbooksCatalogPath)) {
@@ -35,15 +34,6 @@ export class BaseKnowledgeService {
       }
     } catch (error) {
       console.warn("[AI Base] Textbooks catalog is unavailable", error instanceof Error ? error.message : error);
-    }
-
-    try {
-      if (fs.existsSync(catalogPath)) {
-        const monographs = JSON.parse(fs.readFileSync(catalogPath, "utf8")) as KnowledgeDocument[];
-        docs.push(...monographs);
-      }
-    } catch (error) {
-      console.warn("[AI Base] Monographs catalog is unavailable", error instanceof Error ? error.message : error);
     }
 
     this.documents = docs;
