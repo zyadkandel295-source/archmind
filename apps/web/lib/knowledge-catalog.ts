@@ -40,7 +40,6 @@ const field = (
 ): KnowledgeField => ({ slug, title, summary, disciplines, topics, related, accent });
 
 export const KNOWLEDGE_FIELDS: KnowledgeField[] = [
-  field("artificial-intelligence", "Artificial Intelligence", "Intelligent systems, representation, learning, reasoning, and responsible deployment.", ["Foundations", "Machine learning", "Agents"], ["Intelligent systems", "Learning and inference", "Responsible AI"], ["computer-science", "philosophy"], "cyan"),
   field("computer-science", "Computer Science", "Computation, software, algorithms, systems, and the theory that connects them.", ["Algorithms", "Software engineering", "Systems"], ["Algorithms", "Software design", "Distributed systems"], ["mathematics", "engineering"], "blue"),
   field("mathematics", "Mathematics", "Structure, proof, quantity, uncertainty, and formal reasoning across the sciences.", ["Algebra", "Calculus", "Probability"], ["Functions and proof", "Change and optimization", "Uncertainty"], ["physics", "data-science-statistics"], "indigo"),
   field("physics", "Physics", "Matter, energy, motion, fields, and the laws used to describe the physical world.", ["Mechanics", "Electromagnetism", "Modern physics"], ["Motion", "Forces and fields", "Quantum phenomena"], ["mathematics", "astronomy"], "violet"),
@@ -59,11 +58,11 @@ export const KNOWLEDGE_FIELDS: KnowledgeField[] = [
   field("environmental-science", "Environmental Science", "Earth systems, human impact, ecosystems, and environmental decisions.", ["Climate", "Conservation", "Sustainability"], ["Earth systems", "Environmental change", "Sustainable choices"], ["earth-science", "economics"], "lime"),
   field("earth-science", "Earth Science", "The planet's materials, processes, history, hazards, and changing surface.", ["Geology", "Meteorology", "Ocean science"], ["Rocks and time", "Weather and climate", "Planetary processes"], ["environmental-science", "astronomy"], "stone"),
   field("history", "History", "Evidence-based study of change, continuity, people, institutions, and the past.", ["World history", "Social history", "Historical methods"], ["Sources and evidence", "Change over time", "Historical interpretation"], ["philosophy", "political-science"], "orange"),
-  field("philosophy", "Philosophy", "Questions about knowledge, reality, ethics, reasoning, and how to live.", ["Ethics", "Epistemology", "Logic"], ["Arguments and reasons", "Knowledge", "Ethical questions"], ["history", "artificial-intelligence"], "purple"),
+  field("philosophy", "Philosophy", "Questions about knowledge, reality, ethics, reasoning, and how to live.", ["Ethics", "Epistemology", "Logic"], ["Arguments and reasons", "Knowledge", "Ethical questions"], ["history", "political-science"], "purple"),
   field("literature", "Literature", "Texts, forms, interpretation, narrative, and cultural expression.", ["Literary analysis", "World literature", "Writing"], ["Reading closely", "Narrative and form", "Interpretation"], ["history", "languages-linguistics"], "rose"),
   field("languages-linguistics", "Languages & Linguistics", "Language structure, meaning, use, acquisition, and communication across communities.", ["Linguistics", "Language learning", "Discourse"], ["Sounds and structure", "Meaning", "Language in society"], ["literature", "psychology"], "cyan"),
   field("education", "Education", "Learning, teaching, assessment, curriculum, and equitable learning environments.", ["Learning sciences", "Pedagogy", "Assessment"], ["How people learn", "Teaching design", "Feedback and assessment"], ["psychology", "sociology"], "blue"),
-  field("interdisciplinary-research", "Interdisciplinary Research", "Methods for connecting evidence, concepts, and methods across fields.", ["Research design", "Systems thinking", "Ethics"], ["Framing questions", "Combining methods", "Research integrity"], ["artificial-intelligence", "environmental-science"], "violet")
+  field("interdisciplinary-research", "Interdisciplinary Research", "Methods for connecting evidence, concepts, and methods across fields.", ["Research design", "Systems thinking", "Ethics"], ["Framing questions", "Combining methods", "Research integrity"], ["computer-science", "environmental-science"], "violet")
 ];
 
 function titleCase(value: string) {
