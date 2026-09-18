@@ -1,103 +1,51 @@
 [
   {
-    "id": "ai-applications-artificial-intelligence",
-    "collection": "Applications of AI and Technology",
-    "field_id": "artificial-intelligence",
-    "field_name": "Artificial Intelligence",
-    "title": "Applications of AI and Technology \u2014 Artificial Intelligence",
-    "filename": "Applications of AI and Technology \u2014 Artificial Intelligence.pdf",
-    "category": "Artificial Intelligence",
-    "categorySlug": "artificial-intelligence",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Artificial Intelligence.",
-    "pageCount": 220,
-    "targetPages": {
-      "minimum": 200,
-      "maximum": 250
-    },
-    "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Artificial Intelligence.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Artificial Intelligence.txt",
-    "chapters": [
-      {
-        "chapter_number": 1,
-        "title": "Foundations of Artificial Intelligence",
-        "status": "reviewed",
-        "review_status": "approved"
-      },
-      {
-        "chapter_number": 2,
-        "title": "Knowledge Representation and Reasoning",
-        "status": "reviewed",
-        "review_status": "approved"
-      },
-      {
-        "chapter_number": 3,
-        "title": "Machine Learning and Intelligent Systems",
-        "status": "reviewed",
-        "review_status": "approved"
-      },
-      {
-        "chapter_number": 4,
-        "title": "AI Agents, Planning, and Tools",
-        "status": "reviewed",
-        "review_status": "approved"
-      },
-      {
-        "chapter_number": 5,
-        "title": "Responsible AI and Evaluation",
-        "status": "reviewed",
-        "review_status": "approved"
-      }
-    ]
-  },
-  {
     "id": "ai-applications-computer-science",
     "collection": "Applications of AI and Technology",
     "field_id": "computer-science",
     "field_name": "Computer Science",
-    "title": "Applications of AI and Technology \u2014 Computer Science",
-    "filename": "Applications of AI and Technology \u2014 Computer Science.pdf",
+    "title": "Applications of AI and Technology — Computer Science",
+    "filename": "Applications of AI and Technology — Computer Science.pdf",
     "category": "Computer Science",
     "categorySlug": "computer-science",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Computer Science.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Computer Science through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Computer Science.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Computer Science.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Computer Science.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Computer Science.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Foundations of Computer Science",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Algorithms and Data Structures",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Software Design and Engineering",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Operating Systems and Networks",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Databases, Security, and Distributed Systems",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -108,48 +56,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "mathematics",
     "field_name": "Mathematics",
-    "title": "Applications of AI and Technology \u2014 Mathematics",
-    "filename": "Applications of AI and Technology \u2014 Mathematics.pdf",
+    "title": "Applications of AI and Technology — Mathematics",
+    "filename": "Applications of AI and Technology — Mathematics.pdf",
     "category": "Mathematics",
     "categorySlug": "mathematics",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Mathematics.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Mathematics through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Mathematics.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Mathematics.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Mathematics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Mathematics.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Mathematical Reasoning and Proof",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Algebra, Functions, and Structures",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Calculus, Change, and Optimization",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Probability, Statistics, and Inference",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Discrete Mathematics and Computation",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -160,48 +108,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "physics",
     "field_name": "Physics",
-    "title": "Applications of AI and Technology \u2014 Physics",
-    "filename": "Applications of AI and Technology \u2014 Physics.pdf",
+    "title": "Applications of AI and Technology — Physics",
+    "filename": "Applications of AI and Technology — Physics.pdf",
     "category": "Physics",
     "categorySlug": "physics",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Physics.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Physics through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Physics.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Physics.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Physics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Physics.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Mechanics and Motion",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Forces, Energy, and Momentum",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Waves, Optics, and Oscillations",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Electricity, Magnetism, and Fields",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Relativity, Quantum Physics, and Matter",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -212,48 +160,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "astronomy",
     "field_name": "Astronomy",
-    "title": "Applications of AI and Technology \u2014 Astronomy",
-    "filename": "Applications of AI and Technology \u2014 Astronomy.pdf",
+    "title": "Applications of AI and Technology — Astronomy",
+    "filename": "Applications of AI and Technology — Astronomy.pdf",
     "category": "Astronomy",
     "categorySlug": "astronomy",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Astronomy.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Astronomy through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Astronomy.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Astronomy.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Astronomy.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Astronomy.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "The Night Sky and Observational Astronomy",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Planetary Systems and Exoplanets",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Stars, Galaxies, and Stellar Evolution",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Cosmology and the Expanding Universe",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Astronomical Data and Space Exploration",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -264,48 +212,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "chemistry",
     "field_name": "Chemistry",
-    "title": "Applications of AI and Technology \u2014 Chemistry",
-    "filename": "Applications of AI and Technology \u2014 Chemistry.pdf",
+    "title": "Applications of AI and Technology — Chemistry",
+    "filename": "Applications of AI and Technology — Chemistry.pdf",
     "category": "Chemistry",
     "categorySlug": "chemistry",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Chemistry.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Chemistry through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Chemistry.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Chemistry.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Chemistry.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Chemistry.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Foundations of General Chemistry",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Atomic Structure and Periodic Trends",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Chemical Bonding and Molecular Structure",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Chemical Reactions and Stoichiometry",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Thermochemistry, Equilibrium, and Acids and Bases",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -316,48 +264,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "biology",
     "field_name": "Biology",
-    "title": "Applications of AI and Technology \u2014 Biology",
-    "filename": "Applications of AI and Technology \u2014 Biology.pdf",
+    "title": "Applications of AI and Technology — Biology",
+    "filename": "Applications of AI and Technology — Biology.pdf",
     "category": "Biology",
     "categorySlug": "biology",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Biology.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Biology through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Biology.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Biology.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Biology.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Biology.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Cell Biology and Biochemistry",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Genetics, Evolution, and Heredity",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Organisms, Physiology, and Homeostasis",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Ecology and Earth Systems",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Biological Research Methods and Bioethics",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -368,48 +316,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "medicine-health-sciences",
     "field_name": "Medicine and Health Sciences",
-    "title": "Applications of AI and Technology \u2014 Medicine and Health Sciences",
-    "filename": "Applications of AI and Technology \u2014 Medicine and Health Sciences.pdf",
+    "title": "Applications of AI and Technology — Medicine and Health Sciences",
+    "filename": "Applications of AI and Technology — Medicine and Health Sciences.pdf",
     "category": "Medicine and Health Sciences",
     "categorySlug": "medicine-health-sciences",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Medicine and Health Sciences.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Medicine and Health Sciences through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Medicine and Health Sciences.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Medicine and Health Sciences.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Medicine and Health Sciences.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Medicine and Health Sciences.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Human Anatomy and Physiology",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Evidence-Based Medicine and Clinical Reasoning",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Public Health and Disease Prevention",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Health Systems, Safety, and Quality",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Medical Ethics and Health Communication",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -420,48 +368,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "engineering",
     "field_name": "Engineering",
-    "title": "Applications of AI and Technology \u2014 Engineering",
-    "filename": "Applications of AI and Technology \u2014 Engineering.pdf",
+    "title": "Applications of AI and Technology — Engineering",
+    "filename": "Applications of AI and Technology — Engineering.pdf",
     "category": "Engineering",
     "categorySlug": "engineering",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Engineering.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Engineering through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Engineering.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Engineering.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Engineering.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Engineering.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Engineering Design and Problem Framing",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Mechanics, Materials, and Manufacturing",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Electrical Systems and Control",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Civil Infrastructure and the Built Environment",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Safety, Reliability, and Sustainable Engineering",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -472,48 +420,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "data-science-statistics",
     "field_name": "Data Science and Statistics",
-    "title": "Applications of AI and Technology \u2014 Data Science and Statistics",
-    "filename": "Applications of AI and Technology \u2014 Data Science and Statistics.pdf",
+    "title": "Applications of AI and Technology — Data Science and Statistics",
+    "filename": "Applications of AI and Technology — Data Science and Statistics.pdf",
     "category": "Data Science and Statistics",
     "categorySlug": "data-science-statistics",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Data Science and Statistics.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Data Science and Statistics through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Data Science and Statistics.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Data Science and Statistics.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Data Science and Statistics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Data Science and Statistics.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Data Literacy and Measurement",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Probability and Statistical Inference",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Data Analysis and Visualization",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Experimental Design and Causal Reasoning",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Responsible Data Science and Reproducibility",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -524,48 +472,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "economics",
     "field_name": "Economics",
-    "title": "Applications of AI and Technology \u2014 Economics",
-    "filename": "Applications of AI and Technology \u2014 Economics.pdf",
+    "title": "Applications of AI and Technology — Economics",
+    "filename": "Applications of AI and Technology — Economics.pdf",
     "category": "Economics",
     "categorySlug": "economics",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Economics.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Economics through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Economics.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Economics.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Economics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Economics.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Economic Thinking and Scarcity",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Microeconomics: Choices, Markets, and Firms",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Macroeconomics: Growth, Inflation, and Employment",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Public Economics and Policy",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Development, Trade, and Inequality",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -576,48 +524,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "business-entrepreneurship",
     "field_name": "Business and Entrepreneurship",
-    "title": "Applications of AI and Technology \u2014 Business and Entrepreneurship",
-    "filename": "Applications of AI and Technology \u2014 Business and Entrepreneurship.pdf",
+    "title": "Applications of AI and Technology — Business and Entrepreneurship",
+    "filename": "Applications of AI and Technology — Business and Entrepreneurship.pdf",
     "category": "Business and Entrepreneurship",
     "categorySlug": "business-entrepreneurship",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Business and Entrepreneurship.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Business and Entrepreneurship through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Business and Entrepreneurship.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Business and Entrepreneurship.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Business and Entrepreneurship.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Business and Entrepreneurship.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Value Creation and Business Models",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Customers, Markets, and Product Strategy",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Operations, Finance, and Decision Making",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Entrepreneurship and Venture Design",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Leadership, Ethics, and Sustainable Growth",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -628,48 +576,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "psychology",
     "field_name": "Psychology",
-    "title": "Applications of AI and Technology \u2014 Psychology",
-    "filename": "Applications of AI and Technology \u2014 Psychology.pdf",
+    "title": "Applications of AI and Technology — Psychology",
+    "filename": "Applications of AI and Technology — Psychology.pdf",
     "category": "Psychology",
     "categorySlug": "psychology",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Psychology.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Psychology through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Psychology.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Psychology.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Psychology.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Psychology.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Foundations of Psychology and Research",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Cognition, Learning, and Memory",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Development, Personality, and Individual Differences",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Social Psychology and Human Behavior",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Mental Health, Ethics, and Applied Psychology",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -680,48 +628,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "sociology",
     "field_name": "Sociology",
-    "title": "Applications of AI and Technology \u2014 Sociology",
-    "filename": "Applications of AI and Technology \u2014 Sociology.pdf",
+    "title": "Applications of AI and Technology — Sociology",
+    "filename": "Applications of AI and Technology — Sociology.pdf",
     "category": "Sociology",
     "categorySlug": "sociology",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Sociology.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Sociology through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Sociology.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Sociology.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Sociology.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Sociology.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Sociological Thinking and Research",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Culture, Identity, and Socialization",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Institutions, Organizations, and Power",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Inequality, Population, and Social Change",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Methods, Ethics, and Public Sociology",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -732,48 +680,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "political-science",
     "field_name": "Political Science",
-    "title": "Applications of AI and Technology \u2014 Political Science",
-    "filename": "Applications of AI and Technology \u2014 Political Science.pdf",
+    "title": "Applications of AI and Technology — Political Science",
+    "filename": "Applications of AI and Technology — Political Science.pdf",
     "category": "Political Science",
     "categorySlug": "political-science",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Political Science.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Political Science through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Political Science.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Political Science.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Political Science.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Political Science.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Political Ideas, Power, and Institutions",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Comparative Government and Democracy",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Political Behavior, Media, and Participation",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "International Relations and Global Governance",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Public Policy, Ethics, and Political Analysis",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -784,48 +732,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "law-public-policy",
     "field_name": "Law and Public Policy",
-    "title": "Applications of AI and Technology \u2014 Law and Public Policy",
-    "filename": "Applications of AI and Technology \u2014 Law and Public Policy.pdf",
+    "title": "Applications of AI and Technology — Law and Public Policy",
+    "filename": "Applications of AI and Technology — Law and Public Policy.pdf",
     "category": "Law and Public Policy",
     "categorySlug": "law-public-policy",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Law and Public Policy.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Law and Public Policy through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Law and Public Policy.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Law and Public Policy.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Law and Public Policy.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Law and Public Policy.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Legal Systems, Rights, and Reasoning",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Public Policy Design and Evaluation",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Regulation, Administration, and Institutions",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Evidence, Equity, and Access to Justice",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Ethics, Governance, and Public Interest",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -836,48 +784,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "environmental-science",
     "field_name": "Environmental Science",
-    "title": "Applications of AI and Technology \u2014 Environmental Science",
-    "filename": "Applications of AI and Technology \u2014 Environmental Science.pdf",
+    "title": "Applications of AI and Technology — Environmental Science",
+    "filename": "Applications of AI and Technology — Environmental Science.pdf",
     "category": "Environmental Science",
     "categorySlug": "environmental-science",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Environmental Science.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Environmental Science through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Environmental Science.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Environmental Science.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Environmental Science.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Environmental Science.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Earth Systems and Environmental Change",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Ecology, Biodiversity, and Conservation",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Climate Science and Risk",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Resources, Pollution, and Sustainability",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Environmental Decisions, Justice, and Policy",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -888,48 +836,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "earth-science",
     "field_name": "Earth Science",
-    "title": "Applications of AI and Technology \u2014 Earth Science",
-    "filename": "Applications of AI and Technology \u2014 Earth Science.pdf",
+    "title": "Applications of AI and Technology — Earth Science",
+    "filename": "Applications of AI and Technology — Earth Science.pdf",
     "category": "Earth Science",
     "categorySlug": "earth-science",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Earth Science.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Earth Science through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Earth Science.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Earth Science.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Earth Science.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Earth Science.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Earth Materials, Rocks, and Geologic Time",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Plate Tectonics, Hazards, and Landscapes",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Weather, Climate, and the Atmosphere",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Oceans, Water, and the Cryosphere",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Earth Observation and Environmental History",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -940,48 +888,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "history",
     "field_name": "History",
-    "title": "Applications of AI and Technology \u2014 History",
-    "filename": "Applications of AI and Technology \u2014 History.pdf",
+    "title": "Applications of AI and Technology — History",
+    "filename": "Applications of AI and Technology — History.pdf",
     "category": "History",
     "categorySlug": "history",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in History.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in History through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 History.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 History.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — History.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — History.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Historical Thinking and Evidence",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "World History: Exchange and Connection",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "States, Empires, and Political Change",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Social History, Labor, and Everyday Life",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Memory, Interpretation, and Historical Research",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -992,48 +940,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "philosophy",
     "field_name": "Philosophy",
-    "title": "Applications of AI and Technology \u2014 Philosophy",
-    "filename": "Applications of AI and Technology \u2014 Philosophy.pdf",
+    "title": "Applications of AI and Technology — Philosophy",
+    "filename": "Applications of AI and Technology — Philosophy.pdf",
     "category": "Philosophy",
     "categorySlug": "philosophy",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Philosophy.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Philosophy through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Philosophy.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Philosophy.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Philosophy.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Philosophy.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Arguments, Logic, and Clear Thinking",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Knowledge, Truth, and Skepticism",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Ethics, Values, and Moral Reasoning",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Mind, Language, and Reality",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Political Philosophy and Public Reason",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -1044,48 +992,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "literature",
     "field_name": "Literature",
-    "title": "Applications of AI and Technology \u2014 Literature",
-    "filename": "Applications of AI and Technology \u2014 Literature.pdf",
+    "title": "Applications of AI and Technology — Literature",
+    "filename": "Applications of AI and Technology — Literature.pdf",
     "category": "Literature",
     "categorySlug": "literature",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Literature.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Literature through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Literature.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Literature.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Literature.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Literature.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Reading Literature Closely",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Narrative, Character, and Point of View",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Poetry, Drama, and Literary Form",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Literature, Culture, and Historical Context",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Interpretation, Criticism, and Creative Response",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -1096,48 +1044,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "languages-linguistics",
     "field_name": "Languages and Linguistics",
-    "title": "Applications of AI and Technology \u2014 Languages and Linguistics",
-    "filename": "Applications of AI and Technology \u2014 Languages and Linguistics.pdf",
+    "title": "Applications of AI and Technology — Languages and Linguistics",
+    "filename": "Applications of AI and Technology — Languages and Linguistics.pdf",
     "category": "Languages and Linguistics",
     "categorySlug": "languages-linguistics",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Languages and Linguistics.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Languages and Linguistics through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Languages and Linguistics.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Languages and Linguistics.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Languages and Linguistics.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Languages and Linguistics.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Language Structure: Sounds, Words, and Sentences",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Meaning, Pragmatics, and Discourse",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Language Acquisition and Learning",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Language, Society, and Identity",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Linguistic Research and Language Change",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -1148,48 +1096,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "education",
     "field_name": "Education",
-    "title": "Applications of AI and Technology \u2014 Education",
-    "filename": "Applications of AI and Technology \u2014 Education.pdf",
+    "title": "Applications of AI and Technology — Education",
+    "filename": "Applications of AI and Technology — Education.pdf",
     "category": "Education",
     "categorySlug": "education",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Education.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Education through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Education.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Education.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Education.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Education.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "How People Learn",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Teaching Design and Classroom Practice",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Assessment, Feedback, and Evidence",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Equity, Inclusion, and Learning Communities",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "Curriculum, Policy, and Educational Improvement",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }
@@ -1200,48 +1148,48 @@
     "collection": "Applications of AI and Technology",
     "field_id": "interdisciplinary-research",
     "field_name": "Interdisciplinary Research",
-    "title": "Applications of AI and Technology \u2014 Interdisciplinary Research",
-    "filename": "Applications of AI and Technology \u2014 Interdisciplinary Research.pdf",
+    "title": "Applications of AI and Technology — Interdisciplinary Research",
+    "filename": "Applications of AI and Technology — Interdisciplinary Research.pdf",
     "category": "Interdisciplinary Research",
     "categorySlug": "interdisciplinary-research",
-    "description": "Modern, student-friendly 220-page academic textbook examining AI foundations, system workflows, real-world case studies, and safety protocols in Interdisciplinary Research.",
+    "description": "Classic academic textbook tracing how Artificial Intelligence transformed research, discovery, workflows, and professional practice in Interdisciplinary Research through 2026.",
     "pageCount": 220,
     "targetPages": {
       "minimum": 200,
       "maximum": 250
     },
     "status": "Published",
-    "version": "2.0.0",
-    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology \u2014 Interdisciplinary Research.pdf",
-    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology \u2014 Interdisciplinary Research.txt",
+    "version": "3.0.0",
+    "url": "/knowledge/ai-base/textbooks/Applications of AI and Technology — Interdisciplinary Research.pdf",
+    "textPath": "apps/api/storage/ai-base/textbooks/Applications of AI and Technology — Interdisciplinary Research.txt",
     "chapters": [
       {
         "chapter_number": 1,
-        "title": "Framing Interdisciplinary Questions",
+        "title": "The Field Before Artificial Intelligence",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 2,
-        "title": "Methods, Evidence, and Mixed Approaches",
+        "title": "The Emergence of Intelligent Systems",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 3,
-        "title": "Systems Thinking and Complex Problems",
+        "title": "The Machine Learning Transformation",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 4,
-        "title": "Research Ethics, Collaboration, and Communication",
+        "title": "Real-World Breakthroughs, Major Systems, and Workflows",
         "status": "reviewed",
         "review_status": "approved"
       },
       {
         "chapter_number": 5,
-        "title": "From Findings to Responsible Action",
+        "title": "The Field in 2026, Institutional Impact, and The Future",
         "status": "reviewed",
         "review_status": "approved"
       }

@@ -53,14 +53,14 @@ export function KnowledgeBookLibrary({ fieldSlug }: { fieldSlug?: string }) {
               <Library className="h-3 w-3" /> AGENTIA Academic Library
             </span>
             <span className="rounded-full border border-emerald-400/30 bg-emerald-950/40 px-2.5 py-0.5 text-xs font-medium text-emerald-300">
-              24 Textbooks · 5,280 Pages
+              23 Textbooks · 5,060 Pages
             </span>
           </div>
           <h2 id={fieldSlug ? "knowledge-books-title" : "knowledge-library-title"} className="mt-2 text-2xl font-extrabold text-white sm:text-3xl">
             {fieldSlug ? "Curriculum Textbooks & Monographs" : "Applications of AI and Technology Library"}
           </h2>
           <p className="mt-2 text-sm text-slate-400 max-w-3xl">
-            Peer-reviewed, research-based academic textbooks (220 pages each) and specialized monographs covering foundations, mathematical proofs, real-world case studies, and safety protocols across all 24 disciplines.
+            Peer-reviewed, research-based academic textbooks (220 pages each) exploring how Artificial Intelligence transformed research, discovery, workflows, and professional practice across all 23 disciplines through 2026.
           </p>
         </div>
         {!fieldSlug && (
@@ -69,7 +69,7 @@ export function KnowledgeBookLibrary({ fieldSlug }: { fieldSlug?: string }) {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search across 24 textbooks..."
+              placeholder="Search across 23 textbooks..."
               className="w-56 bg-transparent outline-none placeholder:text-slate-500"
             />
           </label>
@@ -87,9 +87,9 @@ export function KnowledgeBookLibrary({ fieldSlug }: { fieldSlug?: string }) {
           }`}
         >
           <BookmarkCheck className="h-4 w-4 text-cyan-400" />
-          24 Comprehensive Textbooks (220 Pages Each)
+          23 Comprehensive Textbooks (220 Pages Each)
           <span className="ml-1 rounded-full bg-cyan-400/20 px-2 py-0.5 text-xs text-cyan-300">
-            {fieldSlug ? visible.length : "24 Books"}
+            {fieldSlug ? visible.length : "23 Books"}
           </span>
         </button>
 
