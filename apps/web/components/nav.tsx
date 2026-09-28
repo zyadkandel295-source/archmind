@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { BarChart3, Bot, CreditCard, LayoutDashboard, LibraryBig, Loader2, LogOut, UserCircle, UserRound, Wrench } from "lucide-react";
+import { BarChart3, Bot, LayoutDashboard, LibraryBig, Loader2, LogOut, UserCircle, UserRound, Wrench } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { cn } from "@/lib/utils";
 import { useSessionStore } from "@/lib/session-store";
@@ -35,8 +35,7 @@ export function Nav() {
       { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
       { href: "/ai-base", label: "AI Base", icon: LibraryBig },
       { href: "/assistants/new", label: "Builder", icon: Wrench },
-      { href: "/profile", label: "Profile", icon: UserRound },
-      { href: "/credits", label: "Credits", icon: CreditCard }
+      { href: "/profile", label: "Profile", icon: UserRound }
     ];
     if (isAdmin) base.splice(3, 0, { href: "/admin", label: "Analytics", icon: BarChart3 });
     return base;

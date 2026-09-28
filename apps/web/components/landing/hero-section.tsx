@@ -117,32 +117,16 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Clean Footer */}
-      <CreditsFooter />
+      <SiteFooter />
     </div>
   );
 }
 
-function CreditsFooter() {
+function SiteFooter() {
   return (
     <footer className="w-full bg-slate-950/90 border-t border-blue-500/20 py-8 px-6 mt-12 z-20">
       <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-8 text-center md:text-left">
-          {/* Founder Credit */}
-          <div>
-            <p className="text-xs text-blue-400/80 uppercase tracking-widest font-semibold mb-1">Application Name</p>
-            <p className="text-white font-black text-xl">AGENTIA</p>
-            <p className="text-xs text-blue-300/70">Founder & Developer: Zyad Kandel</p>
-          </div>
-
-          {/* Workspace credit */}
-          <div>
-            <p className="text-xs text-blue-400/80 uppercase tracking-widest font-semibold mb-1">Workspace</p>
-            <p className="text-white font-bold">Built for focused assistance</p>
-            <p className="text-xs text-blue-300/70">Create, organize, and deploy assistants</p>
-          </div>
-
-          {/* Legal Links */}
+        <div className="text-center">
           <div>
             <p className="text-xs text-blue-400/80 uppercase tracking-widest font-semibold mb-1">Legal & Compliance</p>
             <div className="flex flex-col gap-1 text-xs text-blue-300/80 font-medium">
@@ -153,7 +137,7 @@ function CreditsFooter() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-blue-500/20 text-center text-xs text-blue-400/60">
-          <p>© 2026 AGENTIA. All rights reserved. Built by Zyad Kandel.</p>
+          <p>© 2026 AGENTIA. All rights reserved.</p>
           <p className="mt-1">https://www.agentia-ai.cloud</p>
         </div>
       </div>
