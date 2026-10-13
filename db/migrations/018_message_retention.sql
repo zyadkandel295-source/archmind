@@ -85,7 +85,9 @@ end $$;
 
 -- Supabase Cron creates and owns the cron schema. A missing/unsupported
 -- extension causes this migration to fail, leaving no scheduled deletion.
-create extension if not exists pg_cron;
+create extension if not exists pg_cron with schema pg_catalog;
+grant usage on schema cron to postgres;
+grant all privileges on all tables in schema cron to postgres;
 
 create schema if not exists agentia_maintenance;
 revoke all on schema agentia_maintenance from public, anon, authenticated, service_role;

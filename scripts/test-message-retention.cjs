@@ -10,7 +10,7 @@ const { PGlite } = require(modulePath);
 
 const migrationPath = path.resolve(__dirname, '../db/migrations/018_message_retention.sql');
 const migration = fs.readFileSync(migrationPath, 'utf8')
-  .replace('create extension if not exists pg_cron;', '')
+  .replace(/create extension if not exists pg_cron with schema pg_catalog;\s*grant usage on schema cron to postgres;\s*grant all privileges on all tables in schema cron to postgres;/, '')
   .split('-- The job name is stable,')[0];
 
 async function main() {
