@@ -38,7 +38,7 @@ No relevant knowledge-base chunks were retrieved for this turn.
 USER QUESTION:
 ${question}
 
-Answer normally using your general knowledge and reasoning. Do not refuse solely because retrieval returned no context.`;
+Answer within the assistant's configured scope using your general knowledge and reasoning. Do not refuse solely because retrieval returned no context.`;
 }
 
 export class RagService {
@@ -89,7 +89,6 @@ export class RagService {
     });
     const systemPrompt = `${attributionPrompt}\n\n` + interpolate(CORE_RAG_SYSTEM_PROMPT, {
       assistant_name: assistant.name,
-      role_definition: assistant.systemPrompt || assistant.description || "a helpful RAG-enhanced assistant",
       retrieved_chunks: retrievedChunks,
       tone_instructions: TONE_TEMPLATES[assistant.tone] ?? "",
       response_length: options.responseLength,

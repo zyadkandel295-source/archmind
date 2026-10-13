@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/toast";
 import { AssistantIconPicker } from "@/components/ui/assistant-icon-picker";
 import { getAssistantIcon } from "@/lib/assistant-icons";
+import { buildSpecialistPrompt } from "@/lib/specialist-prompt";
 
 const steps = ["Identity", "Behavior", "Launch"];
 
@@ -23,25 +24,39 @@ export function AssistantBuilder() {
   const searchParams = useSearchParams();
   const chemistryTemplate = searchParams.get("template") === "chemistry";
   const [step, setStep] = useState(1);
-  const [name, setName] = useState(chemistryTemplate ? "Chemistry Assistant" : "Customer Support Assistant");
-  const [description, setDescription] = useState(chemistryTemplate ? "Explains chemistry with balanced equations, safe lab guidance, and citations from your knowledge base." : "Answers customer questions from support docs with citations.");
+  const [name, setName] = useState(chemistryTemplate ? "Chemistry Assistant" : "");
+  const [description, setDescription] = useState(chemistryTemplate ? "Explains chemistry with balanced equations, safe lab guidance, and citations from your knowledge base." : "");
   const [tone, setTone] = useState("professional");
   const [engine, setEngine] = useState(DEFAULT_ENGINE_VALUE);
   const [temperature, setTemperature] = useState(0.7);
   const [isPublic, setIsPublic] = useState(true);
   const [icon, setIcon] = useState("Bot");
   const [color, setColor] = useState("#8B5CF6");
-  const [starterPrompts, setStarterPrompts] = useState("How can you help me?\nSummarize this document.\nHelp me write better code.");
-  const [systemPrompt, setSystemPrompt] = useState(
-    chemistryTemplate
-      ? "You are a rigorous chemistry assistant. Explain concepts step by step, show balanced equations and units when relevant, distinguish established facts from assumptions, cite uploaded sources, and include practical safety cautions for laboratory procedures."
-      : "You are a precise support assistant. Follow these instructions strictly. Use retrieved context first when relevant, cite sources when available, and fall back to general knowledge for normal questions."
-  );
+  const [starterPrompts, setStarterPrompts] = useState(chemistryTemplate
+    ? "Explain how to balance this equation.\nCheck my stoichiometry calculation.\nWhat does this molecule's structure imply?"
+    : "");
+  const [focus, setFocus] = useState(chemistryTemplate ? "chemistry education and problem solving" : "");
+  const [jobs, setJobs] = useState(chemistryTemplate
+    ? "Explain chemistry concepts, solve chemistry problems step by step, and check equations and units."
+    : "");
+  const [boundaries, setBoundaries] = useState(chemistryTemplate
+    ? "Avoid giving instructions for unsafe experiments or pretending to verify an unprovided source."
+    : "");
+  const [recommendationStyle, setRecommendationStyle] = useState(chemistryTemplate
+    ? "Suggest the next useful study step or a way to check the solution when it helps."
+    : "");
+  const [customPrompt, setCustomPrompt] = useState<string | null>(null);
+  const systemPrompt = customPrompt ?? buildSpecialistPrompt({ name, focus, jobs, boundaries, recommendationStyle });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string>();
 
   async function submit(event: FormEvent) {
     event.preventDefault();
+    if (!name.trim() || !focus.trim() || !jobs.trim() || !systemPrompt.trim()) {
+      setError("Add a name, specialty, main jobs, and system prompt before creating this agent.");
+      setStep(!name.trim() ? 1 : 2);
+      return;
+    }
     setSaving(true);
     setError(undefined);
     try {
@@ -80,7 +95,7 @@ export function AssistantBuilder() {
             <div>
               <Badge tone="blue">Step {step} of 3</Badge>
               <h1 className="mt-3 text-2xl font-black text-white">Assistant Builder</h1>
-              <p className="mt-2 text-sm leading-6 text-[#C4B5FD]">Create a polished assistant profile with custom instructions and advanced settings.</p>
+              <p className="mt-2 text-sm leading-6 text-[#C4B5FD]">Give this agent one clear specialty, then shape how it responds and recommends next steps.</p>
             </div>
             <div className="flex gap-2">
               {steps.map((item, index) => {
@@ -121,7 +136,7 @@ export function AssistantBuilder() {
                 >
                   <div>
                     <label className="mb-2 block text-sm font-semibold">Name</label>
-                    <Input value={name} onChange={(event) => setName(event.target.value)} />
+                    <Input value={name} onChange={(event) => setName(event.target.value)} placeholder="e.g. Retail Data Analyst" />
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-semibold">Tone</label>
@@ -137,7 +152,7 @@ export function AssistantBuilder() {
                   </div>
                   <div className="md:col-span-2">
                     <label className="mb-2 block text-sm font-semibold">Description</label>
-                    <Textarea value={description} onChange={(event) => setDescription(event.target.value)} />
+                    <Textarea value={description} onChange={(event) => setDescription(event.target.value)} placeholder="A short description of who this agent helps." />
                   </div>
                   <div className="md:col-span-2">
                     <label className="mb-2 block text-sm font-semibold">Icon</label>
@@ -159,8 +174,29 @@ export function AssistantBuilder() {
                   className="grid gap-4 md:grid-cols-2"
                 >
                   <div className="md:col-span-2">
-                    <label className="mb-2 block text-sm font-semibold">Instructions / system prompt</label>
-                    <Textarea value={systemPrompt} onChange={(event) => setSystemPrompt(event.target.value)} className="min-h-44" />
+                    <label className="mb-2 block text-sm font-semibold" htmlFor="agent-focus">Specialty</label>
+                    <Input id="agent-focus" required value={focus} onChange={(event) => setFocus(event.target.value)} placeholder="e.g. interpreting sales data for retail teams" />
+                    <p className="mt-1 text-xs text-[#C4B5FD]">Choose one domain and audience. This is the agent&apos;s main focus.</p>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="mb-2 block text-sm font-semibold" htmlFor="agent-jobs">What should it do in that specialty?</label>
+                    <Textarea id="agent-jobs" required value={jobs} onChange={(event) => setJobs(event.target.value)} placeholder="e.g. Analyze uploaded sales tables, explain trends, and suggest actions backed by the data." className="min-h-24" />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="mb-2 block text-sm font-semibold" htmlFor="agent-boundaries">What is outside its scope?</label>
+                    <Textarea id="agent-boundaries" value={boundaries} onChange={(event) => setBoundaries(event.target.value)} placeholder="e.g. Do not invent numbers or give legal or tax advice." className="min-h-20" />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="mb-2 block text-sm font-semibold" htmlFor="agent-recommendations">How should it make recommendations?</label>
+                    <Textarea id="agent-recommendations" value={recommendationStyle} onChange={(event) => setRecommendationStyle(event.target.value)} placeholder="e.g. Recommend one action at a time and cite the figures behind it." className="min-h-20" />
+                  </div>
+                  <div className="md:col-span-2">
+                    <div className="mb-2 flex items-center justify-between gap-3">
+                      <label className="text-sm font-semibold" htmlFor="agent-system-prompt">System prompt preview</label>
+                      {customPrompt !== null ? <button type="button" onClick={() => setCustomPrompt(null)} className="text-xs font-semibold text-violet-300 hover:text-white">Use guided prompt</button> : null}
+                    </div>
+                    <Textarea id="agent-system-prompt" value={systemPrompt} onChange={(event) => setCustomPrompt(event.target.value)} className="min-h-64 font-mono text-xs" />
+                    <p className="mt-1 text-xs text-[#C4B5FD]">The guided fields create the prompt automatically. Editing this preview switches to your custom prompt.</p>
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-semibold">Response profile</label>
@@ -234,7 +270,7 @@ export function AssistantBuilder() {
                 Back
               </Button>
               {step < 3 ? (
-                <Button type="button" disabled={saving} onClick={() => setStep((value) => Math.min(3, value + 1))}>
+                <Button type="button" disabled={saving || (step === 1 && !name.trim()) || (step === 2 && (!focus.trim() || !jobs.trim() || !systemPrompt.trim()))} onClick={() => setStep((value) => Math.min(3, value + 1))}>
                   Next
                   <ChevronRight className="h-4 w-4" />
                 </Button>

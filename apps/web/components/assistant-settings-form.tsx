@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/toast";
 import { AssistantIconPicker } from "@/components/ui/assistant-icon-picker";
 import { getAssistantIcon } from "@/lib/assistant-icons";
+import { buildSpecialistPrompt } from "@/lib/specialist-prompt";
 
 interface Assistant {
   id: string;
@@ -47,6 +48,10 @@ export function AssistantSettingsForm({ assistantId }: { assistantId: string }) 
   const router = useRouter();
   const [assistant, setAssistant] = useState<Assistant>({ ...fallbackAssistant, id: assistantId });
   const [starterPrompts, setStarterPrompts] = useState("");
+  const [specialty, setSpecialty] = useState("");
+  const [specialistJobs, setSpecialistJobs] = useState("");
+  const [specialistBoundaries, setSpecialistBoundaries] = useState("");
+  const [specialistRecommendations, setSpecialistRecommendations] = useState("");
   const [status, setStatus] = useState<string>();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -236,6 +241,30 @@ export function AssistantSettingsForm({ assistantId }: { assistantId: string }) 
               value={assistant.description ?? ""}
               onChange={(event) => setAssistant((current) => ({ ...current, description: event.target.value }))}
             />
+          </div>
+          <div className="md:col-span-2">
+            <details className="rounded-xl border border-[#2A2555] bg-[#12102A] p-4">
+              <summary className="cursor-pointer text-sm font-semibold text-white">Make this agent more specialized</summary>
+              <p className="mt-2 text-xs text-[#C4B5FD]">Define a focused role, then generate instructions you can review before saving.</p>
+              <div className="mt-4 grid gap-4">
+                <Input aria-label="Specialty" value={specialty} onChange={(event) => setSpecialty(event.target.value)} placeholder="Specialty, such as retail sales analysis" />
+                <Textarea aria-label="Main jobs" value={specialistJobs} onChange={(event) => setSpecialistJobs(event.target.value)} placeholder="The main tasks this agent should handle" className="min-h-20" />
+                <Textarea aria-label="Boundaries" value={specialistBoundaries} onChange={(event) => setSpecialistBoundaries(event.target.value)} placeholder="Requests and claims outside this agent's scope" className="min-h-20" />
+                <Textarea aria-label="Recommendation rules" value={specialistRecommendations} onChange={(event) => setSpecialistRecommendations(event.target.value)} placeholder="How it should recommend next steps" className="min-h-20" />
+                <Button type="button" variant="secondary" disabled={!specialty.trim() || !specialistJobs.trim()} onClick={() => setAssistant((current) => ({
+                  ...current,
+                  systemPrompt: buildSpecialistPrompt({
+                    name: current.name,
+                    focus: specialty,
+                    jobs: specialistJobs,
+                    boundaries: specialistBoundaries,
+                    recommendationStyle: specialistRecommendations
+                  })
+                }))}>
+                  Generate focused instructions
+                </Button>
+              </div>
+            </details>
           </div>
           <div className="md:col-span-2">
             <label className="mb-2 block text-sm font-semibold">Instructions / system prompt</label>

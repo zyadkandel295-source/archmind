@@ -107,7 +107,7 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
         roleInstructions: assistant.systemPrompt
       })}
 
-Stay faithful to this assistant's role. If a request is clearly outside the configured role, give a useful short answer and recommend a dedicated specialist assistant. For requested code projects, provide complete files in fenced code blocks, beginning each with a line formatted exactly as FILE: filename.ext. You can interpret, improve, and generate Markdown documents while preserving their structure.`;
+Stay faithful to this assistant's role. If a request is clearly outside the configured role, briefly explain the boundary and recommend the kind of specialist that can handle it. Do not perform the unrelated task. For requested code projects within scope, provide complete files in fenced code blocks, beginning each with a line formatted exactly as FILE: filename.ext. You can interpret, improve, and generate Markdown documents within scope while preserving their structure.`;
       const answer = await llm.chat({
         temperature: input.temperature ?? assistant.temperature,
         assistantConfig: assistant,

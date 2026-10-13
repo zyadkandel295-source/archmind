@@ -1,58 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, Share2, MoreVertical, Zap, RefreshCw } from 'lucide-react';
 import { UserProfile } from './user-profile';
 import { AssistantWorld } from './assistant-world';
-import { ChatInterface } from './chat-interface';
 import { InstructionsPanel } from './instructions-panel';
 import { useDataPersistence } from '@/lib/context/data-persistence-context';
 
 export function ImmersiveWorkspace() {
+  const router = useRouter();
   const [showAssistantBrowser, setShowAssistantBrowser] = useState(true);
-  const [isCreating, setIsCreating] = useState(false);
-  const [newAssistantName, setNewAssistantName] = useState('');
-  const [newAssistantDesc, setNewAssistantDesc] = useState('');
 
   const {
     assistants,
     selectedAssistant,
-    setSelectedAssistant,
-    createAssistant,
     isLoadingAssistants,
     syncAllData,
     isOnline,
   } = useDataPersistence();
-
-  const [createError, setCreateError] = useState<string | null>(null);
-
-  const handleCreateAssistant = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newAssistantName.trim()) return;
-    setCreateError(null);
-
-    if (assistants.length >= 3) {
-      setCreateError("Maximum agents limit reached. Please delete an existing agent to build a new one.");
-      return;
-    }
-
-    try {
-      await createAssistant({
-        name: newAssistantName.trim(),
-        description: newAssistantDesc.trim() || 'Custom AI Agent',
-        instructions: `You are ${newAssistantName.trim()}, an assistant deployed on AGENTIA. Help users with precision.`,
-        icon: '✨',
-        color: 'from-cyan-500 to-indigo-500',
-      });
-
-      setNewAssistantName('');
-      setNewAssistantDesc('');
-      setIsCreating(false);
-    } catch (err: any) {
-      setCreateError(err.message || "Failed to create agent");
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 overflow-hidden">
@@ -80,8 +47,8 @@ export function ImmersiveWorkspace() {
               <AssistantWorld
                 assistants={assistants}
                 selectedAssistant={selectedAssistant}
-                onSelectAssistant={(ast) => setSelectedAssistant(ast)}
-                onCreateAssistant={() => setIsCreating(true)}
+                onSelectAssistant={(ast) => router.push(`/assistants/${ast.id}/chat`)}
+                onCreateAssistant={() => router.push('/assistants/new')}
               />
             )}
           </AnimatePresence>
@@ -159,9 +126,10 @@ export function ImmersiveWorkspace() {
 
               {/* Content Area - Split View */}
               <div className="flex-1 flex overflow-hidden gap-4 p-4">
-                {/* Chat Interface */}
-                <div className="flex-1 flex flex-col rounded-xl overflow-hidden bg-slate-800/20 border border-slate-700/30">
-                  <ChatInterface assistant={selectedAssistant} />
+                <div className="flex-1 flex flex-col items-center justify-center gap-4 rounded-xl bg-slate-800/20 border border-slate-700/30 p-8 text-center">
+                  <h3 className="text-xl font-semibold text-white">{selectedAssistant.name} is ready</h3>
+                  <p className="max-w-md text-sm text-slate-300">Open the live chat to work with this agent&apos;s saved specialty and instructions.</p>
+                  <button type="button" onClick={() => router.push(`/assistants/${selectedAssistant.id}/chat`)} className="rounded-xl bg-cyan-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-400">Open live chat</button>
                 </div>
 
                 {/* Instructions Panel */}
@@ -198,57 +166,6 @@ export function ImmersiveWorkspace() {
           )}
         </div>
       </motion.div>
-
-      {/* New Assistant Modal */}
-      {isCreating && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl"
-          >
-            <h3 className="text-lg font-bold text-white mb-4">Deploy New Agent</h3>
-            <form onSubmit={handleCreateAssistant} className="space-y-4">
-              <div>
-                <label className="block text-xs text-slate-300 mb-1 font-medium">Agent Name</label>
-                <input
-                  type="text"
-                  required
-                  value={newAssistantName}
-                  onChange={(e) => setNewAssistantName(e.target.value)}
-                  placeholder="e.g. Data Analyst"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-cyan-500"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-300 mb-1 font-medium">Description / Agent Purpose</label>
-                <input
-                  type="text"
-                  value={newAssistantDesc}
-                  onChange={(e) => setNewAssistantDesc(e.target.value)}
-                  placeholder="e.g. Specializes in dataset insights"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-cyan-500"
-                />
-              </div>
-              <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setIsCreating(false)}
-                  className="px-4 py-2 rounded-xl text-sm text-slate-400 hover:bg-slate-800 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-xl text-sm font-medium bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:shadow-lg transition-all"
-                >
-                  Deploy Agent
-                </button>
-              </div>
-            </form>
-          </motion.div>
-        </div>
-      )}
 
     </div>
   );

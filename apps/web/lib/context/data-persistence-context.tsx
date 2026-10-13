@@ -208,8 +208,21 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
     setAssistantError(null);
     try {
       const response = await axios.get(getApiUrl('/api/assistants'), { headers: getAuthHeaders() });
-      if (response.data?.success && Array.isArray(response.data.data)) {
-        const fetched: Assistant[] = response.data.data;
+      const records = Array.isArray(response.data?.assistants)
+        ? response.data.assistants
+        : response.data?.success && Array.isArray(response.data.data)
+          ? response.data.data
+          : null;
+      if (records) {
+        const fetched: Assistant[] = records.map((record: Record<string, unknown>) => ({
+          id: String(record.id),
+          name: String(record.name ?? "Assistant"),
+          description: typeof record.description === "string" ? record.description : "",
+          instructions: typeof record.systemPrompt === "string" ? record.systemPrompt : String(record.instructions ?? ""),
+          icon: "🤖",
+          color: "from-blue-500 to-cyan-500",
+          status: "idle"
+        }));
         setAssistants(fetched);
         saveToStorage(STORAGE_KEYS.ASSISTANTS, fetched);
         setSelectedAssistantState((current) => {
@@ -217,12 +230,9 @@ export function DataPersistenceProvider({ children }: { children: React.ReactNod
             saveToStorage(STORAGE_KEYS.SELECTED_ASSISTANT, null);
             return null;
           }
-          if (!current) {
-            const next = fetched[0] || null;
-            saveToStorage(STORAGE_KEYS.SELECTED_ASSISTANT, next);
-            return next;
-          }
-          return current;
+          const next = fetched.find((assistant) => assistant.id === current?.id) ?? fetched[0] ?? null;
+          saveToStorage(STORAGE_KEYS.SELECTED_ASSISTANT, next);
+          return next;
         });
       }
     } catch (err: any) {
