@@ -25,6 +25,7 @@ import {
   webResultsToRetrievedChunks,
   type WebSearchResult
 } from "../services/web-search";
+import { buildTemporalPromptContext, type ExecutedTimeAction } from "../services/time-awareness";
 
 function estimateTokens(text: string) {
   return Math.ceil(text.trim().split(/\s+/).filter(Boolean).length * 1.35);
@@ -58,6 +59,7 @@ function writeSseResponse(
     conversationId?: string;
     sources?: unknown[];
     specialistSuggestion?: SpecialistSuggestion;
+    timeActions?: ExecutedTimeAction[];
   }
 ) {
   const sanitizedToken = sanitizeLLMResponse(input.token);
@@ -72,7 +74,8 @@ function writeSseResponse(
     `event: meta\ndata: ${JSON.stringify({
       conversationId: input.conversationId,
       sources: input.sources,
-      specialistSuggestion: input.specialistSuggestion
+      specialistSuggestion: input.specialistSuggestion,
+      timeActions: input.timeActions
     })}\n\n`
   );
   if (sanitizedToken) {
@@ -299,6 +302,13 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
 
       const lastUserMessage = sanitizedHistory.filter((message) => message.role === "user").at(-1)?.content ?? "";
 
+      const temporalBundle = buildTemporalPromptContext({
+        question: lastUserMessage,
+        userId: req.user!.id,
+        userTimeContext: input.userTimeContext,
+        store
+      });
+
       let webSearchPromptContext = "";
       let webChunks: RetrievedChunk[] = [];
       if (lastUserMessage && shouldPerformWebSearch(lastUserMessage, input.webSearch)) {
@@ -317,7 +327,9 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
         roleInstructions: assistant.systemPrompt
       })}
 
-For requested code projects, provide complete files in fenced code blocks, beginning each with a line formatted exactly as FILE: filename.ext. You can interpret, improve, and generate Markdown documents while preserving their structure.${webSearchPromptContext}`;
+For requested code projects, provide complete files in fenced code blocks, beginning each with a line formatted exactly as FILE: filename.ext. You can interpret, improve, and generate Markdown documents while preserving their structure.
+
+${temporalBundle.promptBlock}${webSearchPromptContext}`;
 
       const answer = await llm.chat({
         temperature: input.temperature ?? assistant.temperature,
@@ -333,7 +345,8 @@ For requested code projects, provide complete files in fenced code blocks, begin
       writeSseResponse(res, {
         token: sanitizedAnswer,
         sources: webChunks.length > 0 ? webChunks : undefined,
-        specialistSuggestion: getSpecialistSuggestion(assistant, lastUserMessage)
+        specialistSuggestion: getSpecialistSuggestion(assistant, lastUserMessage),
+        timeActions: temporalBundle.executedActions.length > 0 ? temporalBundle.executedActions : undefined
       });
     })
   );
@@ -400,16 +413,22 @@ For requested code projects, provide complete files in fenced code blocks, begin
     }
 
     let webSearchResults: WebSearchResult[] = [];
+    let executedTimeActions: ExecutedTimeAction[] = [];
     const answer = await rag.generateAnswer({
       assistant,
       question: sanitizedUserMessage,
       chunks,
       responseLength: input.responseLength,
       language: input.language,
+      userId: req.user!.id,
+      userTimeContext: input.userTimeContext,
       webSearch: input.webSearch,
       timeRange: input.timeRange,
       onWebResults: (results) => {
         webSearchResults = results;
+      },
+      onTemporalBundle: (bundle) => {
+        executedTimeActions = bundle.executedActions;
       },
       chatHistory
     });
@@ -439,7 +458,8 @@ For requested code projects, provide complete files in fenced code blocks, begin
       conversationId: conversation.id,
       sources: combinedSources,
       token: sanitizedAnswer,
-      specialistSuggestion: getSpecialistSuggestion(assistant, sanitizedUserMessage)
+      specialistSuggestion: getSpecialistSuggestion(assistant, sanitizedUserMessage),
+      timeActions: executedTimeActions.length > 0 ? executedTimeActions : undefined
     });
   });
 
@@ -481,7 +501,27 @@ For requested code projects, provide complete files in fenced code blocks, begin
     asyncHandler(async (req: AuthedRequest, res) => {
       const conversationId = req.params.id!;
       const deleted = store.deleteConversation(conversationId, req.user!.id);
-      res.json({ ok: true, deleted, conversationId });
+      await store.purgeConversationFromDatabase(conversationId, req.user!.id);
+      res.json({ ok: true, deleted, conversationId, spaceFreed: true });
+    })
+  );
+
+  router.delete(
+    ["/messages/:messageId", "/conversations/:conversationId/messages/:messageId"],
+    authenticate(env, store),
+    asyncHandler(async (req: AuthedRequest, res) => {
+      const messageId = req.params.messageId!;
+      const conversationId = req.params.conversationId;
+      const result = store.deleteMessage(messageId, req.user!.id);
+      await store.purgeMessageFromDatabase(messageId, conversationId ?? result.conversationId, req.user!.id);
+      res.json({
+        ok: true,
+        deleted: result.deleted,
+        messageId,
+        conversationId: conversationId ?? result.conversationId,
+        freedBytes: result.freedBytes,
+        spaceFreed: true
+      });
     })
   );
 
@@ -504,6 +544,7 @@ For requested code projects, provide complete files in fenced code blocks, begin
 
       if (input.conversationId) {
         store.deleteConversation(input.conversationId, req.user!.id);
+        await store.purgeConversationFromDatabase(input.conversationId, req.user!.id);
       }
 
       res.setHeader("Content-Type", "application/pdf");

@@ -28,10 +28,13 @@ import { assistantsV2Router } from "./modules/assistants-v2";
 import { chatsV2Router } from "./modules/chats-v2";
 import { aiBaseRouter } from "./modules/ai-base";
 import { filesRouter, fileChatRouter } from "./modules/files";
+import { timeCalendarRouter } from "./modules/time-calendar";
 import { FileGenerationService } from "./services/files/generator";
 import { AI_PROVIDERS_UNAVAILABLE_MESSAGE, generateAiResponse, hasConfiguredOpenRouterKey } from "./services/ai-service";
 import { formatWebSearchPrompt, performWebSearch, shouldPerformWebSearch } from "./services/web-search";
+import { buildTemporalPromptContext } from "./services/time-awareness";
 import { aiChatRequestSchema } from "@archmind/shared";
+import type { AuthedRequest } from "./types";
 
 export interface AppOptions {
   env?: Env;
@@ -179,12 +182,21 @@ export function createApp(options: AppOptions = {}) {
       return res.status(503).json({ success: false, errorCode: "ASSISTANT_UNAVAILABLE", message: AI_PROVIDERS_UNAVAILABLE_MESSAGE });
     }
     return authenticate(env, store)(req, res, next);
-  }, async (req, res, next) => {
+  }, async (req: AuthedRequest, res, next) => {
     try {
       const input = aiChatRequestSchema.parse(req.body);
       const lastUserMessage = input.messages.filter((m) => m.role === "user").at(-1)?.content ?? "";
       let messages = input.messages;
       let searchSources: unknown[] = [];
+
+      const temporalBundle = buildTemporalPromptContext({
+        question: lastUserMessage,
+        userId: req.user?.id,
+        userTimeContext: input.userTimeContext,
+        store
+      });
+
+      let systemBlocks = [temporalBundle.promptBlock];
 
       if (lastUserMessage && shouldPerformWebSearch(lastUserMessage, input.webSearch)) {
         const searchResults = await performWebSearch(lastUserMessage, 6, {
@@ -193,13 +205,14 @@ export function createApp(options: AppOptions = {}) {
         });
         if (searchResults.length > 0) {
           searchSources = searchResults;
-          const webContext = formatWebSearchPrompt(searchResults, lastUserMessage);
-          messages = [
-            { role: "system" as const, content: webContext },
-            ...input.messages
-          ];
+          systemBlocks.push(formatWebSearchPrompt(searchResults, lastUserMessage));
         }
       }
+
+      messages = [
+        { role: "system" as const, content: systemBlocks.join("\n\n") },
+        ...input.messages
+      ];
 
       const answer = await generateAiResponse({
         env,
@@ -207,7 +220,12 @@ export function createApp(options: AppOptions = {}) {
         temperature: input.temperature,
         assistantConfig: input.model ? { model: input.model } : undefined
       });
-      return res.status(200).json({ success: true, answer, ...(searchSources.length > 0 ? { sources: searchSources } : {}) });
+      return res.status(200).json({
+        success: true,
+        answer,
+        ...(searchSources.length > 0 ? { sources: searchSources } : {}),
+        ...(temporalBundle.executedActions.length > 0 ? { timeActions: temporalBundle.executedActions } : {})
+      });
     } catch (error) {
       next(error);
     }
@@ -221,6 +239,7 @@ export function createApp(options: AppOptions = {}) {
   app.use("/api/assistants", assistantsV2Router(env, store));
   app.use("/api/v1/assistants", assistantsRouter(env, store));
 
+  app.use("/api", timeCalendarRouter(env, store));
   app.use("/api", sourcesRouter(env, store));
   app.use("/api", filesRouter(fileService, store));
   app.use("/api", fileChatRouter(fileService, store));

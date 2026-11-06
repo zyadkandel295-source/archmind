@@ -35,26 +35,35 @@ async function renewFromIdentityProvider() {
   }
 }
 
-async function renewSessionOnce() {
+export async function renewSessionOnce() {
   if (refreshInFlight) return refreshInFlight;
   refreshInFlight = (async () => {
     const renewal = readRenewalCredential();
     if (!renewal) return renewFromIdentityProvider();
     try {
-      const response = await fetch(`${getPlatformBaseUrl()}/api/auth/refresh`, {
+      let response = await fetch("/api/workspace/auth/refresh", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ refreshToken: renewal })
-      });
-      if (!response.ok) return undefined;
+      }).catch(() => undefined);
+
+      if (!response || !response.ok) {
+        response = await fetch(`${getPlatformBaseUrl()}/api/auth/refresh`, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ refreshToken: renewal })
+        });
+      }
+      if (!response.ok) return renewFromIdentityProvider();
       const data = (await response.json()) as { accessToken?: string; refreshToken?: string; user?: { email?: string } };
-      if (!data.accessToken) return undefined;
+      if (!data.accessToken) return renewFromIdentityProvider();
       writeSessionCredentials(data.accessToken, data.refreshToken);
-      if (data.user?.email) window.localStorage.setItem("agentia.email", data.user.email);
+      if (data.user?.email) window.localStorage.setItem("archmind.email", data.user.email);
       return data.accessToken;
     } catch {
-      return undefined;
+      return renewFromIdentityProvider();
     }
   })().finally(() => { refreshInFlight = undefined; });
   return refreshInFlight;

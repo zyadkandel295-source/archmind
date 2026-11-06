@@ -198,3 +198,34 @@ export interface NotionOAuthStateRecord {
 }
 
 
+export interface CalendarEventRecord {
+  id: string;
+  userId: string;
+  title: string;
+  description?: string;
+  startTime: string; // ISO 8601 UTC
+  endTime?: string; // ISO 8601 UTC
+  timeZone: string; // IANA timezone in which it was scheduled
+  location?: string;
+  category: "event" | "deadline" | "reminder" | "schedule";
+  remindBeforeMinutes?: number;
+  reminderTriggerTime?: string; // ISO 8601 UTC
+  notified?: boolean;
+  source?: "agentia" | "google_calendar";
+  externalId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UserTimerRecord {
+  id: string;
+  userId: string;
+  label: string;
+  kind: "timer" | "countdown";
+  durationMs: number;
+  remainingMs: number;
+  targetTimestamp?: string; // ISO 8601 UTC when running
+  status: "running" | "paused" | "completed" | "reset";
+  createdAt: string;
+  updatedAt: string;
+}

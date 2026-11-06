@@ -12,6 +12,8 @@ export {
   passwordResetConfirmSchema,
   chatRequestSchema,
   aiChatRequestSchema,
+  userTimeContextSchema,
+  userLocationContextSchema,
   urlSourceSchema,
   assistantCreateSchema,
   assistantUpdateSchema,
@@ -22,6 +24,8 @@ export {
 } from "./schemas";
 export type {
   PlanName,
+  UserTimeContextInput,
+  UserLocationContextInput,
   AssistantCreateInput,
   AssistantUpdateInput,
   AssistantActionInput,

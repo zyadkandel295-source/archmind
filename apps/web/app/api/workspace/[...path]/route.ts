@@ -4,7 +4,7 @@ export const maxDuration = 60;
 
 // Only known workspace endpoints; never accept a browser-supplied destination.
 const allowed =
-  /^(?:chat(?:\/export-pdf)?|assistants\/[\w-]+\/(?:chat|conversations\/[\w-]+)|files(?:\/generate|\/[\w-]+\/(?:status|download|regenerate))?|conversations\/[\w-]+(?:\/files)?|auth\/(?:google|refresh))$/;
+  /^(?:chat(?:\/export-pdf)?|assistants\/[\w-]+\/(?:chat|conversations(?:\/[\w-]+)?)|files(?:\/generate|\/[\w-]+\/(?:status|download|regenerate))?|conversations\/[\w-]+(?:\/files|\/messages(?:\/[\w-]+)?)?|messages\/[\w-]+|chats(?:\/[\w-]+(?:\/messages(?:\/[\w-]+)?)?)?|time\/context|calendar\/events(?:\/[\w-]+)?|timers(?:\/[\w-]+\/control)?|auth\/(?:google|refresh))$/;
 const failure = (status: number, code: string, message: string) =>
   Response.json(
     { error: { code, message, retryable: status >= 500 } },
@@ -64,7 +64,7 @@ async function relay(
       throw new Error("API relay loop");
     target = new URL(`${base.toString().replace(/\/$/, "")}/api/${route}`);
     const query = new URL(request.url).searchParams;
-    for (const key of ["assistantId", "inline", "state"]) {
+    for (const key of ["assistantId", "inline", "state", "timeZone", "compare"]) {
       const value = query.get(key);
       if (value !== null) target.searchParams.set(key, value);
     }
@@ -95,7 +95,7 @@ async function relay(
       headers,
       cache: "no-store",
       redirect: "manual",
-      ...(request.method === "POST"
+      ...(request.method === "POST" || request.method === "PATCH"
         ? { body: await request.arrayBuffer() }
         : {}),
     });
@@ -151,4 +151,5 @@ async function safeRelay(request: Request, context: WorkspaceRouteContext) {
 
 export const GET = safeRelay;
 export const POST = safeRelay;
+export const PATCH = safeRelay;
 export const DELETE = safeRelay;

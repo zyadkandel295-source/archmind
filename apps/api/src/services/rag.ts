@@ -2,7 +2,8 @@ import {
   CONTEXT_INJECTION_TEMPLATE,
   CORE_RAG_SYSTEM_PROMPT,
   RAG_FALLBACK_TEMPLATE,
-  TONE_TEMPLATES
+  TONE_TEMPLATES,
+  type UserTimeContextInput
 } from "@archmind/shared";
 import type { Env } from "../config/env";
 import type { MemoryStore } from "../db/memory";
@@ -19,6 +20,7 @@ import { buildAgentiaSystemPrompt } from "./agentia-system-prompt";
 import { BaseKnowledgeService } from "./base-knowledge";
 import { KnowledgeRepository } from "./knowledge-repository";
 import { createSupabaseServerClient } from "./supabase-server";
+import { buildTemporalPromptContext, type TemporalPromptBundle } from "./time-awareness";
 
 function interpolate(template: string, values: Record<string, string | number>) {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => String(values[key] ?? ""));
@@ -126,9 +128,12 @@ export class RagService {
     chunks: RetrievedChunk[];
     responseLength: string;
     language: string;
+    userId?: string;
+    userTimeContext?: UserTimeContextInput;
     webSearch?: boolean;
     timeRange?: SearchTimeRange;
     onWebResults?: (results: WebSearchResult[]) => void;
+    onTemporalBundle?: (bundle: TemporalPromptBundle) => void;
     chatHistory?: Array<{ role: "user" | "assistant"; content: string }>;
   }) {
     console.info("[Knowledge] LLM context prepared", {
@@ -140,6 +145,14 @@ export class RagService {
       responseLength: input.responseLength,
       language: input.language
     });
+
+    const temporalBundle = buildTemporalPromptContext({
+      question: input.question,
+      userId: input.userId,
+      userTimeContext: input.userTimeContext,
+      store: this.store
+    });
+    input.onTemporalBundle?.(temporalBundle);
 
     let searchPromptContext = "";
     if (shouldPerformWebSearch(input.question, input.webSearch)) {
@@ -158,7 +171,7 @@ export class RagService {
       temperature: input.assistant.temperature,
       assistantConfig: input.assistant,
       messages: [
-        { role: "system", content: prompts.systemPrompt + searchPromptContext },
+        { role: "system", content: `${prompts.systemPrompt}\n\n${temporalBundle.promptBlock}${searchPromptContext}` },
         ...(input.chatHistory ?? []),
         { role: "user", content: prompts.contextPrompt }
       ]

@@ -8,11 +8,13 @@ import type {
   AssistantActionRecord,
   AssistantRecord,
   AuthUser,
+  CalendarEventRecord,
   ConversationRecord,
   DataSourceRecord,
   MessageRecord,
   RetrievedChunk,
   UserRecord,
+  UserTimerRecord,
   ExecutionBridgeLogRecord,
   ExecutionApprovalRecord,
   NotionActivityLogRecord,
@@ -24,6 +26,7 @@ import { emptyPlatformState, type PlatformState } from "../platform-types";
 import type { PlatformStateStore } from "./platform-store";
 import { RealAnalyticsEngine } from "../services/analytics-engine";
 import { LoadTestService } from "../services/load-test-service";
+import { createSupabaseServerClient, isSupabaseServerConfigured } from "../services/supabase-server";
 
 function now() {
   return new Date().toISOString();
@@ -38,6 +41,8 @@ interface PersistedMemoryStore {
   conversations: ConversationRecord[];
   messages: MessageRecord[];
   events: AnalyticsEventRecord[];
+  calendarEvents?: CalendarEventRecord[];
+  userTimers?: UserTimerRecord[];
   bridgeLogs?: ExecutionBridgeLogRecord[];
   bridgeApprovals?: ExecutionApprovalRecord[];
   notionOAuthStates?: NotionOAuthStateRecord[];
@@ -119,6 +124,8 @@ export class MemoryStore implements PlatformStateStore {
   private conversations = new Map<string, ConversationRecord>();
   private messages = new Map<string, MessageRecord>();
   private events = new Map<string, AnalyticsEventRecord>();
+  private calendarEvents = new Map<string, CalendarEventRecord>();
+  private userTimers = new Map<string, UserTimerRecord>();
   private bridgeLogs = new Map<string, ExecutionBridgeLogRecord>();
   private bridgeApprovals = new Map<string, ExecutionApprovalRecord>();
   private notionOAuthStates = new Map<string, NotionOAuthStateRecord>();
@@ -367,6 +374,8 @@ export class MemoryStore implements PlatformStateStore {
       this.conversations = new Map(parsed.conversations.map((item) => [item.id, item]));
       this.messages = new Map(parsed.messages.map((item) => [item.id, item]));
       this.events = new Map(parsed.events.map((item) => [item.id, item]));
+      this.calendarEvents = new Map((parsed.calendarEvents ?? []).map((item) => [item.id, item]));
+      this.userTimers = new Map((parsed.userTimers ?? []).map((item) => [item.id, item]));
       this.bridgeLogs = new Map((parsed.bridgeLogs ?? []).map((item) => [item.id, item]));
       this.bridgeApprovals = new Map((parsed.bridgeApprovals ?? []).map((item) => [item.id, item]));
       this.notionOAuthStates = new Map((parsed.notionOAuthStates ?? []).map((item) => [item.state, item]));
@@ -390,6 +399,8 @@ export class MemoryStore implements PlatformStateStore {
           conversations: [...this.conversations.values()],
           messages: [...this.messages.values()],
           events: [...this.events.values()],
+          calendarEvents: [...this.calendarEvents.values()],
+          userTimers: [...this.userTimers.values()],
           bridgeLogs: [...this.bridgeLogs.values()],
           bridgeApprovals: [...this.bridgeApprovals.values()],
           notionOAuthStates: [...this.notionOAuthStates.values()],
@@ -1110,7 +1121,7 @@ export class MemoryStore implements PlatformStateStore {
     }
 
     const conversation: ConversationRecord = {
-      id: randomUUID(),
+      id: input.conversationId && /^[0-9a-f-]{36}$/i.test(input.conversationId) ? input.conversationId : randomUUID(),
       assistantId: input.assistantId,
       userId: input.userId,
       sessionId: input.sessionId,
@@ -1120,6 +1131,7 @@ export class MemoryStore implements PlatformStateStore {
     };
     this.conversations.set(conversation.id, conversation);
     this.persist();
+    void this.syncConversationToSupabaseAndPg(conversation);
     return conversation;
   }
 
@@ -1131,14 +1143,17 @@ export class MemoryStore implements PlatformStateStore {
     };
     this.messages.set(message.id, message);
     const conversation = this.conversations.get(input.conversationId);
+    let updatedConv: ConversationRecord | undefined;
     if (conversation) {
-      this.conversations.set(conversation.id, {
+      updatedConv = {
         ...conversation,
         title: conversation.title === "New conversation" && input.role === "user" ? input.content.slice(0, 80) : conversation.title,
         messageCount: conversation.messageCount + 1
-      });
+      };
+      this.conversations.set(conversation.id, updatedConv);
     }
     this.persist();
+    void this.syncMessageToSupabaseAndPg(message, updatedConv ?? conversation);
     return message;
   }
 
@@ -1161,9 +1176,33 @@ export class MemoryStore implements PlatformStateStore {
     return this.listMessages(conversationId);
   }
 
+  deleteMessage(messageId: string, userId: string): { deleted: boolean; freedBytes: number; conversationId?: string } {
+    const message = this.messages.get(messageId);
+    if (!message) {
+      void this.purgeMessageFromDatabase(messageId, undefined, userId);
+      return { deleted: false, freedBytes: 0 };
+    }
+    const conversation = this.conversations.get(message.conversationId);
+    if (conversation && conversation.userId && conversation.userId !== userId) {
+      throw new HttpError(403, "Cannot delete another user's message", "FORBIDDEN");
+    }
+    const freedBytes = Buffer.byteLength(JSON.stringify(message), "utf8");
+    this.messages.delete(messageId);
+    if (conversation) {
+      this.conversations.set(conversation.id, {
+        ...conversation,
+        messageCount: Math.max(0, conversation.messageCount - 1)
+      });
+    }
+    this.persist();
+    void this.purgeMessageFromDatabase(messageId, message.conversationId, userId);
+    return { deleted: true, freedBytes, conversationId: message.conversationId };
+  }
+
   deleteConversation(conversationId: string, userId: string) {
     const conversation = this.conversations.get(conversationId);
-    if (!conversation || conversation.userId !== userId) return false;
+    if (conversation && conversation.userId && conversation.userId !== userId) return false;
+    const existed = Boolean(conversation);
     this.conversations.delete(conversationId);
     for (const [messageId, message] of this.messages.entries()) {
       if (message.conversationId === conversationId) {
@@ -1171,7 +1210,321 @@ export class MemoryStore implements PlatformStateStore {
       }
     }
     this.persist();
+    void this.purgeConversationFromDatabase(conversationId, userId);
+    return existed;
+  }
+
+  public async syncConversationToSupabaseAndPg(conversation: ConversationRecord) {
+    try {
+      if (this.dbPool && conversation.userId) {
+        await this.dbPool.query(
+          `insert into conversations(id, assistant_id, user_id, session_id, title, message_count, created_at)
+           values($1, $2, $3, $4, $5, $6, $7)
+           on conflict (id) do update set
+             title = excluded.title,
+             message_count = excluded.message_count`,
+          [
+            conversation.id,
+            conversation.assistantId,
+            conversation.userId,
+            conversation.sessionId ?? null,
+            conversation.title ?? "New conversation",
+            conversation.messageCount,
+            conversation.createdAt
+          ]
+        ).catch(() => undefined);
+      }
+      if (isSupabaseServerConfigured() && conversation.userId) {
+        const supabase = createSupabaseServerClient();
+        await supabase.from("chats").upsert({
+          id: conversation.id,
+          user_id: conversation.userId,
+          assistant_id: /^[0-9a-f-]{36}$/i.test(conversation.assistantId) ? conversation.assistantId : null,
+          title: conversation.title ?? "New conversation",
+          created_at: conversation.createdAt,
+          updated_at: now()
+        });
+      }
+    } catch {
+      // Non-blocking background sync
+    }
+  }
+
+  public async syncMessageToSupabaseAndPg(message: MessageRecord, conversation?: ConversationRecord) {
+    try {
+      if (conversation) {
+        await this.syncConversationToSupabaseAndPg(conversation);
+      }
+      if (this.dbPool) {
+        await this.dbPool.query(
+          `insert into messages(id, conversation_id, role, content, tokens_used, sources, created_at)
+           values($1, $2, $3, $4, $5, $6, $7)
+           on conflict (id) do nothing`,
+          [
+            message.id,
+            message.conversationId,
+            message.role,
+            message.content,
+            message.tokensUsed ?? 0,
+            JSON.stringify(message.sources ?? []),
+            message.createdAt
+          ]
+        ).catch(() => undefined);
+      }
+      if (isSupabaseServerConfigured() && conversation?.userId) {
+        const supabase = createSupabaseServerClient();
+        await supabase.from("messages").upsert({
+          id: message.id,
+          chat_id: message.conversationId,
+          role: message.role,
+          content: message.content,
+          created_at: message.createdAt
+        });
+      }
+    } catch {
+      // Non-blocking background sync
+    }
+  }
+
+  public async purgeMessageFromDatabase(messageId: string, conversationId: string | undefined, userId: string) {
+    try {
+      if (this.dbPool) {
+        await this.dbPool.query(`delete from messages where id = $1`, [messageId]).catch(() => undefined);
+      }
+      if (isSupabaseServerConfigured()) {
+        const supabase = createSupabaseServerClient();
+        let query = supabase.from("messages").delete().eq("id", messageId);
+        if (conversationId) {
+          query = query.eq("chat_id", conversationId);
+        }
+        await query;
+      }
+    } catch {
+      // Ignore external DB errors when running offline
+    }
+  }
+
+  public async purgeConversationFromDatabase(conversationId: string, userId: string) {
+    try {
+      if (this.dbPool) {
+        await this.dbPool.query(`delete from messages where conversation_id = $1`, [conversationId]).catch(() => undefined);
+        await this.dbPool.query(`delete from conversations where id = $1 and (user_id = $2 or user_id is null)`, [conversationId, userId]).catch(() => undefined);
+      }
+      if (isSupabaseServerConfigured()) {
+        const supabase = createSupabaseServerClient();
+        // Hard-delete all messages in the chat first to free database space immediately, then delete the chat row
+        await supabase.from("messages").delete().eq("chat_id", conversationId);
+        await supabase.from("chats").delete().eq("id", conversationId).eq("user_id", userId);
+      }
+    } catch {
+      // Ignore external DB errors when running offline
+    }
+  }
+
+  // ══════════════════════════════════════════════════
+  // Calendar Events & Reminders Management
+  // ══════════════════════════════════════════════════
+
+  listCalendarEvents(userId: string): CalendarEventRecord[] {
+    return [...this.calendarEvents.values()]
+      .filter((event) => event.userId === userId)
+      .sort((a, b) => a.startTime.localeCompare(b.startTime));
+  }
+
+  createCalendarEvent(
+    userId: string,
+    input: {
+      title: string;
+      description?: string;
+      startTime: string;
+      endTime?: string;
+      timeZone?: string;
+      location?: string;
+      category?: CalendarEventRecord["category"];
+      remindBeforeMinutes?: number;
+      source?: CalendarEventRecord["source"];
+      externalId?: string;
+    }
+  ): CalendarEventRecord {
+    const createdAt = now();
+    const startMs = new Date(input.startTime).getTime();
+    const reminderTriggerTime =
+      typeof input.remindBeforeMinutes === "number" && !Number.isNaN(startMs)
+        ? new Date(startMs - input.remindBeforeMinutes * 60_000).toISOString()
+        : undefined;
+
+    const record: CalendarEventRecord = {
+      id: randomUUID(),
+      userId,
+      title: input.title.trim(),
+      description: input.description,
+      startTime: new Date(input.startTime).toISOString(),
+      endTime: input.endTime ? new Date(input.endTime).toISOString() : undefined,
+      timeZone: input.timeZone || "UTC",
+      location: input.location,
+      category: input.category ?? "event",
+      remindBeforeMinutes: input.remindBeforeMinutes,
+      reminderTriggerTime,
+      notified: false,
+      source: input.source ?? "agentia",
+      externalId: input.externalId,
+      createdAt,
+      updatedAt: createdAt
+    };
+    this.calendarEvents.set(record.id, record);
+    this.persist();
+    return record;
+  }
+
+  updateCalendarEvent(
+    userId: string,
+    eventId: string,
+    input: Partial<Pick<CalendarEventRecord, "title" | "description" | "startTime" | "endTime" | "timeZone" | "location" | "category" | "remindBeforeMinutes" | "notified">>
+  ): CalendarEventRecord | undefined {
+    const existing = this.calendarEvents.get(eventId);
+    if (!existing || existing.userId !== userId) return undefined;
+    const nextStartTime = input.startTime ? new Date(input.startTime).toISOString() : existing.startTime;
+    const nextRemindMins = input.remindBeforeMinutes !== undefined ? input.remindBeforeMinutes : existing.remindBeforeMinutes;
+    const startMs = new Date(nextStartTime).getTime();
+    const reminderTriggerTime =
+      typeof nextRemindMins === "number" && !Number.isNaN(startMs)
+        ? new Date(startMs - nextRemindMins * 60_000).toISOString()
+        : undefined;
+
+    const updated: CalendarEventRecord = {
+      ...existing,
+      ...input,
+      startTime: nextStartTime,
+      remindBeforeMinutes: nextRemindMins,
+      reminderTriggerTime,
+      updatedAt: now()
+    };
+    this.calendarEvents.set(eventId, updated);
+    this.persist();
+    return updated;
+  }
+
+  deleteCalendarEvent(userId: string, eventId: string): boolean {
+    const existing = this.calendarEvents.get(eventId);
+    if (!existing || existing.userId !== userId) return false;
+    this.calendarEvents.delete(eventId);
+    this.persist();
     return true;
+  }
+
+  // ══════════════════════════════════════════════════
+  // User Timers & Countdowns Management
+  // ══════════════════════════════════════════════════
+
+  listUserTimers(userId: string): UserTimerRecord[] {
+    const nowMs = Date.now();
+    let mutated = false;
+    const list = [...this.userTimers.values()]
+      .filter((t) => t.userId === userId)
+      .map((timer) => {
+        if (timer.status === "running" && timer.targetTimestamp) {
+          const targetMs = new Date(timer.targetTimestamp).getTime();
+          const remainingMs = Math.max(0, targetMs - nowMs);
+          const nextStatus: UserTimerRecord["status"] = remainingMs === 0 ? "completed" : "running";
+          if (nextStatus !== timer.status || Math.abs(remainingMs - timer.remainingMs) > 500) {
+            const updated: UserTimerRecord = {
+              ...timer,
+              remainingMs,
+              status: nextStatus,
+              updatedAt: now()
+            };
+            this.userTimers.set(timer.id, updated);
+            mutated = true;
+            return updated;
+          }
+        }
+        return timer;
+      })
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+    if (mutated) {
+      this.persist();
+    }
+    return list;
+  }
+
+  createUserTimer(
+    userId: string,
+    input: {
+      label: string;
+      kind?: "timer" | "countdown";
+      durationMs: number;
+      targetTimestamp?: string;
+    }
+  ): UserTimerRecord {
+    const createdAt = now();
+    const safeDurationMs = Math.max(1000, Math.round(input.durationMs));
+    const targetTimestamp = input.targetTimestamp ?? new Date(Date.now() + safeDurationMs).toISOString();
+    const record: UserTimerRecord = {
+      id: randomUUID(),
+      userId,
+      label: input.label.trim() || "Timer",
+      kind: input.kind ?? "timer",
+      durationMs: safeDurationMs,
+      remainingMs: safeDurationMs,
+      targetTimestamp,
+      status: "running",
+      createdAt,
+      updatedAt: createdAt
+    };
+    this.userTimers.set(record.id, record);
+    this.persist();
+    return record;
+  }
+
+  controlUserTimer(
+    userId: string,
+    timerId: string,
+    action: "pause" | "resume" | "reset" | "delete"
+  ): UserTimerRecord | null {
+    const existing = this.userTimers.get(timerId);
+    if (!existing || existing.userId !== userId) return null;
+
+    if (action === "delete") {
+      this.userTimers.delete(timerId);
+      this.persist();
+      return existing;
+    }
+
+    const nowMs = Date.now();
+    let updated: UserTimerRecord = { ...existing, updatedAt: now() };
+
+    if (action === "pause" && existing.status === "running") {
+      const targetMs = existing.targetTimestamp ? new Date(existing.targetTimestamp).getTime() : nowMs;
+      updated = {
+        ...existing,
+        remainingMs: Math.max(0, targetMs - nowMs),
+        targetTimestamp: undefined,
+        status: "paused",
+        updatedAt: now()
+      };
+    } else if (action === "resume" && (existing.status === "paused" || existing.status === "reset")) {
+      const rem = existing.remainingMs > 0 ? existing.remainingMs : existing.durationMs;
+      updated = {
+        ...existing,
+        remainingMs: rem,
+        targetTimestamp: new Date(nowMs + rem).toISOString(),
+        status: "running",
+        updatedAt: now()
+      };
+    } else if (action === "reset") {
+      updated = {
+        ...existing,
+        remainingMs: existing.durationMs,
+        targetTimestamp: undefined,
+        status: "reset",
+        updatedAt: now()
+      };
+    }
+
+    this.userTimers.set(timerId, updated);
+    this.persist();
+    return updated;
   }
 
   recordEvent(assistantId: string, eventType: string, tokens: number, metadata: Record<string, unknown>) {

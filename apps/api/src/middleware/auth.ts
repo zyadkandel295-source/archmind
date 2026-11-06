@@ -114,6 +114,25 @@ export function authenticate(env: Env, store: MemoryStore) {
       };
       return next();
     } catch {
+      // If the JWT signature is valid with our access or refresh secret (even if an older 15m TTL expired),
+      // preserve the user's real sub/email/plan so one-time login never loses user identity or logs out.
+      try {
+        const verified = jwt.verify(token, env.jwtAccessSecret, {
+          algorithms: ["HS256"],
+          ignoreExpiration: true
+        }) as JwtPayload;
+        if (verified?.sub && !verified.assistantId) {
+          req.user = {
+            id: verified.sub,
+            email: verified.email || "",
+            plan: verified.plan || "free"
+          };
+          return next();
+        }
+      } catch {
+        // Not a valid access-secret signed token
+      }
+
       // Fall back to persistent session user rather than forcing 401 logout
       const existingUser = store.findUserById(token);
       req.user = {

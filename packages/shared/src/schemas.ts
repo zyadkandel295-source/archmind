@@ -27,6 +27,26 @@ export const passwordResetConfirmSchema = z.object({
   password: z.string().min(8),
 });
 
+// ─── Time & Location Context Schema ──────────
+export const userLocationContextSchema = z.object({
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
+  accuracyMeters: z.number().nonnegative().optional(),
+  label: z.string().max(200).optional(),
+  permissionGranted: z.boolean().default(false),
+});
+
+export const userTimeContextSchema = z.object({
+  timeZone: z.string().max(120).optional(),
+  locale: z.string().max(64).optional(),
+  clientTimestamp: z.union([z.string(), z.number()]).optional(),
+  utcOffsetMinutes: z.number().min(-840).max(840).optional(),
+  location: userLocationContextSchema.optional(),
+});
+
+export type UserLocationContextInput = z.infer<typeof userLocationContextSchema>;
+export type UserTimeContextInput = z.infer<typeof userTimeContextSchema>;
+
 // ─── Chat schemas ────────────────────────────
 export const chatRequestSchema = z.object({
   message: z.string().min(1),
@@ -37,6 +57,7 @@ export const chatRequestSchema = z.object({
   webSearch: z.boolean().optional(),
   ephemeral: z.boolean().optional(),
   timeRange: z.enum(["day", "week", "month", "year", "any"]).optional(),
+  userTimeContext: userTimeContextSchema.optional(),
   chatHistory: z
     .array(
       z.object({
@@ -59,6 +80,7 @@ export const aiChatRequestSchema = z.object({
   webSearch: z.boolean().optional(),
   ephemeral: z.boolean().optional(),
   timeRange: z.enum(["day", "week", "month", "year", "any"]).optional(),
+  userTimeContext: userTimeContextSchema.optional(),
   conversationId: z.string().optional(),
 });
 

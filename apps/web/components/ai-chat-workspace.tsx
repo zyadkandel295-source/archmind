@@ -52,9 +52,17 @@ import { toast } from "@/components/ui/toast";
 import { AssistantAvatar } from "@/components/ui/assistant-avatar";
 import { IconButton } from "@/components/ui/icon-button";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { requestData } from "@/lib/data-client";
+import { renewSessionOnce, requestData } from "@/lib/data-client";
 import { GeneratedFileCard } from "@/components/generated-file-card";
 import { fileFetch, type GeneratedFileView } from "@/lib/generated-files";
+import {
+  TimeCalendarHub,
+  detectBrowserTimeZone,
+  triggerBrowserNotification,
+  type ClientCalendarEvent,
+  type ClientTimerItem,
+  type UserLocationState
+} from "@/components/time-calendar-hub";
 
 
 type Role = "user" | "assistant";
@@ -387,6 +395,10 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [fallbackToWorkspace, setFallbackToWorkspace] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [hasRestoredBrowserState, setHasRestoredBrowserState] = useState(false);
+  const [userTimeZone, setUserTimeZone] = useState<string>(() => detectBrowserTimeZone());
+  const [locationState, setLocationState] = useState<UserLocationState>({ permissionGranted: false });
+  const [calendarEvents, setCalendarEvents] = useState<ClientCalendarEvent[]>([]);
+  const [timers, setTimers] = useState<ClientTimerItem[]>([]);
   const abortRef = useRef<AbortController | null>(null);
   const activeIdRef = useRef(activeId);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -427,9 +439,275 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     setActiveId(window.localStorage.getItem(activeKey(assistantId)) ?? "");
     setPinnedIds(readPinnedSessionIds(assistantId));
     setTheme((window.localStorage.getItem(THEME_KEY) as "dark" | "light" | null) ?? "dark");
+    setUserTimeZone(detectBrowserTimeZone());
+    try {
+      const savedLoc = window.localStorage.getItem("agentia.location_state");
+      if (savedLoc) setLocationState(JSON.parse(savedLoc) as UserLocationState);
+      const savedCal = window.localStorage.getItem("agentia.calendar_events");
+      if (savedCal) setCalendarEvents(JSON.parse(savedCal) as ClientCalendarEvent[]);
+      const savedTimers = window.localStorage.getItem("agentia.timers");
+      if (savedTimers) setTimers(JSON.parse(savedTimers) as ClientTimerItem[]);
+    } catch {
+      // Ignore corrupt local storage entries
+    }
     setFallbackToWorkspace(false);
     setHasRestoredBrowserState(true);
   }, [assistantId]);
+
+  useEffect(() => {
+    if (!hasRestoredBrowserState) return;
+    try {
+      window.localStorage.setItem("agentia.calendar_events", JSON.stringify(calendarEvents));
+    } catch {
+      // Ignore storage quota errors
+    }
+  }, [calendarEvents, hasRestoredBrowserState]);
+
+  useEffect(() => {
+    if (!hasRestoredBrowserState) return;
+    try {
+      window.localStorage.setItem("agentia.timers", JSON.stringify(timers));
+    } catch {
+      // Ignore storage quota errors
+    }
+  }, [timers, hasRestoredBrowserState]);
+
+  // Fetch server-stored calendar events & timers on mount
+  useEffect(() => {
+    const credential = readSessionCredential();
+    if (!credential) return;
+    const headers = { Authorization: `Bearer ${credential}` };
+    void fetch(`/api/workspace/time/context?timeZone=${encodeURIComponent(detectBrowserTimeZone())}`, { headers })
+      .then((res) => (res.ok ? res.json() : undefined))
+      .then((data?: { events?: ClientCalendarEvent[]; timers?: Array<{ id: string; label: string; kind: "timer" | "countdown"; durationMs: number; remainingMs: number; targetTimestamp?: string; status: ClientTimerItem["status"] }> }) => {
+        if (data?.events && data.events.length > 0) {
+          setCalendarEvents((prev) => {
+            const byId = new Map(prev.map((e) => [e.id, e]));
+            for (const ev of data.events!) byId.set(ev.id, ev);
+            return [...byId.values()].sort((a, b) => a.startTime.localeCompare(b.startTime));
+          });
+        }
+        if (data?.timers && data.timers.length > 0) {
+          setTimers((prev) => {
+            const byId = new Map(prev.map((t) => [t.id, t]));
+            for (const tm of data.timers!) {
+              byId.set(tm.id, {
+                id: tm.id,
+                label: tm.label,
+                kind: tm.kind,
+                durationMs: tm.durationMs,
+                remainingMs: tm.remainingMs,
+                targetTimestampMs: tm.targetTimestamp ? new Date(tm.targetTimestamp).getTime() : undefined,
+                status: tm.status
+              });
+            }
+            return [...byId.values()];
+          });
+        }
+      })
+      .catch(() => undefined);
+  }, []);
+
+  // Tick running timers & check calendar reminders using real wall-clock timestamps
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      const nowMs = Date.now();
+      setTimers((prev) => {
+        let changed = false;
+        const next = prev.map((t) => {
+          if (t.status !== "running" || !t.targetTimestampMs) return t;
+          const rem = Math.max(0, t.targetTimestampMs - nowMs);
+          changed = true;
+          if (rem === 0) {
+            if (!t.notified) {
+              triggerBrowserNotification("Timer Finished", `${t.label} has completed!`);
+            }
+            return { ...t, remainingMs: 0, status: "completed" as const, notified: true };
+          }
+          return { ...t, remainingMs: rem };
+        });
+        return changed ? next : prev;
+      });
+
+      setCalendarEvents((prev) => {
+        let changed = false;
+        const next = prev.map((ev) => {
+          if (ev.notified) return ev;
+          const triggerIso = ev.reminderTriggerTime || ev.startTime;
+          const triggerMs = new Date(triggerIso).getTime();
+          if (!Number.isNaN(triggerMs) && nowMs >= triggerMs && nowMs - triggerMs < 120_000) {
+            changed = true;
+            triggerBrowserNotification("Calendar Reminder", `${ev.title} (${new Date(ev.startTime).toLocaleTimeString()})`);
+            return { ...ev, notified: true };
+          }
+          return ev;
+        });
+        return changed ? next : prev;
+      });
+    }, 1000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  function handleRequestLocation() {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      toast({ type: "error", title: "Geolocation Unavailable", message: "Your browser does not support Geolocation." });
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const nextLoc: UserLocationState = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+          accuracyMeters: pos.coords.accuracy,
+          label: `${detectBrowserTimeZone()} (${pos.coords.latitude.toFixed(3)}, ${pos.coords.longitude.toFixed(3)})`,
+          permissionGranted: true
+        };
+        setLocationState(nextLoc);
+        window.localStorage.setItem("agentia.location_state", JSON.stringify(nextLoc));
+        toast({
+          type: "success",
+          title: "Location Authorized",
+          message: `Connected GPS coordinates (${pos.coords.latitude.toFixed(3)}, ${pos.coords.longitude.toFixed(3)}) with time zone ${detectBrowserTimeZone()}.`
+        });
+      },
+      () => {
+        const denied: UserLocationState = { permissionGranted: false };
+        setLocationState(denied);
+        window.localStorage.setItem("agentia.location_state", JSON.stringify(denied));
+        toast({
+          type: "info",
+          title: "Location Permission Not Granted",
+          message: "Using your system IANA time zone only without GPS coordinates."
+        });
+      },
+      { enableHighAccuracy: false, timeout: 8000 }
+    );
+  }
+
+  function handleClearLocation() {
+    const cleared: UserLocationState = { permissionGranted: false };
+    setLocationState(cleared);
+    window.localStorage.removeItem("agentia.location_state");
+    toast({ type: "info", title: "Location Revoked", message: "GPS location sharing disabled." });
+  }
+
+  async function handleAddCalendarEvent(input: Omit<ClientCalendarEvent, "id">) {
+    const localEvent: ClientCalendarEvent = {
+      ...input,
+      id: crypto.randomUUID()
+    };
+    setCalendarEvents((prev) => [...prev, localEvent].sort((a, b) => a.startTime.localeCompare(b.startTime)));
+    const credential = readSessionCredential();
+    if (credential) {
+      try {
+        const res = await fetch("/api/workspace/calendar/events", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${credential}` },
+          body: JSON.stringify(input)
+        });
+        if (res.ok) {
+          const data = (await res.json()) as { event?: ClientCalendarEvent };
+          if (data.event) {
+            setCalendarEvents((prev) =>
+              prev.map((e) => (e.id === localEvent.id ? data.event! : e)).sort((a, b) => a.startTime.localeCompare(b.startTime))
+            );
+          }
+        }
+      } catch {
+        // Keep local event
+      }
+    }
+    toast({ type: "success", title: "Event Scheduled", message: `Added "${input.title}" to your calendar.` });
+  }
+
+  async function handleDeleteCalendarEvent(eventId: string) {
+    setCalendarEvents((prev) => prev.filter((e) => e.id !== eventId));
+    const credential = readSessionCredential();
+    if (credential) {
+      void fetch(`/api/workspace/calendar/events/${encodeURIComponent(eventId)}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${credential}` }
+      }).catch(() => undefined);
+    }
+  }
+
+  function handleStartTimer(label: string, durationMs: number, kind: "timer" | "countdown" = "timer", targetIso?: string) {
+    const targetMs = targetIso ? new Date(targetIso).getTime() : Date.now() + durationMs;
+    const item: ClientTimerItem = {
+      id: crypto.randomUUID(),
+      label,
+      kind,
+      durationMs,
+      remainingMs: Math.max(0, targetMs - Date.now()),
+      targetTimestampMs: targetMs,
+      status: "running"
+    };
+    setTimers((prev) => [item, ...prev]);
+    const credential = readSessionCredential();
+    if (credential) {
+      void fetch("/api/workspace/timers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${credential}` },
+        body: JSON.stringify({ label, kind, durationMs, targetTimestamp: new Date(targetMs).toISOString() })
+      }).catch(() => undefined);
+    }
+  }
+
+  function handleControlTimer(timerId: string, action: "pause" | "resume" | "reset" | "delete") {
+    setTimers((prev) => {
+      if (action === "delete") return prev.filter((t) => t.id !== timerId);
+      const nowMs = Date.now();
+      return prev.map((t) => {
+        if (t.id !== timerId) return t;
+        if (action === "pause" && t.status === "running") {
+          const rem = t.targetTimestampMs ? Math.max(0, t.targetTimestampMs - nowMs) : t.remainingMs;
+          return { ...t, remainingMs: rem, targetTimestampMs: undefined, status: "paused" };
+        }
+        if (action === "resume" && (t.status === "paused" || t.status === "reset")) {
+          const rem = t.remainingMs > 0 ? t.remainingMs : t.durationMs;
+          return { ...t, remainingMs: rem, targetTimestampMs: nowMs + rem, status: "running", notified: false };
+        }
+        if (action === "reset") {
+          return { ...t, remainingMs: t.durationMs, targetTimestampMs: undefined, status: "reset", notified: false };
+        }
+        return t;
+      });
+    });
+    const credential = readSessionCredential();
+    if (credential) {
+      void fetch(`/api/workspace/timers/${encodeURIComponent(timerId)}/control`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${credential}` },
+        body: JSON.stringify({ action })
+      }).catch(() => undefined);
+    }
+  }
+
+  async function deleteSingleMessage(messageId: string) {
+    const convId = activeSession.conversationId;
+    updateSession(activeSession.id, (session) => ({
+      ...session,
+      messages: session.messages.filter((m) => m.id !== messageId),
+      updatedAt: Date.now()
+    }));
+    const credential = readSessionCredential();
+    const headers: Record<string, string> = {};
+    if (credential) headers.Authorization = `Bearer ${credential}`;
+    try {
+      const endpoint = convId
+        ? `/api/workspace/conversations/${encodeURIComponent(convId)}/messages/${encodeURIComponent(messageId)}`
+        : `/api/workspace/messages/${encodeURIComponent(messageId)}`;
+      await fetch(endpoint, { method: "DELETE", headers });
+      toast({
+        type: "info",
+        title: "Message Deleted",
+        message: "Message permanently removed and database storage freed.",
+        duration: 1800
+      });
+    } catch {
+      // Local message already removed
+    }
+  }
 
   useEffect(() => {
     if (!hasRestoredBrowserState) return;
@@ -824,6 +1102,13 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
           role: message.role,
           content: message.content
         }));
+      const userTimeContext = {
+        timeZone: userTimeZone || detectBrowserTimeZone(),
+        locale: typeof navigator !== "undefined" ? navigator.language : "en-US",
+        clientTimestamp: new Date().toISOString(),
+        utcOffsetMinutes: -new Date().getTimezoneOffset(),
+        location: locationState
+      };
       const assistantPayload = {
         requestId: crypto.randomUUID(),
         message: lastUserMessage?.content ?? "",
@@ -834,6 +1119,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         language: "English",
         webSearch: webSearchActive,
         ephemeral: isSessionEphemeral,
+        userTimeContext,
         chatHistory: historyWindow
       };
       const workspacePayload = {
@@ -843,6 +1129,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         temperature,
         webSearch: webSearchActive,
         ephemeral: isSessionEphemeral,
+        userTimeContext,
         messages: messages
           .filter((message) => message.content.trim())
           .slice(-24)
@@ -874,6 +1161,19 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         signal: controller.signal,
         body
       });
+
+      if (response.status === 401) {
+        const renewed = await renewSessionOnce();
+        if (renewed) {
+          headers.set("Authorization", `Bearer ${renewed}`);
+          response = await fetch(`/api/workspace${endpoint.slice(4)}`, {
+            method: "POST",
+            headers,
+            signal: controller.signal,
+            body
+          });
+        }
+      }
 
       if (response.status === 404 && useAssistantRoute) {
         setFallbackToWorkspace(true);
@@ -954,7 +1254,47 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
               generatedFile?: GeneratedFileView;
               sources?: Array<{ sourceName?: string; filename?: string; page?: number }>;
               specialistSuggestion?: SpecialistSuggestion;
+              timeActions?: Array<{
+                type: string;
+                summary: string;
+                event?: ClientCalendarEvent;
+                timer?: {
+                  id: string;
+                  label: string;
+                  kind: "timer" | "countdown";
+                  durationMs: number;
+                  remainingMs: number;
+                  targetTimestamp?: string;
+                  status: ClientTimerItem["status"];
+                };
+              }>;
             };
+            if (eventName === "meta" && data.timeActions && data.timeActions.length > 0) {
+              for (const action of data.timeActions) {
+                if (action.event) {
+                  setCalendarEvents((prev) => {
+                    const filtered = prev.filter((e) => e.id !== action.event!.id);
+                    return [...filtered, action.event!].sort((a, b) => a.startTime.localeCompare(b.startTime));
+                  });
+                }
+                if (action.timer) {
+                  const tm = action.timer;
+                  setTimers((prev) => [
+                    {
+                      id: tm.id,
+                      label: tm.label,
+                      kind: tm.kind,
+                      durationMs: tm.durationMs,
+                      remainingMs: tm.remainingMs,
+                      targetTimestampMs: tm.targetTimestamp ? new Date(tm.targetTimestamp).getTime() : Date.now() + tm.remainingMs,
+                      status: tm.status
+                    },
+                    ...prev.filter((t) => t.id !== tm.id)
+                  ]);
+                }
+                toast({ type: "success", title: "Time & Calendar Assistant", message: action.summary });
+              }
+            }
             const sourceNames = data.sources
               ? [...new Set(data.sources.map((source) => source.filename ?? source.sourceName).filter(Boolean) as string[])]
               : [];
@@ -1344,6 +1684,18 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
             </div>
 
             <div className="flex flex-wrap items-center justify-end gap-2">
+              <TimeCalendarHub
+                userTimeZone={userTimeZone}
+                locationState={locationState}
+                onRequestLocation={handleRequestLocation}
+                onClearLocation={handleClearLocation}
+                calendarEvents={calendarEvents}
+                onAddCalendarEvent={handleAddCalendarEvent}
+                onDeleteCalendarEvent={handleDeleteCalendarEvent}
+                timers={timers}
+                onStartTimer={handleStartTimer}
+                onControlTimer={handleControlTimer}
+              />
               <div className="flex items-center gap-1">
                 <button
                   type="button"
@@ -1491,6 +1843,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                         copied={copiedId === message.id}
                         onCopy={() => void copyAnswer(message)}
                         onRegenerate={() => void regenerateLastAnswer()}
+                        onDelete={() => void deleteSingleMessage(message.id)}
                       />
                     ))}
                   </AnimatePresence>
@@ -1780,12 +2133,14 @@ function ChatBubble({
   message,
   copied,
   onCopy,
-  onRegenerate
+  onRegenerate,
+  onDelete
 }: {
   message: ChatMessage;
   copied: boolean;
   onCopy: () => void;
   onRegenerate: () => void;
+  onDelete: () => void;
 }) {
   const isAssistant = message.role === "assistant";
   const generatedFiles = isAssistant ? getGeneratedFiles(message.content) : [];
@@ -1891,26 +2246,38 @@ function ChatBubble({
           ) : null}
         </div>
 
-        {isAssistant && message.content ? (
+        {message.content ? (
           <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[#74695E]">
-            {message.sourceReferences && message.sourceReferences.length > 0 ? (
+            {isAssistant && message.sourceReferences && message.sourceReferences.length > 0 ? (
               <div className="rounded-[8px] border border-[#E3C898] bg-[#F8EAD2] px-2.5 py-1.5 text-xs font-semibold text-[#70461F]">
                 <span className="mr-1 text-[#9A5B21]">Sources</span>{[...new Map(message.sourceReferences.map((source) => [`${source.name}:${source.page ?? ""}`, source])).values()].map((source, index) => <span key={`${source.name}-${source.page ?? index}`}>{index ? " · " : ""}{source.name}{source.page ? ` · p. ${source.page}` : ""}</span>)}
               </div>
-            ) : message.sourceNames && message.sourceNames.length > 0 ? <span className="rounded-[8px] border border-[#E3C898] bg-[#F8EAD2] px-2.5 py-1.5 text-xs font-semibold text-[#70461F]">Sources {message.sourceNames.join(", ")}</span> : null}
+            ) : isAssistant && message.sourceNames && message.sourceNames.length > 0 ? <span className="rounded-[8px] border border-[#E3C898] bg-[#F8EAD2] px-2.5 py-1.5 text-xs font-semibold text-[#70461F]">Sources {message.sourceNames.join(", ")}</span> : null}
+            {isAssistant ? (
+              <>
+                <button
+                  onClick={onCopy}
+                  className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition hover:bg-[#F1E6D7] hover:text-[#29231E]"
+                >
+                  {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                  {copied ? "Copied" : "Copy"}
+                </button>
+                <button
+                  onClick={onRegenerate}
+                  className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition hover:bg-white/10 hover:text-white"
+                >
+                  <RefreshCcw className="h-3.5 w-3.5" />
+                  Regenerate
+                </button>
+              </>
+            ) : null}
             <button
-              onClick={onCopy}
-              className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition hover:bg-[#F1E6D7] hover:text-[#29231E]"
+              onClick={onDelete}
+              title="Delete message permanently & free database storage"
+              className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-300/80 transition hover:bg-rose-500/15 hover:text-rose-200"
             >
-              {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-              {copied ? "Copied" : "Copy"}
-            </button>
-            <button
-              onClick={onRegenerate}
-              className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition hover:bg-white/10 hover:text-white"
-            >
-              <RefreshCcw className="h-3.5 w-3.5" />
-              Regenerate
+              <Trash2 className="h-3.5 w-3.5" />
+              Delete
             </button>
           </div>
         ) : null}
