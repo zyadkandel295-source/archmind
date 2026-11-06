@@ -8,7 +8,13 @@ import type { Env } from "../config/env";
 import type { MemoryStore } from "../db/memory";
 import type { AssistantRecord, RetrievedChunk } from "../types";
 import { LlmService } from "./llm";
-import { performWebSearch, formatWebSearchPrompt } from "./web-search";
+import {
+  performWebSearch,
+  formatWebSearchPrompt,
+  shouldPerformWebSearch,
+  type SearchTimeRange,
+  type WebSearchResult
+} from "./web-search";
 import { buildAgentiaSystemPrompt } from "./agentia-system-prompt";
 import { BaseKnowledgeService } from "./base-knowledge";
 import { KnowledgeRepository } from "./knowledge-repository";
@@ -121,6 +127,8 @@ export class RagService {
     responseLength: string;
     language: string;
     webSearch?: boolean;
+    timeRange?: SearchTimeRange;
+    onWebResults?: (results: WebSearchResult[]) => void;
     chatHistory?: Array<{ role: "user" | "assistant"; content: string }>;
   }) {
     console.info("[Knowledge] LLM context prepared", {
@@ -134,8 +142,9 @@ export class RagService {
     });
 
     let searchPromptContext = "";
-    if (input.webSearch || /\b(search|news|weather|latest|today|current|who is|what is|2026|price|events)\b/i.test(input.question)) {
-      const searchResults = await performWebSearch(input.question, 4);
+    if (shouldPerformWebSearch(input.question, input.webSearch)) {
+      const searchResults = await performWebSearch(input.question, 6, { timeRange: input.timeRange });
+      input.onWebResults?.(searchResults);
       if (searchResults.length > 0) {
         searchPromptContext = "\n\n" + formatWebSearchPrompt(searchResults, input.question);
       }

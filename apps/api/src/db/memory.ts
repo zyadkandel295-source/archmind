@@ -1161,6 +1161,19 @@ export class MemoryStore implements PlatformStateStore {
     return this.listMessages(conversationId);
   }
 
+  deleteConversation(conversationId: string, userId: string) {
+    const conversation = this.conversations.get(conversationId);
+    if (!conversation || conversation.userId !== userId) return false;
+    this.conversations.delete(conversationId);
+    for (const [messageId, message] of this.messages.entries()) {
+      if (message.conversationId === conversationId) {
+        this.messages.delete(messageId);
+      }
+    }
+    this.persist();
+    return true;
+  }
+
   recordEvent(assistantId: string, eventType: string, tokens: number, metadata: Record<string, unknown>) {
     const event: AnalyticsEventRecord = {
       id: randomUUID(),

@@ -325,7 +325,7 @@ export function chatsV2Router(env: Env, store: MemoryStore) {
     }
   });
 
-  // DELETE CHAT (Soft Delete)
+  // DELETE CHAT (Hard Delete from MemoryStore & Supabase)
   router.delete('/chats/:id', async (req: AuthedRequest, res: Response) => {
     try {
       const userId = req.user?.id;
@@ -335,14 +335,16 @@ export function chatsV2Router(env: Env, store: MemoryStore) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      const { error } = await supabase
-        .from('chats')
-        .update({ deleted_at: new Date().toISOString() })
-        .eq('id', id);
+      store.deleteConversation(id, userId);
+
+      if (useSupabase) {
+        await supabase.from('messages').delete().eq('chat_id', id).eq('user_id', userId);
+        await supabase.from('chats').delete().eq('id', id).eq('user_id', userId);
+      }
 
       return res.status(200).json({
         success: true,
-        message: 'Chat deleted successfully',
+        message: 'Chat deleted permanently',
       });
     } catch (error: any) {
       return res.status(500).json({ error: error.message || 'Internal Server Error' });

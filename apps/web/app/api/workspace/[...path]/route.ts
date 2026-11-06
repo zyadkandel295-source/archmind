@@ -4,7 +4,7 @@ export const maxDuration = 60;
 
 // Only known workspace endpoints; never accept a browser-supplied destination.
 const allowed =
-  /^(?:chat|assistants\/[\w-]+\/chat|files(?:\/generate|\/[\w-]+\/(?:status|download|regenerate))?|conversations\/[\w-]+\/files|auth\/(?:google|refresh))$/;
+  /^(?:chat(?:\/export-pdf)?|assistants\/[\w-]+\/(?:chat|conversations\/[\w-]+)|files(?:\/generate|\/[\w-]+\/(?:status|download|regenerate))?|conversations\/[\w-]+(?:\/files)?|auth\/(?:google|refresh))$/;
 const failure = (status: number, code: string, message: string) =>
   Response.json(
     { error: { code, message, retryable: status >= 500 } },
@@ -115,6 +115,9 @@ async function relay(
       "content-disposition",
       "retry-after",
       "x-correlation-id",
+      "x-chat-removed",
+      "x-saved-folder",
+      "x-saved-path",
     ]) {
       const value = upstream.headers.get(key);
       if (value) outgoing.set(key, value);
@@ -148,3 +151,4 @@ async function safeRelay(request: Request, context: WorkspaceRouteContext) {
 
 export const GET = safeRelay;
 export const POST = safeRelay;
+export const DELETE = safeRelay;

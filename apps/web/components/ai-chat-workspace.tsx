@@ -12,11 +12,14 @@ import {
   Bot,
   Check,
   ChevronDown,
+  Clock,
   Code2,
   Copy,
   Camera,
   FileDown,
   FileUp,
+  Flame,
+  Ghost,
   Globe,
   Menu,
   Mic,
@@ -81,6 +84,8 @@ interface ChatSession {
   messages: ChatMessage[];
   model: string;
   conversationId?: string;
+  isTemporary?: boolean;
+  expiresAt?: number;
   createdAt: number;
   updatedAt: number;
 }
@@ -142,16 +147,80 @@ function makeId() {
     : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-function createSession(): ChatSession {
+function createSession(isTemporary = false, timerSeconds = 0): ChatSession {
   const now = Date.now();
   return {
     id: makeId(),
-    title: "New chat",
+    title: isTemporary ? "Temporary chat" : "New chat",
     messages: [],
     model: DEFAULT_ENGINE_VALUE,
+    isTemporary,
+    expiresAt: isTemporary && timerSeconds > 0 ? now + timerSeconds * 1000 : undefined,
     createdAt: now,
     updatedAt: now
   };
+}
+
+function buildClientPdfFallbackBlob(session: ChatSession, assistantName: string): Blob {
+  const escapePdfText = (str: string) =>
+    str
+      .replace(/[^\x20-\x7E]/g, " ")
+      .replace(/\\/g, "\\\\")
+      .replace(/\(/g, "\\(")
+      .replace(/\)/g, "\\)");
+
+  const lines: string[] = [
+    "AGENTIA - EXPORTED CHAT ARCHIVE (agentia files data)",
+    `Title: ${session.title}`,
+    `Assistant: ${assistantName} | Exported: ${new Date().toISOString()}`,
+    "------------------------------------------------------------------------",
+    ""
+  ];
+
+  for (const msg of session.messages) {
+    const role = msg.role === "user" ? "YOU" : assistantName.toUpperCase();
+    lines.push(`[${role}]:`);
+    const clean = (msg.content || "").replace(/\r\n/g, "\n");
+    for (const rawLine of clean.split("\n")) {
+      for (let i = 0; i < rawLine.length; i += 82) {
+        lines.push(`  ${rawLine.slice(i, i + 82)}`);
+      }
+    }
+    lines.push("");
+  }
+
+  const maxLines = lines.slice(0, 48);
+  const contentOps = [
+    "BT",
+    "/F1 10 Tf",
+    "48 750 Td",
+    "14 TL",
+    ...maxLines.map((line) => `(${escapePdfText(line)}) Tj T*`),
+    "ET"
+  ].join("\n");
+
+  const objects = [
+    "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n",
+    "2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n",
+    "3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\nendobj\n",
+    `4 0 obj\n<< /Length ${contentOps.length} >>\nstream\n${contentOps}\nendstream\nendobj\n`,
+    "5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n"
+  ];
+
+  let pdf = "%PDF-1.4\n";
+  const offsets: number[] = [0];
+  for (const obj of objects) {
+    offsets.push(pdf.length);
+    pdf += obj;
+  }
+  const xrefStart = pdf.length;
+  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  for (let i = 1; i < offsets.length; i++) {
+    pdf += `${String(offsets[i]).padStart(10, "0")} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+
+  return new Blob([pdf], { type: "application/pdf" });
 }
 
 // The first server and browser render must be identical. Browser persistence
@@ -302,6 +371,8 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
   const [sidebarOpen, setSidebarOpen] = useState(!embedded);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [webSearchActive, setWebSearchActive] = useState(false);
+  const [temporaryMode, setTemporaryMode] = useState(false);
+  const [temporaryTimerSeconds, setTemporaryTimerSeconds] = useState(0);
   const [moreOpen, setMoreOpen] = useState(false);
   const [pinnedIds, setPinnedIds] = useState<Set<string>>(() => new Set());
   const [copiedId, setCopiedId] = useState<string>();
@@ -362,8 +433,38 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
 
   useEffect(() => {
     if (!hasRestoredBrowserState) return;
-    window.localStorage.setItem(sessionsKey(assistantId), JSON.stringify(sessions));
+    const persistentSessions = sessions.filter((s) => !s.isTemporary);
+    window.localStorage.setItem(
+      sessionsKey(assistantId),
+      JSON.stringify(persistentSessions.length > 0 ? persistentSessions : [createSession()])
+    );
   }, [assistantId, hasRestoredBrowserState, sessions]);
+
+  useEffect(() => {
+    if (temporaryTimerSeconds <= 0) return;
+    const interval = window.setInterval(() => {
+      const now = Date.now();
+      setSessions((current) => {
+        const expired = current.filter((s) => s.isTemporary && s.expiresAt && s.expiresAt <= now);
+        if (expired.length === 0) return current;
+        const credential = readSessionCredential();
+        for (const exp of expired) {
+          if (exp.conversationId) {
+            hideConversationId(assistantId, exp.conversationId);
+            const headers: Record<string, string> = {};
+            if (credential) headers.Authorization = `Bearer ${credential}`;
+            void fetch(`/api/workspace/conversations/${encodeURIComponent(exp.conversationId)}`, {
+              method: "DELETE",
+              headers
+            }).catch(() => undefined);
+          }
+        }
+        const remaining = current.filter((s) => !(s.isTemporary && s.expiresAt && s.expiresAt <= now));
+        return remaining.length > 0 ? remaining : [createSession(temporaryMode, temporaryTimerSeconds)];
+      });
+    }, 3000);
+    return () => window.clearInterval(interval);
+  }, [assistantId, temporaryMode, temporaryTimerSeconds]);
 
   useEffect(() => {
     if (!hasRestoredBrowserState) return;
@@ -519,18 +620,45 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     );
   }
 
-  function addNewChat() {
-    const session = createSession();
+  function addNewChat(forceTemporary?: boolean) {
+    const isTemp = typeof forceTemporary === "boolean" ? forceTemporary : temporaryMode;
+    const session = createSession(isTemp, temporaryTimerSeconds);
     setSessions((current) => [session, ...current]);
     setActiveId(session.id);
     setInput("");
     setSidebarOpen(false);
   }
 
-  function deleteChat(sessionId: string) {
+  function toggleTemporaryMode() {
+    const nextTemp = !temporaryMode;
+    setTemporaryMode(nextTemp);
+    updateSession(activeSession.id, (s) => ({
+      ...s,
+      isTemporary: nextTemp,
+      expiresAt: nextTemp && temporaryTimerSeconds > 0 ? Date.now() + temporaryTimerSeconds * 1000 : undefined,
+      updatedAt: Date.now()
+    }));
+    toast({
+      type: "info",
+      title: nextTemp ? "Temporary Ghost Chat ON" : "Saved Chat Mode ON",
+      message: nextTemp
+        ? "This chat is temporary (not saved in browser history) and will be removed when exported as PDF to 'agentia files data' or when its timer ends."
+        : "This chat is now saved normally.",
+      duration: 2800
+    });
+  }
+
+  function deleteChat(sessionId: string, silent = false) {
     const target = sessions.find((session) => session.id === sessionId);
     if (target?.conversationId) {
       hideConversationId(assistantId, target.conversationId);
+      const credential = readSessionCredential();
+      const headers: Record<string, string> = {};
+      if (credential) headers.Authorization = `Bearer ${credential}`;
+      void fetch(`/api/workspace/conversations/${encodeURIComponent(target.conversationId)}`, {
+        method: "DELETE",
+        headers
+      }).catch(() => undefined);
     }
     setPinnedIds((current) => {
       const next = new Set(current);
@@ -542,9 +670,11 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
       if (activeId === sessionId) {
         setActiveId(next[0]?.id ?? "");
       }
-      return next.length > 0 ? next : [createSession()];
+      return next.length > 0 ? next : [createSession(temporaryMode, temporaryTimerSeconds)];
     });
-    toast({ type: "success", title: "Chat removed", message: "This conversation was removed from your sidebar.", duration: 2200 });
+    if (!silent) {
+      toast({ type: "success", title: "Chat removed", message: "This conversation was permanently removed.", duration: 2200 });
+    }
   }
 
   function renameChat(sessionId: string) {
@@ -585,22 +715,72 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
     });
   }
 
-  async function exportActiveChat() {
-    const lines = [
-      `# ${activeSession.title}`,
-      "",
-      ...activeSession.messages.map((message) => `## ${message.role === "user" ? "You" : "Assistant"}\n\n${message.content || "_No content yet._"}`)
-    ];
-    const blob = new Blob([lines.join("\n\n")], { type: "text/markdown;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
+  async function exportChatAsPdfAndRemove() {
+    const currentSession = activeSession;
+    const safeTitle =
+      currentSession.title
+        .replace(/[^\w\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-")
+        .slice(0, 60) || "agentia-chat";
+    const filename = `${safeTitle}.pdf`;
+
+    let pdfBlob: Blob | undefined;
+    try {
+      const credential = readSessionCredential();
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (credential) headers.Authorization = `Bearer ${credential}`;
+
+      const response = await fetch("/api/workspace/chat/export-pdf", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          title: currentSession.title,
+          assistantName: assistantMeta?.name ?? "AGENTIA Agent",
+          conversationId: currentSession.conversationId,
+          assistantId,
+          messages: currentSession.messages.map((m) => ({
+            role: m.role,
+            content: m.content,
+            createdAt: m.createdAt
+          }))
+        })
+      });
+
+      if (response.ok) {
+        const buffer = await response.arrayBuffer();
+        pdfBlob = new Blob([buffer], { type: "application/pdf" });
+      }
+    } catch {
+      // Fallback to client-side PDF generator below
+    }
+
+    if (!pdfBlob) {
+      pdfBlob = buildClientPdfFallbackBlob(currentSession, assistantMeta?.name ?? "AGENTIA Agent");
+    }
+
+    const url = URL.createObjectURL(pdfBlob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${activeSession.title.replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-") || "archmind-chat"}.md`;
+    link.download = `agentia files data - ${filename}`;
     document.body.appendChild(link);
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
-    toast({ type: "success", title: "Chat exported", message: "The active chat was saved as a Markdown file.", duration: 2200 });
+
+    // Automatically remove the chat after exporting as PDF (Snapchat burn-on-export)
+    deleteChat(currentSession.id, true);
+
+    toast({
+      type: "success",
+      title: "Saved PDF to 'agentia files data' & Removed Chat",
+      message: "Chat exported as PDF into 'agentia files data' and permanently removed from the workspace.",
+      duration: 3400
+    });
+  }
+
+  async function exportActiveChat() {
+    await exportChatAsPdfAndRemove();
   }
 
   function copyActiveChatLink() {
@@ -636,6 +816,14 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
       const lastUserMessage = [...messages].reverse().find((message) => message.role === "user");
       const useAssistantRoute = Boolean(assistantId && !fallbackToWorkspace);
       const endpoint = useAssistantRoute ? `/api/assistants/${assistantId}/chat` : "/api/chat";
+      const isSessionEphemeral = Boolean(activeSession.isTemporary || temporaryMode);
+      const historyWindow = messages
+        .filter((message) => message.content.trim())
+        .slice(-12)
+        .map((message) => ({
+          role: message.role,
+          content: message.content
+        }));
       const assistantPayload = {
         requestId: crypto.randomUUID(),
         message: lastUserMessage?.content ?? "",
@@ -644,13 +832,17 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
         sessionId: activeSession.id,
         responseLength: "balanced",
         language: "English",
-        webSearch: webSearchActive
+        webSearch: webSearchActive,
+        ephemeral: isSessionEphemeral,
+        chatHistory: historyWindow
       };
       const workspacePayload = {
         requestId: assistantPayload.requestId,
         conversationId: activeSession.conversationId,
         model: activeSession.model,
         temperature,
+        webSearch: webSearchActive,
+        ephemeral: isSessionEphemeral,
         messages: messages
           .filter((message) => message.content.trim())
           .slice(-24)
@@ -1038,7 +1230,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
               </div>
 
               <button
-                onClick={addNewChat}
+                onClick={() => addNewChat()}
                 disabled={historyLoading}
                 className="mt-3 flex min-h-[2.75rem] items-center justify-center gap-2 rounded-[clamp(0.65rem,1.6vw,0.85rem)] border border-violet-400/60 bg-violet-600 px-[clamp(0.9rem,2vw,1rem)] text-[clamp(0.82rem,1.7vw,0.9rem)] font-bold text-white shadow-sm transition hover:bg-violet-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:border-[#2A2555] disabled:bg-[#0E0C1E] disabled:text-[#8B7EC8]"
               >
@@ -1089,6 +1281,7 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                         >
                           <div className="flex items-center gap-1.5">
                             {pinnedIds.has(session.id) ? <Pin className="h-3.5 w-3.5 shrink-0 text-[#C4B5FD]" /> : null}
+                            {session.isTemporary ? <Ghost className="h-3.5 w-3.5 shrink-0 text-amber-300" aria-label="Temporary chat" /> : null}
                             <div className="line-clamp-1 text-[clamp(0.82rem,1.7vw,0.9rem)] font-bold">{session.title}</div>
                           </div>
                           <div className="mt-1 text-[clamp(0.72rem,1.5vw,0.78rem)] text-[#C4B5FD]">
@@ -1151,6 +1344,57 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
             </div>
 
             <div className="flex flex-wrap items-center justify-end gap-2">
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={toggleTemporaryMode}
+                  aria-pressed={Boolean(activeSession.isTemporary || temporaryMode)}
+                  className={cn(
+                    "inline-flex min-h-[2.4rem] items-center gap-1.5 rounded-xl border px-2.5 py-1 text-xs font-bold transition",
+                    activeSession.isTemporary || temporaryMode
+                      ? "border-amber-400/60 bg-amber-500/20 text-amber-200 shadow-sm"
+                      : "border-[#2A2555] bg-[#12102A] text-[#C4B5FD] hover:border-violet-400/50 hover:text-white"
+                  )}
+                  title="Toggle Snapchat-style Temporary / Ghost Chat Mode"
+                >
+                  <Ghost className="h-4 w-4" />
+                  <span className="hidden sm:inline">
+                    {activeSession.isTemporary || temporaryMode ? "Temporary ON" : "Temporary Chat"}
+                  </span>
+                </button>
+                {(activeSession.isTemporary || temporaryMode) && (
+                  <select
+                    aria-label="Temporary chat timer"
+                    value={temporaryTimerSeconds}
+                    onChange={(e) => {
+                      const secs = Number(e.target.value);
+                      setTemporaryTimerSeconds(secs);
+                      updateSession(activeSession.id, (s) => ({
+                        ...s,
+                        isTemporary: true,
+                        expiresAt: secs > 0 ? Date.now() + secs * 1000 : undefined
+                      }));
+                    }}
+                    className="min-h-[2.4rem] rounded-xl border border-amber-400/50 bg-[#12102A] px-2 py-1 text-xs font-semibold text-amber-200 outline-none"
+                  >
+                    <option value={0}>Burn on PDF Export</option>
+                    <option value={60}>1m timer</option>
+                    <option value={300}>5m timer</option>
+                    <option value={3600}>1h timer</option>
+                  </select>
+                )}
+              </div>
+              {hasMessages && (
+                <button
+                  type="button"
+                  onClick={() => void exportChatAsPdfAndRemove()}
+                  className="inline-flex min-h-[2.4rem] items-center gap-1.5 rounded-xl border border-emerald-400/50 bg-emerald-500/15 px-2.5 py-1 text-xs font-bold text-emerald-200 transition hover:bg-emerald-500/25"
+                  title="Export chat as PDF into 'agentia files data' and remove chat"
+                >
+                  <FileDown className="h-4 w-4" />
+                  <span className="hidden md:inline">Export PDF &amp; Remove</span>
+                </button>
+              )}
               <IconButton
                 onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
                 className="min-h-[2.6rem]"
@@ -1196,10 +1440,11 @@ export function AIChatWorkspace({ assistantId, embedded = false }: { assistantId
                       {[
                         { label: "Search chats", icon: Search, action: focusChatSearch },
                         { label: activePinned ? "Unpin chat" : "Pin chat", icon: activePinned ? PinOff : Pin, action: togglePinActiveChat },
+                        { label: activeSession.isTemporary || temporaryMode ? "Switch to Saved Chat" : "Temporary Ghost Mode", icon: Ghost, action: toggleTemporaryMode },
                         { label: "Rename chat", icon: Pencil, action: () => renameChat(activeSession.id) },
-                        { label: "Export chat", icon: FileDown, action: () => void exportActiveChat() },
+                        { label: "Export PDF & Remove", icon: FileDown, action: () => void exportActiveChat() },
                         { label: "Copy page link", icon: Copy, action: copyActiveChatLink },
-                        { label: "New chat", icon: Plus, action: addNewChat },
+                        { label: "New chat", icon: Plus, action: () => addNewChat() },
                         { label: "Clear current", icon: Trash2, action: clearActiveChat, danger: true }
                       ].map((item) => (
                         <button

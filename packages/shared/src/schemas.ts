@@ -34,6 +34,17 @@ export const chatRequestSchema = z.object({
   conversationId: z.string().optional(),
   responseLength: z.string().default("medium"),
   language: z.string().default("English"),
+  webSearch: z.boolean().optional(),
+  ephemeral: z.boolean().optional(),
+  timeRange: z.enum(["day", "week", "month", "year", "any"]).optional(),
+  chatHistory: z
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string(),
+      })
+    )
+    .optional(),
 });
 
 export const aiChatRequestSchema = z.object({
@@ -45,6 +56,10 @@ export const aiChatRequestSchema = z.object({
   ),
   model: z.string().optional(),
   temperature: z.number().min(0).max(2).optional(),
+  webSearch: z.boolean().optional(),
+  ephemeral: z.boolean().optional(),
+  timeRange: z.enum(["day", "week", "month", "year", "any"]).optional(),
+  conversationId: z.string().optional(),
 });
 
 // ─── Source schemas ──────────────────────────

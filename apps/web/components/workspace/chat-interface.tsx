@@ -2,14 +2,31 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Paperclip, Zap, WifiOff } from 'lucide-react';
+import { Send, Paperclip, Zap, WifiOff, Globe } from 'lucide-react';
 import { useDataPersistence, type Assistant, type Message } from '@/lib/context/data-persistence-context';
+import { readSessionCredential } from '@/lib/session-keys';
 
 interface ChatInterfaceProps {
   assistant: Assistant;
   chatId?: string;
   messages?: Message[];
   onMessageSend?: (message: { role: string; content: string }) => void;
+}
+
+function parseSseChunks(raw: string): string {
+  let combined = '';
+  const blocks = raw.split('\n\n');
+  for (const block of blocks) {
+    const eventLine = block.split('\n').find((l) => l.startsWith('event:'))?.replace('event:', '').trim();
+    const dataLine = block.split('\n').find((l) => l.startsWith('data:'))?.replace('data:', '').trim();
+    if (eventLine === 'token' && dataLine) {
+      try {
+        const parsed = JSON.parse(dataLine) as { token?: string };
+        if (parsed.token) combined += parsed.token;
+      } catch {}
+    }
+  }
+  return combined;
 }
 
 export function ChatInterface({
@@ -21,6 +38,7 @@ export function ChatInterface({
   const { messages: contextMessages, addMessage, isOnline, createChat, selectedChat } = useDataPersistence();
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [webSearch, setWebSearch] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Messages display source (prop vs context)
@@ -55,16 +73,65 @@ export function ChatInterface({
 
     setIsLoading(true);
 
-    // Generate assistant response
-    setTimeout(async () => {
-      const assistantReply = `I am ${assistant.name}, your AGENTIA assistant. I have received your message: "${userText}". How else may I assist you today?`;
+    try {
+      const credential = readSessionCredential();
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (credential) headers.Authorization = `Bearer ${credential}`;
+
+      const historyPayload = [
+        ...displayMessages.slice(-12).map((m) => ({ role: m.role, content: m.content })),
+        { role: 'user' as const, content: userText },
+      ];
+
+      let response = await fetch(`/api/workspace/assistants/${encodeURIComponent(assistant.id)}/chat`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          requestId: typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}`,
+          message: userText,
+          conversationId: activeChatId,
+          responseLength: 'balanced',
+          language: 'English',
+          webSearch,
+        }),
+      });
+
+      if (!response.ok) {
+        response = await fetch('/api/workspace/chat', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            messages: historyPayload,
+            webSearch,
+          }),
+        });
+      }
+
+      let assistantReply = '';
+      if (response.ok) {
+        const rawText = await response.text();
+        assistantReply = parseSseChunks(rawText).trim();
+      }
+
+      if (!assistantReply) {
+        assistantReply = `Unable to reach the live AI stream right now. Your request ("${userText}") has been recorded.`;
+      }
+
       if (onMessageSend) {
         onMessageSend({ role: 'assistant', content: assistantReply });
       } else if (activeChatId) {
         await addMessage(activeChatId, assistant.id, assistantReply, 'assistant');
       }
+    } catch {
+      const fallbackReply = `Connection error while processing "${userText}". Please check your network and try again.`;
+      if (onMessageSend) {
+        onMessageSend({ role: 'assistant', content: fallbackReply });
+      } else if (activeChatId) {
+        await addMessage(activeChatId, assistant.id, fallbackReply, 'assistant');
+      }
+    } finally {
       setIsLoading(false);
-    }, 800);
+    }
   };
 
   return (
@@ -97,7 +164,7 @@ export function ChatInterface({
                 Start commanding {assistant.name}
               </h3>
               <p className="text-slate-400 text-xs leading-relaxed">
-                Send a request and I&apos;ll help with your workspace tasks.
+                Send a request and I&apos;ll help with your workspace tasks using live web &amp; news search.
               </p>
             </div>
           </motion.div>
@@ -110,7 +177,7 @@ export function ChatInterface({
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-xs lg:max-w-md px-4 py-3 rounded-xl text-sm leading-relaxed ${
+                className={`max-w-xs lg:max-w-md px-4 py-3 rounded-xl text-sm leading-relaxed whitespace-pre-wrap ${
                   message.role === 'user'
                     ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium shadow-md'
                     : 'bg-slate-800/80 border border-slate-700/60 text-slate-100 shadow-md'
@@ -150,12 +217,24 @@ export function ChatInterface({
 
       {/* Input Area */}
       <div className="border-t border-slate-700/30 p-4 space-y-3 bg-slate-900/60 backdrop-blur">
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <button className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-colors">
             <Paperclip className="w-4 h-4" />
           </button>
           <button className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-colors">
             <Zap className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setWebSearch((prev) => !prev)}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
+              webSearch
+                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
+          >
+            <Globe className="w-3.5 h-3.5" />
+            <span>{webSearch ? 'Live Web & News ON' : 'Web Search OFF'}</span>
           </button>
         </div>
 

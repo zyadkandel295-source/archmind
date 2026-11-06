@@ -30,6 +30,7 @@ import { aiBaseRouter } from "./modules/ai-base";
 import { filesRouter, fileChatRouter } from "./modules/files";
 import { FileGenerationService } from "./services/files/generator";
 import { AI_PROVIDERS_UNAVAILABLE_MESSAGE, generateAiResponse, hasConfiguredOpenRouterKey } from "./services/ai-service";
+import { formatWebSearchPrompt, performWebSearch, shouldPerformWebSearch } from "./services/web-search";
 import { aiChatRequestSchema } from "@archmind/shared";
 
 export interface AppOptions {
@@ -181,13 +182,29 @@ export function createApp(options: AppOptions = {}) {
   }, async (req, res, next) => {
     try {
       const input = aiChatRequestSchema.parse(req.body);
+      const lastUserMessage = input.messages.filter((m) => m.role === "user").at(-1)?.content ?? "";
+      let messages = input.messages;
+      let searchSources: unknown[] = [];
+
+      if (lastUserMessage && shouldPerformWebSearch(lastUserMessage, input.webSearch)) {
+        const searchResults = await performWebSearch(lastUserMessage, 6, { timeRange: input.timeRange });
+        if (searchResults.length > 0) {
+          searchSources = searchResults;
+          const webContext = formatWebSearchPrompt(searchResults, lastUserMessage);
+          messages = [
+            { role: "system" as const, content: webContext },
+            ...input.messages
+          ];
+        }
+      }
+
       const answer = await generateAiResponse({
         env,
-        messages: input.messages,
+        messages,
         temperature: input.temperature,
         assistantConfig: input.model ? { model: input.model } : undefined
       });
-      return res.status(200).json({ success: true, answer });
+      return res.status(200).json({ success: true, answer, ...(searchSources.length > 0 ? { sources: searchSources } : {}) });
     } catch (error) {
       next(error);
     }
