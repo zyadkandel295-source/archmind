@@ -187,7 +187,10 @@ export function createApp(options: AppOptions = {}) {
       let searchSources: unknown[] = [];
 
       if (lastUserMessage && shouldPerformWebSearch(lastUserMessage, input.webSearch)) {
-        const searchResults = await performWebSearch(lastUserMessage, 6, { timeRange: input.timeRange });
+        const searchResults = await performWebSearch(lastUserMessage, 6, {
+          timeRange: input.timeRange,
+          chatHistory: input.messages.slice(0, -1)
+        });
         if (searchResults.length > 0) {
           searchSources = searchResults;
           const webContext = formatWebSearchPrompt(searchResults, lastUserMessage);

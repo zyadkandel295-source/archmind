@@ -143,7 +143,10 @@ export class RagService {
 
     let searchPromptContext = "";
     if (shouldPerformWebSearch(input.question, input.webSearch)) {
-      const searchResults = await performWebSearch(input.question, 6, { timeRange: input.timeRange });
+      const searchResults = await performWebSearch(input.question, 6, {
+        timeRange: input.timeRange,
+        chatHistory: input.chatHistory
+      });
       input.onWebResults?.(searchResults);
       if (searchResults.length > 0) {
         searchPromptContext = "\n\n" + formatWebSearchPrompt(searchResults, input.question);

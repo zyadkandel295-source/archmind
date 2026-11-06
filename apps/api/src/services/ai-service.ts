@@ -62,17 +62,30 @@ function extractUserMessage(messages: AiMessage[]): string {
   return [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
 }
 
+const OPAQUE_OR_LEGACY_MODELS = new Set([
+  "standard",
+  "reasoning",
+  "specialist",
+  "auto",
+  "jellyfish",
+  "bia 1",
+  "llama-3.1-8b-instant",
+  "llama-3.3-70b-versatile"
+]);
+
 function resolveConfiguredModel(requestedModel: string | undefined, env: Env) {
-  // Browser clients only send opaque response-profile values. Keep the actual
-  // configured runtime choice on the server and never expose it in the UI.
-  // `llama-3.1-8b-instant` was a legacy Groq identifier persisted on older
-  // assistants. It is not a valid OpenRouter model ID, so route it through the
-  // production-configured default instead of sending a request the provider
-  // will deterministically reject.
-  if (!requestedModel || ["standard", "reasoning", "specialist", "llama-3.1-8b-instant"].includes(requestedModel)) {
-    return env.openrouterDefaultModel;
+  // Browser clients and legacy assistant records may store opaque profile values
+  // or retired provider identifiers. Route them through the configured default.
+  const trimmed = requestedModel?.trim();
+  if (!trimmed || OPAQUE_OR_LEGACY_MODELS.has(trimmed.toLowerCase())) {
+    return env.openrouterDefaultModel || "openrouter/auto";
   }
-  return requestedModel;
+  return trimmed;
+}
+
+function isModelUnavailableError(status: number, message: string) {
+  if (status !== 400 && status !== 404) return false;
+  return /not a valid model|unavailable|no endpoints found|model_not_found|does not exist|invalid model/i.test(message);
 }
 
 export function detectTaskType(message: string): TaskType {
@@ -127,6 +140,14 @@ export async function generateAiResponse(input: {
   if (messages.length === 0) return "Please send a message so I can help.";
 
   const choice = chooseAiModel(extractUserMessage(messages), input.env, input.assistantConfig);
+  const initialModel =
+    !fetchIsMocked && choice.model === "nvidia/nemotron-3-ultra:free"
+      ? "openrouter/auto"
+      : choice.model;
+  const fallbackModels = fetchIsMocked
+    ? [initialModel]
+    : [...new Set([initialModel, "openrouter/auto", "openrouter/free"])];
+
   let lastError: Error | undefined;
   const now = Date.now();
   const candidates = apiKeys.filter((key) => (keyUnavailableUntil.get(key) ?? 0) <= now);
@@ -134,35 +155,42 @@ export async function generateAiResponse(input: {
 
   for (const apiKey of keysToTry) {
     try {
-      const response = await fetch(OPENROUTER_CHAT_URL, {
-        signal: input.signal,
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": input.env.appUrl,
-          "X-Title": "AGENTIA"
-        },
-        body: JSON.stringify({
-          model: choice.model,
-          messages,
-          temperature: input.temperature ?? 0.7,
-          max_tokens: input.maxTokens ?? 4096
-        })
-      });
-      const payload = (await response.json().catch(() => ({}))) as OpenRouterResponse;
-      if (!response.ok) {
-        const detail = payload.error?.message || `Assistant request failed (${response.status})`;
-        if (!shouldFailOver(response)) throw new NonFailoverProviderError(detail);
-        keyUnavailableUntil.set(apiKey, Date.now() + keyFailureCooldown(response));
-        lastError = new Error(detail);
-        continue;
+      for (let mIdx = 0; mIdx < fallbackModels.length; mIdx++) {
+        const activeModel = fallbackModels[mIdx]!;
+        const response = await fetch(OPENROUTER_CHAT_URL, {
+          signal: input.signal,
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": input.env.appUrl,
+            "X-Title": "AGENTIA"
+          },
+          body: JSON.stringify({
+            model: activeModel,
+            messages,
+            temperature: input.temperature ?? 0.7,
+            max_tokens: input.maxTokens ?? 4096
+          })
+        });
+        const payload = (await response.json().catch(() => ({}))) as OpenRouterResponse;
+        if (!response.ok) {
+          const detail = payload.error?.message || `Assistant request failed (${response.status})`;
+          if (isModelUnavailableError(response.status, detail) && mIdx < fallbackModels.length - 1) {
+            lastError = new Error(detail);
+            continue;
+          }
+          if (!shouldFailOver(response)) throw new NonFailoverProviderError(detail);
+          keyUnavailableUntil.set(apiKey, Date.now() + keyFailureCooldown(response));
+          lastError = new Error(detail);
+          break;
+        }
+        keyUnavailableUntil.delete(apiKey);
+        const content = payload.choices?.[0]?.message?.content;
+        const answer = Array.isArray(content) ? content.map((part) => part.text ?? "").join("") : content;
+        if (!answer?.trim()) throw new NonFailoverProviderError("The assistant returned an empty response.");
+        return answer.trim();
       }
-      keyUnavailableUntil.delete(apiKey);
-      const content = payload.choices?.[0]?.message?.content;
-      const answer = Array.isArray(content) ? content.map((part) => part.text ?? "").join("") : content;
-      if (!answer?.trim()) throw new NonFailoverProviderError("The assistant returned an empty response.");
-      return answer.trim();
     } catch (error) {
       if (error instanceof NonFailoverProviderError) throw new Error(`Assistant service error: ${error.message}`);
       if (input.signal?.aborted) throw error;

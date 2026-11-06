@@ -110,7 +110,7 @@ export function loadEnv(): Env {
     llmProvider: [openrouterApiKey, ...openrouterApiKeys].some((key) => key.trim()) ? "openrouter" : "under_development",
     openrouterApiKey,
     openrouterApiKeys,
-    openrouterDefaultModel: process.env.OPENROUTER_DEFAULT_MODEL ?? "qwen/qwen3-coder",
+    openrouterDefaultModel: process.env.OPENROUTER_DEFAULT_MODEL ?? "openrouter/auto",
     enableAnswerVerification: process.env.ENABLE_ANSWER_VERIFICATION !== "false",
     verifyMath: process.env.VERIFY_MATH !== "false",
     verifyCode: process.env.VERIFY_CODE !== "false",

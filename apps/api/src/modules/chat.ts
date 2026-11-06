@@ -271,14 +271,14 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
     authenticate(env, store),
     asyncHandler(async (req: AuthedRequest, res) => {
       const input = aiChatRequestSchema.parse(req.body);
-      const assistant = store.getDefaultAssistantForUser(req.user!.id) ?? {
+      const assistant = {
         id: "default-agent",
         userId: req.user!.id,
         name: "AGENTIA Agent",
-        description: "AI Agent",
-        systemPrompt: "You are a helpful assistant deployed on AGENTIA.",
-        model: "standard",
-        temperature: 0.7,
+        description: "Intelligent multidisciplinary AI assistant",
+        systemPrompt: "",
+        model: input.model || "standard",
+        temperature: input.temperature ?? 0.7,
         tone: "professional" as const,
         isPublic: true,
         publicSlug: "default-agent",
@@ -292,14 +292,20 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
         updatedAt: new Date().toISOString()
       };
 
-      const lastUserMessage = sanitizeUserInput(
-        input.messages.filter((message) => message.role === "user").at(-1)?.content ?? ""
-      );
+      const sanitizedHistory = input.messages.map((message) => ({
+        role: (message.role === "system" ? "user" : message.role) as "user" | "assistant",
+        content: sanitizeUserInput(message.content)
+      }));
+
+      const lastUserMessage = sanitizedHistory.filter((message) => message.role === "user").at(-1)?.content ?? "";
 
       let webSearchPromptContext = "";
       let webChunks: RetrievedChunk[] = [];
       if (lastUserMessage && shouldPerformWebSearch(lastUserMessage, input.webSearch)) {
-        const searchResults = await performWebSearch(lastUserMessage, 6, { timeRange: input.timeRange });
+        const searchResults = await performWebSearch(lastUserMessage, 6, {
+          timeRange: input.timeRange,
+          chatHistory: sanitizedHistory.slice(0, -1)
+        });
         if (searchResults.length > 0) {
           webSearchPromptContext = "\n\n" + formatWebSearchPrompt(searchResults, lastUserMessage);
           webChunks = webResultsToRetrievedChunks(searchResults);
@@ -311,17 +317,14 @@ export function chatRouter(env: Env, store: MemoryStore, rag = new RagService(en
         roleInstructions: assistant.systemPrompt
       })}
 
-Stay faithful to this assistant's role. If a request is clearly outside the configured role, briefly explain the boundary and recommend the kind of specialist that can handle it. Do not perform the unrelated task. For requested code projects within scope, provide complete files in fenced code blocks, beginning each with a line formatted exactly as FILE: filename.ext. You can interpret, improve, and generate Markdown documents within scope while preserving their structure.${webSearchPromptContext}`;
+For requested code projects, provide complete files in fenced code blocks, beginning each with a line formatted exactly as FILE: filename.ext. You can interpret, improve, and generate Markdown documents while preserving their structure.${webSearchPromptContext}`;
 
       const answer = await llm.chat({
         temperature: input.temperature ?? assistant.temperature,
         assistantConfig: assistant,
         messages: [
           { role: "system" as const, content: systemPrompt },
-          ...input.messages.map((message) => ({
-            role: message.role === "system" ? "user" : message.role,
-            content: sanitizeUserInput(message.content)
-          }))
+          ...sanitizedHistory
         ]
       });
 

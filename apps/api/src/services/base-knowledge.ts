@@ -16,6 +16,19 @@ function workspaceRoot() {
   return path.basename(cwd) === "api" && path.basename(path.dirname(cwd)) === "apps" ? path.resolve(cwd, "..", "..") : cwd;
 }
 
+const BASE_KNOWLEDGE_STOPWORDS = new Set([
+  "the", "and", "for", "with", "from", "that", "this", "what", "who", "where", "when", "why", "how", "which",
+  "are", "was", "were", "been", "being", "have", "has", "had", "does", "did", "can", "could", "will", "would",
+  "should", "may", "might", "must", "shall", "into", "onto", "upon", "over", "under", "about", "after", "before",
+  "between", "through", "during", "without", "within", "along", "across", "behind", "beyond", "near", "since",
+  "until", "tell", "give", "show", "explain", "find", "search", "help", "please", "make", "know", "think",
+  "take", "took", "taken", "place", "held", "won", "win", "winner", "winners", "champion", "champions",
+  "world", "cup", "fifa", "tournament", "final", "finals", "team", "teams", "game", "games", "match",
+  "year", "years", "date", "dates", "time", "timeline", "history", "historical", "event", "events", "current",
+  "latest", "news", "today", "yesterday", "first", "last", "next", "previous", "most", "many", "much", "some",
+  "any", "all", "every", "each", "other", "another", "such", "more", "less", "very", "just", "only", "also"
+]);
+
 /** Reads the generated AGENTIA books and returns only pages with real lexical relevance. */
 export class BaseKnowledgeService {
   private documents?: KnowledgeDocument[];
@@ -57,17 +70,27 @@ export class BaseKnowledgeService {
   }
 
   retrieve(query: string, limit = 5): RetrievedChunk[] {
-    const terms = new Set(query.toLowerCase().split(/[^a-z0-9]+/).filter((term) => term.length > 2));
+    if (limit <= 0) return [];
+    const terms = new Set(
+      query
+        .toLowerCase()
+        .split(/[^a-z0-9]+/)
+        .filter((term) => term.length > 3 && !BASE_KNOWLEDGE_STOPWORDS.has(term) && !/^\d+$/.test(term))
+    );
     if (terms.size === 0) return [];
+    const minRequiredMatches = terms.size >= 2 ? 2 : 1;
+
     return this.catalog()
       .flatMap((document) => this.documentPages(document).map((page) => ({ document, ...page })))
       .map(({ document, page, text }) => {
-        const haystack = `${document.title} ${document.category} ${text}`.toLowerCase();
+        const titleCategory = `${document.title} ${document.category}`.toLowerCase();
+        const haystack = `${titleCategory} ${text}`.toLowerCase();
         const matches = [...terms].filter((term) => haystack.includes(term)).length;
-        return { document, page, text, matches };
+        const topicalHit = [...terms].some((term) => titleCategory.includes(term));
+        return { document, page, text, matches, topicalHit };
       })
-      .filter((item) => item.matches > 0)
-      .sort((a, b) => b.matches - a.matches || a.document.title.localeCompare(b.document.title) || a.page - b.page)
+      .filter((item) => item.matches >= minRequiredMatches && (item.topicalHit || item.matches >= 3))
+      .sort((a, b) => b.matches - a.matches || Number(b.topicalHit) - Number(a.topicalHit) || a.document.title.localeCompare(b.document.title) || a.page - b.page)
       .slice(0, limit)
       .map(({ document, page, text, matches }) => ({
         sourceId: document.id,
